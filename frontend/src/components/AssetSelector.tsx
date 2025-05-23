@@ -12,7 +12,12 @@ export function AssetSelector({ onSelect, disabled = false }: Props) {
 
   return (
     <div className="space-y-2">
-      <label className="block text-sm font-medium text-gray-700">Asset</label>
+      <label
+        htmlFor="asset-select"
+        className="block text-sm font-medium text-gray-700"
+      >
+        Asset
+      </label>
 
       {loading ? (
         <div className="text-sm text-gray-500 animate-pulse">
@@ -22,6 +27,7 @@ export function AssetSelector({ onSelect, disabled = false }: Props) {
         <div className="text-sm text-red-600">⚠️ {error}</div>
       ) : (
         <select
+          id="asset-select"
           disabled={disabled}
           className="border border-gray-200 rounded-md px-3 py-2 w-full bg-white text-base"
           onChange={(e) => {
