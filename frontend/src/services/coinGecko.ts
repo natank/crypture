@@ -24,7 +24,6 @@ export async function fetchTopCoins(): Promise<CoinInfo[]> {
     });
 
     if (!response.ok) {
-      // Explicitly throw API error
       throw new Error(`CoinGecko API error: ${response.status}`);
     }
 
@@ -40,11 +39,9 @@ export async function fetchTopCoins(): Promise<CoinInfo[]> {
       error instanceof Error &&
       error.message.startsWith("CoinGecko API error")
     ) {
-      // Preserve structured error (for failed responses)
       throw error;
     }
 
-    // Otherwise, wrap unknown or network error
     console.error("CoinGecko fetch error:", error);
     throw new Error("Unable to fetch coin list");
   }
