@@ -5,6 +5,6 @@
     { "path": "./tsconfig.node.json" }
   ],
   "compilerOptions": {
-    "types": ["node", "playwright"]
+    "types": ["node", "playwright", "vitest/globals"]
   }
 }
