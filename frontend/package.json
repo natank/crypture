@@ -9,7 +9,8 @@
     "lint": "eslint .",
     "preview": "vite preview",
     "test": "vitest",
-    "test:e2e": "playwright test"
+    "test:e2e": "playwright test",
+    "test:e2e:debug": "PWDEBUG=1 DEBUG=pw:api playwright test --headed"
   },
   "dependencies": {
     "@tailwindcss/vite": "^4.1.7",

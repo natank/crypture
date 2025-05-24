@@ -1,15 +1,15 @@
 import { useState } from "react";
 import { type CoinInfo } from "../services/coinGecko";
 import { AssetSelector } from "./AssetSelector";
-import { usePortfolio } from "../hooks/usePortfolio";
 import { validateAsset } from "../utils/validateAsset";
+import type { PortfolioAsset } from "../hooks/usePortfolio";
 
 type Props = {
   onClose: () => void;
+  addAsset: (newAsset: PortfolioAsset) => void;
 };
 
-export function AddAssetModal({ onClose }: Props) {
-  const { addAsset } = usePortfolio();
+export function AddAssetModal({ onClose, addAsset }: Props) {
   const [selectedCoin, setSelectedCoin] = useState<CoinInfo | null>(null);
   const [quantity, setQuantity] = useState("");
   const [loading, setLoading] = useState(false);

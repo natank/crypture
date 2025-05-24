@@ -10,18 +10,16 @@ type CoinGeckoCoin = {
   symbol: string;
 };
 
-const COINS_URL =
-  "https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=100&page=1";
-
 const API_KEY = import.meta.env.VITE_COINGECKO_API_KEY;
+
+const COINS_URL =
+  `https://api.coingecko.com/api/v3/coins/markets` +
+  `?vs_currency=usd&order=market_cap_desc&per_page=100&page=1` +
+  `&x_cg_demo_api_key=${API_KEY}`;
 
 export async function fetchTopCoins(): Promise<CoinInfo[]> {
   try {
-    const response = await fetch(COINS_URL, {
-      headers: {
-        "x-cg-demo-api-key": API_KEY,
-      },
-    });
+    const response = await fetch(COINS_URL);
 
     if (!response.ok) {
       throw new Error(`CoinGecko API error: ${response.status}`);
