@@ -3,6 +3,7 @@ import { defineConfig } from "@playwright/test";
 
 export default defineConfig({
   testDir: "./src/e2e/specs",
+  testMatch: "**/*.spec.ts", // Match only .spec.ts files
   use: {
     baseURL: "http://localhost:5173", // adjust to your dev server
     headless: true,

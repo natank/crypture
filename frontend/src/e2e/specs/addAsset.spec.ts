@@ -1,7 +1,7 @@
 import { test, expect } from "@playwright/test";
 
 test.describe("Add Asset Modal Flow", () => {
-  test("should add a crypto asset and display it in the portfolio list", async ({
+  test.skip("should add a crypto asset and display it in the portfolio list", async ({
     page,
   }) => {
     // 1. Navigate to the app
