@@ -5,6 +5,10 @@
     { "path": "./tsconfig.node.json" }
   ],
   "compilerOptions": {
-    "types": ["node", "playwright", "vitest/globals"]
+    "types": ["node", "playwright", "vitest/globals"],
+    "baseUrl": "src",
+     "paths": {
+      "@e2e/*": ["e2e/*"]
+    }
   }
 }

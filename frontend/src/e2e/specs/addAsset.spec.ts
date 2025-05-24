@@ -1,4 +1,4 @@
-import { test, expect } from "@playwright/test";
+import { test, expect } from "@e2e/test-setup";
 
 test.describe("Add Asset Modal Flow", () => {
   test.skip("should add a crypto asset and display it in the portfolio list", async ({

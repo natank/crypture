@@ -1,5 +1,5 @@
 // e2e/specs/portfolio-layout.spec.ts
-import { test, expect } from "@playwright/test";
+import { test, expect } from "@e2e/test-setup";
 import { PortfolioPage } from "../pages/portfolio-page";
 
 test.describe("Portfolio Overview Layout", () => {
