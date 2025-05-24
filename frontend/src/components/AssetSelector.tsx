@@ -44,14 +44,18 @@ export function AssetSelector({ onSelect, disabled = false }: Props) {
         </select>
       )}
 
-      <input
-        type="text"
-        placeholder="Search assets..."
-        className="mt-2 border border-gray-200 rounded-md px-3 py-2 w-full text-base"
-        value={search}
-        onChange={(e) => setSearch(e.target.value)}
-        disabled={disabled || loading}
-      />
+      <div className="mt-2">
+        <label htmlFor="asset-search" className="sr-only">Search assets</label>
+        <input
+          id="asset-search"
+          type="text"
+          placeholder="Search assets..."
+          className="border border-gray-200 rounded-md px-3 py-2 w-full text-base"
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+          disabled={disabled || loading}
+        />
+      </div>
     </div>
   );
 }

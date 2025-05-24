@@ -14,12 +14,16 @@ export default function PortfolioPage() {
 
       {/* 🔍 Filter & Sort */}
       <div className="flex flex-wrap items-center gap-4 mb-4">
-        <input
-          type="text"
-          placeholder="Filter assets..."
-          className="px-3 py-2 border border-gray-200 rounded-md w-full sm:w-64"
-          data-testid="filter-input"
-        />
+        <div className="flex flex-col sm:block">
+  <label htmlFor="filter-assets" className="sr-only">Filter assets</label>
+  <input
+    id="filter-assets"
+    type="text"
+    placeholder="Filter assets..."
+    className="px-3 py-2 border border-gray-200 rounded-md w-full sm:w-64"
+    data-testid="filter-input"
+  />
+</div>
         <div className="flex items-center gap-2">
           <label htmlFor="sort-assets" className="text-base text-gray-700">
             Sort:
@@ -75,7 +79,8 @@ export default function PortfolioPage() {
               </div>
               <button
                 className="p-2 rounded-full hover:bg-gray-100 text-red-600"
-                aria-label={`Delete ${asset.symbol}`}
+                aria-label={`Delete ${asset.symbol.toUpperCase()}`}
+                title={`Delete ${asset.symbol.toUpperCase()}`}
               >
                 🗑️
               </button>

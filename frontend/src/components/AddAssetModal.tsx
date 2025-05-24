@@ -58,16 +58,18 @@ export function AddAssetModal({ onClose, addAsset }: Props) {
         </div>
 
         <div className="space-y-2">
-          <label className="block text-sm font-medium text-gray-700">
+          <label htmlFor="asset-quantity" className="block text-sm font-medium text-gray-700">
             Quantity
           </label>
           <input
+            id="asset-quantity"
             type="number"
             placeholder="0.5"
             className="border border-gray-200 rounded-md px-3 py-2 w-full"
             value={quantity}
             onChange={(e) => setQuantity(e.target.value)}
             disabled={loading}
+            aria-label="Quantity"
           />
         </div>
 
