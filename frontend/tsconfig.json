@@ -1,10 +1,24 @@
 {
-  "files": [],
-  "references": [
-    { "path": "./tsconfig.app.json" },
-    { "path": "./tsconfig.node.json" }
-  ],
   "compilerOptions": {
-    "types": ["node", "playwright"]
-  }
+    "jsx": "react-jsx",
+    "target": "ESNext",
+    "module": "esnext",
+    "baseUrl": "./src",
+    "paths": {
+      "@components/*": ["components/*"],
+      "@hooks/*": ["hooks/*"],
+      "@pages/*": ["pages/*"],
+      "@utils/*": ["utils/*"],
+      "@services/*": ["services/*"],
+      "@e2e/*": ["e2e/*"],
+      "@test-setup": ["e2e/test-setup.ts"],
+      "@assets/*": ["../public/assets/*"],
+    },
+    "types": ["node", "playwright", "vitest/globals"],
+    "moduleResolution": "node",
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "strict": true
+  },
+  "include": ["src"]
 }
