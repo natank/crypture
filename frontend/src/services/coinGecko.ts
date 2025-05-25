@@ -39,8 +39,6 @@ export async function fetchTopCoins(): Promise<CoinInfo[]> {
     ) {
       throw error;
     }
-
-    console.error("CoinGecko fetch error:", error);
     throw new Error("Unable to fetch coin list");
   }
 }
