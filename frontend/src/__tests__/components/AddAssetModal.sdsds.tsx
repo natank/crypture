@@ -77,9 +77,9 @@ describe("AddAssetModal", () => {
     fireEvent.click(screen.getByText("➕ Add Asset"));
 
     await waitFor(() => {
-      expect(
-        screen.getByText(/please select a valid cryptocurrency/i)
-      ).toBeInTheDocument();
+      expect(screen.getByRole("alert")).toHaveTextContent(
+        /asset id is required/i
+      );
     });
   });
 

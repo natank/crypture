@@ -11,23 +11,24 @@ describe("validateAsset", () => {
 
   it("returns valid: true for correct input", () => {
     const result = validateAsset(validInput);
-    expect(result).toEqual({ valid: true });
+    expect(result).toEqual({ valid: true, errors: [] });
   });
 
-  it("returns error if asset is missing", () => {
+  it("returns multiple errors if asset fields are missing", () => {
     const result = validateAsset({
       quantity: 1,
     });
 
     expect(result.valid).toBe(false);
 
-    if (result.valid === false) {
-      expect(result.errors).toEqual([
-        {
-          field: "asset",
-          message: "Please select a valid cryptocurrency.",
-        },
-      ]);
+    if (!result.valid) {
+      expect(result.errors).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({ field: "id" }),
+          expect.objectContaining({ field: "name" }),
+          expect.objectContaining({ field: "symbol" }),
+        ])
+      );
     }
   });
 
@@ -38,16 +39,13 @@ describe("validateAsset", () => {
     });
 
     expect(result.valid).toBe(false);
-
-    if (result.valid === false) {
+    if (!result.valid) {
       expect(result.errors).toEqual([
         {
           field: "quantity",
           message: "Quantity must be a number.",
         },
       ]);
-    } else {
-      throw new Error("Expected validation to fail");
     }
   });
 
@@ -55,34 +53,28 @@ describe("validateAsset", () => {
     const resultZero = validateAsset({ ...validInput, quantity: 0 });
     const resultNegative = validateAsset({ ...validInput, quantity: -5 });
 
-    expect(resultZero.valid).toBe(false);
-    if (resultZero.valid === false) {
-      expect(resultZero.errors[0].message).toMatch(/greater than zero/);
-    } else {
-      throw new Error("Expected validation to fail");
-    }
-    expect(resultNegative.valid).toBe(false);
-    if (resultNegative.valid === false) {
-      expect(resultNegative.errors[0].message).toMatch(/greater than zero/);
-    } else {
-      throw new Error("Expected validation to fail");
-    }
+    [resultZero, resultNegative].forEach((res) => {
+      expect(res.valid).toBe(false);
+      if (!res.valid) {
+        expect(res.errors[0].message).toMatch(/positive number/);
+      }
+    });
   });
 
-  it("returns both asset and quantity errors when both invalid", () => {
+  it("returns multiple errors when asset fields and quantity are invalid", () => {
     const result = validateAsset({ quantity: 0 });
 
     expect(result.valid).toBe(false);
-    if (result.valid === false) {
-      expect(result.errors.length).toBe(2);
-    } else {
-      throw new Error("Expected validation to fail");
+    if (!result.valid) {
+      expect(result.errors.length).toBeGreaterThanOrEqual(2);
+      expect(result.errors).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({ field: "id" }),
+          expect.objectContaining({ field: "name" }),
+          expect.objectContaining({ field: "symbol" }),
+          expect.objectContaining({ field: "quantity" }),
+        ])
+      );
     }
-    expect(result.errors).toEqual(
-      expect.arrayContaining([
-        expect.objectContaining({ field: "asset" }),
-        expect.objectContaining({ field: "quantity" }),
-      ])
-    );
   });
 });
