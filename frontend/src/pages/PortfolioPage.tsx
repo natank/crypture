@@ -1,17 +1,16 @@
 import { AddAssetModal } from "@components/AddAssetModal";
-import { usePortfolio } from "@hooks/usePortfolio";
-import { useRef, useState } from "react";
+import { usePortfolioState } from "@hooks/usePortfolioState";
 
 export default function PortfolioPage() {
-  const { portfolio, addAsset } = usePortfolio();
-  const [showModal, setShowModal] = useState(false);
-  const addButtonRef = useRef<HTMLButtonElement | null>(null);
-  const handleCloseModal = () => {
-    setShowModal(false);
-    setTimeout(() => {
-      addButtonRef.current?.focus();
-    }, 0); // let modal fully unmount before focusing
-  };
+  const {
+    portfolio,
+    addAsset,
+    showModal,
+    openModal,
+    closeModal,
+    addButtonRef,
+  } = usePortfolioState();
+
   return (
     <div className="max-w-4xl mx-auto p-4 space-y-6 bg-white">
       <header role="banner">
@@ -64,7 +63,7 @@ export default function PortfolioPage() {
           <h2 className="text-base font-medium text-gray-900">Your Assets</h2>
           <button
             ref={addButtonRef}
-            onClick={() => setShowModal(true)}
+            onClick={openModal}
             className="bg-blue-100 text-blue-900 font-button px-4 py-2 rounded-md hover:bg-blue-200"
             data-testid="add-asset-button"
           >
@@ -128,9 +127,7 @@ export default function PortfolioPage() {
       </main>
 
       {/* ➕ Add Asset Modal */}
-      {showModal && (
-        <AddAssetModal onClose={handleCloseModal} addAsset={addAsset} />
-      )}
+      {showModal && <AddAssetModal onClose={closeModal} addAsset={addAsset} />}
     </div>
   );
 }
