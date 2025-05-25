@@ -4,22 +4,6 @@ import { CoinInfo } from "@services/coinGecko";
 import { validateAsset } from "@utils/validateAsset";
 import type { PortfolioAsset } from "@hooks/usePortfolio";
 
-vi.mock("@components/AssetSelector", () => ({
-  AssetSelector: ({ onSelect, disabled }: any) => {
-    return (
-      <select
-        aria-label="Asset"
-        disabled={disabled}
-        onChange={() =>
-          onSelect({ id: "bitcoin", name: "Bitcoin", symbol: "BTC" })
-        }
-      >
-        <option value="bitcoin">Bitcoin</option>
-      </select>
-    );
-  },
-}));
-
 type Props = {
   onClose: () => void;
   addAsset: (newAsset: PortfolioAsset) => void;

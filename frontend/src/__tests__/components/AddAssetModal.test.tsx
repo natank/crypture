@@ -10,6 +10,27 @@ import { vi, describe, it, expect, beforeEach } from "vitest";
 import * as usePortfolioHook from "@hooks/usePortfolio";
 import * as useAssetListHook from "@hooks/useAssetList";
 import { AddAssetModal } from "@components/AddAssetModal";
+import { CoinInfo } from "@services/coinGecko";
+
+type AssetSelectorMockProps = {
+  onSelect: (coin: CoinInfo) => void;
+  disabled?: boolean;
+};
+vi.mock("@components/AssetSelector", () => ({
+  AssetSelector: ({ onSelect, disabled }: AssetSelectorMockProps) => {
+    return (
+      <select
+        aria-label="Asset"
+        disabled={disabled}
+        onChange={() =>
+          onSelect({ id: "bitcoin", name: "Bitcoin", symbol: "BTC" })
+        }
+      >
+        <option value="bitcoin">Bitcoin</option>
+      </select>
+    );
+  },
+}));
 
 // Mock coin list
 const mockCoins = [
