@@ -4,9 +4,10 @@ import type { CoinInfo } from "@services/coinGecko";
 type Props = {
   onSelect: (coin: CoinInfo) => void;
   disabled?: boolean;
+  id?: string;
 };
 
-export function AssetSelector({ onSelect, disabled = false }: Props) {
+export function AssetSelector({ onSelect, disabled = false, id }: Props) {
   const { coins, loading, error, search, setSearch, originalCoins } =
     useAssetList();
 
@@ -24,10 +25,12 @@ export function AssetSelector({ onSelect, disabled = false }: Props) {
           Loading assets...
         </div>
       ) : error ? (
-        <div className="text-sm text-red-600">⚠️ {error}</div>
+        <div className="text-sm text-red-600" role="alert">
+          ⚠️ {error}
+        </div>
       ) : (
         <select
-          id="asset-select"
+          id={id}
           disabled={disabled}
           className="border border-gray-200 rounded-md px-3 py-2 w-full bg-white text-base"
           onChange={(e) => {
@@ -45,8 +48,11 @@ export function AssetSelector({ onSelect, disabled = false }: Props) {
       )}
 
       <div className="mt-2">
-        <label htmlFor="asset-search" className="sr-only">
-          Search assets
+        <label
+          htmlFor="asset-search"
+          className="block text-sm font-medium text-gray-700"
+        >
+          Filter assets
         </label>
         <input
           id="asset-search"
