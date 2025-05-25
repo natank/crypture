@@ -1,5 +1,5 @@
+import { validateAsset } from "@utils/validateAsset";
 import { describe, it, expect } from "vitest";
-import { validateAsset } from "../../src/utils/validateAsset";
 
 describe("validateAsset", () => {
   const validInput = {

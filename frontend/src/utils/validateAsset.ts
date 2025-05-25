@@ -1,4 +1,4 @@
-import type { PortfolioAsset } from "../hooks/usePortfolio";
+import type { PortfolioAsset } from "@/hooks/usePortfolio";
 
 type ValidationResult =
   | { valid: true }

@@ -1,5 +1,5 @@
-import { useAssetList } from "../hooks/useAssetList";
-import type { CoinInfo } from "../services/coinGecko";
+import { useAssetList } from "@hooks/useAssetList";
+import type { CoinInfo } from "@services/coinGecko";
 
 type Props = {
   onSelect: (coin: CoinInfo) => void;
@@ -45,7 +45,9 @@ export function AssetSelector({ onSelect, disabled = false }: Props) {
       )}
 
       <div className="mt-2">
-        <label htmlFor="asset-search" className="sr-only">Search assets</label>
+        <label htmlFor="asset-search" className="sr-only">
+          Search assets
+        </label>
         <input
           id="asset-search"
           type="text"

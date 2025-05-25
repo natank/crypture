@@ -1,5 +1,5 @@
 import "./App.css";
-import PortfolioPage from "./pages/PortfolioPage";
+import PortfolioPage from "@pages/PortfolioPage";
 
 function App() {
   return <PortfolioPage />;

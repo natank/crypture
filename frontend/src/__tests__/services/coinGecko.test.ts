@@ -1,5 +1,5 @@
+import { fetchTopCoins } from "@services/coinGecko";
 import { describe, it, expect, vi, beforeEach } from "vitest";
-import { fetchTopCoins } from "../../src/services/coinGecko";
 
 const mockedFetch = vi.fn();
 global.fetch = mockedFetch;

@@ -1,7 +1,7 @@
 import { renderHook, act } from "@testing-library/react";
 import { describe, it, expect, vi, beforeEach } from "vitest";
-import { useAssetList } from "../../src/hooks/useAssetList";
-import * as coinGecko from "../../src/services/coinGecko";
+import { useAssetList } from "@hooks/useAssetList";
+import * as coinGecko from "@services/coinGecko";
 
 const mockCoins = [
   { id: "bitcoin", name: "Bitcoin", symbol: "BTC" },

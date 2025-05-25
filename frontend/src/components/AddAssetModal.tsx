@@ -1,8 +1,24 @@
 import { useState } from "react";
-import { type CoinInfo } from "../services/coinGecko";
-import { AssetSelector } from "./AssetSelector";
-import { validateAsset } from "../utils/validateAsset";
-import type { PortfolioAsset } from "../hooks/usePortfolio";
+import { AssetSelector } from "@components/AssetSelector";
+import { CoinInfo } from "@services/coinGecko";
+import { validateAsset } from "@utils/validateAsset";
+import type { PortfolioAsset } from "@hooks/usePortfolio";
+
+vi.mock("@components/AssetSelector", () => ({
+  AssetSelector: ({ onSelect, disabled }: any) => {
+    return (
+      <select
+        aria-label="Asset"
+        disabled={disabled}
+        onChange={() =>
+          onSelect({ id: "bitcoin", name: "Bitcoin", symbol: "BTC" })
+        }
+      >
+        <option value="bitcoin">Bitcoin</option>
+      </select>
+    );
+  },
+}));
 
 type Props = {
   onClose: () => void;
@@ -58,7 +74,10 @@ export function AddAssetModal({ onClose, addAsset }: Props) {
         </div>
 
         <div className="space-y-2">
-          <label htmlFor="asset-quantity" className="block text-sm font-medium text-gray-700">
+          <label
+            htmlFor="asset-quantity"
+            className="block text-sm font-medium text-gray-700"
+          >
             Quantity
           </label>
           <input

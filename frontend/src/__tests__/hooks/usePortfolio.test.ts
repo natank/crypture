@@ -1,5 +1,5 @@
+import { usePortfolio } from "@hooks/usePortfolio";
 import { renderHook, act } from "@testing-library/react";
-import { usePortfolio } from "../../src/hooks/usePortfolio";
 import { describe, it, expect } from "vitest";
 
 describe("usePortfolio", () => {

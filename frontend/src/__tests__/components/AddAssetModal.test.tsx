@@ -1,9 +1,15 @@
 import React from "react";
-import { render, screen, fireEvent, waitFor } from "@testing-library/react";
+import {
+  render,
+  screen,
+  fireEvent,
+  waitFor,
+  within,
+} from "@testing-library/react";
 import { vi, describe, it, expect, beforeEach } from "vitest";
-import { AddAssetModal } from "../../src/components/AddAssetModal";
-import * as usePortfolioHook from "../../src/hooks/usePortfolio";
-import * as useAssetListHook from "../../src/hooks/useAssetList";
+import * as usePortfolioHook from "@hooks/usePortfolio";
+import * as useAssetListHook from "@hooks/useAssetList";
+import { AddAssetModal } from "@components/AddAssetModal";
 
 // Mock coin list
 const mockCoins = [
@@ -36,16 +42,17 @@ describe("AddAssetModal", () => {
   });
 
   it("renders modal with required fields and buttons", () => {
-    render(<AddAssetModal onClose={mockOnClose} />);
+    render(<AddAssetModal onClose={mockOnClose} addAsset={() => {}} />);
 
     expect(screen.getByText("➕ Add Crypto Asset")).toBeInTheDocument();
     expect(screen.getByText("❌ Cancel")).toBeInTheDocument();
     expect(screen.getByText("➕ Add Asset")).toBeInTheDocument();
-    expect(screen.getByLabelText(/Asset/i)).toBeInTheDocument();
+    const modal = screen.getByRole("dialog");
+    expect(within(modal).getByLabelText(/Asset/i)).toBeInTheDocument();
   });
 
   it("shows error on submit without input", async () => {
-    render(<AddAssetModal onClose={mockOnClose} />);
+    render(<AddAssetModal onClose={mockOnClose} addAsset={() => {}} />);
     fireEvent.click(screen.getByText("➕ Add Asset"));
 
     await waitFor(() => {
@@ -56,10 +63,10 @@ describe("AddAssetModal", () => {
   });
 
   it("submits correctly with valid data", async () => {
-    render(<AddAssetModal onClose={mockOnClose} />);
+    render(<AddAssetModal onClose={mockOnClose} addAsset={mockAddAsset} />);
 
-    // Select asset
-    fireEvent.change(screen.getByRole("combobox"), {
+    // Select asset — triggers the mocked AssetSelector's onSelect with bitcoin
+    fireEvent.change(screen.getByLabelText("Asset"), {
       target: { value: "bitcoin" },
     });
 
@@ -68,7 +75,7 @@ describe("AddAssetModal", () => {
       target: { value: "1.5" },
     });
 
-    // Submit
+    // Submit form
     fireEvent.click(screen.getByText("➕ Add Asset"));
 
     await waitFor(() => {
@@ -98,7 +105,7 @@ describe("AddAssetModal", () => {
       resetPortfolio: vi.fn(),
     });
 
-    render(<AddAssetModal onClose={mockOnClose} />);
+    render(<AddAssetModal onClose={mockOnClose} addAsset={() => {}} />);
 
     fireEvent.change(screen.getByRole("combobox"), {
       target: { value: "bitcoin" },

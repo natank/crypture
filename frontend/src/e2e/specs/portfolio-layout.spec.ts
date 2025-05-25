@@ -1,6 +1,7 @@
 // e2e/specs/portfolio-layout.spec.ts
 import { test, expect } from "@e2e/test-setup";
-import { PortfolioPage } from "../pages/portfolio-page";
+import { PortfolioPage } from "@e2e/pages/portfolio-page";
+import { mockCoinGeckoMarkets } from "@e2e/mocks/mockCoinGecko";
 
 test.describe("Portfolio Overview Layout", () => {
   test.beforeEach(async ({ page }) => {
@@ -36,6 +37,7 @@ test.describe("Portfolio Overview Layout", () => {
   });
 
   test("opens modal when Add Asset is clicked", async ({ page }) => {
+    await mockCoinGeckoMarkets(page);
     const portfolio = new PortfolioPage(page);
     await portfolio.goto();
 

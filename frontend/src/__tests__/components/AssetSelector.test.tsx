@@ -2,8 +2,8 @@ import React from "react";
 
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { render, screen, fireEvent } from "@testing-library/react";
-import { AssetSelector } from "../../src/components/AssetSelector";
-import * as useAssetListModule from "../../src/hooks/useAssetList";
+import { AssetSelector } from "@components/AssetSelector";
+import * as useAssetListModule from "@hooks/useAssetList";
 
 const mockCoins = [
   { id: "bitcoin", name: "Bitcoin", symbol: "BTC" },

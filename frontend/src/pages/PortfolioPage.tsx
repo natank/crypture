@@ -1,6 +1,6 @@
+import { AddAssetModal } from "@components/AddAssetModal";
+import { usePortfolio } from "@hooks/usePortfolio";
 import { useState } from "react";
-import { usePortfolio } from "../hooks/usePortfolio";
-import { AddAssetModal } from "../components/AddAssetModal";
 
 export default function PortfolioPage() {
   const { portfolio, addAsset } = usePortfolio();

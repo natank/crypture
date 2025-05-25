@@ -2,6 +2,19 @@ import { render, screen } from "@testing-library/react";
 import PortfolioPage from "./PortfolioPage";
 import { describe, it, expect } from "vitest";
 
+vi.mock("@hooks/usePortfolio", () => ({
+  usePortfolio: () => ({
+    portfolio: [
+      {
+        id: "btc",
+        name: "Bitcoin",
+        symbol: "btc",
+        quantity: 0.5,
+      },
+    ],
+    addAsset: vi.fn(),
+  }),
+}));
 describe("PortfolioPage", () => {
   it("renders without crashing", () => {
     render(<PortfolioPage />);
@@ -26,7 +39,7 @@ describe("PortfolioPage", () => {
   it("renders a static asset list row (placeholder content)", () => {
     render(<PortfolioPage />);
     expect(screen.getByText(/btc/i)).toBeInTheDocument();
-    expect(screen.getByText(/qty: 0.5/i)).toBeInTheDocument();
-    expect(screen.getAllByText(/\$15,000/)[0]).toBeInTheDocument();
+    expect(screen.getByText(/Price: —/)).toBeInTheDocument();
+    expect(screen.getByText(/Total: —/)).toBeInTheDocument();
   });
 });

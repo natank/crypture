@@ -1,5 +1,5 @@
+import { type CoinInfo, fetchTopCoins } from "@services/coinGecko";
 import { useEffect, useState, useMemo } from "react";
-import { fetchTopCoins, type CoinInfo } from "../services/coinGecko";
 
 export function useAssetList() {
   const [coins, setCoins] = useState<CoinInfo[]>([]);
