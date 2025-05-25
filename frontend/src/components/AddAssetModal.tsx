@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { AssetSelector } from "@components/AssetSelector";
 import { CoinInfo } from "@services/coinGecko";
 import { validateAsset } from "@utils/validateAsset";
@@ -15,9 +15,14 @@ export function AddAssetModal({ onClose, addAsset }: Props) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
+  const initialFocusRef = useRef<HTMLInputElement | null>(null);
+
+  useEffect(() => {
+    initialFocusRef.current?.focus();
+  }, []);
+
   const handleSubmit = async () => {
     setError(null);
-
     const result = validateAsset({
       ...selectedCoin,
       quantity: parseFloat(quantity),
@@ -31,7 +36,7 @@ export function AddAssetModal({ onClose, addAsset }: Props) {
     setLoading(true);
     try {
       addAsset({ ...selectedCoin!, quantity: parseFloat(quantity) });
-      onClose(); // modal closes on successful add
+      onClose();
     } catch {
       setError("Failed to add asset. Please try again.");
     } finally {
@@ -44,15 +49,26 @@ export function AddAssetModal({ onClose, addAsset }: Props) {
       className="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50"
       role="dialog"
       aria-modal="true"
+      aria-labelledby="add-asset-title"
     >
       <div className="bg-white p-6 rounded-2xl shadow-lg max-w-md w-full space-y-4">
-        <div className="text-xl font-semibold text-gray-900">
+        <h2
+          id="add-asset-title"
+          className="text-xl font-semibold text-gray-900"
+        >
           ➕ Add Crypto Asset
-        </div>
+        </h2>
 
         <div>
+          <label
+            htmlFor="asset-select"
+            className="block text-sm font-medium text-gray-700"
+          >
+            Asset
+          </label>
           <AssetSelector
-            onSelect={(coin) => setSelectedCoin(coin)}
+            id="asset-select"
+            onSelect={setSelectedCoin}
             disabled={loading}
           />
         </div>
@@ -72,11 +88,19 @@ export function AddAssetModal({ onClose, addAsset }: Props) {
             value={quantity}
             onChange={(e) => setQuantity(e.target.value)}
             disabled={loading}
-            aria-label="Quantity"
+            ref={initialFocusRef}
           />
         </div>
 
-        {error && <div className="text-sm text-red-600 mt-2">⚠️ {error}</div>}
+        {error && (
+          <div
+            className="text-sm text-red-600 mt-2"
+            role="alert"
+            aria-live="assertive"
+          >
+            ⚠️ {error}
+          </div>
+        )}
 
         <div className="flex justify-end gap-4 pt-4">
           <button

@@ -8,7 +8,7 @@
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "test": "vitest",
+    "test": "vitest run --reporter verbose",
     "test:e2e": "playwright test",
     "test:e2e:debug": "PWDEBUG=1 DEBUG=pw:api playwright test --headed",
     "prepare": "husky install",
