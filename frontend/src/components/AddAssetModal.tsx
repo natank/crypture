@@ -33,7 +33,9 @@ export function AddAssetModal({ onClose, addAsset }: Props) {
       aria-labelledby="add-asset-title"
     >
       <FocusTrap
-        active={process.env.NODE_ENV !== "test"}
+        active={
+          typeof document !== "undefined" && process.env.NODE_ENV !== "test"
+        }
         focusTrapOptions={{
           initialFocus: () =>
             document.getElementById("asset-quantity") || document.body,
