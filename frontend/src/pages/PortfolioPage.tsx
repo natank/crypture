@@ -1,5 +1,5 @@
 import { AddAssetModal } from "@components/AddAssetModal";
-import AssetRow from "@components/AssetRow";
+import AssetList from "@components/AssetList";
 import FilterSortControls from "@components/FilterSortControls";
 import PortfolioHeader from "@components/PortfolioHeader";
 import { usePortfolioState } from "@hooks/usePortfolioState";
@@ -49,21 +49,7 @@ export default function PortfolioPage() {
         </div>
 
         {/* 📊 Asset List */}
-        <div className="divide-y divide-gray-200">
-          {portfolio.length === 0 ? (
-            <div className="text-gray-800 italic">
-              No assets yet. Add one to begin.
-            </div>
-          ) : (
-            portfolio.map((asset) => (
-              <AssetRow
-                key={asset.id}
-                asset={asset}
-                onDelete={handleDeleteAsset}
-              />
-            ))
-          )}
-        </div>
+        <AssetList assets={portfolio} onDelete={handleDeleteAsset} />
 
         {/* 📤 Footer Action Buttons */}
         <div className="flex justify-end gap-4 mt-6">
