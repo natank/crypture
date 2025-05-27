@@ -7,7 +7,7 @@ export type PortfolioAsset = {
   quantity: number;
 };
 
-type PortfolioState = PortfolioAsset[];
+export type PortfolioState = PortfolioAsset[];
 
 export function usePortfolio() {
   const [portfolio, setPortfolio] = useState<PortfolioState>([]);
