@@ -1,9 +1,8 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import { AssetSelector } from "@components/AssetSelector";
-import { CoinInfo } from "@services/coinGecko";
-import { validateAsset } from "@utils/validateAsset";
-import type { PortfolioAsset } from "@hooks/usePortfolio";
 import { FocusTrap } from "focus-trap-react";
+import type { PortfolioAsset } from "@hooks/usePortfolio";
+import { useAddAssetForm } from "@hooks/useAddAssetForm";
 
 type Props = {
   onClose: () => void;
@@ -11,39 +10,20 @@ type Props = {
 };
 
 export function AddAssetModal({ onClose, addAsset }: Props) {
-  const [selectedCoin, setSelectedCoin] = useState<CoinInfo | null>(null);
-  const [quantity, setQuantity] = useState("");
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+  const {
+    setSelectedCoin,
+    quantity,
+    setQuantity,
+    loading,
+    error,
+    handleSubmit,
+  } = useAddAssetForm(addAsset, onClose);
 
   const initialFocusRef = useRef<HTMLInputElement | null>(null);
 
   useEffect(() => {
     initialFocusRef.current?.focus();
   }, []);
-
-  const handleSubmit = async () => {
-    setError(null);
-    const result = validateAsset({
-      ...selectedCoin,
-      quantity: parseFloat(quantity),
-    });
-
-    if (!result.valid) {
-      setError(result.errors.map((e) => e.message).join(" "));
-      return;
-    }
-
-    setLoading(true);
-    try {
-      addAsset({ ...selectedCoin!, quantity: parseFloat(quantity) });
-      onClose();
-    } catch {
-      setError("Failed to add asset. Please try again.");
-    } finally {
-      setLoading(false);
-    }
-  };
 
   return (
     <div
@@ -53,7 +33,9 @@ export function AddAssetModal({ onClose, addAsset }: Props) {
       aria-labelledby="add-asset-title"
     >
       <FocusTrap
-        active={process.env.NODE_ENV !== "test"}
+        active={
+          typeof document !== "undefined" && process.env.NODE_ENV !== "test"
+        }
         focusTrapOptions={{
           initialFocus: () =>
             document.getElementById("asset-quantity") || document.body,

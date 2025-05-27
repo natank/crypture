@@ -1,32 +1,36 @@
-import type { PortfolioAsset } from "@/hooks/usePortfolio";
+import { z } from "zod";
+// 🧱 Define the asset validation schema using zod
+export const assetSchema = z.object({
+  id: z.string().nonempty("Asset ID is required."),
+  name: z.string().nonempty("Asset name is required."),
+  symbol: z.string().nonempty("Asset symbol is required."),
+  quantity: z
+    .number({
+      required_error: "Quantity is required.",
+      invalid_type_error: "Quantity must be a number.",
+    })
+    .positive("Quantity must be a positive number."),
+});
 
-type ValidationResult =
-  | { valid: true }
-  | { valid: false; errors: { field: string; message: string }[] };
+// 📦 Inferred input type
+export type AssetInput = z.infer<typeof assetSchema>;
 
-export function validateAsset(
-  input: Partial<PortfolioAsset>
-): ValidationResult {
-  const errors: { field: string; message: string }[] = [];
+// 🚦 Validator wrapper function
+export function validateAsset(input: unknown): {
+  valid: boolean;
+  errors: { field: string; message: string }[];
+} {
+  const result = assetSchema.safeParse(input);
 
-  if (!input.id || !input.name || !input.symbol) {
-    errors.push({
-      field: "asset",
-      message: "Please select a valid cryptocurrency.",
-    });
+  if (result.success) {
+    return { valid: true, errors: [] };
   }
 
-  if (typeof input.quantity !== "number" || isNaN(input.quantity)) {
-    errors.push({
-      field: "quantity",
-      message: "Quantity must be a number.",
-    });
-  } else if (input.quantity <= 0) {
-    errors.push({
-      field: "quantity",
-      message: "Quantity must be greater than zero.",
-    });
-  }
-
-  return errors.length === 0 ? { valid: true } : { valid: false, errors };
+  return {
+    valid: false,
+    errors: result.error.errors.map((e) => ({
+      field: e.path[0] as string,
+      message: e.message,
+    })),
+  };
 }

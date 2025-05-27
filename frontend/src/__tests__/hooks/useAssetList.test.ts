@@ -1,7 +1,7 @@
 import { renderHook, act } from "@testing-library/react";
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { useAssetList } from "@hooks/useAssetList";
-import * as coinGecko from "@services/coinGecko";
+import * as coinService from "@services/coinService";
 
 const mockCoins = [
   { id: "bitcoin", name: "Bitcoin", symbol: "BTC" },
@@ -15,7 +15,7 @@ describe("useAssetList", () => {
   });
 
   it("loads and returns filtered coins", async () => {
-    vi.spyOn(coinGecko, "fetchTopCoins").mockResolvedValue(mockCoins);
+    vi.spyOn(coinService, "fetchTopCoins").mockResolvedValue(mockCoins);
 
     const { result } = renderHook(() => useAssetList());
 
@@ -38,7 +38,7 @@ describe("useAssetList", () => {
   });
 
   it("handles API error gracefully", async () => {
-    vi.spyOn(coinGecko, "fetchTopCoins").mockRejectedValue(
+    vi.spyOn(coinService, "fetchTopCoins").mockRejectedValue(
       new Error("API failure")
     );
 
