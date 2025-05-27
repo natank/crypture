@@ -1,5 +1,5 @@
 import { useAssetList } from "@hooks/useAssetList";
-import type { CoinInfo } from "@services/coinGecko";
+import type { CoinInfo } from "@services/coinService";
 
 type Props = {
   onSelect: (coin: CoinInfo) => void;

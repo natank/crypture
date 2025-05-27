@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { CoinInfo } from "@services/coinGecko";
+import { CoinInfo } from "@services/coinService";
 import { validateAsset } from "@utils/validateAsset";
 import type { PortfolioAsset } from "@hooks/usePortfolio";
 

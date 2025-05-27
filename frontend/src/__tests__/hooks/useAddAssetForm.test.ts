@@ -1,7 +1,7 @@
 import { renderHook, act } from "@testing-library/react";
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { useAddAssetForm } from "@hooks/useAddAssetForm";
-import type { CoinInfo } from "@services/coinGecko";
+import type { CoinInfo } from "@services/coinService";
 import type { PortfolioAsset } from "@hooks/usePortfolio";
 
 // 🧪 Mocks
