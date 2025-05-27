@@ -1,6 +1,8 @@
 import { AddAssetModal } from "@components/AddAssetModal";
+import FilterSortControls from "@components/FilterSortControls";
 import PortfolioHeader from "@components/PortfolioHeader";
 import { usePortfolioState } from "@hooks/usePortfolioState";
+import { useState } from "react";
 
 export default function PortfolioPage() {
   const {
@@ -12,48 +14,20 @@ export default function PortfolioPage() {
     addButtonRef,
   } = usePortfolioState();
 
+  const [filter, setFilter] = useState("");
+  const [sort, setSort] = useState("value-desc");
   return (
     <div className="max-w-4xl mx-auto p-4 space-y-6 bg-white">
       <PortfolioHeader totalValue={null} />
 
       <main role="main" className="space-y-6">
         {/* 🔍 Filter & Sort */}
-        <div className="flex flex-wrap items-center gap-4 mb-4">
-          <div className="flex flex-col sm:block">
-            <label
-              htmlFor="filter-assets"
-              className="block text-sm font-medium text-gray-700"
-            >
-              Filter assets
-            </label>
-            <input
-              id="filter-assets"
-              type="text"
-              placeholder="Filter assets..."
-              className="px-3 py-2 border border-gray-200 rounded-md w-full sm:w-64 placeholder:text-gray-700"
-              data-testid="filter-input"
-            />
-          </div>
-
-          <div className="flex items-center gap-2">
-            <label
-              htmlFor="sort-assets"
-              className="block text-sm font-medium text-gray-700"
-            >
-              Sort by
-            </label>
-            <select
-              id="sort-assets"
-              className="px-3 py-2 border border-gray-200 rounded-md bg-white sm:w-48 w-full text-gray-900"
-              data-testid="sort-dropdown"
-            >
-              <option>Sort by Value ⬇</option>
-              <option>Sort by Value ⬆</option>
-              <option>Name A–Z</option>
-              <option>Name Z–A</option>
-            </select>
-          </div>
-        </div>
+        <FilterSortControls
+          filter={filter}
+          onFilterChange={setFilter}
+          sort={sort}
+          onSortChange={setSort}
+        />
 
         {/* 📋 Asset List Header + Add Button */}
         <div className="flex justify-between items-center">
