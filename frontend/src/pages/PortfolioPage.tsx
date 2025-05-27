@@ -1,4 +1,5 @@
 import { AddAssetModal } from "@components/AddAssetModal";
+import PortfolioHeader from "@components/PortfolioHeader";
 import { usePortfolioState } from "@hooks/usePortfolioState";
 
 export default function PortfolioPage() {
@@ -13,11 +14,7 @@ export default function PortfolioPage() {
 
   return (
     <div className="max-w-4xl mx-auto p-4 space-y-6 bg-white">
-      <header role="banner">
-        <h1 className="text-xl font-semibold text-gray-900">
-          💰 Total Portfolio Value
-        </h1>
-      </header>
+      <PortfolioHeader totalValue={null} />
 
       <main role="main" className="space-y-6">
         {/* 🔍 Filter & Sort */}
