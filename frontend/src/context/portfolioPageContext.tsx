@@ -1,4 +1,4 @@
-import React, { createContext, useContext } from "react";
+import React, { createContext } from "react";
 import { usePortfolio } from "@hooks/usePortfolio";
 
 const PortfolioPageContext = createContext<ReturnType<
@@ -14,14 +14,4 @@ export const PortfolioPageProvider: React.FC<{ children: React.ReactNode }> = ({
       {children}
     </PortfolioPageContext.Provider>
   );
-};
-
-export const usePortfolioContext = () => {
-  const context = useContext(PortfolioPageContext);
-  if (!context) {
-    throw new Error(
-      "usePortfolioContext must be used within a PortfolioPageProvider"
-    );
-  }
-  return context;
 };
