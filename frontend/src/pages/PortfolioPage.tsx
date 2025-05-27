@@ -43,21 +43,13 @@ export default function PortfolioPage() {
           onSortChange={setSort}
         />
 
-        {/* 📋 Asset List Header + Add Button */}
-        <div className="flex justify-between items-center">
-          <h2 className="text-base font-medium text-gray-900">Your Assets</h2>
-          <button
-            ref={addButtonRef}
-            onClick={openModal}
-            className="bg-blue-100 text-blue-900 font-button px-4 py-2 rounded-md hover:bg-blue-200"
-            data-testid="add-asset-button"
-          >
-            ➕ Add Asset
-          </button>
-        </div>
-
-        {/* 📊 Asset List */}
-        <AssetList assets={portfolio} onDelete={handleDeleteAsset} />
+        {/* 📋 Asset List */}
+        <AssetList
+          assets={portfolio}
+          onDelete={handleDeleteAsset}
+          onAddAsset={openModal}
+          addButtonRef={addButtonRef}
+        />
 
         {/* 📤 Footer Action Buttons */}
         <ExportImportControls onExport={handleExport} onImport={handleImport} />
