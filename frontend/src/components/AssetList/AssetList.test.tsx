@@ -1,6 +1,6 @@
 import { render, screen, fireEvent } from "@testing-library/react";
 import AssetList from ".";
-import type { PortfolioAsset } from "@hooks/usePortfolio";
+import type { PortfolioAsset } from "@hooks/useUIState";
 
 const mockAssets: PortfolioAsset[] = [
   { id: "btc", name: "Bitcoin", symbol: "btc", quantity: 0.5 },

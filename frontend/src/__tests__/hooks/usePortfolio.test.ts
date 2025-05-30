@@ -1,4 +1,4 @@
-import { usePortfolio } from "@hooks/usePortfolio";
+import { usePortfolioState } from "@hooks/usePortfolioState";
 import { renderHook, act } from "@testing-library/react";
 import { describe, it, expect } from "vitest";
 
@@ -18,12 +18,12 @@ describe("usePortfolio", () => {
   };
 
   it("starts with an empty portfolio", () => {
-    const { result } = renderHook(() => usePortfolio());
+    const { result } = renderHook(() => usePortfolioState());
     expect(result.current.portfolio).toEqual([]);
   });
 
   it("adds a new asset", () => {
-    const { result } = renderHook(() => usePortfolio());
+    const { result } = renderHook(() => usePortfolioState());
     act(() => {
       result.current.addAsset(btc);
     });
@@ -31,7 +31,7 @@ describe("usePortfolio", () => {
   });
 
   it("merges quantity for duplicate asset", () => {
-    const { result } = renderHook(() => usePortfolio());
+    const { result } = renderHook(() => usePortfolioState());
 
     act(() => {
       result.current.addAsset({ ...btc, quantity: 1 });
@@ -42,7 +42,7 @@ describe("usePortfolio", () => {
   });
 
   it("adds multiple distinct assets", () => {
-    const { result } = renderHook(() => usePortfolio());
+    const { result } = renderHook(() => usePortfolioState());
 
     act(() => {
       result.current.addAsset(btc);
@@ -56,7 +56,7 @@ describe("usePortfolio", () => {
   });
 
   it("removes an asset by ID", () => {
-    const { result } = renderHook(() => usePortfolio());
+    const { result } = renderHook(() => usePortfolioState());
 
     act(() => {
       result.current.addAsset(btc);
@@ -68,7 +68,7 @@ describe("usePortfolio", () => {
   });
 
   it("resets the portfolio", () => {
-    const { result } = renderHook(() => usePortfolio());
+    const { result } = renderHook(() => usePortfolioState());
 
     act(() => {
       result.current.addAsset(btc);

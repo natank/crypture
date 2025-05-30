@@ -3,7 +3,7 @@ import React from "react";
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { render, screen, fireEvent } from "@testing-library/react";
 import { AssetSelector } from "@components/AssetSelector";
-import * as useAssetListModule from "@hooks/useAssetList";
+import * as useCoinSearchModule from "@hooks/useCoinSearch";
 
 const mockCoins = [
   { id: "bitcoin", name: "Bitcoin", symbol: "BTC" },
@@ -12,7 +12,7 @@ const mockCoins = [
 
 describe("AssetSelector", () => {
   beforeEach(() => {
-    vi.spyOn(useAssetListModule, "useAssetList").mockReturnValue({
+    vi.spyOn(useCoinSearchModule, "useCoinSearch").mockReturnValue({
       coins: mockCoins,
       originalCoins: mockCoins,
       search: "",
@@ -47,7 +47,7 @@ describe("AssetSelector", () => {
   });
 
   it("shows loading state", () => {
-    vi.spyOn(useAssetListModule, "useAssetList").mockReturnValueOnce({
+    vi.spyOn(useCoinSearchModule, "useCoinSearch").mockReturnValueOnce({
       coins: [],
       originalCoins: [],
       search: "",
@@ -61,7 +61,7 @@ describe("AssetSelector", () => {
   });
 
   it("shows error message", () => {
-    vi.spyOn(useAssetListModule, "useAssetList").mockReturnValueOnce({
+    vi.spyOn(useCoinSearchModule, "useCoinSearch").mockReturnValueOnce({
       coins: [],
       originalCoins: [],
       search: "",

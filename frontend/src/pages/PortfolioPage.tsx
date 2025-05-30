@@ -4,20 +4,16 @@ import ExportImportControls from "@components/ExportImportControls";
 import FilterSortControls from "@components/FilterSortControls";
 import PortfolioHeader from "@components/PortfolioHeader";
 import { usePortfolioState } from "@hooks/usePortfolioState";
+import { useUIState } from "@hooks/useUIState";
 import { useState } from "react";
 
 export default function PortfolioPage() {
-  const {
-    portfolio,
-    addAsset,
-    showModal,
-    openModal,
-    closeModal,
-    addButtonRef,
-  } = usePortfolioState();
+  const { portfolio, addAsset } = usePortfolioState();
 
-  const [filter, setFilter] = useState("");
-  const [sort, setSort] = useState("value-desc");
+  const { showModal, openModal, closeModal, addButtonRef } = useUIState();
+
+  const [assetFilter, setAssetFilter] = useState("");
+  const [assetSort, setAssetSort] = useState("value-desc");
 
   const handleDeleteAsset = (id: string) => {
     // 🔜 Replace with real delete logic (e.g., from usePortfolioState)
@@ -37,10 +33,10 @@ export default function PortfolioPage() {
       <main role="main" className="space-y-6">
         {/* 🔍 Filter & Sort */}
         <FilterSortControls
-          filter={filter}
-          onFilterChange={setFilter}
-          sort={sort}
-          onSortChange={setSort}
+          filter={assetFilter}
+          onFilterChange={setAssetFilter}
+          sort={assetSort}
+          onSortChange={setAssetSort}
         />
 
         {/* 📋 Asset List */}

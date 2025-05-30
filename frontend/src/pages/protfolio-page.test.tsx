@@ -2,8 +2,8 @@ import { render, screen } from "@testing-library/react";
 import PortfolioPage from "./PortfolioPage";
 import { describe, it, expect } from "vitest";
 
-vi.mock("@hooks/usePortfolio", () => ({
-  usePortfolio: () => ({
+vi.mock("@hooks/usePortfolioState", () => ({
+  usePortfolioState: () => ({
     portfolio: [
       {
         id: "btc",

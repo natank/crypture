@@ -1,7 +1,7 @@
 import { type CoinInfo, fetchTopCoins } from "@services/coinService";
 import { useEffect, useState, useMemo } from "react";
 
-export function useAssetList() {
+export function useCoinSearch() {
   const [coins, setCoins] = useState<CoinInfo[]>([]);
   const [search, setSearch] = useState("");
   const [loading, setLoading] = useState(true);

@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { CoinInfo } from "@services/coinService";
 import { validateAsset } from "@utils/validateAsset";
-import type { PortfolioAsset } from "@hooks/usePortfolio";
+import type { PortfolioAsset } from "@hooks/useUIState";
 
 /**
  * Custom hook to manage Add Asset form logic.
