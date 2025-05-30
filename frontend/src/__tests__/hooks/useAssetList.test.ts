@@ -1,6 +1,6 @@
 import { renderHook, act } from "@testing-library/react";
 import { describe, it, expect, vi, beforeEach } from "vitest";
-import { useAssetList } from "@hooks/useAssetList";
+import { useCoinSearch } from "@hooks/useCoinSearch";
 import * as coinService from "@services/coinService";
 
 const mockCoins = [
@@ -17,7 +17,7 @@ describe("useAssetList", () => {
   it("loads and returns filtered coins", async () => {
     vi.spyOn(coinService, "fetchTopCoins").mockResolvedValue(mockCoins);
 
-    const { result } = renderHook(() => useAssetList());
+    const { result } = renderHook(() => useCoinSearch());
 
     expect(result.current.loading).toBe(true);
 
@@ -42,7 +42,7 @@ describe("useAssetList", () => {
       new Error("API failure")
     );
 
-    const { result } = renderHook(() => useAssetList());
+    const { result } = renderHook(() => useCoinSearch());
 
     await act(() => Promise.resolve());
 

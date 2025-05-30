@@ -1,4 +1,4 @@
-import { useAssetList } from "@hooks/useAssetList";
+import { useCoinSearch } from "@hooks/useCoinSearch";
 import type { CoinInfo } from "@services/coinService";
 
 type Props = {
@@ -9,7 +9,7 @@ type Props = {
 
 export function AssetSelector({ onSelect, disabled = false, id }: Props) {
   const { coins, loading, error, search, setSearch, originalCoins } =
-    useAssetList();
+    useCoinSearch();
 
   return (
     <div className="space-y-2">

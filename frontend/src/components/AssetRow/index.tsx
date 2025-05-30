@@ -1,5 +1,5 @@
 import React from "react";
-import type { PortfolioAsset } from "@hooks/usePortfolio";
+import type { PortfolioAsset } from "@hooks/useUIState";
 
 type AssetRowProps = {
   asset: PortfolioAsset;
