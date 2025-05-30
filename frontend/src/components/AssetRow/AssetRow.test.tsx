@@ -1,6 +1,6 @@
 import { render, screen, fireEvent } from "@testing-library/react";
 import AssetRow from ".";
-import type { PortfolioAsset } from "@hooks/usePortfolio";
+import type { PortfolioAsset } from "@hooks/useUIState";
 
 const mockAsset: PortfolioAsset = {
   id: "btc",

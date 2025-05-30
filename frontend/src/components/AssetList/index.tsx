@@ -1,6 +1,6 @@
 import React, { RefObject } from "react";
-import type { PortfolioAsset } from "@hooks/usePortfolio";
 import AssetRow from "@components/AssetRow";
+import { PortfolioAsset } from "@hooks/usePortfolioState";
 
 type AssetListProps = {
   assets: PortfolioAsset[];
