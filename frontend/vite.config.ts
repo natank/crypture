@@ -18,4 +18,8 @@ export default defineConfig({
       "@assets": path.resolve(__dirname, "public/assets"),
     },
   },
+  build: {
+    outDir: "dist", // compiled JS/CSS/assets will go here
+    emptyOutDir: true,
+  },
 });

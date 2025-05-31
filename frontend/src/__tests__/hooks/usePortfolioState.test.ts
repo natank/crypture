@@ -79,3 +79,61 @@ describe("usePortfolio", () => {
     expect(result.current.portfolio).toEqual([]);
   });
 });
+
+describe("getAssetById", () => {
+  it("returns the correct asset when given a valid ID", () => {
+    const { result } = renderHook(() => usePortfolioState());
+
+    act(() => {
+      result.current.addAsset({
+        id: "btc",
+        symbol: "BTC",
+        name: "Bitcoin",
+        quantity: 1,
+      });
+      result.current.addAsset({
+        id: "eth",
+        symbol: "ETH",
+        name: "Ethereum",
+        quantity: 2,
+      });
+    });
+
+    const btc = result.current.getAssetById("btc");
+    const eth = result.current.getAssetById("eth");
+
+    expect(btc?.name).toBe("Bitcoin");
+    expect(eth?.quantity).toBe(2);
+  });
+
+  it("returns undefined for an unknown asset ID", () => {
+    const { result } = renderHook(() => usePortfolioState());
+
+    const asset = result.current.getAssetById("nonexistent-id");
+
+    expect(asset).toBeUndefined();
+  });
+
+  it("reacts to portfolio changes (asset removed)", () => {
+    const { result } = renderHook(() => usePortfolioState());
+
+    act(() => {
+      result.current.addAsset({
+        id: "btc",
+        symbol: "BTC",
+        name: "Bitcoin",
+        quantity: 1,
+      });
+    });
+
+    const btcBefore = result.current.getAssetById("btc");
+    expect(btcBefore).not.toBeUndefined();
+
+    act(() => {
+      result.current.removeAsset("btc");
+    });
+
+    const btcAfter = result.current.getAssetById("btc");
+    expect(btcAfter).toBeUndefined();
+  });
+});

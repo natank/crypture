@@ -1,5 +1,6 @@
 import { AddAssetModal } from "@components/AddAssetModal";
 import AssetList from "@components/AssetList";
+import DeleteConfirmationModal from "@components/DeleteConfirmationModal";
 import ExportImportControls from "@components/ExportImportControls";
 import FilterSortControls from "@components/FilterSortControls";
 import PortfolioHeader from "@components/PortfolioHeader";
@@ -8,16 +9,26 @@ import { useUIState } from "@hooks/useUIState";
 import { useState } from "react";
 
 export default function PortfolioPage() {
-  const { portfolio, addAsset } = usePortfolioState();
+  const { portfolio, addAsset, removeAsset, getAssetById } =
+    usePortfolioState();
 
-  const { showModal, openModal, closeModal, addButtonRef } = useUIState();
+  const {
+    shouldShowAddAssetModal,
+    shouldShowDeleteConfirmationModal,
+    cancelDeleteAsset,
+    assetIdPendingDeletion,
+    openAddAssetModal,
+    closeAddAssetModal,
+    addButtonRef,
+    requestDeleteAsset,
+  } = useUIState();
 
   const [assetFilter, setAssetFilter] = useState("");
   const [assetSort, setAssetSort] = useState("value-desc");
+  const assetToDelete = getAssetById(assetIdPendingDeletion || "");
 
   const handleDeleteAsset = (id: string) => {
-    // 🔜 Replace with real delete logic (e.g., from usePortfolioState)
-    console.log("delete asset", id);
+    requestDeleteAsset(id);
   };
   const handleExport = () => {
     console.log("Export clicked");
@@ -43,7 +54,7 @@ export default function PortfolioPage() {
         <AssetList
           assets={portfolio}
           onDelete={handleDeleteAsset}
-          onAddAsset={openModal}
+          onAddAsset={openAddAssetModal}
           addButtonRef={addButtonRef}
         />
 
@@ -52,7 +63,22 @@ export default function PortfolioPage() {
       </main>
 
       {/* ➕ Add Asset Modal */}
-      {showModal && <AddAssetModal onClose={closeModal} addAsset={addAsset} />}
+      {shouldShowAddAssetModal && (
+        <AddAssetModal onClose={closeAddAssetModal} addAsset={addAsset} />
+      )}
+      {assetToDelete && (
+        <DeleteConfirmationModal
+          assetName={assetToDelete.name}
+          isOpen={shouldShowDeleteConfirmationModal}
+          onCancel={cancelDeleteAsset}
+          onConfirm={() => {
+            if (assetIdPendingDeletion) {
+              removeAsset(assetIdPendingDeletion);
+            }
+            cancelDeleteAsset();
+          }}
+        />
+      )}
     </div>
   );
 }

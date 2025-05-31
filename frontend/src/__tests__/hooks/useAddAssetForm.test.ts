@@ -2,7 +2,7 @@ import { renderHook, act } from "@testing-library/react";
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { useAddAssetForm } from "@hooks/useAddAssetForm";
 import type { CoinInfo } from "@services/coinService";
-import type { PortfolioAsset } from "@hooks/useUIState";
+import { PortfolioAsset } from "@hooks/usePortfolioState";
 
 // 🧪 Mocks
 let mockOnSubmit: (asset: PortfolioAsset) => void;

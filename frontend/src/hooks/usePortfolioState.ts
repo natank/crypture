@@ -14,6 +14,12 @@ export type PortfolioState = PortfolioAsset[];
 export function usePortfolioState() {
   const [portfolio, setPortfolio] = useState<PortfolioState>([]);
 
+  const getAssetById = useCallback(
+    (id: string): PortfolioAsset | undefined =>
+      portfolio.find((asset) => asset.id === id),
+    [portfolio]
+  );
+
   const addAsset = useCallback((newAsset: PortfolioAsset) => {
     setPortfolio((prev) => {
       const existing = prev.find((asset) => asset.id === newAsset.id);
@@ -38,6 +44,7 @@ export function usePortfolioState() {
 
   return {
     portfolio,
+    getAssetById,
     addAsset,
     removeAsset,
     resetPortfolio,

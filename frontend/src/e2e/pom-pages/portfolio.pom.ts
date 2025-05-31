@@ -82,4 +82,13 @@ export class PortfolioPage {
   async isModalVisible(): Promise<boolean> {
     return await this.modal.isVisible();
   }
+
+  async openDeleteModalFor(symbol: string) {
+    const deleteButton = this.page.getByLabel(`Delete ${symbol}`);
+    await deleteButton.click();
+  }
+
+  assetRow(symbol: string): Locator {
+    return this.assetItemBySymbol(symbol);
+  }
 }

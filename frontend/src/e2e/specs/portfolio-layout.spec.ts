@@ -1,6 +1,6 @@
 // e2e/specs/portfolio-layout.spec.ts
 import { test, expect } from "@e2e/test-setup";
-import { PortfolioPage } from "@e2e/pages/portfolio-page";
+import { PortfolioPage } from "@e2e/pom-pages/portfolio.pom";
 import { mockCoinGeckoMarkets } from "@e2e/mocks/mockCoinGecko";
 
 test.describe("Portfolio Overview Layout", () => {

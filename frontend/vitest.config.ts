@@ -6,8 +6,23 @@ export default defineConfig({
   test: {
     globals: true,
     environment: "jsdom",
-    setupFiles: ["./src/setupTests.ts"], // ✅ points to the file above,
-    include: ["**/*.{test,test.*}.?(c|m)[jt]s?(x)"], // ✅ Match only .test.js/ts/tsx
+    setupFiles: ["./src/setupTests.ts"],
+    include: ["**/*.{test,test.*}.?(c|m)[jt]s?(x)"],
+    coverage: {
+      provider: "v8", // or 'c8'
+      reporter: ["text", "html", "json-summary"],
+      all: true,
+      exclude: [
+        "**/node_modules/**",
+        "**/dist/**",
+        "**/__tests__/**",
+        "**/*.test.*",
+        "**/*.spec.*",
+        "**/mocks/**",
+        "**/stories/**",
+        "**/.vite/**",
+      ],
+    },
   },
   resolve: {
     alias: {
