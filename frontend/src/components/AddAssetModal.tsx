@@ -1,8 +1,8 @@
 import { useEffect, useRef } from "react";
 import { AssetSelector } from "@components/AssetSelector";
 import { FocusTrap } from "focus-trap-react";
-import type { PortfolioAsset } from "@hooks/useUIState";
 import { useAddAssetForm } from "@hooks/useAddAssetForm";
+import { PortfolioAsset } from "@hooks/usePortfolioState";
 
 type Props = {
   onClose: () => void;

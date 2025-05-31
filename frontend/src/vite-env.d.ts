@@ -1,9 +1,9 @@
+// vite-env.d.ts
 /// <reference types="vite/client" />
 
 interface ImportMetaEnv {
-  readonly VITE_API_URL: string;
-  readonly VITE_FEATURE_FLAG: "true" | "false";
-  // Add other custom environment variables here
+  readonly VITE_COINGECKO_API_KEY: string;
+  // add more vars as needed...
 }
 
 interface ImportMeta {

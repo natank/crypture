@@ -1,22 +1,42 @@
 import { useState, useRef } from "react";
 
 export function useUIState() {
-  const [showModal, setShowModal] = useState(false);
+  const [shouldShowAddAssetModal, setShouldShowAddAssetModal] = useState(false);
   const addButtonRef = useRef<HTMLButtonElement | null>(null);
+  const [
+    shouldShowDeleteConfirmationModal,
+    setShouldShowDeleteConfirmationModal,
+  ] = useState(false);
+  const [assetIdPendingDeletion, setAssetIdPendingDeletion] = useState<
+    string | null
+  >(null);
 
-  const openModal = () => setShowModal(true);
+  const openAddAssetModal = () => setShouldShowAddAssetModal(true);
 
-  const closeModal = () => {
-    setShowModal(false);
+  const closeAddAssetModal = () => {
+    setShouldShowAddAssetModal(false);
     setTimeout(() => {
       addButtonRef.current?.focus();
     }, 0); // ensure modal fully unmounts
   };
+  const requestDeleteAsset = (assetId: string) => {
+    setAssetIdPendingDeletion(assetId);
+    setShouldShowDeleteConfirmationModal(true);
+  };
+
+  const cancelDeleteAsset = () => {
+    setAssetIdPendingDeletion(null);
+    setShouldShowDeleteConfirmationModal(false);
+  };
 
   return {
-    showModal,
-    openModal,
-    closeModal,
+    shouldShowAddAssetModal,
+    shouldShowDeleteConfirmationModal,
+    openAddAssetModal,
+    closeAddAssetModal,
+    requestDeleteAsset,
+    cancelDeleteAsset,
+    assetIdPendingDeletion,
     addButtonRef,
   };
 }

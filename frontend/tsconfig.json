@@ -4,6 +4,11 @@
     "target": "ESNext",
     "module": "esnext",
     "baseUrl": "./src",
+    "outDir": "./dist",
+    "rootDir": "./src",
+    "declaration": true,
+    "declarationDir": "./dist", // Optional: .d.ts files go here
+    "noEmit": false,
     "paths": {
       "@components/*": ["components/*"],
       "@context/*": ["context/*"],
