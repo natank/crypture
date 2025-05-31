@@ -10,6 +10,8 @@ test.describe("Portfolio Overview Layout", () => {
   });
 
   test("renders layout with total value header", async ({ page }) => {
+    mockCoinGeckoMarkets(page);
+
     const portfolioPage = new PortfolioPage(page);
     await portfolioPage.goto();
 
@@ -19,6 +21,7 @@ test.describe("Portfolio Overview Layout", () => {
 
   test("displays Add, Export, and Import buttons", async ({ page }) => {
     const portfolio = new PortfolioPage(page);
+    mockCoinGeckoMarkets(page);
 
     await portfolio.goto();
 
@@ -29,6 +32,7 @@ test.describe("Portfolio Overview Layout", () => {
   });
 
   test("renders filter input and sort dropdown", async ({ page }) => {
+    mockCoinGeckoMarkets(page);
     const portfolioPage = new PortfolioPage(page);
     await portfolioPage.goto();
 
