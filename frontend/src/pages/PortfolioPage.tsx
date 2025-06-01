@@ -4,13 +4,16 @@ import DeleteConfirmationModal from "@components/DeleteConfirmationModal";
 import ExportImportControls from "@components/ExportImportControls";
 import FilterSortControls from "@components/FilterSortControls";
 import PortfolioHeader from "@components/PortfolioHeader";
+import { useCoinContext } from "@context/useCoinContext";
 import { usePortfolioState } from "@hooks/usePortfolioState";
 import { useUIState } from "@hooks/useUIState";
 import { useState } from "react";
 
 export default function PortfolioPage() {
-  const { portfolio, addAsset, removeAsset, getAssetById } =
-    usePortfolioState();
+  const { priceMap } = useCoinContext();
+
+  const { portfolio, addAsset, removeAsset, getAssetById, totalValue } =
+    usePortfolioState(priceMap);
 
   const {
     shouldShowAddAssetModal,
@@ -39,7 +42,7 @@ export default function PortfolioPage() {
   };
   return (
     <>
-      <PortfolioHeader totalValue={null} />
+      <PortfolioHeader totalValue={totalValue.toString()} />
       <main role="main" className="max-w-4xl mx-auto p-4 space-y-6 bg-white">
         <section className="space-y-6">
           {/* 🔍 Filter & Sort */}

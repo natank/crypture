@@ -1,18 +1,12 @@
 // src/context/useCoinContext.ts
 import { useContext } from "react";
-import { CoinContext, type CoinContextType } from "./CoinContext";
+import { CoinContext, type CoinContextType } from "@context/CoinContext";
 
 export const useCoinContext = (): CoinContextType => {
   const context = useContext(CoinContext);
   if (!context) {
-    return {
-      coins: [],
-      loading: false,
-      error: null,
-      search: "",
-      setSearch: () => {},
-      originalCoins: [],
-    };
+    throw new Error("useCoinContext must be used within a <CoinProvider>");
   }
+
   return context;
 };

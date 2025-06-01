@@ -1,5 +1,6 @@
 import { usePortfolioState } from "@hooks/usePortfolioState";
 import { renderHook, act } from "@testing-library/react";
+import { useState } from "react";
 import { describe, it, expect } from "vitest";
 
 describe("usePortfolio", () => {
@@ -135,5 +136,182 @@ describe("getAssetById", () => {
 
     const btcAfter = result.current.getAssetById("btc");
     expect(btcAfter).toBeUndefined();
+  });
+});
+
+describe("usePortfolioState – totalValue", () => {
+  test("calculates total value for a single asset with known price", () => {
+    const prices = { bitcoin: 30000 }; // Price per BTC
+
+    const { result } = renderHook(() => usePortfolioState(prices));
+
+    act(() => {
+      result.current.addAsset({
+        id: "bitcoin",
+        symbol: "BTC",
+        name: "Bitcoin",
+        quantity: 0.5,
+      });
+    });
+
+    expect(result.current.totalValue).toBe(15000);
+  });
+
+  test("calculates total value for multiple assets with different prices", () => {
+    const prices = {
+      bitcoin: 30000,
+      ethereum: 2000,
+      solana: 100,
+    };
+
+    const { result } = renderHook(() => usePortfolioState(prices));
+
+    act(() => {
+      result.current.addAsset({
+        id: "bitcoin",
+        symbol: "BTC",
+        name: "Bitcoin",
+        quantity: 0.5,
+      });
+      result.current.addAsset({
+        id: "ethereum",
+        symbol: "ETH",
+        name: "Ethereum",
+        quantity: 2,
+      });
+      result.current.addAsset({
+        id: "solana",
+        symbol: "SOL",
+        name: "Solana",
+        quantity: 10,
+      });
+    });
+
+    // Total = (0.5 * 30000) + (2 * 2000) + (10 * 100) = 15000 + 4000 + 1000 = 20000
+    expect(result.current.totalValue).toBe(20000);
+  });
+
+  test("ignores assets with missing price when computing total value", () => {
+    const mockPrices = {
+      bitcoin: 30000,
+      ethereum: undefined, // missing price
+      cardano: null, // invalid price
+    };
+
+    const { result } = renderHook(() => usePortfolioState(mockPrices));
+
+    act(() => {
+      result.current.addAsset({
+        id: "bitcoin",
+        name: "Bitcoin",
+        symbol: "BTC",
+        quantity: 1,
+      });
+      result.current.addAsset({
+        id: "ethereum",
+        name: "Ethereum",
+        symbol: "ETH",
+        quantity: 2,
+      });
+      result.current.addAsset({
+        id: "cardano",
+        name: "Cardano",
+        symbol: "ADA",
+        quantity: 100,
+      });
+    });
+
+    expect(result.current.totalValue).toBe(30000); // only bitcoin has a valid price
+  });
+
+  test("returns zero when portfolio is empty", () => {
+    const { result } = renderHook(() => usePortfolioState());
+
+    expect(result.current.portfolio).toEqual([]);
+    expect(result.current.totalValue).toBe(0);
+  });
+
+  test("returns zero when all assets have missing prices", () => {
+    const { result } = renderHook(() => usePortfolioState({}));
+
+    act(() => {
+      result.current.addAsset({
+        id: "bitcoin",
+        symbol: "BTC",
+        name: "Bitcoin",
+        quantity: 1,
+      });
+      result.current.addAsset({
+        id: "ethereum",
+        symbol: "ETH",
+        name: "Ethereum",
+        quantity: 2,
+      });
+    });
+
+    expect(result.current.totalValue).toBe(0);
+  });
+
+  test("updates total value when asset quantity changes", () => {
+    const prices = { bitcoin: 30000 };
+
+    const { result } = renderHook(() => usePortfolioState(prices));
+
+    act(() => {
+      result.current.addAsset({
+        id: "bitcoin",
+        name: "Bitcoin",
+        symbol: "BTC",
+        quantity: 0.5,
+      });
+    });
+
+    expect(result.current.totalValue).toBe(15000);
+
+    act(() => {
+      result.current.addAsset({
+        id: "bitcoin",
+        name: "Bitcoin",
+        symbol: "BTC",
+        quantity: 0.25,
+      });
+    });
+
+    // New total: (0.5 + 0.25) * 30000 = 22500
+    expect(result.current.totalValue).toBe(22500);
+  });
+
+  test("updates total value when price map changes", () => {
+    // Wrapper to simulate reactivity to external price changes
+    const useTestWrapper = () => {
+      const [prices, setPrices] = useState<Record<string, number | undefined>>({
+        bitcoin: 30000,
+      });
+      const portfolioState = usePortfolioState(prices);
+      return { ...portfolioState, setPrices };
+    };
+
+    const { result } = renderHook(() => useTestWrapper());
+
+    // Add 1 BTC
+    act(() => {
+      result.current.addAsset({
+        id: "bitcoin",
+        symbol: "BTC",
+        name: "Bitcoin",
+        quantity: 1,
+      });
+    });
+
+    // Initial total: 1 * 30000 = 30000
+    expect(result.current.totalValue).toBe(30000);
+
+    // Update price to 35000
+    act(() => {
+      result.current.setPrices({ bitcoin: 35000 });
+    });
+
+    // Expect new total value: 1 * 35000 = 35000
+    expect(result.current.totalValue).toBe(35000);
   });
 });

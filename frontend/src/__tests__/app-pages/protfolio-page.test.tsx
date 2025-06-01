@@ -1,6 +1,7 @@
 import { fireEvent, render, screen } from "@testing-library/react";
 import PortfolioPage from "@pages/PortfolioPage";
 import { describe, it, expect } from "vitest";
+import { useCoinContext } from "@context/useCoinContext";
 
 const removeAsset = vi.fn();
 const addAsset = vi.fn();
@@ -45,6 +46,7 @@ vi.mock("@hooks/usePortfolioState", () => ({
     removeAsset,
     getAssetById,
     addAsset,
+    totalValue: 12345,
   }),
 }));
 
@@ -59,7 +61,24 @@ vi.mock("@hooks/useUIState", () => ({
   }),
 }));
 
+vi.mock("@context/useCoinContext", () => ({
+  useCoinContext: vi.fn(),
+}));
+
 describe("PortfolioPage", () => {
+  beforeEach(() => {
+    vi.mocked(useCoinContext).mockReturnValue({
+      coins: [],
+      loading: false,
+      error: null,
+      search: "",
+      setSearch: vi.fn(),
+      originalCoins: [],
+      priceMap: {
+        btc: 3000,
+      },
+    });
+  });
   it("renders without crashing", () => {
     render(<PortfolioPage />);
     expect(screen.getByText(/total portfolio value/i)).toBeInTheDocument();
@@ -130,6 +149,7 @@ describe("PortfolioPage (AddAssetModal rendering)", () => {
         addAsset: vi.fn(),
         removeAsset: vi.fn(),
         getAssetById: vi.fn(),
+        totalValue: 12345,
       }),
     }));
 

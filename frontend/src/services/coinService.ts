@@ -2,12 +2,7 @@ export type CoinInfo = {
   id: string;
   name: string;
   symbol: string;
-};
-
-type CoinGeckoCoin = {
-  id: string;
-  name: string;
-  symbol: string;
+  current_price: number;
 };
 
 const API_KEY = import.meta.env.VITE_COINGECKO_API_KEY;
@@ -25,12 +20,13 @@ export async function fetchTopCoins(): Promise<CoinInfo[]> {
       throw new Error(`CoinGecko API error: ${response.status}`);
     }
 
-    const data: CoinGeckoCoin[] = await response.json();
+    const data: CoinInfo[] = await response.json();
 
     return data.map((coin) => ({
       id: coin.id,
       name: coin.name,
       symbol: coin.symbol.toUpperCase(),
+      current_price: coin.current_price,
     }));
   } catch (error: unknown) {
     if (

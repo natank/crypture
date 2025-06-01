@@ -1,4 +1,4 @@
-import { useState, useCallback } from "react";
+import { useState, useCallback, useMemo } from "react";
 export type PortfolioAsset = {
   id: string; // e.g., "bitcoin"
   symbol: string; // e.g., "BTC"
@@ -11,8 +11,17 @@ export type PortfolioState = PortfolioAsset[];
 /**
  * Hook to manage portfolio list, modal state, and add-button focus.
  */
-export function usePortfolioState() {
+export function usePortfolioState(
+  prices: Record<string, number | undefined> = {}
+) {
   const [portfolio, setPortfolio] = useState<PortfolioState>([]);
+  const totalValue = useMemo(() => {
+    return portfolio.reduce((sum, asset) => {
+      const price = prices[asset.id];
+      if (typeof price !== "number") return sum;
+      return sum + asset.quantity * price;
+    }, 0);
+  }, [portfolio, prices]);
 
   const getAssetById = useCallback(
     (id: string): PortfolioAsset | undefined =>
@@ -48,5 +57,6 @@ export function usePortfolioState() {
     addAsset,
     removeAsset,
     resetPortfolio,
+    totalValue,
   };
 }
