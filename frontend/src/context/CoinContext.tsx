@@ -9,6 +9,7 @@ export type CoinContextType = {
   search: string;
   setSearch: (value: string) => void;
   originalCoins: CoinInfo[];
+  priceMap: Record<string, number | undefined>;
 };
 
 export const CoinContext = createContext<CoinContextType | undefined>(

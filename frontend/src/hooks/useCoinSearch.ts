@@ -22,6 +22,13 @@ export function useCoinSearch() {
     );
   }, [search, coins]);
 
+  const priceMap = useMemo(() => {
+    const map: Record<string, number | undefined> = {};
+    for (const coin of coins) {
+      map[coin.id] = coin.current_price;
+    }
+    return map;
+  }, [coins]);
   return {
     search,
     setSearch,
@@ -29,5 +36,6 @@ export function useCoinSearch() {
     error,
     coins: filteredCoins,
     originalCoins: coins,
+    priceMap,
   };
 }
