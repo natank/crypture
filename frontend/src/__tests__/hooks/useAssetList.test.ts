@@ -33,7 +33,7 @@ describe("useAssetList", () => {
     });
 
     expect(result.current.coins).toEqual([
-      { id: "bitcoin", name: "Bitcoin", symbol: "BTC" },
+      { id: "bitcoin", name: "Bitcoin", symbol: "BTC", current_price: 2000 },
     ]);
   });
 

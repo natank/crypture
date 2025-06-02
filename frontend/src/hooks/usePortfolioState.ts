@@ -12,7 +12,7 @@ export type PortfolioState = PortfolioAsset[];
  * Hook to manage portfolio list, modal state, and add-button focus.
  */
 export function usePortfolioState(
-  prices: Record<string, number | undefined> = {}
+  prices: Record<string, number | undefined | null> = {}
 ) {
   const [portfolio, setPortfolio] = useState<PortfolioState>([]);
   const totalValue = useMemo(() => {

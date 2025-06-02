@@ -3,9 +3,9 @@ import PortfolioHeader from ".";
 
 describe("PortfolioHeader", () => {
   it("renders with a total value", () => {
-    render(<PortfolioHeader totalValue="$12,345.67" />);
+    render(<PortfolioHeader totalValue="12345.67" />);
     expect(
-      screen.getByText(/💰 Total Portfolio Value: \$12,345.67/i)
+      screen.getByText(/💰 Total Portfolio Value: \$12,346/i)
     ).toBeInTheDocument();
   });
 

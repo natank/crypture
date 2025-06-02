@@ -12,7 +12,7 @@ const mockCoin: CoinInfo = {
   id: "bitcoin",
   symbol: "BTC",
   name: "Bitcoin",
-};
+} as CoinInfo;
 
 beforeEach(() => {
   mockOnSubmit = vi.fn();
@@ -70,7 +70,7 @@ describe("useAddAssetForm", () => {
         id: "bitcoin",
         name: "Bitcoin",
         symbol: "BTC",
-      });
+      } as CoinInfo);
       result.current.setQuantity("1.5");
     });
 
@@ -100,7 +100,7 @@ describe("useAddAssetForm", () => {
       id: "bitcoin",
       name: "Bitcoin",
       symbol: "BTC",
-    };
+    } as CoinInfo;
 
     const { result } = renderHook(() =>
       useAddAssetForm(mockFailingSubmit, mockOnClose)
