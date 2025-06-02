@@ -2,7 +2,9 @@ import { mockCoinGeckoMarkets } from "@e2e/mocks/mockCoinGecko";
 import { test, expect } from "@e2e/fixtures";
 
 test.describe("Total Portfolio Value Calculation", () => {
-  test.beforeEach(async ({ portfolioPage }) => {
+  test.beforeEach(async ({ portfolioPage, page }) => {
+    await mockCoinGeckoMarkets(page);
+
     await portfolioPage.goto();
   });
 

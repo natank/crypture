@@ -6,10 +6,9 @@ import { AssetSelector } from "@components/AssetSelector";
 import { CoinContext, CoinContextType } from "@context/CoinContext";
 
 const mockCoins = [
-  { id: "bitcoin", name: "Bitcoin", symbol: "BTC" },
-  { id: "ethereum", name: "Ethereum", symbol: "ETH" },
+  { id: "bitcoin", name: "Bitcoin", symbol: "BTC", current_price: 2000 },
+  { id: "ethereum", name: "Ethereum", symbol: "ETH", current_price: 2000 },
 ];
-
 const mockBaseContext: CoinContextType = {
   coins: mockCoins,
   originalCoins: mockCoins,
@@ -17,6 +16,10 @@ const mockBaseContext: CoinContextType = {
   setSearch: vi.fn(),
   loading: false,
   error: null,
+  priceMap: {
+    bitcoin: 30000,
+    ethereum: 2000,
+  },
 };
 describe("AssetSelector", () => {
   it("renders dropdown options", () => {
