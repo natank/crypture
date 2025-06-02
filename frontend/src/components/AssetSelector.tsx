@@ -13,13 +13,6 @@ export function AssetSelector({ onSelect, disabled = false, id }: Props) {
 
   return (
     <div className="space-y-2">
-      <label
-        htmlFor="asset-select"
-        className="block text-sm font-medium text-gray-700"
-      >
-        Asset
-      </label>
-
       {loading ? (
         <div className="text-sm text-gray-500 animate-pulse">
           Loading assets...

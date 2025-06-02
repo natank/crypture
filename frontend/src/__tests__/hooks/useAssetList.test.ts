@@ -4,9 +4,9 @@ import { useCoinSearch } from "@hooks/useCoinSearch";
 import * as coinService from "@services/coinService";
 
 const mockCoins = [
-  { id: "bitcoin", name: "Bitcoin", symbol: "BTC" },
-  { id: "ethereum", name: "Ethereum", symbol: "ETH" },
-  { id: "dogecoin", name: "Dogecoin", symbol: "DOGE" },
+  { id: "bitcoin", name: "Bitcoin", symbol: "BTC", current_price: 2000 },
+  { id: "ethereum", name: "Ethereum", symbol: "ETH", current_price: 2000 },
+  { id: "dogecoin", name: "Dogecoin", symbol: "DOGE", current_price: 2000 },
 ];
 
 describe("useAssetList", () => {
