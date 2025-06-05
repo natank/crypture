@@ -3,9 +3,12 @@ import AssetRow from ".";
 import { PortfolioAsset } from "@hooks/usePortfolioState";
 
 const mockAsset: PortfolioAsset = {
-  id: "btc",
-  name: "Bitcoin",
-  symbol: "btc",
+  coinInfo: {
+    id: "btc",
+    name: "Bitcoin",
+    symbol: "btc",
+    current_price: 3000,
+  },
   quantity: 0.5,
 };
 

@@ -5,16 +5,22 @@ import { describe, it, expect } from "vitest";
 
 describe("usePortfolio", () => {
   const btc = {
-    id: "bitcoin",
-    name: "Bitcoin",
-    symbol: "BTC",
+    coinInfo: {
+      id: "bitcoin",
+      name: "Bitcoin",
+      symbol: "BTC",
+      current_price: 2000,
+    },
     quantity: 1,
   };
 
   const eth = {
-    id: "ethereum",
-    name: "Ethereum",
-    symbol: "ETH",
+    coinInfo: {
+      id: "ethereum",
+      name: "Ethereum",
+      symbol: "ETH",
+      current_price: 3000,
+    },
     quantity: 2,
   };
 
@@ -87,15 +93,21 @@ describe("getAssetById", () => {
 
     act(() => {
       result.current.addAsset({
-        id: "btc",
-        symbol: "BTC",
-        name: "Bitcoin",
+        coinInfo: {
+          id: "btc",
+          symbol: "BTC",
+          name: "Bitcoin",
+          current_price: 2000,
+        },
         quantity: 1,
       });
       result.current.addAsset({
-        id: "eth",
-        symbol: "ETH",
-        name: "Ethereum",
+        coinInfo: {
+          id: "eth",
+          symbol: "ETH",
+          name: "Ethereum",
+          current_price: 2000,
+        },
         quantity: 2,
       });
     });
@@ -103,7 +115,7 @@ describe("getAssetById", () => {
     const btc = result.current.getAssetById("btc");
     const eth = result.current.getAssetById("eth");
 
-    expect(btc?.name).toBe("Bitcoin");
+    expect(btc?.coinInfo.name).toBe("Bitcoin");
     expect(eth?.quantity).toBe(2);
   });
 
@@ -120,9 +132,12 @@ describe("getAssetById", () => {
 
     act(() => {
       result.current.addAsset({
-        id: "btc",
-        symbol: "BTC",
-        name: "Bitcoin",
+        coinInfo: {
+          id: "btc",
+          symbol: "BTC",
+          name: "Bitcoin",
+          current_price: 2000,
+        },
         quantity: 1,
       });
     });
@@ -147,9 +162,12 @@ describe("usePortfolioState – totalValue", () => {
 
     act(() => {
       result.current.addAsset({
-        id: "bitcoin",
-        symbol: "BTC",
-        name: "Bitcoin",
+        coinInfo: {
+          id: "bitcoin",
+          symbol: "BTC",
+          name: "Bitcoin",
+          current_price: 3000,
+        },
         quantity: 0.5,
       });
     });
@@ -168,21 +186,30 @@ describe("usePortfolioState – totalValue", () => {
 
     act(() => {
       result.current.addAsset({
-        id: "bitcoin",
-        symbol: "BTC",
-        name: "Bitcoin",
+        coinInfo: {
+          id: "bitcoin",
+          symbol: "BTC",
+          name: "Bitcoin",
+          current_price: 3000,
+        },
         quantity: 0.5,
       });
       result.current.addAsset({
-        id: "ethereum",
-        symbol: "ETH",
-        name: "Ethereum",
+        coinInfo: {
+          id: "ethereum",
+          symbol: "ETH",
+          name: "Ethereum",
+          current_price: 3000,
+        },
         quantity: 2,
       });
       result.current.addAsset({
-        id: "solana",
-        symbol: "SOL",
-        name: "Solana",
+        coinInfo: {
+          id: "solana",
+          symbol: "SOL",
+          name: "Solana",
+          current_price: 3000,
+        },
         quantity: 10,
       });
     });
@@ -202,21 +229,30 @@ describe("usePortfolioState – totalValue", () => {
 
     act(() => {
       result.current.addAsset({
-        id: "bitcoin",
-        name: "Bitcoin",
-        symbol: "BTC",
+        coinInfo: {
+          id: "bitcoin",
+          name: "Bitcoin",
+          symbol: "BTC",
+          current_price: 3000,
+        },
         quantity: 1,
       });
       result.current.addAsset({
-        id: "ethereum",
-        name: "Ethereum",
-        symbol: "ETH",
+        coinInfo: {
+          id: "ethereum",
+          name: "Ethereum",
+          symbol: "ETH",
+          current_price: 3000,
+        },
         quantity: 2,
       });
       result.current.addAsset({
-        id: "cardano",
-        name: "Cardano",
-        symbol: "ADA",
+        coinInfo: {
+          id: "cardano",
+          name: "Cardano",
+          symbol: "ADA",
+          current_price: 3000,
+        },
         quantity: 100,
       });
     });
@@ -236,15 +272,21 @@ describe("usePortfolioState – totalValue", () => {
 
     act(() => {
       result.current.addAsset({
-        id: "bitcoin",
-        symbol: "BTC",
-        name: "Bitcoin",
+        coinInfo: {
+          id: "bitcoin",
+          symbol: "BTC",
+          name: "Bitcoin",
+          current_price: 3000,
+        },
         quantity: 1,
       });
       result.current.addAsset({
-        id: "ethereum",
-        symbol: "ETH",
-        name: "Ethereum",
+        coinInfo: {
+          id: "ethereum",
+          symbol: "ETH",
+          name: "Ethereum",
+          current_price: 3000,
+        },
         quantity: 2,
       });
     });
@@ -259,9 +301,12 @@ describe("usePortfolioState – totalValue", () => {
 
     act(() => {
       result.current.addAsset({
-        id: "bitcoin",
-        name: "Bitcoin",
-        symbol: "BTC",
+        coinInfo: {
+          id: "bitcoin",
+          name: "Bitcoin",
+          symbol: "BTC",
+          current_price: 3000,
+        },
         quantity: 0.5,
       });
     });
@@ -270,9 +315,12 @@ describe("usePortfolioState – totalValue", () => {
 
     act(() => {
       result.current.addAsset({
-        id: "bitcoin",
-        name: "Bitcoin",
-        symbol: "BTC",
+        coinInfo: {
+          id: "bitcoin",
+          name: "Bitcoin",
+          symbol: "BTC",
+          current_price: 3000,
+        },
         quantity: 0.25,
       });
     });
@@ -296,9 +344,12 @@ describe("usePortfolioState – totalValue", () => {
     // Add 1 BTC
     act(() => {
       result.current.addAsset({
-        id: "bitcoin",
-        symbol: "BTC",
-        name: "Bitcoin",
+        coinInfo: {
+          id: "bitcoin",
+          symbol: "BTC",
+          name: "Bitcoin",
+          current_price: 3000,
+        },
         quantity: 1,
       });
     });

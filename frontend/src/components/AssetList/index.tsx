@@ -38,7 +38,11 @@ export default function AssetList({
       ) : (
         <div className="divide-y divide-gray-200">
           {assets.map((asset) => (
-            <AssetRow key={asset.id} asset={asset} onDelete={onDelete} />
+            <AssetRow
+              key={asset.coinInfo.id}
+              asset={asset}
+              onDelete={onDelete}
+            />
           ))}
         </div>
       )}

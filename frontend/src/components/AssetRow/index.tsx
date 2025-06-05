@@ -10,7 +10,7 @@ export default function AssetRow({ asset, onDelete }: AssetRowProps) {
     <div className="flex justify-between items-center py-2">
       <div>
         <div className="text-base font-medium text-gray-900">
-          {asset.symbol.toUpperCase()} ({asset.name})
+          {asset.coinInfo.symbol.toUpperCase()} ({asset.coinInfo.name})
         </div>
         <div className="text-sm text-gray-800">Qty: {asset.quantity}</div>
       </div>
@@ -20,9 +20,9 @@ export default function AssetRow({ asset, onDelete }: AssetRowProps) {
       </div>
       <button
         className="p-2 rounded-full hover:bg-gray-100 text-red-600"
-        aria-label={`Delete ${asset.symbol.toUpperCase()}`}
-        title={`Delete ${asset.symbol.toUpperCase()}`}
-        onClick={() => onDelete(asset.id)}
+        aria-label={`Delete ${asset.coinInfo.symbol.toUpperCase()}`}
+        title={`Delete ${asset.coinInfo.symbol.toUpperCase()}`}
+        onClick={() => onDelete(asset.coinInfo.id)}
       >
         🗑️
       </button>

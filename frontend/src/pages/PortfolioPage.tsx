@@ -74,7 +74,7 @@ export default function PortfolioPage() {
         )}
         {assetToDelete && (
           <DeleteConfirmationModal
-            assetName={assetToDelete.name}
+            assetName={assetToDelete.coinInfo.name}
             isOpen={shouldShowDeleteConfirmationModal}
             onCancel={cancelDeleteAsset}
             onConfirm={() => {
