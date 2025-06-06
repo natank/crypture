@@ -4,8 +4,8 @@ export const mockCoins = [
 ];
 
 export const mockPriceMap = {
-  bitcoin: 30000,
-  ethereum: 2000,
+  btc: 30000,
+  eth: 2000,
 };
 
 export const mockCoinContextValue = {

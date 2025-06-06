@@ -16,7 +16,7 @@ export function usePortfolioState(
   const [portfolio, setPortfolio] = useState<PortfolioState>([]);
   const totalValue = useMemo(() => {
     return portfolio.reduce((sum, asset) => {
-      const price = prices[asset.coinInfo.id];
+      const price = prices[asset.coinInfo.symbol.toLowerCase()];
       if (typeof price !== "number") return sum;
       return sum + asset.quantity * price;
     }, 0);

@@ -17,8 +17,8 @@ const mockBaseContext: CoinContextType = {
   loading: false,
   error: null,
   priceMap: {
-    bitcoin: 30000,
-    ethereum: 2000,
+    btc: 30000,
+    eth: 2000,
   },
 };
 describe("AssetSelector", () => {

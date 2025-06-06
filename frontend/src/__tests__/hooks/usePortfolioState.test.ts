@@ -156,7 +156,7 @@ describe("getAssetById", () => {
 
 describe("usePortfolioState – totalValue", () => {
   test("calculates total value for a single asset with known price", () => {
-    const prices = { bitcoin: 30000 }; // Price per BTC
+    const prices = { btc: 30000 }; // Price per BTC
 
     const { result } = renderHook(() => usePortfolioState(prices));
 
@@ -177,9 +177,9 @@ describe("usePortfolioState – totalValue", () => {
 
   test("calculates total value for multiple assets with different prices", () => {
     const prices = {
-      bitcoin: 30000,
-      ethereum: 2000,
-      solana: 100,
+      btc: 30000,
+      eth: 2000,
+      sol: 100,
     };
 
     const { result } = renderHook(() => usePortfolioState(prices));
@@ -220,9 +220,9 @@ describe("usePortfolioState – totalValue", () => {
 
   test("ignores assets with missing price when computing total value", () => {
     const mockPrices = {
-      bitcoin: 30000,
-      ethereum: undefined, // missing price
-      cardano: null, // invalid price
+      btc: 30000,
+      eth: undefined, // missing price
+      crd: null, // invalid price
     };
 
     const { result } = renderHook(() => usePortfolioState(mockPrices));
@@ -295,7 +295,7 @@ describe("usePortfolioState – totalValue", () => {
   });
 
   test("updates total value when asset quantity changes", () => {
-    const prices = { bitcoin: 30000 };
+    const prices = { btc: 30000 };
 
     const { result } = renderHook(() => usePortfolioState(prices));
 
@@ -333,7 +333,7 @@ describe("usePortfolioState – totalValue", () => {
     // Wrapper to simulate reactivity to external price changes
     const useTestWrapper = () => {
       const [prices, setPrices] = useState<Record<string, number | undefined>>({
-        bitcoin: 30000,
+        btc: 30000,
       });
       const portfolioState = usePortfolioState(prices);
       return { ...portfolioState, setPrices };
@@ -359,7 +359,7 @@ describe("usePortfolioState – totalValue", () => {
 
     // Update price to 35000
     act(() => {
-      result.current.setPrices({ bitcoin: 35000 });
+      result.current.setPrices({ btc: 35000 });
     });
 
     // Expect new total value: 1 * 35000 = 35000
