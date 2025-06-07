@@ -25,4 +25,25 @@ describe("AssetRow", () => {
     fireEvent.click(screen.getByRole("button", { name: /delete btc/i }));
     expect(handleDelete).toHaveBeenCalledWith("btc");
   });
+
+  it("renders price and value when provided", () => {
+    render(
+      <AssetRow
+        asset={mockAsset}
+        price={30000}
+        value={15000}
+        onDelete={() => {}}
+      />
+    );
+    expect(screen.getByText("Price: $30,000")).toBeInTheDocument();
+    expect(screen.getByText("Total: $15,000")).toBeInTheDocument();
+    expect(screen.queryByText(/price fetch failed/i)).not.toBeInTheDocument();
+  });
+
+  it("renders fallback and inline error badge when price is missing", () => {
+    render(<AssetRow asset={mockAsset} onDelete={() => {}} />);
+    expect(screen.getByText("Price: —")).toBeInTheDocument();
+    expect(screen.getByText("Total: —")).toBeInTheDocument();
+    expect(screen.getAllByText(/price fetch failed/i)).toHaveLength(2); // badge + label
+  });
 });
