@@ -24,6 +24,7 @@ export function AssetSelector({ onSelect, disabled = false, id }: Props) {
       ) : (
         <select
           id={id}
+          data-testid="asset-select"
           disabled={disabled}
           className="border border-gray-200 rounded-md px-3 py-2 w-full bg-white text-base"
           onChange={(e) => {

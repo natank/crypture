@@ -31,7 +31,15 @@ export default function PortfolioPage() {
   const [assetSort, setAssetSort] = useState("value-desc");
 
   if (loading) {
-    return <LoadingSpinner label="🔄 Loading portfolio..." fullScreen />;
+    return (
+      <main
+        role="main"
+        className="flex flex-col justify-center items-center h-screen text-center"
+      >
+        <LoadingSpinner label="🔄 Loading portfolio..." fullScreen />
+        );
+      </main>
+    );
   }
 
   const assetToDelete = getAssetById(assetIdPendingDeletion || "");

@@ -3,6 +3,9 @@ import { render, screen } from "@testing-library/react";
 import AssetList from "@components/AssetList";
 import { PortfolioAsset } from "@hooks/usePortfolioState";
 import { vi } from "vitest";
+import * as CoinContextModule from "@context/useCoinContext";
+
+vi.mock("@context/useCoinContext");
 
 // Mock useCoinContext
 vi.mock("@context/useCoinContext", () => ({
@@ -97,5 +100,33 @@ describe("AssetList", () => {
     // ETH: 1.2 * 2,000 = 2,400
     expect(screen.getByText("Price: $2,000")).toBeInTheDocument();
     expect(screen.getByText("Total: $2,400")).toBeInTheDocument();
+  });
+
+  it("renders fallback UI when price is missing", () => {
+    // Mock useCoinContext to return undefined for all symbols
+    vi.spyOn(CoinContextModule, "useCoinContext").mockReturnValue({
+      getPriceBySymbol: () => undefined,
+      priceMap: {},
+      coins: [],
+      loading: false,
+      error: null,
+      search: "",
+      setSearch: vi.fn(),
+      originalCoins: [],
+    });
+
+    render(
+      <AssetList
+        assets={mockAssets}
+        onDelete={vi.fn()}
+        onAddAsset={vi.fn()}
+        addButtonRef={React.createRef<HTMLButtonElement>()}
+      />
+    );
+
+    // Both assets should show fallback UI
+    expect(screen.getAllByText("Price: —")).toHaveLength(2);
+    expect(screen.getAllByText("Total: —")).toHaveLength(2);
+    expect(screen.getAllByText(/price fetch failed/i)).toHaveLength(4); // 2 in badge, 2 inline
   });
 });
