@@ -8,9 +8,11 @@ const addAsset = vi.fn();
 const cancelDeleteAsset = vi.fn();
 const requestDeleteAsset = vi.fn();
 const getAssetById = vi.fn((id: string) => ({
-  id,
-  name: "Bitcoin",
-  symbol: "btc",
+  coinInfo: {
+    id,
+    name: "Bitcoin",
+    symbol: "btc",
+  },
   quantity: 0.5,
 }));
 
@@ -37,9 +39,11 @@ vi.mock("@hooks/usePortfolioState", () => ({
   usePortfolioState: () => ({
     portfolio: [
       {
-        id: "btc",
-        name: "Bitcoin",
-        symbol: "btc",
+        coinInfo: {
+          id: "btc",
+          name: "Bitcoin",
+          symbol: "btc",
+        },
         quantity: 0.5,
       },
     ],

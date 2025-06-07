@@ -80,9 +80,11 @@ describe("useAddAssetForm", () => {
 
     // Validate the correct PortfolioAsset was submitted
     expect(mockOnSubmit).toHaveBeenCalledWith({
-      id: "bitcoin",
-      name: "Bitcoin",
-      symbol: "BTC",
+      coinInfo: {
+        id: "bitcoin",
+        name: "Bitcoin",
+        symbol: "BTC",
+      },
       quantity: 1.5,
     });
 

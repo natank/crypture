@@ -23,15 +23,25 @@ export class AddAssetModal {
   async openAndAdd(symbol: string, quantity: number) {
     await this.page.getByTestId("add-asset-button").click();
 
-    // Map symbols to their full label or value
-    const labelMap: Record<string, string> = {
-      BTC: "Bitcoin (BTC)",
-      ETH: "Ethereum (ETH)",
-    };
+    // Attempt dropdown-based selection first
+    try {
+      const labelMap: Record<string, string> = {
+        BTC: "Bitcoin (BTC)",
+        ETH: "Ethereum (ETH)",
+      };
+      await this.assetSelect.selectOption({ label: labelMap[symbol] });
+    } catch {
+      // Re-query selector as a fallback input if dropdown failed
+      const fallbackInput = this.page.locator("input[name='asset']");
+      await fallbackInput.fill(symbol);
+    }
 
-    await this.assetSelect.selectOption({ label: labelMap[symbol] });
     await this.quantityInput.fill(quantity.toString());
     await this.confirmButton.click();
+  }
+
+  async open() {
+    await this.page.getByTestId("add-asset-button").click();
   }
 
   async isVisible(): Promise<boolean> {

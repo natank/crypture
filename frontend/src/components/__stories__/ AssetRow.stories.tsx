@@ -13,9 +13,12 @@ export default meta;
 type Story = StoryObj<typeof AssetRow>;
 
 const mockAsset: PortfolioAsset = {
-  id: "bitcoin",
-  name: "Bitcoin",
-  symbol: "BTC",
+  coinInfo: {
+    id: "bitcoin",
+    name: "Bitcoin",
+    symbol: "BTC",
+    current_price: 3000,
+  },
   quantity: 0.5,
 };
 

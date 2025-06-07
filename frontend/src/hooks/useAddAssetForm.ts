@@ -34,7 +34,7 @@ export function useAddAssetForm(
 
     setLoading(true);
     try {
-      onSubmit({ ...selectedCoin!, quantity: parsedQuantity });
+      onSubmit({ coinInfo: selectedCoin!, quantity: parsedQuantity });
       onClose();
     } catch {
       setError("Failed to add asset. Please try again.");

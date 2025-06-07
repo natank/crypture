@@ -25,10 +25,11 @@ export function useCoinSearch() {
   const priceMap = useMemo(() => {
     const map: Record<string, number | undefined> = {};
     for (const coin of coins) {
-      map[coin.id] = coin.current_price;
+      map[coin.symbol.toLowerCase()] = coin.current_price;
     }
     return map;
   }, [coins]);
+
   return {
     search,
     setSearch,

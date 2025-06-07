@@ -1,8 +1,7 @@
+import { CoinInfo } from "@services/coinService";
 import { useState, useCallback, useMemo } from "react";
 export type PortfolioAsset = {
-  id: string; // e.g., "bitcoin"
-  symbol: string; // e.g., "BTC"
-  name: string; // e.g., "Bitcoin"
+  coinInfo: CoinInfo;
   quantity: number;
 };
 
@@ -17,7 +16,7 @@ export function usePortfolioState(
   const [portfolio, setPortfolio] = useState<PortfolioState>([]);
   const totalValue = useMemo(() => {
     return portfolio.reduce((sum, asset) => {
-      const price = prices[asset.id];
+      const price = prices[asset.coinInfo.symbol.toLowerCase()];
       if (typeof price !== "number") return sum;
       return sum + asset.quantity * price;
     }, 0);
@@ -25,16 +24,18 @@ export function usePortfolioState(
 
   const getAssetById = useCallback(
     (id: string): PortfolioAsset | undefined =>
-      portfolio.find((asset) => asset.id === id),
+      portfolio.find((asset) => asset.coinInfo.id === id),
     [portfolio]
   );
 
   const addAsset = useCallback((newAsset: PortfolioAsset) => {
     setPortfolio((prev) => {
-      const existing = prev.find((asset) => asset.id === newAsset.id);
+      const existing = prev.find(
+        (asset) => asset.coinInfo.id === newAsset.coinInfo.id
+      );
       if (existing) {
         return prev.map((asset) =>
-          asset.id === newAsset.id
+          asset.coinInfo.id === newAsset.coinInfo.id
             ? { ...asset, quantity: asset.quantity + newAsset.quantity }
             : asset
         );
@@ -44,7 +45,9 @@ export function usePortfolioState(
   }, []);
 
   const removeAsset = useCallback((assetId: string) => {
-    setPortfolio((prev) => prev.filter((asset) => asset.id !== assetId));
+    setPortfolio((prev) =>
+      prev.filter((asset) => asset.coinInfo.id !== assetId)
+    );
   }, []);
 
   const resetPortfolio = useCallback(() => {

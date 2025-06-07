@@ -1,6 +1,7 @@
 import React, { RefObject } from "react";
 import AssetRow from "@components/AssetRow";
 import { PortfolioAsset } from "@hooks/usePortfolioState";
+import { useCoinContext } from "@context/useCoinContext";
 
 type AssetListProps = {
   assets: PortfolioAsset[];
@@ -15,6 +16,8 @@ export default function AssetList({
   onAddAsset,
   addButtonRef,
 }: AssetListProps) {
+  const { getPriceBySymbol } = useCoinContext();
+
   return (
     <section className="space-y-4">
       {/* Section Header + Add Button */}
@@ -37,9 +40,21 @@ export default function AssetList({
         </div>
       ) : (
         <div className="divide-y divide-gray-200">
-          {assets.map((asset) => (
-            <AssetRow key={asset.id} asset={asset} onDelete={onDelete} />
-          ))}
+          {assets.map((asset) => {
+            const price = getPriceBySymbol(asset.coinInfo.symbol);
+            const value =
+              price !== undefined ? price * asset.quantity : undefined;
+
+            return (
+              <AssetRow
+                key={asset.coinInfo.id}
+                asset={asset}
+                price={price}
+                value={value}
+                onDelete={onDelete}
+              />
+            );
+          })}
         </div>
       )}
     </section>

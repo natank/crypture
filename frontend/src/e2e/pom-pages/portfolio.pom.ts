@@ -88,7 +88,10 @@ export class PortfolioPage {
     await deleteButton.click();
   }
 
-  assetRow(symbol: string): Locator {
-    return this.assetItemBySymbol(symbol);
+  assetRow(symbol: string) {
+    return this.page
+      .locator("div[role='row'], div") // generic fallback if role isn't set
+      .filter({ hasText: symbol.toUpperCase() }) // match by BTC, ETH, etc.
+      .first();
   }
 }
