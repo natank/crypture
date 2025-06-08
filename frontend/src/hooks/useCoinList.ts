@@ -1,13 +1,22 @@
 // src/hooks/useCoinList.ts
 import { useEffect, useState, useRef } from "react";
 import { fetchTopCoins, type CoinInfo } from "@services/coinService";
-import { deepEqual } from "@utils/index";
+import { deepEqual } from "@utils/index"; // or write inline if needed
 
-export function useCoinList(pollInterval = 60000) {
+type UseCoinListOptions = {
+  pollInterval?: number;
+  enablePolling?: boolean;
+};
+
+export function useCoinList({
+  pollInterval = 60000,
+  enablePolling = true,
+}: UseCoinListOptions = {}) {
   const [coins, setCoins] = useState<CoinInfo[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const lastUpdateRef = useRef<number | null>(null);
+  const prevCoinsRef = useRef<CoinInfo[]>([]);
 
   useEffect(() => {
     let isMounted = true;
@@ -15,11 +24,10 @@ export function useCoinList(pollInterval = 60000) {
     async function fetchAndUpdate() {
       try {
         const data = await fetchTopCoins();
-
-        // Optional: Compare last updated timestamps or deep equality
-        if (!lastUpdateRef.current || !deepEqual(coins, data)) {
+        if (!lastUpdateRef.current || !deepEqual(prevCoinsRef.current, data)) {
           if (isMounted) {
             setCoins(data);
+            prevCoinsRef.current = data;
             lastUpdateRef.current = Date.now();
           }
         }
@@ -33,13 +41,15 @@ export function useCoinList(pollInterval = 60000) {
     }
 
     fetchAndUpdate();
-    const intervalId = setInterval(fetchAndUpdate, pollInterval);
 
+    if (!enablePolling) return;
+
+    const intervalId = setInterval(fetchAndUpdate, pollInterval);
     return () => {
       isMounted = false;
       clearInterval(intervalId);
     };
-  }, [pollInterval]);
+  }, [pollInterval, enablePolling]);
 
   return { coins, loading, error, lastUpdatedAt: lastUpdateRef.current };
 }

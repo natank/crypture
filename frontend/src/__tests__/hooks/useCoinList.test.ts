@@ -22,7 +22,7 @@ describe("useCoinList", () => {
   });
 
   it("fetches coin data on mount", async () => {
-    const { result } = renderHook(() => useCoinList());
+    const { result } = renderHook(() => useCoinList({ enablePolling: false }));
 
     expect(result.current.loading).toBe(true);
 
@@ -37,7 +37,7 @@ describe("useCoinList", () => {
   });
 
   it("polls for new data every interval", async () => {
-    renderHook(() => useCoinList(60000));
+    renderHook(() => useCoinList({ pollInterval: 60000 }));
 
     expect(coinService.fetchTopCoins).toHaveBeenCalledTimes(1);
 
@@ -54,7 +54,7 @@ describe("useCoinList", () => {
       new Error("API down")
     );
 
-    const { result } = renderHook(() => useCoinList());
+    const { result } = renderHook(() => useCoinList({ enablePolling: false }));
 
     await act(async () => {
       vi.advanceTimersByTime(0); // only trigger immediate timeout (initial fetch)
@@ -66,7 +66,7 @@ describe("useCoinList", () => {
   });
 
   it("does not update coins if data is unchanged", async () => {
-    const { result } = renderHook(() => useCoinList(60000));
+    const { result } = renderHook(() => useCoinList({ pollInterval: 60000 }));
 
     await act(async () => {
       vi.advanceTimersByTime(0); // only trigger immediate timeout (initial fetch)
