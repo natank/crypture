@@ -1,7 +1,6 @@
 import { fireEvent, render, screen } from "@testing-library/react";
 import PortfolioPage from "@pages/PortfolioPage";
 import { describe, it, expect } from "vitest";
-import { useCoinContext } from "@context/useCoinContext";
 
 const removeAsset = vi.fn();
 const addAsset = vi.fn();
@@ -65,28 +64,61 @@ vi.mock("@hooks/useUIState", () => ({
   }),
 }));
 
-vi.mock("@context/useCoinContext", () => ({
-  useCoinContext: vi.fn(),
+vi.mock("@hooks/useCoinList", () => ({
+  useCoinList: () => ({
+    coins: [{ id: "btc", name: "Bitcoin", symbol: "btc", current_price: 3000 }],
+    loading: false,
+    error: null,
+    lastUpdatedAt: Date.now(),
+  }),
+}));
+
+vi.mock("@hooks/usePriceMap", () => ({
+  usePriceMap: () => ({
+    btc: 3000,
+  }),
+}));
+
+vi.mock("@hooks/useCoinSearch", () => ({
+  useCoinSearch: () => ({
+    search: "",
+    setSearch: vi.fn(),
+    filteredCoins: [
+      { id: "btc", name: "Bitcoin", symbol: "btc", current_price: 3000 },
+    ],
+  }),
 }));
 
 describe("PortfolioPage", () => {
   beforeEach(() => {
-    vi.mocked(useCoinContext).mockReturnValue({
-      coins: [],
-      loading: false,
-      error: null,
-      search: "",
-      setSearch: vi.fn(),
-      originalCoins: [],
-      priceMap: {
+    vi.mock("@hooks/useCoinList", () => ({
+      useCoinList: () => ({
+        coins: [
+          { id: "btc", name: "Bitcoin", symbol: "btc", current_price: 3000 },
+        ],
+        loading: false,
+        error: null,
+        lastUpdatedAt: Date.now(),
+      }),
+    }));
+
+    vi.mock("@hooks/usePriceMap", () => ({
+      usePriceMap: () => ({
         btc: 3000,
-      },
-      getPriceBySymbol: (symbol: string) => {
-        const priceMap: Record<string, number> = { btc: 3000 };
-        return priceMap[symbol.toLowerCase()];
-      },
-    });
+      }),
+    }));
+
+    vi.mock("@hooks/useCoinSearch", () => ({
+      useCoinSearch: () => ({
+        search: "",
+        setSearch: vi.fn(),
+        filteredCoins: [
+          { id: "btc", name: "Bitcoin", symbol: "btc", current_price: 3000 },
+        ],
+      }),
+    }));
   });
+
   it("renders without crashing", () => {
     render(<PortfolioPage />);
     expect(screen.getByText(/total portfolio value/i)).toBeInTheDocument();
@@ -110,16 +142,26 @@ describe("PortfolioPage", () => {
   it("renders a static asset list row (placeholder content)", async () => {
     vi.resetModules();
 
-    vi.doMock("@context/useCoinContext", () => ({
-      useCoinContext: () => ({
-        coins: [],
+    vi.doMock("@hooks/useCoinList", () => ({
+      useCoinList: () => ({
+        coins: [
+          { id: "btc", name: "Bitcoin", symbol: "btc", current_price: 0 }, // still present
+        ],
         loading: false,
         error: null,
+        lastUpdatedAt: Date.now(),
+      }),
+    }));
+
+    vi.doMock("@hooks/usePriceMap", () => ({
+      usePriceMap: () => ({}), // ✅ no prices, triggers fallback UI
+    }));
+
+    vi.doMock("@hooks/useCoinSearch", () => ({
+      useCoinSearch: () => ({
         search: "",
         setSearch: vi.fn(),
-        originalCoins: [],
-        priceMap: {}, // no prices => fallback UI
-        getPriceBySymbol: () => undefined,
+        filteredCoins: [],
       }),
     }));
 

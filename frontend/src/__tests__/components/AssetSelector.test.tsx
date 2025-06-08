@@ -1,33 +1,25 @@
 import React from "react";
-
 import { describe, it, expect, vi } from "vitest";
 import { render, screen, fireEvent } from "@testing-library/react";
 import { AssetSelector } from "@components/AssetSelector";
-import { CoinContext, CoinContextType } from "@context/CoinContext";
 
 const mockCoins = [
-  { id: "bitcoin", name: "Bitcoin", symbol: "BTC", current_price: 2000 },
+  { id: "bitcoin", name: "Bitcoin", symbol: "BTC", current_price: 30000 },
   { id: "ethereum", name: "Ethereum", symbol: "ETH", current_price: 2000 },
 ];
-const mockBaseContext: CoinContextType = {
-  coins: mockCoins,
-  originalCoins: mockCoins,
-  search: "",
-  setSearch: vi.fn(),
-  loading: false,
-  error: null,
-  priceMap: {
-    btc: 30000,
-    eth: 2000,
-  },
-};
-describe("AssetSelector", () => {
+
+describe("AssetSelector (refactored)", () => {
   it("renders dropdown options", () => {
     render(
-      <CoinContext.Provider value={mockBaseContext}>
-        <AssetSelector onSelect={vi.fn()} />
-      </CoinContext.Provider>
+      <AssetSelector
+        id="asset-select"
+        coins={mockCoins}
+        search=""
+        onSearchChange={vi.fn()}
+        onSelect={vi.fn()}
+      />
     );
+
     expect(screen.getByText("Select a crypto asset")).toBeInTheDocument();
     expect(screen.getByText("Bitcoin (BTC)")).toBeInTheDocument();
     expect(screen.getByText("Ethereum (ETH)")).toBeInTheDocument();
@@ -35,10 +27,14 @@ describe("AssetSelector", () => {
 
   it("calls onSelect when asset is selected", () => {
     const onSelect = vi.fn();
+
     render(
-      <CoinContext.Provider value={mockBaseContext}>
-        <AssetSelector onSelect={onSelect} />
-      </CoinContext.Provider>
+      <AssetSelector
+        coins={mockCoins}
+        search=""
+        onSearchChange={vi.fn()}
+        onSelect={onSelect}
+      />
     );
 
     fireEvent.change(screen.getByRole("combobox"), {
@@ -48,43 +44,37 @@ describe("AssetSelector", () => {
     expect(onSelect).toHaveBeenCalledWith(mockCoins[1]);
   });
 
-  it("disables UI when `disabled` is true", () => {
+  it("calls onSearchChange when input changes", () => {
+    const onSearchChange = vi.fn();
+
     render(
-      <CoinContext.Provider value={mockBaseContext}>
-        <AssetSelector onSelect={vi.fn()} disabled={true} />
-      </CoinContext.Provider>
+      <AssetSelector
+        coins={mockCoins}
+        search="eth"
+        onSearchChange={onSearchChange}
+        onSelect={vi.fn()}
+      />
     );
+
+    fireEvent.change(screen.getByPlaceholderText("Search assets..."), {
+      target: { value: "btc" },
+    });
+
+    expect(onSearchChange).toHaveBeenCalledWith("btc");
+  });
+
+  it("disables select and input when `disabled` is true", () => {
+    render(
+      <AssetSelector
+        coins={mockCoins}
+        search=""
+        onSearchChange={vi.fn()}
+        onSelect={vi.fn()}
+        disabled
+      />
+    );
+
     expect(screen.getByRole("combobox")).toBeDisabled();
     expect(screen.getByPlaceholderText("Search assets...")).toBeDisabled();
-  });
-
-  it("shows loading state", () => {
-    const loadingContext: CoinContextType = {
-      ...mockBaseContext,
-      loading: true,
-    };
-
-    render(
-      <CoinContext.Provider value={loadingContext}>
-        <AssetSelector onSelect={vi.fn()} />
-      </CoinContext.Provider>
-    );
-
-    expect(screen.getByText("Loading assets...")).toBeInTheDocument();
-  });
-
-  it("shows error message", () => {
-    const errorContext: CoinContextType = {
-      ...mockBaseContext,
-      error: "API error",
-    };
-
-    render(
-      <CoinContext.Provider value={errorContext}>
-        <AssetSelector onSelect={vi.fn()} />
-      </CoinContext.Provider>
-    );
-
-    expect(screen.getByText("⚠️ API error")).toBeInTheDocument();
   });
 });
