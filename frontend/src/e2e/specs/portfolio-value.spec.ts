@@ -47,4 +47,42 @@ test.describe("Portfolio value display", () => {
     const assetSelect = portfolioPage.page.locator("select#asset-select");
     await expect(assetSelect).toHaveCount(0);
   });
+  test("should update BTC value when price changes via polling", async ({
+    portfolioPage,
+    addAssetModal,
+  }) => {
+    // 1. Start with mocked BTC @ $30,000
+    await mockCoinGeckoMarkets(portfolioPage.page, {
+      BTC: 30000,
+    });
+
+    await addAssetModal.openAndAdd("BTC", 0.5);
+
+    const btcRow = portfolioPage.assetRow("BTC");
+    await expect(btcRow).toContainText("Total: $15,000");
+
+    // 2. Mock API to respond with BTC @ $40,000 on next poll
+    await portfolioPage.page.unroute("**/coins/markets**"); // remove old handler
+    await portfolioPage.page.route("**/coins/markets**", (route) => {
+      route.fulfill({
+        status: 200,
+        contentType: "application/json",
+        body: JSON.stringify([
+          {
+            id: "bitcoin",
+            symbol: "btc",
+            name: "Bitcoin",
+            current_price: 40000,
+          },
+        ]),
+      });
+    });
+
+    // 3. Wait for the polling hook to re-fire (default: 60s)
+    await portfolioPage.page.waitForTimeout(3000);
+
+    // 4. Validate updated UI reflects new value
+    await expect(btcRow).toContainText("Total: $20,000");
+    await expect(portfolioPage.header).toContainText("$20,000");
+  });
 });

@@ -10,7 +10,7 @@ type UseCoinListOptions = {
 };
 
 export function useCoinList({
-  pollInterval = 60000,
+  pollInterval = Number(import.meta.env.VITE_POLL_INTERVAL) || 60000,
   enablePolling = true,
 }: UseCoinListOptions = {}) {
   const [coins, setCoins] = useState<CoinInfo[]>([]);
