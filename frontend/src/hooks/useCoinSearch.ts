@@ -1,42 +1,22 @@
-import { type CoinInfo, fetchTopCoins } from "@services/coinService";
-import { useEffect, useState, useMemo } from "react";
+// src/hooks/useCoinSearch.ts
+import { useState, useMemo } from "react";
+import { type CoinInfo } from "@services/coinService";
 
-export function useCoinSearch() {
-  const [coins, setCoins] = useState<CoinInfo[]>([]);
+export function useCoinSearch(coins: CoinInfo[]) {
   const [search, setSearch] = useState("");
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-
-  useEffect(() => {
-    fetchTopCoins()
-      .then(setCoins)
-      .catch((err) => setError(err.message))
-      .finally(() => setLoading(false));
-  }, []);
 
   const filteredCoins = useMemo(() => {
+    const term = search.toLowerCase();
     return coins.filter(
       (coin) =>
-        coin.name.toLowerCase().includes(search.toLowerCase()) ||
-        coin.symbol.toLowerCase().includes(search.toLowerCase())
+        coin.name.toLowerCase().includes(term) ||
+        coin.symbol.toLowerCase().includes(term)
     );
   }, [search, coins]);
-
-  const priceMap = useMemo(() => {
-    const map: Record<string, number | undefined> = {};
-    for (const coin of coins) {
-      map[coin.symbol.toLowerCase()] = coin.current_price;
-    }
-    return map;
-  }, [coins]);
 
   return {
     search,
     setSearch,
-    loading,
-    error,
-    coins: filteredCoins,
-    originalCoins: coins,
-    priceMap,
+    filteredCoins,
   };
 }
