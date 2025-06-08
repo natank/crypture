@@ -1,8 +1,8 @@
-import React from "react";
+import React, { useState } from "react";
 import { AddAssetModal } from "@components/AddAssetModal";
 import { PortfolioAsset } from "@hooks/usePortfolioState";
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { MockCoinProvider } from "@components/__mocks__/MockCoinProvider";
+import { CoinInfo } from "@services/coinService";
 
 const meta: Meta<typeof AddAssetModal> = {
   title: "Modals/AddAssetModal",
@@ -24,44 +24,81 @@ const mockOnClose = () => {
   console.log("Modal closed");
 };
 
+const mockCoins: CoinInfo[] = [
+  {
+    id: "bitcoin",
+    symbol: "btc",
+    name: "Bitcoin",
+    current_price: 30000,
+  },
+  {
+    id: "ethereum",
+    symbol: "eth",
+    name: "Ethereum",
+    current_price: 2000,
+  },
+];
+
 export const Default: Story = {
-  render: () => (
-    <MockCoinProvider>
-      <AddAssetModal onClose={mockOnClose} addAsset={mockAddAsset} />
-    </MockCoinProvider>
-  ),
+  render: () => {
+    const [search, setSearch] = useState("");
+    return (
+      <AddAssetModal
+        onClose={mockOnClose}
+        addAsset={mockAddAsset}
+        coins={mockCoins}
+        search={search}
+        setSearch={setSearch}
+      />
+    );
+  },
 };
 
 export const WithError: Story = {
-  render: () => (
-    <MockCoinProvider>
+  render: () => {
+    const [search, setSearch] = useState("");
+    return (
       <AddAssetModal
         onClose={mockOnClose}
         addAsset={() => {
           throw new Error("Invalid asset quantity");
         }}
+        coins={mockCoins}
+        search={search}
+        setSearch={setSearch}
       />
-    </MockCoinProvider>
-  ),
+    );
+  },
 };
 
 export const LoadingState: Story = {
-  render: () => (
-    <MockCoinProvider value={{ loading: true, coins: [] }}>
+  render: () => {
+    const [search, setSearch] = useState("");
+    return (
       <AddAssetModal
         onClose={mockOnClose}
         addAsset={async () => {
           await new Promise((resolve) => setTimeout(resolve, 2000));
         }}
+        coins={[]}
+        search={search}
+        setSearch={setSearch}
       />
-    </MockCoinProvider>
-  ),
+    );
+  },
 };
 
 export const CoinFetchError: Story = {
-  render: () => (
-    <MockCoinProvider value={{ error: "Failed to fetch coins", coins: [] }}>
-      <AddAssetModal onClose={mockOnClose} addAsset={mockAddAsset} />
-    </MockCoinProvider>
-  ),
+  render: () => {
+    const [search, setSearch] = useState("");
+    return (
+      <AddAssetModal
+        onClose={mockOnClose}
+        addAsset={mockAddAsset}
+        coins={[]} // no coins
+        search={search}
+        setSearch={setSearch}
+      />
+    );
+  },
 };

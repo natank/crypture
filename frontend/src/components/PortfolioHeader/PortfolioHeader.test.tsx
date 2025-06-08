@@ -15,4 +15,11 @@ describe("PortfolioHeader", () => {
       screen.getByText(/💰 Total Portfolio Value: —/i)
     ).toBeInTheDocument();
   });
+
+  it("renders last updated timestamp if provided", () => {
+    const now = Date.now();
+    render(<PortfolioHeader totalValue="9999" lastUpdatedAt={now} />);
+
+    expect(screen.getByText(/Last updated:.*s ago/i)).toBeInTheDocument();
+  });
 });

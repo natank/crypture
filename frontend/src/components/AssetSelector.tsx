@@ -1,23 +1,27 @@
-import { useCoinContext } from "@context/useCoinContext";
 import type { CoinInfo } from "@services/coinService";
 
 type Props = {
+  id?: string;
+  coins: CoinInfo[];
+  search: string;
+  onSearchChange: (value: string) => void;
   onSelect: (coin: CoinInfo) => void;
   disabled?: boolean;
-  id?: string;
+  error?: string | null;
 };
 
-export function AssetSelector({ onSelect, disabled = false, id }: Props) {
-  const { coins, loading, error, search, setSearch, originalCoins } =
-    useCoinContext();
-
+export function AssetSelector({
+  id,
+  coins,
+  search,
+  onSearchChange,
+  onSelect,
+  disabled = false,
+  error,
+}: Props) {
   return (
     <div className="space-y-2">
-      {loading ? (
-        <div className="text-sm text-gray-500 animate-pulse">
-          Loading assets...
-        </div>
-      ) : error ? (
+      {error ? (
         <div className="text-sm text-red-600" role="alert">
           ⚠️ {error}
         </div>
@@ -28,14 +32,14 @@ export function AssetSelector({ onSelect, disabled = false, id }: Props) {
           disabled={disabled}
           className="border border-gray-200 rounded-md px-3 py-2 w-full bg-white text-base"
           onChange={(e) => {
-            const selected = originalCoins.find((c) => c.id === e.target.value);
+            const selected = coins.find((c) => c.id === e.target.value);
             if (selected) onSelect(selected);
           }}
         >
           <option value="">Select a crypto asset</option>
           {coins.map((coin) => (
             <option key={coin.id} value={coin.id}>
-              {coin.name} ({coin.symbol})
+              {coin.name} ({coin.symbol.toUpperCase()})
             </option>
           ))}
         </select>
@@ -54,8 +58,8 @@ export function AssetSelector({ onSelect, disabled = false, id }: Props) {
           placeholder="Search assets..."
           className="border border-gray-200 rounded-md px-3 py-2 w-full text-base"
           value={search}
-          onChange={(e) => setSearch(e.target.value)}
-          disabled={disabled || loading}
+          onChange={(e) => onSearchChange(e.target.value)}
+          disabled={disabled || !!error}
         />
       </div>
     </div>

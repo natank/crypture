@@ -1,7 +1,6 @@
 import { renderHook, act } from "@testing-library/react";
-import { describe, it, expect, vi, beforeEach } from "vitest";
+import { describe, it, expect } from "vitest";
 import { useCoinSearch } from "@hooks/useCoinSearch";
-import * as coinService from "@services/coinService";
 
 const mockCoins = [
   { id: "bitcoin", name: "Bitcoin", symbol: "BTC", current_price: 2000 },
@@ -9,45 +8,32 @@ const mockCoins = [
   { id: "dogecoin", name: "Dogecoin", symbol: "DOGE", current_price: 2000 },
 ];
 
-describe("useAssetList", () => {
-  beforeEach(() => {
-    vi.restoreAllMocks();
-  });
-
-  it("loads and returns filtered coins", async () => {
-    vi.spyOn(coinService, "fetchTopCoins").mockResolvedValue(mockCoins);
-
-    const { result } = renderHook(() => useCoinSearch());
-
-    expect(result.current.loading).toBe(true);
-
-    // wait for useEffect to complete
-    await act(() => Promise.resolve());
-
-    expect(result.current.loading).toBe(false);
-    expect(result.current.error).toBeNull();
-    expect(result.current.coins).toHaveLength(3);
+describe("useCoinSearch", () => {
+  it("filters coins by search term (case-insensitive)", () => {
+    const { result } = renderHook(() => useCoinSearch(mockCoins));
 
     act(() => {
       result.current.setSearch("bit");
     });
 
-    expect(result.current.coins).toEqual([
+    expect(result.current.filteredCoins).toEqual([
       { id: "bitcoin", name: "Bitcoin", symbol: "BTC", current_price: 2000 },
     ]);
   });
 
-  it("handles API error gracefully", async () => {
-    vi.spyOn(coinService, "fetchTopCoins").mockRejectedValue(
-      new Error("API failure")
-    );
+  it("returns all coins when search is empty", () => {
+    const { result } = renderHook(() => useCoinSearch(mockCoins));
 
-    const { result } = renderHook(() => useCoinSearch());
+    expect(result.current.filteredCoins).toEqual(mockCoins);
+  });
 
-    await act(() => Promise.resolve());
+  it("returns no coins if nothing matches", () => {
+    const { result } = renderHook(() => useCoinSearch(mockCoins));
 
-    expect(result.current.loading).toBe(false);
-    expect(result.current.error).toBe("API failure");
-    expect(result.current.coins).toEqual([]);
+    act(() => {
+      result.current.setSearch("zzz");
+    });
+
+    expect(result.current.filteredCoins).toEqual([]);
   });
 });

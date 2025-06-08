@@ -3,19 +3,31 @@ import { AssetSelector } from "@components/AssetSelector";
 import { FocusTrap } from "focus-trap-react";
 import { useAddAssetForm } from "@hooks/useAddAssetForm";
 import { PortfolioAsset } from "@hooks/usePortfolioState";
+import { CoinInfo } from "@services/coinService";
 
 type Props = {
   onClose: () => void;
   addAsset: (newAsset: PortfolioAsset) => void;
+  coins: CoinInfo[];
+  search: string;
+  setSearch: React.Dispatch<React.SetStateAction<string>>;
+  error?: string | null;
 };
 
-export function AddAssetModal({ onClose, addAsset }: Props) {
+export function AddAssetModal({
+  onClose,
+  addAsset,
+  coins,
+  search,
+  setSearch,
+  error,
+}: Props) {
   const {
     setSelectedCoin,
     quantity,
     setQuantity,
     loading,
-    error,
+    error: formError,
     handleSubmit,
   } = useAddAssetForm(addAsset, onClose);
 
@@ -49,6 +61,7 @@ export function AddAssetModal({ onClose, addAsset }: Props) {
             ➕ Add Crypto Asset
           </h2>
 
+          {/* 🔍 Filterable Asset Selector */}
           <div>
             <label
               htmlFor="asset-select"
@@ -58,11 +71,16 @@ export function AddAssetModal({ onClose, addAsset }: Props) {
             </label>
             <AssetSelector
               id="asset-select"
-              onSelect={setSelectedCoin}
+              coins={coins} // ✅ filtered coin list
+              search={search} // ✅ search input value
+              onSearchChange={setSearch} // ✅ search state updater
+              onSelect={setSelectedCoin} // ✅ form logic handler
               disabled={loading}
+              error={error}
             />
           </div>
 
+          {/* 🔢 Quantity Input */}
           <div className="space-y-2">
             <label
               htmlFor="asset-quantity"
@@ -82,16 +100,18 @@ export function AddAssetModal({ onClose, addAsset }: Props) {
             />
           </div>
 
-          {error && (
+          {/* ⚠️ Error Message */}
+          {formError && (
             <div
               className="text-sm text-red-600 mt-2"
               role="alert"
               aria-live="assertive"
             >
-              ⚠️ {error}
+              ⚠️ {formError}
             </div>
           )}
 
+          {/* 🚀 Buttons */}
           <div className="flex justify-end gap-4 pt-4">
             <button
               onClick={onClose}

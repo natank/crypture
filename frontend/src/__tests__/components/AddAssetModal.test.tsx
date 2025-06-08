@@ -73,8 +73,15 @@ describe("AddAssetModal", () => {
       handleSubmit: mockHandleSubmit,
     });
 
-    render(<AddAssetModal onClose={mockOnClose} addAsset={mockAddAsset} />);
-
+    render(
+      <AddAssetModal
+        onClose={mockOnClose}
+        addAsset={mockAddAsset}
+        coins={[]} // can be empty for most tests
+        search=""
+        setSearch={vi.fn()}
+      />
+    );
     // Assert modal heading by role + accessible name
     expect(
       screen.getByRole("heading", { name: /add crypto asset/i })
@@ -115,8 +122,15 @@ describe("AddAssetModal", () => {
       handleSubmit: mockHandleSubmit,
     });
 
-    render(<AddAssetModal onClose={mockOnClose} addAsset={mockAddAsset} />);
-
+    render(
+      <AddAssetModal
+        onClose={mockOnClose}
+        addAsset={mockAddAsset}
+        coins={[]} // can be empty for most tests
+        search=""
+        setSearch={vi.fn()}
+      />
+    );
     const input = screen.getByLabelText(/quantity/i);
     fireEvent.change(input, { target: { value: "1.23" } });
 
@@ -138,8 +152,15 @@ describe("AddAssetModal", () => {
       handleSubmit: handleSubmitSpy,
     });
 
-    render(<AddAssetModal onClose={mockOnClose} addAsset={mockAddAsset} />);
-
+    render(
+      <AddAssetModal
+        onClose={mockOnClose}
+        addAsset={mockAddAsset}
+        coins={[]}
+        search=""
+        setSearch={vi.fn()}
+      />
+    );
     const submitButton = screen.getByRole("button", { name: /➕ add asset/i });
 
     fireEvent.click(submitButton);
@@ -160,8 +181,15 @@ describe("AddAssetModal", () => {
       handleSubmit: mockHandleSubmit,
     });
 
-    render(<AddAssetModal onClose={mockOnClose} addAsset={mockAddAsset} />);
-
+    render(
+      <AddAssetModal
+        onClose={mockOnClose}
+        addAsset={mockAddAsset}
+        coins={[]}
+        search=""
+        setSearch={vi.fn()}
+      />
+    );
     const cancelButton = screen.getByRole("button", { name: /❌ cancel/i });
     fireEvent.click(cancelButton);
 
@@ -181,8 +209,15 @@ describe("AddAssetModal", () => {
       handleSubmit: mockHandleSubmit,
     });
 
-    render(<AddAssetModal onClose={mockOnClose} addAsset={mockAddAsset} />);
-
+    render(
+      <AddAssetModal
+        onClose={mockOnClose}
+        addAsset={mockAddAsset}
+        coins={[]}
+        search=""
+        setSearch={vi.fn()}
+      />
+    );
     const quantityInput = screen.getByLabelText(/quantity/i);
     const cancelButton = screen.getByRole("button", { name: /cancel/i });
     const assetSelector = screen.getByRole("button", {
@@ -215,8 +250,15 @@ describe("AddAssetModal", () => {
       handleSubmit: mockHandleSubmit,
     });
 
-    render(<AddAssetModal onClose={mockOnClose} addAsset={mockAddAsset} />);
-
+    render(
+      <AddAssetModal
+        onClose={mockOnClose}
+        addAsset={mockAddAsset}
+        coins={[]}
+        search=""
+        setSearch={vi.fn()}
+      />
+    );
     // Error message should appear in the alert role
     const alert = screen.getByRole("alert");
     expect(alert).toBeInTheDocument();
@@ -245,8 +287,15 @@ describe("AddAssetModal", () => {
       handleSubmit: vi.fn(),
     });
 
-    render(<AddAssetModal onClose={mockOnClose} addAsset={mockAddAsset} />);
-
+    render(
+      <AddAssetModal
+        onClose={mockOnClose}
+        addAsset={mockAddAsset}
+        coins={[]}
+        search=""
+        setSearch={vi.fn()}
+      />
+    );
     // The mocked AssetSelector is just a button we can click
     const selectorButton = screen.getByRole("button", {
       name: /mock asset selector/i,
@@ -272,7 +321,15 @@ describe("AddAssetModal", () => {
 
     // Confirm that rendering does not throw
     expect(() =>
-      render(<AddAssetModal onClose={mockOnClose} addAsset={mockAddAsset} />)
+      render(
+        <AddAssetModal
+          onClose={mockOnClose}
+          addAsset={mockAddAsset}
+          coins={[]}
+          search=""
+          setSearch={vi.fn()}
+        />
+      )
     ).not.toThrow();
 
     // Optional: confirm that heading still renders
