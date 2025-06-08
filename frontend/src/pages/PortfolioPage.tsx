@@ -12,9 +12,8 @@ import { useUIState } from "@hooks/useUIState";
 import { useState } from "react";
 
 export default function PortfolioPage() {
-  const { priceMap } = useCoinContext();
+  const { priceMap, error, loading } = useCoinContext();
 
-  const { error, loading } = useCoinContext();
   const { portfolio, addAsset, removeAsset, getAssetById, totalValue } =
     usePortfolioState(priceMap);
   const {

@@ -27,7 +27,8 @@ describe("useCoinList", () => {
     expect(result.current.loading).toBe(true);
 
     await act(async () => {
-      vi.runAllTimers(); // triggers initial fetch
+      vi.advanceTimersByTime(0); // only trigger immediate timeout (initial fetch)
+      await Promise.resolve(); // let microtasks complete
     });
 
     expect(result.current.coins).toEqual(mockCoins);
@@ -55,9 +56,9 @@ describe("useCoinList", () => {
 
     const { result } = renderHook(() => useCoinList());
 
-    await act(() => {
-      vi.runAllTimers();
-      return Promise.resolve();
+    await act(async () => {
+      vi.advanceTimersByTime(0); // only trigger immediate timeout (initial fetch)
+      await Promise.resolve(); // let microtasks complete
     });
 
     expect(result.current.error).toBe("API down");
@@ -67,9 +68,9 @@ describe("useCoinList", () => {
   it("does not update coins if data is unchanged", async () => {
     const { result } = renderHook(() => useCoinList(60000));
 
-    await act(() => {
-      vi.runAllTimers();
-      return Promise.resolve();
+    await act(async () => {
+      vi.advanceTimersByTime(0); // only trigger immediate timeout (initial fetch)
+      await Promise.resolve(); // let microtasks complete
     });
 
     const prevCoins = result.current.coins;

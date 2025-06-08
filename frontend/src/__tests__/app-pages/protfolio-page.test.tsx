@@ -81,6 +81,10 @@ describe("PortfolioPage", () => {
       priceMap: {
         btc: 3000,
       },
+      getPriceBySymbol: (symbol: string) => {
+        const priceMap: Record<string, number> = { btc: 3000 };
+        return priceMap[symbol.toLowerCase()];
+      },
     });
   });
   it("renders without crashing", () => {
@@ -103,12 +107,44 @@ describe("PortfolioPage", () => {
     expect(screen.getByLabelText(/sort/i)).toBeInTheDocument();
   });
 
-  it("renders a static asset list row (placeholder content)", () => {
-    render(<PortfolioPage />);
-    expect(screen.getByText(/btc/i)).toBeInTheDocument();
-    expect(screen.getByText(/Price: —/)).toBeInTheDocument();
-    expect(screen.getByText(/Total: —/)).toBeInTheDocument();
+  it("renders a static asset list row (placeholder content)", async () => {
+    vi.resetModules();
+
+    vi.doMock("@context/useCoinContext", () => ({
+      useCoinContext: () => ({
+        coins: [],
+        loading: false,
+        error: null,
+        search: "",
+        setSearch: vi.fn(),
+        originalCoins: [],
+        priceMap: {}, // no prices => fallback UI
+        getPriceBySymbol: () => undefined,
+      }),
+    }));
+
+    const { default: PortfolioPage } = await import("@pages/PortfolioPage");
+    const { getByText } = render(<PortfolioPage />);
+
+    // Asset still renders
+    expect(getByText(/btc/i)).toBeInTheDocument();
+
+    // Fallback indicators
+    expect(
+      screen.getByText(
+        (_, el) => el?.textContent?.replace(/\s+/g, " ").trim() === "Price: —"
+      )
+    ).toBeInTheDocument();
+
+    expect(
+      screen.getByText(
+        (_, el) => el?.textContent?.replace(/\s+/g, " ").trim() === "Total: —"
+      )
+    ).toBeInTheDocument();
+
+    expect(screen.getAllByText(/price fetch failed/i)).toHaveLength(2);
   });
+
   it("renders DeleteConfirmationModal when delete is requested", async () => {
     const { getByLabelText, getByTestId } = render(<PortfolioPage />);
 
