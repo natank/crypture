@@ -82,4 +82,13 @@ describe("useCoinList", () => {
 
     expect(result.current.coins).toBe(prevCoins); // === identity check
   });
+  it("skips polling if enablePolling is false", async () => {
+    const callback = vi.fn();
+    vi.spyOn(coinService, "fetchTopCoins").mockResolvedValue(mockCoins);
+
+    renderHook(() => useCoinList({ enablePolling: false }));
+
+    vi.advanceTimersByTime(120000); // simulate 2 polling intervals
+    expect(callback).not.toHaveBeenCalled();
+  });
 });
