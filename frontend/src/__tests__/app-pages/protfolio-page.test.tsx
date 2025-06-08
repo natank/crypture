@@ -208,6 +208,30 @@ describe("PortfolioPage", () => {
       "Confirm delete Bitcoin"
     );
   });
+  it("updates totalValue when priceMap changes", async () => {
+    vi.doMock("@hooks/usePriceMap", () => ({
+      usePriceMap: () => ({ btc: 30000 }), // initial BTC price
+    }));
+
+    const { default: PortfolioPage } = await import("@pages/PortfolioPage");
+    const { rerender, getByText } = render(<PortfolioPage />);
+
+    // Expect initial total (0.5 BTC * $30,000)
+    expect(getByText(/\$15,000/i)).toBeInTheDocument();
+
+    vi.doMock("@hooks/usePriceMap", () => ({
+      usePriceMap: () => ({ btc: 40000 }), // updated BTC price
+    }));
+
+    // Re-import with updated mock
+    const { default: UpdatedPortfolioPage } = await import(
+      "@pages/PortfolioPage"
+    );
+    rerender(<UpdatedPortfolioPage />);
+
+    // Expect updated total (0.5 BTC * $40,000)
+    expect(getByText(/\$20,000/i)).toBeInTheDocument();
+  });
 });
 
 describe("PortfolioPage delete flow", () => {
