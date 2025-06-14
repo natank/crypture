@@ -62,44 +62,49 @@ This process ensures that implementation aligns tightly with user needs, design 
 
 > X **Currently focused story:** TD-02
 
-## 🟢 FOCUSED Sprint Story: TD-02 – isual/UX Refactor
+## 🟢 FOCUSED Sprint Story: TD-02 – Visual/UX Refactor
 
 # 📦 Active Sprint stories
 ---
 
 
-## 🟢 Technical Story TD-02: Windsurf Visibility Audit and Enhancement
+## 🟢 Technical Story TD-02: UI Visibility Refactor and Design Token Integration (Windsurf-Informed)
 
-**User Story**
-*As a developer preparing for MVP delivery,*
-*I want to use Windsurf Cascade IDE to audit and enhance code visibility,*
-*so that the architecture is clean, traceable, and easy to reason about.*
+**User Story**  
+_As a developer preparing for MVP,_  
+_I want to refactor the UI for improved visual hierarchy, accessibility, and layout consistency using design tokens,_  
+_so that the interface is clean, readable, and easy to adapt in the future._
 
 ---
 
 ### ✅ Acceptance Criteria
 
-* [X] Windsurf is used to perform a static visibility audit across key modules (`PortfolioPage.tsx`, hooks, context).
-* [X] A prioritized list of visibility improvements is created and documented.
-* [ ] Each suggestion is implemented in an isolated commit.
-* [ ] All existing unit, integration, and E2E tests pass after each change.
-* [ ] Functionality remains unchanged — confirmed via testing.
-* [ ] A changelog (`refactor-notes.md`) summarizes all visibility upgrades.
+- [ ] All UI components follow layout and spacing from `ui-mockups.md`
+- [ ] Design tokens from `style-guide.md` are used consistently for:
+  - Typography
+  - Color roles (`primary`, `error`, etc.)
+  - Spacing and border radius
+- [ ] Tailwind config is extended with semantic aliases (`--color-primary`, etc.)
+- [ ] Optional utility class wrappers (`.bg-primary`, `.text-error`) are added to `tokens.css`
+- [ ] All action elements have appropriate accessibility attributes (`aria-label`, tooltips)
+- [ ] The refactor results in **no logic changes**
+- [ ] All tests (unit, integration, E2E) still pass
+- [ ] `refactor-notes.md` documents class-level changes and token mapping decisions
 
 ---
 
 ### 🔧 Implementation Tasks
 
-| Task Type            | Description                                                                   | Status    |
-| -------------------- | ----------------------------------------------------------------------------- | --------- |
-| 🧠 **Analysis**      | Prompt Windsurf to analyze core modules (`PortfolioPage.tsx`, hooks, context) | ⬜ Pending |
-| 📝 **Planning**      | Extract visibility suggestions and sort by effort/value ratio                 | ⬜ Pending |
-| 🔁 **Refactor Loop** | For each suggestion:<br>1. Apply update<br>2. Run all tests<br>3. Commit      | ⬜ Pending |
-| ✅ **Verification**   | Confirm functionality via full test suite and manual UI smoke test            | ⬜ Pending |
-| 📚 **Documentation** | Log changes in a markdown summary (`refactor-notes.md`)                       | ⬜ Pending |
-
----
-
+| Task Type             | Description                                                                                 | Status     |
+|-----------------------|---------------------------------------------------------------------------------------------|------------|
+| 🧠 Mockup Review       | Re-analyze `ui-mockups.md` layout, spacing, and structure for implementation readiness      | ✅ COMPLETED |
+| 📐 Component Audit     | Identify Tailwind class inconsistencies or hardcoded color values in components             | ✅ COMPLETED |
+| 🎨 Apply Refactor      | Update visual layout, spacing, and tokens across `PortfolioPage`, `AssetRow`, `AddAssetModal` | ⬜ Pending |
+| 🧩 Token System Setup  | Extend `tailwind.config.js` with CSS variable tokens (`--color-primary`, etc.)              | ⬜ Pending |
+| 📦 Utility Classes     | Define `.bg-primary`, `.text-error`, etc. via `@apply` in `tokens.css` (optional)           | ⬜ Pending |
+| ♿ Accessibility Pass   | Add tooltips, aria-labels, role hints, keyboard navigation targets                          | ⬜ Pending |
+| ✅ Test Verification   | Run all tests (unit, integration, E2E) to confirm UI behaves the same                       | ⬜ Pending |
+| 📄 Document Results    | Log visual refactor notes and token alias mapping in `refactor-notes.md`                    | ⬜ Pending |
 
 # 📦 Archived Sprints
 

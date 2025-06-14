@@ -35,7 +35,7 @@ export default function AssetRow({
       <div className="text-right flex-1">
         <div
           className={
-            hasPrice ? "text-sm text-gray-600" : "text-sm text-gray-400 italic"
+            hasPrice ? "text-sm text-gray-600" : "text-sm text-gray-500 italic"
           }
         >
           Price: {hasPrice ? `$${price.toLocaleString()}` : "—"}
@@ -44,7 +44,7 @@ export default function AssetRow({
           className={
             hasPrice
               ? "text-base font-semibold text-gray-900"
-              : "text-base text-gray-400 italic"
+              : "text-base text-gray-500 italic"
           }
         >
           Total: {hasPrice ? `$${value?.toLocaleString()}` : "—"}
