@@ -28,10 +28,19 @@ Stories are grouped by feature category and prioritized based on their importanc
 | 13  | Refactor Sprint 1 Code to Follow SOLID Principles | Medium   | Technical Debt             | Pending |
 | TD-02 | Windsurf Visibility Audit and Enhancement         | Medium   | Technical Debt             | Pending |
 | TD-03  | Windsurf-Aided Review of UI/UX Design Docs         | Medium   | Technical Debt             | Pending |
-
+| TD-04  | Visual/UX Refactor of `ui-mockups.md` for Design System Alignment         | Medium   | Technical Debt             | DONE |
 ---
 
 Perfect. Here's your new technical debt user story for design doc alignment via Windsurf:
+
+---
+
+## 🧾 User Story TD-04
+**User Story**
+*As a developer/designer preparing for MVP delivery,*
+*I want to visually and stylistically refactor `ui-mockups.md` to match the updated wireframes and style guide, without making any logical changes or altering the set of components/mockups,*
+*so that the mockups serve as an accurate, implementation-ready reference for frontend development.*
+
 
 ---
 

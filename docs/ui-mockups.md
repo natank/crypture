@@ -89,18 +89,22 @@ These mockups correspond to the most critical user flows and UI areas:
 
 ## 📄 1. Portfolio Overview Page
 
-| 💰 Total Portfolio Value                                         |         |             |             |                    |
+| 💰 Total Portfolio Value [✔️ Saved]                              |         |             |             |                    |
 | ---------------------------------------------------------------- | ------- | ----------- | ----------- | ------------------ |
-| \$12,345.67                                                      |         |             |             |                    |
+| $12,345.67                                                      |         |             |             |                    |
 | +--------------------------------------------------------------+ |         |             |             |                    |
-| 🔍 \[ Filter assets... ] ⬇ Sort: \[ Value ⬆ ]                    |         |             |             |                    |
+| 🔍 [ <span aria-label="Search assets" class="sr-only">Search</span> <input type="text" placeholder="Search assets…" class="pl-10 pr-3 py-2 border border-gray-200 rounded-md w-full sm:w-64 text-base text-gray-900 placeholder:text-gray-500" aria-label="Filter assets by name or value" /> ]  
+| <label class="text-base text-gray-700">Sort:</label> <select class="px-3 py-2 border rounded-md bg-white text-base sm:w-48 w-full" aria-label="Sort assets"><option selected>Value ⬆</option><option>Name ⬆</option><option>Name ⬇</option><option>Value ⬇</option></select> |         |             |             |                    |
 | +--------------------------------------------------------------+ |         |             |             |                    |
-| Asset                                                            | Qty     | Price       | Value       | Action             |
-| -----------                                                      | ------- | ----------- | ----------- | ------------------ |
-| BTC                                                              | 0.5     | \$30,000    | \$15,000    | \[🗑️ Delete]       |
-| ETH                                                              | 1.2     | \$2,000     | \$2,400     | \[🗑️ Delete]       |
+| Asset (Symbol & Name)                                          | Qty     | Price       | Value       | Action             |
+| --------------------------                                     | ------- | ----------- | ----------- | ------------------ |
+| BTC (Bitcoin)                                                  | 0.5     | $30,000     | $15,000     | <button class="p-2 rounded-full hover:bg-gray-100 text-red-600 focus:outline-none focus:ring-2 focus:ring-red-600" aria-label="Delete BTC" title="Delete BTC">🗑️ <span class="sr-only">Delete BTC</span></button> <span class="ml-2 animate-spin w-4 h-4 border-2 border-blue-600 border-t-transparent rounded-full" aria-label="Loading" style="display:none;"></span> <span class="ml-2 text-sm text-red-600" style="display:none;">⚠️ Error</span> |
+| ETH (Ethereum)                                                 | 1.2     | $2,000      | $2,400      | <button class="p-2 rounded-full hover:bg-gray-100 text-red-600 focus:outline-none focus:ring-2 focus:ring-red-600" aria-label="Delete ETH" title="Delete ETH">🗑️ <span class="sr-only">Delete ETH</span></button> <span class="ml-2 animate-spin w-4 h-4 border-2 border-blue-600 border-t-transparent rounded-full" aria-label="Loading" style="display:none;"></span> <span class="ml-2 text-sm text-red-600" style="display:none;">⚠️ Error</span> |
 | +--------------------------------------------------------------+ |         |             |             |                    |
-| ➕ Add Asset 📤 Export 📥 Import                                 |         |             |             |                    |
+| <button class="bg-blue-600 text-white font-button px-4 py-2 rounded-md hover:bg-blue-700" aria-label="Add a new crypto asset" title="Add a new crypto asset">➕ Add Asset</button> 
+  <button class="bg-gray-100 text-gray-900 font-button px-4 py-2 rounded-md hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-600" aria-label="Export portfolio as CSV or JSON" title="Export portfolio">📤 Export</button>
+  <button class="bg-gray-100 text-gray-900 font-button px-4 py-2 rounded-md hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-600" aria-label="Import portfolio from CSV or JSON" title="Import portfolio">📥 Import</button>
+  <span class="text-sm text-gray-600 ml-2">(Stub - Not functional)</span>
 | +--------------------------------------------------------------+ |         |             |             |                    |
 
 ### 🧩 Annotations
@@ -147,11 +151,12 @@ These mockups correspond to the most critical user flows and UI areas:
   <div class="flex flex-wrap items-center gap-4 mb-4">
     <input
       type="text"
-      class="px-3 py-2 border rounded-md w-full sm:w-64"
+      class="px-3 py-2 border rounded-md w-full sm:w-64 text-base text-gray-900 placeholder:text-gray-500"
       placeholder="Filter assets..."
     />
-    <select class="px-3 py-2 border rounded-md bg-white">
+    <select class="px-3 py-2 border rounded-md bg-white text-base sm:w-48 w-full">
       <option>Sort by Value ⬆</option>
+      <option selected>Sort by Value ⬇</option>
     </select>
   </div>
 
@@ -177,28 +182,23 @@ These mockups correspond to the most critical user flows and UI areas:
 
   <div class="flex gap-4 justify-end mt-4">
     <button
-      class="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700"
+      class="bg-blue-600 text-white font-button px-4 py-2 rounded-md hover:bg-blue-700"
     >
       ➕ Add Asset
     </button>
     <button
-      class="bg-gray-100 text-gray-900 px-4 py-2 rounded-md hover:bg-gray-200"
+      class="bg-gray-100 text-gray-900 font-button px-4 py-2 rounded-md hover:bg-gray-200"
     >
       📤 Export
     </button>
     <button
       class="bg-gray-100 text-gray-900 px-4 py-2 rounded-md hover:bg-gray-200"
     >
-      📥 Import
-    </button>
-  </div>
-</div>
 ```
-
 ## 📄 2. Add Asset Modal/Form
 
 +---------------------------- Add Crypto Asset ----------------------------+
-| Asset: [ 🔽 BTC ] |
+| Asset: [ 🔽 BTC - Bitcoin ] |
 | Qty: [ 0.5 ] |
 | |
 | [➕ Add Asset] [❌ Cancel] |
@@ -259,16 +259,24 @@ Button label becomes spinner: animate-spin w-4 h-4 border-2
   <div class="text-xl font-semibold text-gray-900">➕ Add Crypto Asset</div>
 
   <div class="space-y-2">
-    <label class="block text-sm font-medium text-gray-700">Asset</label>
-    <select class="border border-gray-200 rounded-md px-3 py-2 w-full">
-      <option>BTC</option>
-      <option>ETH</option>
+    <label class="block text-sm font-medium text-gray-700" for="asset-select"
+      >Asset</label
+    >
+    <select
+      id="asset-select"
+      class="border border-gray-200 rounded-md px-3 py-2 w-full"
+    >
+      <option value="BTC">BTC - Bitcoin</option>
+      <option value="ETH">ETH - Ethereum</option>
     </select>
   </div>
 
   <div class="space-y-2">
-    <label class="block text-sm font-medium text-gray-700">Quantity</label>
+    <label class="block text-sm font-medium text-gray-700" for="quantity-input"
+      >Quantity</label
+    >
     <input
+      id="quantity-input"
       type="number"
       placeholder="0.5"
       class="border border-gray-200 rounded-md px-3 py-2 w-full"
@@ -280,32 +288,19 @@ Button label becomes spinner: animate-spin w-4 h-4 border-2
   <div class="flex justify-end gap-4 pt-4">
     <button
       class="bg-gray-100 text-gray-900 font-button px-4 py-2 rounded-md hover:bg-gray-200"
+      aria-label="Cancel adding asset"
     >
       ❌ Cancel
     </button>
     <button
       class="bg-blue-600 text-white font-button px-4 py-2 rounded-md hover:bg-blue-700"
+      aria-label="Add asset"
     >
       ➕ Add Asset
+      <span class="animate-spin w-4 h-4 border-2 border-blue-600 border-t-transparent rounded-full" aria-hidden="true"></span>
     </button>
   </div>
 </div>
-
----
-
-## 📄 3. Asset List Row
-
-### 📄 Purpose
-
-Each asset row in the portfolio displays:
-
-Asset name and symbol
-
-Quantity
-
-Current price (real-time)
-
-Total value
 
 Delete button
 
@@ -477,7 +472,7 @@ These components provide global feedback during key app states:
 
 ```html
 <!-- Global Loading Spinner -->
-<div class="flex flex-col justify-center items-center h-screen text-center">
+<div class="flex flex-col justify-center items-center h-screen text-center" aria-label="Loading portfolio...">
   <div
     class="animate-spin w-8 h-8 border-4 border-blue-600 border-t-transparent rounded-full"
   ></div>
@@ -491,7 +486,7 @@ These components provide global feedback during key app states:
   aria-live="assertive"
 >
   ⚠️ Error loading data. Please try again later.
-  <button class="underline text-blue-600 ml-2 hover:text-blue-800">
+  <button class="underline text-blue-600 ml-2 hover:text-blue-800" aria-label="Retry">
     🔁 Retry
   </button>
 </div>

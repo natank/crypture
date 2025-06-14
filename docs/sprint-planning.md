@@ -60,55 +60,13 @@ This process ensures that implementation aligns tightly with user needs, design 
 
 # 🚀 Active Stories
 
-> X **Currently focused story:** Pending
+> X **Currently focused story:** TD-02
 
-## 🟢 Active Sprint Story: TD-03 – Align UI/UX Design Docs with Visibility Standards (Windsurf-Aided)
+## 🟢 FOCUSED Sprint Story: TD-02 – isual/UX Refactor
 
-# 📦 Archived Sprints
-
-Perfect. Here's your new technical debt user story for design doc alignment via Windsurf:
-
+# 📦 Active Sprint stories
 ---
 
-## 🟢 Technical Story: TD-03 – Align UI/UX Design Docs with Visibility Standards (Windsurf-Aided)
-
-**User Story**
-*As a developer preparing for MVP delivery,*
-*I want Windsurf IDE to review our UI/UX documentation for visibility, consistency, and traceability,*
-*so that the codebase can be aligned with the intended design language and product goals.*
-
----
-
-### ✅ Acceptance Criteria
-
-* [ ] Windsurf reviews the following documents:
-
-  * `ui-wireframes.md`
-  * `style-guide.md`
-  * `ui-mockups.md`
-  * `product-backlog.md` (design-driven user stories)
-* [ ] A list of visibility issues and improvement suggestions is generated.
-* [ ] Redundancies, inconsistencies, or unclear naming are flagged.
-* [ ] Designer artifacts are updated to reflect accepted suggestions (if needed).
-* [ ] Summary of improvements is added to `refactor-notes.md`.
-* [ ] The resulting guidance informs the follow-up code visibility audit (`TD-02`).
-
----
-
-### 🔧 Implementation Tasks
-
-| Task Type            | Description                                                                                            | Status    |
-| -------------------- | ------------------------------------------------------------------------------------------------------ | --------- |
-| 🧠 **Doc Analysis**  | Prompt Windsurf to analyze `ui-wireframes.md`, `style-guide.md`, `ui-mockups.md`, `product-backlog.md` | ⬜ Pending |
-| 📝 **Issue Catalog** | Extract and document Windsurf’s visibility suggestions (e.g., naming, structure, style usage)          | ⬜ Pending |
-| ✍️ **Revise Docs**   | Apply agreed-upon updates to relevant docs (UI or styling inconsistencies, naming alignment)           | ⬜ Pending |
-| 🔄 **Design Sync**   | Review final docs for clarity and consistency; ensure visual flow matches product intent               | ⬜ Pending |
-| 📄 **Log Summary**   | Add design-related visibility changes to `refactor-notes.md`                                           | ⬜ Pending |
-| 🔁 **Inform TD-02**  | Feed finalized design naming/structure recommendations into `TD-02` task planning                      | ⬜ Pending |
-
----
-
-Would you like a corresponding backlog entry (`User Story 15`) prepared and slotted into `product-backlog.md` as well?
 
 ## 🟢 Technical Story TD-02: Windsurf Visibility Audit and Enhancement
 
@@ -121,8 +79,8 @@ Would you like a corresponding backlog entry (`User Story 15`) prepared and slot
 
 ### ✅ Acceptance Criteria
 
-* [ ] Windsurf is used to perform a static visibility audit across key modules (`PortfolioPage.tsx`, hooks, context).
-* [ ] A prioritized list of visibility improvements is created and documented.
+* [X] Windsurf is used to perform a static visibility audit across key modules (`PortfolioPage.tsx`, hooks, context).
+* [X] A prioritized list of visibility improvements is created and documented.
 * [ ] Each suggestion is implemented in an isolated commit.
 * [ ] All existing unit, integration, and E2E tests pass after each change.
 * [ ] Functionality remains unchanged — confirmed via testing.
@@ -142,7 +100,8 @@ Would you like a corresponding backlog entry (`User Story 15`) prepared and slot
 
 ---
 
-Let me know if you'd like this committed into `sprint-planning.md`, and I can patch it in.
+
+# 📦 Archived Sprints
 
 
 ## 🏁 User Story 1: Add Crypto Asset with Quantity
@@ -799,3 +758,73 @@ Completed On: 2025-05-27
 - UI reflects accurate, up-to-date totals across components
 - All tests (unit, integration, E2E) pass
 - Styling and feedback align with `ui-mockups.md` and `style-guide.md`
+
+
+## 🟢 Technical Story: TD-03 – Align UI/UX Design Docs with Visibility Standards (Windsurf-Aided)
+
+**User Story**
+*As a developer preparing for MVP delivery,*
+*I want Windsurf IDE to review our UI/UX documentation for visibility, consistency, and traceability,*
+*so that the codebase can be aligned with the intended design language and product goals.*
+
+---
+
+### ✅ Acceptance Criteria
+
+* [x] Windsurf reviews the following documents:
+  * `ui-wireframes.md`
+  * `style-guide.md`
+  * `ui-mockups.md`
+  * `product-backlog.md` (design-driven user stories)
+* [x] A list of visibility issues and improvement suggestions is generated.
+* [x] Redundancies, inconsistencies, or unclear naming are flagged.
+* [x] Designer artifacts are updated to reflect accepted suggestions (if needed).
+* [X] The resulting guidance informs the follow-up code visibility audit (`TD-02`).
+
+---
+
+### 🔧 Implementation Tasks
+
+---
+
+## 🟢 Technical Story: TD-04 – Visual/UX Refactor of `ui-mockups.md` for Design System Alignment
+
+**User Story**
+*As a developer/designer preparing for MVP delivery,*
+*I want to visually and stylistically refactor `ui-mockups.md` to match the updated wireframes and style guide, without making any logical changes or altering the set of components/mockups,*
+*so that the mockups serve as an accurate, implementation-ready reference for frontend development.*
+
+---
+
+### ✅ Acceptance Criteria
+
+* [X] Review all mockups for alignment with the latest wireframes and style guide (styling, layout, UX only) 
+see ui-mockups-td04-checklist.md
+* [X] Update Tailwind classes, tokens, and annotations to match the design system
+* [X] Ensure all explicit labels, tooltips, error placements, and visual cues are present as per the wireframes/style guide
+* [X] Do not add, remove, or logically alter any components/screens
+* [X] Add a checklist of visual/UX improvements to the end of `ui-mockups.md` and mark completed items
+* [X] Confirm that all mockups are implementation-ready and consistent with other design docs
+
+---
+
+### 🔧 Implementation Tasks
+
+| Task Type            | Description                                                                                      | Status    |
+| -------------------- | ------------------------------------------------------------------------------------------------ | --------- |
+| 🧠 **Mockup Review** | Review each section of `ui-mockups.md` for visual/UX alignment with wireframes & style guide      | DONE |
+| 📝 **Checklist**     | Generate and insert a checklist of required visual/UX improvements at the end of `ui-mockups.md`  | DONE |
+| ✍️ **Refactor**      | Apply Tailwind/class/annotation updates—styling/layout/UX only, no logic or component changes     | DONE |
+| 🔄 **Design Sync**   | Confirm all mockups visually match the rest of the design system and are ready for development    | DONE |
+
+---
+
+
+| Task Type            | Description                                                                                            | Status    |
+| -------------------- | ------------------------------------------------------------------------------------------------------ | --------- |
+| 🧠 **Doc Analysis**  | Prompt Windsurf to analyze `ui-wireframes.md`, `style-guide.md`, `ui-mockups.md`, `product-backlog.md` | ✅ Done   |
+| 📝 **Issue Catalog** | Extract and document Windsurf’s visibility suggestions (e.g., naming, structure, style usage)          | ✅ Done   |
+| ✍️ **Revise Docs**   | Apply agreed-upon updates to relevant docs (UI or styling inconsistencies, naming alignment)           | ✅ Done   |
+| 🔄 **Design Sync**   | Review final docs for clarity and consistency; ensure visual flow matches product intent               | ✅ Done   |
+| 📄 **Log Summary**   | Add design-related visibility changes to `refactor-notes.md`                                           | ✅ Done |
+| 🔁 **Inform TD-02**  | Feed finalized design naming/structure recommendations into `TD-02` task planning                      | ✅ Done |
