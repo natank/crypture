@@ -27,6 +27,7 @@ export default function AssetList({
           onClick={onAddAsset}
           className="bg-blue-100 text-blue-900 font-button px-4 py-2 rounded-md hover:bg-blue-200"
           data-testid="add-asset-button"
+          aria-label="Add Asset"
         >
           ➕ Add Asset
         </button>
@@ -34,7 +35,7 @@ export default function AssetList({
 
       {/* Asset List or Empty State */}
       {assets.length === 0 ? (
-        <div className="text-gray-800 italic">
+        <div className="text-gray-900 italic">
           No assets yet. Add one to begin.
         </div>
       ) : (

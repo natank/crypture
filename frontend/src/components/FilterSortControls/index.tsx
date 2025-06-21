@@ -14,11 +14,11 @@ export default function FilterSortControls({
   onSortChange,
 }: FilterSortControlsProps) {
   return (
-    <div className="flex flex-wrap items-center gap-4 mb-4">
-      <div className="flex flex-col sm:block">
+    <div className="flex flex-wrap items-end gap-4 mb-4">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:gap-2">
         <label
           htmlFor="filter-assets"
-          className="block text-sm font-medium text-gray-700"
+          className="text-sm font-medium text-gray-700"
         >
           Filter assets
         </label>
@@ -36,7 +36,7 @@ export default function FilterSortControls({
       <div className="flex items-center gap-2">
         <label
           htmlFor="sort-assets"
-          className="block text-sm font-medium text-gray-700"
+          className="text-sm font-medium text-gray-700"
         >
           Sort by
         </label>

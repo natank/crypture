@@ -26,7 +26,7 @@ Stories are grouped by feature category and prioritized based on their importanc
 | 11  | Add Charting for Price History                    | Low      | Extended Features          | Pending |
 | 12  | Enable User Authentication                        | Low      | Extended Features          | Pending |
 | 13  | Refactor Sprint 1 Code to Follow SOLID Principles | Medium   | Technical Debt             | Pending |
-| TD-02 | Windsurf Visibility Audit and Enhancement         | Medium   | Technical Debt             | Pending |
+| TD-02 | UI Visibility Refactor and Design Token Integration | Medium   | Technical Debt             | Pending |
 | TD-03  | Windsurf-Aided Review of UI/UX Design Docs         | Medium   | Technical Debt             | Pending |
 | TD-04  | Visual/UX Refactor of `ui-mockups.md` for Design System Alignment         | Medium   | Technical Debt             | DONE |
 ---
@@ -59,17 +59,17 @@ Perfect. Here's your new technical debt user story for design doc alignment via 
 
 ### ✅ Acceptance Criteria
 
-* [ ] Windsurf reviews the following documents:
+* [X] Windsurf reviews the following documents:
 
   * `ui-wireframes.md`
   * `style-guide.md`
   * `ui-mockups.md`
   * `product-backlog.md` (focus on design-driven stories)
-* [ ] A list of visibility issues and improvement suggestions is generated.
-* [ ] Redundancies, inconsistencies, or unclear naming are flagged.
-* [ ] Designer artifacts are updated to reflect accepted suggestions (if needed).
-* [ ] Summary of improvements is added to `refactor-notes.md`.
-* [ ] The resulting guidance informs the follow-up code visibility audit (`TD-02`).
+* [X] A list of visibility issues and improvement suggestions is generated.
+* [X] Redundancies, inconsistencies, or unclear naming are flagged.
+* [X] Designer artifacts are updated to reflect accepted suggestions (if needed).
+* [X] Summary of improvements is added to `refactor-notes.md`.
+* [X] The resulting guidance informs the follow-up code visibility audit (`TD-02`).
 
 ---
 
@@ -77,41 +77,42 @@ Perfect. Here's your new technical debt user story for design doc alignment via 
 
 | Task Type            | Description                                                                        | Status    |
 | -------------------- | ---------------------------------------------------------------------------------- | --------- |
-| 🧠 **Doc Analysis**  | Prompt Windsurf to review UI/UX docs for visibility issues                         | ⬜ Pending |
-| 📝 **Issue Catalog** | Summarize Windsurf’s findings in a markdown checklist                              | ⬜ Pending |
-| ✍️ **Revise Docs**   | Apply accepted changes to `ui-wireframes.md`, `style-guide.md`, or `ui-mockups.md` | ⬜ Pending |
-| 📄 **Sync Summary**  | Log findings to `refactor-notes.md` and close the loop to TD-02 planning           | ⬜ Pending |
+| 🧠 **Doc Analysis**  | Prompt Windsurf to review UI/UX docs for visibility issues                         | DONE |
+| 📝 **Issue Catalog** | Summarize Windsurf’s findings in a markdown checklist                              | DONE|
+| ✍️ **Revise Docs**   | Apply accepted changes to `ui-wireframes.md`, `style-guide.md`, or `ui-mockups.md` | DONE|
+| 📄 **Sync Summary**  | Log findings to `refactor-notes.md` and close the loop to TD-02 planning           | DONE|
 
 ---
 
 
-### 🧾 User Story TD-02: Windsurf Visibility Audit and Enhancement
+## 🧾 User Story TD-02: UI Visibility Refactor and Design Token Integration (Windsurf-Informed)
 
-**User Story**
-*As a developer preparing for MVP,*
-I want to use Windsurf IDE to identify and improve code visibility,
-so that I can ensure our architecture is readable, maintainable, and easy to extend.
+**User Story**  
+*As a developer preparing for MVP,*  
+*I want to refactor the UI for improved visual hierarchy, accessibility, and layout consistency using design tokens,*  
+*so that the interface is clean, readable, and easy to adapt in the future.*
 
-**Priority:** Medium
-**Feature Category:** Technical Debt
+**Priority:** Medium  
+**Feature Category:** Technical Debt  
 **Story ID:** TD-02
 
-**Acceptance Criteria:**
-
-* [ ] Windsurf is used to analyze critical files and generate improvement suggestions.
-* [ ] Suggestions are prioritized and implemented one at a time.
-* [ ] Existing unit, integration, and E2E tests all pass after changes.
-* [ ] No regressions or functional changes occur.
-* [ ] A changelog file (`refactor-notes.md`) documents the visibility upgrades.
-
-**Notes:**
-
-* Covers improvements like naming clarity, component/hook modularity, and internal doc comments.
-* Includes UI and hook layers (e.g., `PortfolioPage.tsx`, `usePortfolio`, `context`, etc).
-* Builds on the SOLID refactor from TD-01, focusing on **comprehension** rather than responsibility split.
-
 ---
 
+### ✅ Acceptance Criteria
+
+- [ ] All UI components follow layout and spacing from `ui-mockups.md`
+- [ ] Design tokens from `style-guide.md` are used consistently for:
+  - Typography
+  - Color roles (`primary`, `error`, etc.)
+  - Spacing and border radius
+- [ ] Tailwind config is extended with semantic aliases (`--color-primary`, etc.)
+- [ ] Optional utility class wrappers (`.bg-primary`, `.text-error`) are added to `tokens.css`
+- [ ] All action elements have appropriate accessibility attributes (`aria-label`, tooltips)
+- [ ] The refactor results in **no logic changes**
+- [ ] All tests (unit, integration, E2E) still pass
+- [ ] `refactor-notes.md` documents class-level changes and token mapping decisions
+
+---
 
 ### 🧾 User Story 1: Add Crypto Asset with Quantity
 
