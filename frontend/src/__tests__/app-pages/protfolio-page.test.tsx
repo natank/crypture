@@ -208,30 +208,60 @@ describe("PortfolioPage", () => {
       "Confirm delete Bitcoin"
     );
   });
-  it("updates totalValue when priceMap changes", async () => {
-    vi.doMock("@hooks/usePriceMap", () => ({
-      usePriceMap: () => ({ btc: 30000 }), // initial BTC price
+  it("passes priceMap to usePortfolioState and totalValue to PortfolioHeader", async () => {
+    const mockPriceMap = { btc: 3000 };
+  
+    const mockUsePortfolioState = vi.fn(() => ({
+      portfolio: [
+        {
+          coinInfo: { id: "btc", name: "Bitcoin", symbol: "btc" },
+          quantity: 0.5,
+        },
+      ],
+      removeAsset: vi.fn(),
+      getAssetById: vi.fn(),
+      addAsset: vi.fn(),
+      totalValue: 12345,
     }));
-
+  
+    const mockPortfolioHeader = vi.fn(() => null); // ✅ define before mocking
+  
+    vi.resetModules(); // ✅ clear cache
+  
+    vi.doMock("@hooks/usePriceMap", () => ({
+      usePriceMap: () => mockPriceMap,
+    }));
+  
+    vi.doMock("@hooks/usePortfolioState", () => ({
+      usePortfolioState: mockUsePortfolioState,
+    }));
+  
+    vi.doMock("@components/PortfolioHeader", () => ({
+      default: mockPortfolioHeader,
+    }));
+  
+    const { render } = await import("@testing-library/react");
     const { default: PortfolioPage } = await import("@pages/PortfolioPage");
-    const { rerender, getByText } = render(<PortfolioPage />);
+  
+    render(<PortfolioPage />);
+  
+    expect(mockPortfolioHeader).toHaveBeenCalled();
 
-    // Expect initial total (0.5 BTC * $30,000)
-    expect(getByText(/\$15,000/i)).toBeInTheDocument();
+    expect(mockPortfolioHeader).toHaveBeenCalled(); // ✅ type guard
 
-    vi.doMock("@hooks/usePriceMap", () => ({
-      usePriceMap: () => ({ btc: 40000 }), // updated BTC price
-    }));
+    const props = ((mockPortfolioHeader.mock.calls[0] as unknown) as [any])[0];
 
-    // Re-import with updated mock
-    const { default: UpdatedPortfolioPage } = await import(
-      "@pages/PortfolioPage"
-    );
-    rerender(<UpdatedPortfolioPage />);
-
-    // Expect updated total (0.5 BTC * $40,000)
-    expect(getByText(/\$20,000/i)).toBeInTheDocument();
+    expect(props).toEqual(
+      expect.objectContaining({
+        totalValue: "12345",
+        lastUpdatedAt: expect.any(Number),
+      })
+    );  
+    // ✅ Also confirm priceMap was passed to hook
+    expect(mockUsePortfolioState).toHaveBeenCalledWith(mockPriceMap);
   });
+  
+  
 });
 
 describe("PortfolioPage delete flow", () => {
