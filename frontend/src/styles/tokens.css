@@ -1,0 +1,16 @@
+@layer components {
+    .bg-primary {
+      background-color: var(--color-primary);
+      color: white;
+    }
+  
+    .text-error {
+      color: var(--color-error);
+    }
+  
+    .border-subtle {
+      border-color: var(--color-border);
+      border-width: 1px;
+    }
+  }
+  

@@ -122,7 +122,7 @@ export function AddAssetModal({
             </button>
             <button
               onClick={handleSubmit}
-              className="bg-blue-600 text-white font-button px-4 py-2 rounded-md hover:bg-blue-700 disabled:opacity-50"
+              className="bg-primary text-white font-button px-4 py-2 rounded-md hover:bg-blue-700 disabled:opacity-50"
               disabled={loading}
             >
               {loading ? (
