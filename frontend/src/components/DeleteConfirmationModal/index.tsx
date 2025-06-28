@@ -17,32 +17,32 @@ export default function DeleteConfirmationModal({
 
   return (
     <div
-      className="fixed inset-0 bg-black bg-opacity-30 flex items-center justify-center z-50"
+      className="modal"
       role="dialog"
       aria-modal="true"
       aria-labelledby="delete-modal-title"
     >
-      <div className="bg-white p-6 rounded-2xl shadow-lg max-w-md w-full space-y-4">
+      <div className="modal-content card flex flex-col gap-8 sm:gap-6 p-6 sm:p-8" >
         <h2
           id="delete-modal-title"
-          className="text-xl font-semibold text-gray-900"
+          className="text-2xl sm:text-3xl font-bold text-error text-balance mb-2"
         >
           🗑️ Remove {assetName}?
         </h2>
-        <p className="text-sm text-gray-700">
-          This action will permanently delete this asset from your portfolio.
+        <p className="text-base text-text-muted text-balance">
+          This action will permanently delete this asset from your portfolio.<br />
           Are you sure you want to proceed?
         </p>
         <div className="flex justify-end gap-4 pt-4">
           <button
             onClick={onCancel}
-            className="bg-gray-100 text-gray-900 font-button px-4 py-2 rounded-md hover:bg-gray-200"
+            className="btn btn-outline"
           >
             ❌ Cancel
           </button>
           <button
             onClick={onConfirm}
-            className="bg-red-600 text-white font-button px-4 py-2 rounded-md hover:bg-red-700"
+            className="btn bg-error hover:bg-error/90 focus-visible:ring-error"
           >
             ✅ Confirm Delete
           </button>

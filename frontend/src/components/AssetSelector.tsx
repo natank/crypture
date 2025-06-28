@@ -20,7 +20,7 @@ export function AssetSelector({
   error,
 }: Props) {
   return (
-    <div className="space-y-2">
+    <div className="flex flex-col gap-3" >
       {error ? (
         <div className="text-sm text-red-600" role="alert">
           ⚠️ {error}
@@ -30,7 +30,7 @@ export function AssetSelector({
           id={id}
           data-testid="asset-select"
           disabled={disabled}
-          className="border border-gray-200 rounded-md px-3 py-2 w-full bg-white text-base"
+          className="input w-full"
           onChange={(e) => {
             const selected = coins.find((c) => c.id === e.target.value);
             if (selected) onSelect(selected);

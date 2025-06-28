@@ -1,4 +1,4 @@
-import "./App.css";
+
 import PortfolioPage from "@pages/PortfolioPage";
 const a = 'sdf'
 

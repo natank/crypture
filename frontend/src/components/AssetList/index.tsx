@@ -18,14 +18,14 @@ export default function AssetList({
   priceMap,
 }: AssetListProps) {
   return (
-    <section className="space-y-4">
+    <section className="flex flex-col gap-8 w-full p-4 sm:p-6 md:p-8" >
       {/* Section Header + Add Button */}
-      <div className="flex justify-between items-center">
-        <h2 className="text-base font-medium text-gray-900">Your Assets</h2>
+      <div className="flex items-center justify-between gap-4 mb-4" >
+        <h2 className="text-2xl font-bold text-balance text-primary mb-0">Your Assets</h2>
         <button
           ref={addButtonRef}
           onClick={onAddAsset}
-          className="bg-blue-100 text-blue-900 font-button px-4 py-2 rounded-md hover:bg-blue-200"
+          className="btn"
           data-testid="add-asset-button"
           aria-label="Add Asset"
         >
@@ -35,11 +35,11 @@ export default function AssetList({
 
       {/* Asset List or Empty State */}
       {assets.length === 0 ? (
-        <div className="text-gray-900 italic">
+        <div className="text-text-muted italic text-balance py-8 text-center">
           No assets yet. Add one to begin.
         </div>
       ) : (
-        <div className="divide-y divide-gray-200">
+        <div className="divide-y divide-border">
           {assets.map((asset) => {
             const symbol = asset.coinInfo.symbol.toLowerCase();
             const price = priceMap[symbol];

@@ -4,6 +4,18 @@ import AssetList from "@components/AssetList";
 import { PortfolioAsset } from "@hooks/usePortfolioState";
 import { vi } from "vitest";
 
+function findTokenLabel(symbol: string, name: string): HTMLElement {
+  return screen.getByText((_, el) => {
+    if (!el || el.tagName !== 'SPAN') return false;
+
+    const text = el.textContent?.toLowerCase() ?? '';
+    const hasBoth = text.includes(symbol.toLowerCase()) && text.includes(name.toLowerCase());
+    const hasOneChild = el.children.length === 1;
+
+    return hasBoth && hasOneChild;
+  });
+}
+
 const mockAssets: PortfolioAsset[] = [
   {
     coinInfo: {
@@ -56,8 +68,9 @@ describe("AssetList", () => {
         priceMap={mockPriceMap}
       />
     );
-    expect(screen.getByText(/btc \(bitcoin\)/i)).toBeInTheDocument();
-    expect(screen.getByText(/eth \(ethereum\)/i)).toBeInTheDocument();
+
+    expect(findTokenLabel("btc", "bitcoin")).toBeInTheDocument();
+    expect(findTokenLabel("eth", "ethereum")).toBeInTheDocument();
   });
 
   it("calls delete handler when row button is clicked", () => {

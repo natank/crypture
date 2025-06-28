@@ -14,11 +14,11 @@ export default function FilterSortControls({
   onSortChange,
 }: FilterSortControlsProps) {
   return (
-    <div className="flex flex-wrap items-end gap-4 mb-4">
-      <div className="flex flex-col sm:flex-row sm:items-center sm:gap-2">
+    <div className="flex flex-wrap items-end gap-6 mb-4 w-full" >
+      <div className="flex flex-col sm:flex-row sm:items-center gap-2 w-full max-w-xs" >
         <label
           htmlFor="filter-assets"
-          className="text-sm font-medium text-gray-700"
+          className="label"
         >
           Filter assets
         </label>
@@ -26,23 +26,23 @@ export default function FilterSortControls({
           id="filter-assets"
           type="text"
           placeholder="Filter assets..."
-          className="px-3 py-2 border border-gray-200 rounded-md w-full sm:w-64 placeholder:text-gray-700"
+          className="input w-full sm:w-64"
           data-testid="filter-input"
           value={filter}
           onChange={(e) => onFilterChange(e.target.value)}
         />
       </div>
 
-      <div className="flex items-center gap-2">
+      <div className="flex items-center gap-2 w-full max-w-xs" >
         <label
           htmlFor="sort-assets"
-          className="text-sm font-medium text-gray-700"
+          className="label"
         >
           Sort by
         </label>
         <select
           id="sort-assets"
-          className="px-3 py-2 border border-gray-200 rounded-md bg-white sm:w-48 w-full text-gray-900"
+          className="input bg-surface w-full sm:w-48"
           data-testid="sort-dropdown"
           value={sort}
           onChange={(e) => onSortChange(e.target.value)}

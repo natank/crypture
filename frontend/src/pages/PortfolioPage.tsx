@@ -80,8 +80,11 @@ export default function PortfolioPage() {
         <ErrorBanner message="⚠️ Error loading prices. Please try again later." />
       )}
 
-      <main role="main" className="max-w-4xl mx-auto p-4 space-y-6 bg-white">
-        <section className="space-y-6">
+      <main
+        role="main"
+        className="max-w-4xl mx-auto p-6 md:p-10 bg-surface rounded-lg shadow-lg flex flex-col gap-8 text-balance"
+      >
+        <section className="flex flex-col gap-6 w-full" >
           {/* 🔍 Filter & Sort */}
           <FilterSortControls
             filter={assetFilter}

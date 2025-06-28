@@ -7,7 +7,7 @@ type ErrorBannerProps = {
 export default function ErrorBanner({ message, onRetry }: ErrorBannerProps) {
   return (
     <div
-      className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded-md mt-4 mx-auto max-w-4xl"
+      className="bg-error/10 border border-error text-error px-4 py-3 rounded-lg shadow-sm mt-4 mx-auto max-w-4xl flex items-center gap-2"
       role="alert"
       aria-live="assertive"
     >
@@ -15,9 +15,9 @@ export default function ErrorBanner({ message, onRetry }: ErrorBannerProps) {
       {onRetry && (
         <button
           onClick={onRetry}
-          className="underline text-blue-600 ml-2 hover:text-blue-800"
+          className="btn btn-outline ml-2 px-3 py-1 text-sm"
         >
-          🔁 Retry
+          🔄 Retry
         </button>
       )}
     </div>

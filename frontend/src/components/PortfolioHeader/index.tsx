@@ -21,12 +21,12 @@ export default function PortfolioHeader({
     : null;
 
   return (
-    <header role="banner" className="space-y-1">
-      <h1 className="text-xl font-semibold text-gray-900">
-        💰 Total Portfolio Value: {formattedValue}
+    <header role="banner" className="grid gap-4 rounded p-4 mb-6">
+      <h1 className="flex flex-col items-center gap-2 text-balance text-2xl font-bold">
+      💰 Total Portfolio Value: {formattedValue}
       </h1>
       {relativeTime && (
-        <p className="text-sm text-gray-500">Last updated: {relativeTime}</p>
+        <p className="text-lg text-text-muted font-medium md:text-xl">Last updated: {relativeTime}</p>
       )}
     </header>
   );
