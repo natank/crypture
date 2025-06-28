@@ -34,6 +34,21 @@ export function AddAssetModal({
   const initialFocusRef = useRef<HTMLInputElement | null>(null);
 
   useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Enter') {
+        handleSubmit();
+      } else if (event.key === 'Escape') {
+        onClose();
+      }
+    };
+
+    document.addEventListener('keydown', handleKeyDown);
+    return () => {
+      document.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [handleSubmit, onClose]);
+
+  useEffect(() => {
     initialFocusRef.current?.focus();
   }, []);
 
@@ -62,10 +77,10 @@ export function AddAssetModal({
           </h2>
 
           {/* 🔍 Filterable Asset Selector */}
-          <div>
+          <div className="flex flex-col gap-4">
             <label
               htmlFor="asset-select"
-              className="label"
+              className="label block text-sm font-medium text-gray-700 mb-1"
             >
               Asset
             </label>
@@ -81,10 +96,10 @@ export function AddAssetModal({
           </div>
 
           {/* 🔢 Quantity Input */}
-          <div className="flex flex-col gap-2">
+          <div className="flex flex-col gap-4">
             <label
               htmlFor="asset-quantity"
-              className="label"
+              className="label block text-sm font-medium text-gray-700 mb-1"
             >
               Quantity
             </label>

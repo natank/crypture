@@ -1,11 +1,13 @@
 type PortfolioHeaderProps = {
-  totalValue?: string | null;
-  lastUpdatedAt?: number | null; // ✅ Add this
+  totalValue: string;
+  lastUpdatedAt: number | null;
+  className?: string; // Add this line
 };
 
 export default function PortfolioHeader({
   totalValue,
   lastUpdatedAt,
+  className,
 }: PortfolioHeaderProps) {
   const formattedValue =
     totalValue != null && !isNaN(Number(totalValue))
@@ -21,12 +23,17 @@ export default function PortfolioHeader({
     : null;
 
   return (
-    <header role="banner" className="grid gap-4 rounded p-4 mb-6">
+    <header
+      role="banner"
+      className={`grid gap-4 rounded p-4 mb-6 ${className}`}
+    >
       <h1 className="flex flex-col items-center gap-2 text-balance text-2xl font-bold">
-      💰 Total Portfolio Value: {formattedValue}
+        💰 Total Portfolio Value: {formattedValue}
       </h1>
       {relativeTime && (
-        <p className="text-lg text-text-muted font-medium md:text-xl">Last updated: {relativeTime}</p>
+        <p className="text-lg text-text-muted font-medium md:text-xl">
+          Last updated: {relativeTime}
+        </p>
       )}
     </header>
   );

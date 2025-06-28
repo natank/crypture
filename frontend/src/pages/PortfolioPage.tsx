@@ -74,6 +74,7 @@ export default function PortfolioPage() {
       <PortfolioHeader
         totalValue={totalValue.toString()}
         lastUpdatedAt={lastUpdatedAt}
+        className="flex items-center justify-between mb-4"
       />
 
       {error && (

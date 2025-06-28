@@ -21,6 +21,7 @@
   --space-sm: 1rem; /* 4 */
   --space-md: 1.5rem; /* 6 */
   --space-lg: 2rem; /* 8 */
+  --space-xl: 3rem; /* 12 */
 
   /* === Border Radius === */
   --radius-sm: 0.125rem; /* sm */
@@ -193,6 +194,24 @@
     background: rgba(30, 41, 59, 0.4);
     transition: background 0.2s;
     padding: var(--space-lg);
+  }
+  .container {
+    padding: var(--space-md);
+    margin: var(--space-md);
+  }
+}
+
+@media (min-width: 640px) {
+  .container {
+    padding: var(--space-lg);
+    margin: var(--space-lg);
+  }
+}
+
+@media (min-width: 768px) {
+  .container {
+    padding: var(--space-xl);
+    margin: var(--space-xl);
   }
 }
 
