@@ -60,54 +60,15 @@ This process ensures that implementation aligns tightly with user needs, design 
 
 # 🚀 Active Stories
 
-> X **Currently focused story:** TD-02
+> X **Currently focused story:** Pending Grooming
 
-## 🟢 FOCUSED Sprint Story: TD-02 – Visual/UX Refactor
+## 🟢 FOCUSED Sprint Story: Pending Grooming
 
 # 📦 Active Sprint stories
----
-
-
-## 🟢 Technical Story TD-02: UI Visibility Refactor and Design Token Integration (Windsurf-Informed)
-
-**User Story**  
-_As a developer preparing for MVP,_  
-_I want to refactor the UI for improved visual hierarchy, accessibility, and layout consistency using design tokens,_  
-_so that the interface is clean, readable, and easy to adapt in the future._
 
 ---
-
-### ✅ Acceptance Criteria
-
-- [ ] All UI components follow layout and spacing from `ui-mockups.md`
-- [ ] Design tokens from `style-guide.md` are used consistently for:
-  - Typography
-  - Color roles (`primary`, `error`, etc.)
-  - Spacing and border radius
-- [ ] Tailwind config is extended with semantic aliases (`--color-primary`, etc.)
-- [ ] Optional utility class wrappers (`.bg-primary`, `.text-error`) are added to `tokens.css`
-- [ ] All action elements have appropriate accessibility attributes (`aria-label`, tooltips)
-- [ ] The refactor results in **no logic changes**
-- [ ] All tests (unit, integration, E2E) still pass
-- [ ] `refactor-notes.md` documents class-level changes and token mapping decisions
-
----
-
-### 🔧 Implementation Tasks
-
-| Task Type             | Description                                                                                 | Status     |
-|-----------------------|---------------------------------------------------------------------------------------------|------------|
-| 🧠 Mockup Review       | Re-analyze `ui-mockups.md` layout, spacing, and structure for implementation readiness      | ✅ COMPLETED |
-| 📐 Component Audit     | Identify Tailwind class inconsistencies or hardcoded color values in components             | ✅ COMPLETED |
-| 🎨 Apply Refactor      | Update visual layout, spacing, and tokens across `PortfolioPage`, `AssetRow`, `AddAssetModal` | ⬜ Pending |
-| 🧩 Token System Setup  | Extend `tailwind.config.js` with CSS variable tokens (`--color-primary`, etc.)              | ⬜ Pending |
-| 📦 Utility Classes     | Define `.bg-primary`, `.text-error`, etc. via `@apply` in `tokens.css` (optional)           | ⬜ Pending |
-| ♿ Accessibility Pass   | Add tooltips, aria-labels, role hints, keyboard navigation targets                          | ⬜ Pending |
-| ✅ Test Verification   | Run all tests (unit, integration, E2E) to confirm UI behaves the same                       | ⬜ Pending |
-| 📄 Document Results    | Log visual refactor notes and token alias mapping in `refactor-notes.md`                    | ⬜ Pending |
 
 # 📦 Archived Sprints
-
 
 ## 🏁 User Story 1: Add Crypto Asset with Quantity
 
@@ -764,27 +725,26 @@ Completed On: 2025-05-27
 - All tests (unit, integration, E2E) pass
 - Styling and feedback align with `ui-mockups.md` and `style-guide.md`
 
-
 ## 🟢 Technical Story: TD-03 – Align UI/UX Design Docs with Visibility Standards (Windsurf-Aided)
 
 **User Story**
-*As a developer preparing for MVP delivery,*
-*I want Windsurf IDE to review our UI/UX documentation for visibility, consistency, and traceability,*
-*so that the codebase can be aligned with the intended design language and product goals.*
+_As a developer preparing for MVP delivery,_
+_I want Windsurf IDE to review our UI/UX documentation for visibility, consistency, and traceability,_
+_so that the codebase can be aligned with the intended design language and product goals._
 
 ---
 
 ### ✅ Acceptance Criteria
 
-* [x] Windsurf reviews the following documents:
-  * `ui-wireframes.md`
-  * `style-guide.md`
-  * `ui-mockups.md`
-  * `product-backlog.md` (design-driven user stories)
-* [x] A list of visibility issues and improvement suggestions is generated.
-* [x] Redundancies, inconsistencies, or unclear naming are flagged.
-* [x] Designer artifacts are updated to reflect accepted suggestions (if needed).
-* [X] The resulting guidance informs the follow-up code visibility audit (`TD-02`).
+- [x] Windsurf reviews the following documents:
+  - `ui-wireframes.md`
+  - `style-guide.md`
+  - `ui-mockups.md`
+  - `product-backlog.md` (design-driven user stories)
+- [x] A list of visibility issues and improvement suggestions is generated.
+- [x] Redundancies, inconsistencies, or unclear naming are flagged.
+- [x] Designer artifacts are updated to reflect accepted suggestions (if needed).
+- [x] The resulting guidance informs the follow-up code visibility audit (`TD-02`).
 
 ---
 
@@ -795,41 +755,105 @@ Completed On: 2025-05-27
 ## 🟢 Technical Story: TD-04 – Visual/UX Refactor of `ui-mockups.md` for Design System Alignment
 
 **User Story**
-*As a developer/designer preparing for MVP delivery,*
-*I want to visually and stylistically refactor `ui-mockups.md` to match the updated wireframes and style guide, without making any logical changes or altering the set of components/mockups,*
-*so that the mockups serve as an accurate, implementation-ready reference for frontend development.*
+_As a developer/designer preparing for MVP delivery,_
+_I want to visually and stylistically refactor `ui-mockups.md` to match the updated wireframes and style guide, without making any logical changes or altering the set of components/mockups,_
+_so that the mockups serve as an accurate, implementation-ready reference for frontend development._
 
 ---
 
 ### ✅ Acceptance Criteria
 
-* [X] Review all mockups for alignment with the latest wireframes and style guide (styling, layout, UX only) 
-see ui-mockups-td04-checklist.md
-* [X] Update Tailwind classes, tokens, and annotations to match the design system
-* [X] Ensure all explicit labels, tooltips, error placements, and visual cues are present as per the wireframes/style guide
-* [X] Do not add, remove, or logically alter any components/screens
-* [X] Add a checklist of visual/UX improvements to the end of `ui-mockups.md` and mark completed items
-* [X] Confirm that all mockups are implementation-ready and consistent with other design docs
+- [x] Review all mockups for alignment with the latest wireframes and style guide (styling, layout, UX only)
+      see ui-mockups-td04-checklist.md
+- [x] Update Tailwind classes, tokens, and annotations to match the design system
+- [x] Ensure all explicit labels, tooltips, error placements, and visual cues are present as per the wireframes/style guide
+- [x] Do not add, remove, or logically alter any components/screens
+- [x] Add a checklist of visual/UX improvements to the end of `ui-mockups.md` and mark completed items
+- [x] Confirm that all mockups are implementation-ready and consistent with other design docs
 
 ---
 
 ### 🔧 Implementation Tasks
 
-| Task Type            | Description                                                                                      | Status    |
-| -------------------- | ------------------------------------------------------------------------------------------------ | --------- |
-| 🧠 **Mockup Review** | Review each section of `ui-mockups.md` for visual/UX alignment with wireframes & style guide      | DONE |
-| 📝 **Checklist**     | Generate and insert a checklist of required visual/UX improvements at the end of `ui-mockups.md`  | DONE |
-| ✍️ **Refactor**      | Apply Tailwind/class/annotation updates—styling/layout/UX only, no logic or component changes     | DONE |
-| 🔄 **Design Sync**   | Confirm all mockups visually match the rest of the design system and are ready for development    | DONE |
+| Task Type            | Description                                                                                      | Status |
+| -------------------- | ------------------------------------------------------------------------------------------------ | ------ |
+| 🧠 **Mockup Review** | Review each section of `ui-mockups.md` for visual/UX alignment with wireframes & style guide     | DONE   |
+| 📝 **Checklist**     | Generate and insert a checklist of required visual/UX improvements at the end of `ui-mockups.md` | DONE   |
+| ✍️ **Refactor**      | Apply Tailwind/class/annotation updates—styling/layout/UX only, no logic or component changes    | DONE   |
+| 🔄 **Design Sync**   | Confirm all mockups visually match the rest of the design system and are ready for development   | DONE   |
 
 ---
 
-
-| Task Type            | Description                                                                                            | Status    |
-| -------------------- | ------------------------------------------------------------------------------------------------------ | --------- |
-| 🧠 **Doc Analysis**  | Prompt Windsurf to analyze `ui-wireframes.md`, `style-guide.md`, `ui-mockups.md`, `product-backlog.md` | ✅ Done   |
-| 📝 **Issue Catalog** | Extract and document Windsurf’s visibility suggestions (e.g., naming, structure, style usage)          | ✅ Done   |
-| ✍️ **Revise Docs**   | Apply agreed-upon updates to relevant docs (UI or styling inconsistencies, naming alignment)           | ✅ Done   |
-| 🔄 **Design Sync**   | Review final docs for clarity and consistency; ensure visual flow matches product intent               | ✅ Done   |
+| Task Type            | Description                                                                                            | Status  |
+| -------------------- | ------------------------------------------------------------------------------------------------------ | ------- |
+| 🧠 **Doc Analysis**  | Prompt Windsurf to analyze `ui-wireframes.md`, `style-guide.md`, `ui-mockups.md`, `product-backlog.md` | ✅ Done |
+| 📝 **Issue Catalog** | Extract and document Windsurf’s visibility suggestions (e.g., naming, structure, style usage)          | ✅ Done |
+| ✍️ **Revise Docs**   | Apply agreed-upon updates to relevant docs (UI or styling inconsistencies, naming alignment)           | ✅ Done |
+| 🔄 **Design Sync**   | Review final docs for clarity and consistency; ensure visual flow matches product intent               | ✅ Done |
 | 📄 **Log Summary**   | Add design-related visibility changes to `refactor-notes.md`                                           | ✅ Done |
 | 🔁 **Inform TD-02**  | Feed finalized design naming/structure recommendations into `TD-02` task planning                      | ✅ Done |
+
+## 🟢 Technical Story TD-02: UI Visibility Refactor and Design Token Integration (Windsurf-Informed)
+
+**User Story**
+_As a developer preparing for MVP,_
+_I want to refactor the UI for improved visual hierarchy, accessibility, and layout consistency using design tokens,_
+_so that the interface is clean, readable, and easy to adapt in the future._
+
+---
+
+### ✅ Acceptance Criteria
+
+- [x] All UI components follow layout and spacing from `ui-mockups.md`
+- [x] Design tokens from `style-guide.md` are used consistently for:
+
+  - Typography
+  - Color roles (`primary`, `error`, etc.)
+  - Spacing and border radius
+
+- [x] Tailwind config is extended with semantic aliases (`--color-primary`, etc.)
+- [x] Optional utility class wrappers (`.bg-primary`, `.text-error`) are added to `tokens.css`
+- [x] All action elements have appropriate accessibility attributes (`aria-label`, tooltips)
+- [x] The refactor results in **no logic changes**
+- [x] All tests (unit, integration, E2E) still pass
+
+---
+
+### 🔧 Implementation Tasks
+
+| Task Type             | Description                                                                                   | Status       |
+| --------------------- | --------------------------------------------------------------------------------------------- | ------------ |
+| 🧠 Mockup Review      | Re-analyze `ui-mockups.md` layout, spacing, and structure for implementation readiness        | ✅ Completed |
+| 📐 Component Audit    | Identify Tailwind class inconsistencies or hardcoded color values in components               | ✅ Completed |
+| 🎨 Apply Refactor     | Update visual layout, spacing, and tokens across `PortfolioPage`, `AssetRow`, `AddAssetModal` | ✅ Completed |
+| 🧩 Token System Setup | Extend `tailwind.config.js` with CSS variable tokens (`--color-primary`, etc.)                | ✅ Completed |
+| 📦 Utility Classes    | Define `.bg-primary`, `.text-error`, etc. via `@apply` in `tokens.css` (optional)             | ✅ Completed |
+| ♿ Accessibility Pass | Add tooltips, aria-labels, role hints, keyboard navigation targets                            | ✅ Completed |
+| ✅ Test Verification  | Run all tests (unit, integration, E2E) to confirm UI behaves the same                         | ✅ Completed |
+| 📄 Document Results   | Log visual refactor notes and token alias mapping in `refactor-notes.md`                      | ✅ Completed |
+
+---
+
+### 📝 Commits Summary
+
+- `fix:` simplify label styling and add test id to filter input
+- `feat:` improve UI layout and accessibility across portfolio components
+- `refactor:` migrate from CSS files to Tailwind utility classes and custom theme tokens
+- `feat:` configure Tailwind CSS with custom design tokens and theme setup
+
+---
+
+### 🧪 Verification
+
+- All E2E tests pass without changes
+- Visual output matches `ui-mockups.md`
+- Components are Storybook-compatible and use consistent tokens/utilities
+
+---
+
+### ✅ Status: Completed
+
+🗓️ Completed On: 2025-06-28
+🧩 Linked Story: TD-02 – UI Visibility Refactor and Design Token Integration
+
+---

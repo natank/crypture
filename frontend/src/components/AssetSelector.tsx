@@ -20,9 +20,9 @@ export function AssetSelector({
   error,
 }: Props) {
   return (
-    <div className="space-y-2">
+    <div className="flex flex-col gap-3" >
       {error ? (
-        <div className="text-sm text-red-600" role="alert">
+        <div className="text-sm text-red-600" role="alert" aria-live="assertive">
           ⚠️ {error}
         </div>
       ) : (
@@ -30,7 +30,9 @@ export function AssetSelector({
           id={id}
           data-testid="asset-select"
           disabled={disabled}
-          className="border border-gray-200 rounded-md px-3 py-2 w-full bg-white text-base"
+          className="input w-full"
+          aria-labelledby="asset-select-label"
+          aria-required="true"
           onChange={(e) => {
             const selected = coins.find((c) => c.id === e.target.value);
             if (selected) onSelect(selected);
@@ -38,7 +40,7 @@ export function AssetSelector({
         >
           <option value="">Select a crypto asset</option>
           {coins.map((coin) => (
-            <option key={coin.id} value={coin.id}>
+            <option key={coin.id} value={coin.id} aria-label={`${coin.name} (${coin.symbol.toUpperCase()})`}>
               {coin.name} ({coin.symbol.toUpperCase()})
             </option>
           ))}
@@ -47,6 +49,7 @@ export function AssetSelector({
 
       <div className="mt-2">
         <label
+          id="asset-select-label"
           htmlFor="asset-search"
           className="block text-sm font-medium text-gray-700"
         >
@@ -57,10 +60,14 @@ export function AssetSelector({
           type="text"
           placeholder="Search assets..."
           className="border border-gray-200 rounded-md px-3 py-2 w-full text-base"
+          aria-describedby="asset-search-help"
           value={search}
           onChange={(e) => onSearchChange(e.target.value)}
           disabled={disabled || !!error}
         />
+        <div id="asset-search-help" className="sr-only">
+          Enter text to filter the list of assets.
+        </div>
       </div>
     </div>
   );

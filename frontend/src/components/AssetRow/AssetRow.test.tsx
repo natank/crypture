@@ -15,8 +15,15 @@ const mockAsset: PortfolioAsset = {
 describe("AssetRow", () => {
   it("renders asset name and quantity", () => {
     render(<AssetRow asset={mockAsset} onDelete={() => {}} />);
-    expect(screen.getByText(/btc \(bitcoin\)/i)).toBeInTheDocument();
-    expect(screen.getByText(/qty: 0.5/i)).toBeInTheDocument();
+    expect(
+      screen.getByText((_, element) => {
+        const text = element?.textContent?.toLowerCase() ?? '';
+        const isCorrectText = text.includes('btc') && text.includes('bitcoin');
+        const isLeafSpan = element?.tagName === 'SPAN' && element.children.length === 1;
+        return isCorrectText && isLeafSpan;
+      })
+    ).toBeInTheDocument();
+        expect(screen.getByText(/qty: 0.5/i)).toBeInTheDocument();
   });
 
   it("fires delete handler on click", () => {

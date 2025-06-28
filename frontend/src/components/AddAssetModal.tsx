@@ -34,12 +34,27 @@ export function AddAssetModal({
   const initialFocusRef = useRef<HTMLInputElement | null>(null);
 
   useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Enter') {
+        handleSubmit();
+      } else if (event.key === 'Escape') {
+        onClose();
+      }
+    };
+
+    document.addEventListener('keydown', handleKeyDown);
+    return () => {
+      document.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [handleSubmit, onClose]);
+
+  useEffect(() => {
     initialFocusRef.current?.focus();
   }, []);
 
   return (
     <div
-      className="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50"
+      className="modal flex items-center justify-center bg-black/40 backdrop-blur-sm p-4 sm:p-8"
       role="dialog"
       aria-modal="true"
       aria-labelledby="add-asset-title"
@@ -53,38 +68,38 @@ export function AddAssetModal({
             document.getElementById("asset-quantity") || document.body,
         }}
       >
-        <div className="bg-white p-6 rounded-2xl shadow-lg max-w-md w-full space-y-4">
+        <div className="modal-content card max-w-lg w-full relative flex flex-col gap-8 sm:gap-6 p-6 sm:p-8" >
           <h2
             id="add-asset-title"
-            className="text-xl font-semibold text-gray-900"
+            className="text-2xl sm:text-3xl font-bold text-balance text-primary mb-2"
           >
             ➕ Add Crypto Asset
           </h2>
 
           {/* 🔍 Filterable Asset Selector */}
-          <div>
+          <div className="flex flex-col gap-4">
             <label
               htmlFor="asset-select"
-              className="block text-sm font-medium text-gray-700"
+              className="label block text-sm font-medium text-gray-700 mb-1"
             >
               Asset
             </label>
             <AssetSelector
               id="asset-select"
-              coins={coins} // ✅ filtered coin list
-              search={search} // ✅ search input value
-              onSearchChange={setSearch} // ✅ search state updater
-              onSelect={setSelectedCoin} // ✅ form logic handler
+              coins={coins}
+              search={search}
+              onSearchChange={setSearch}
+              onSelect={setSelectedCoin}
               disabled={loading}
               error={error}
             />
           </div>
 
           {/* 🔢 Quantity Input */}
-          <div className="space-y-2">
+          <div className="flex flex-col gap-4">
             <label
               htmlFor="asset-quantity"
-              className="block text-sm font-medium text-gray-700"
+              className="label block text-sm font-medium text-gray-700 mb-1"
             >
               Quantity
             </label>
@@ -92,7 +107,7 @@ export function AddAssetModal({
               id="asset-quantity"
               type="number"
               placeholder="0.5"
-              className="border border-gray-200 rounded-md px-3 py-2 w-full"
+              className="input w-full rounded-md border border-border px-3 py-2 text-base shadow-sm focus:outline-none focus-visible:ring-2 focus-visible:ring-primary transition"
               value={quantity}
               onChange={(e) => setQuantity(e.target.value)}
               disabled={loading}
@@ -103,7 +118,7 @@ export function AddAssetModal({
           {/* ⚠️ Error Message */}
           {formError && (
             <div
-              className="text-sm text-red-600 mt-2"
+              className="text-sm text-error mt-2"
               role="alert"
               aria-live="assertive"
             >
@@ -115,14 +130,14 @@ export function AddAssetModal({
           <div className="flex justify-end gap-4 pt-4">
             <button
               onClick={onClose}
-              className="bg-gray-100 text-gray-900 font-button px-4 py-2 rounded-md hover:bg-gray-200"
+              className="btn btn-outline px-4 py-2 rounded-md font-medium transition-colors duration-150 shadow-sm border border-primary bg-transparent text-primary focus:outline-none focus-visible:ring-2 focus-visible:ring-primary disabled:opacity-60 disabled:cursor-not-allowed"
               disabled={loading}
             >
               ❌ Cancel
             </button>
             <button
               onClick={handleSubmit}
-              className="bg-blue-600 text-white font-button px-4 py-2 rounded-md hover:bg-blue-700 disabled:opacity-50"
+              className="btn px-4 py-2 rounded-md font-medium transition-colors duration-150 shadow-sm focus:outline-none focus-visible:ring-2 focus-visible:ring-primary disabled:opacity-60 disabled:cursor-not-allowed"
               disabled={loading}
             >
               {loading ? (
