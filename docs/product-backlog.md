@@ -10,25 +10,26 @@ Stories are grouped by feature category and prioritized based on their importanc
 
 ## 🗂 Summary of Backlog Items
 
-| ID  | Title                                             | Priority | Feature Category           | Status  |
-| --- | ------------------------------------------------- | -------- | -------------------------- | ------- |
-| 1   | Add Crypto Asset with Quantity                    | High     | Core Portfolio Management  | DONE    |
-| 2   | Delete Crypto Asset                               | High     | Core Portfolio Management  | DONE    |
-| 3   | Calculate and Display Total Portfolio Value       | High     | Core Portfolio Management  | DONE    |
-| 4   | Fetch Real-Time Prices via CoinGecko API          | High     | Real-Time Data Integration | DONE    |
-| 5   | Real-Time Value Updates on Change                 | High     | Real-Time Data Integration | DONE    |
-| 0   | Render Portfolio Overview Layout                  | High     | UI and Usability           | DONE    |
-| 6   | Filter/Sort Assets by Name or Value               | Medium   | UI and Usability           | Pending |
-| 7   | Handle UI States (Loading, Error)                 | Medium   | UI and Usability           | Pending |
-| 8   | Intuitive Interface for Non-Technical Users       | Medium   | UI and Usability           | Pending |
-| 9   | Persist Portfolio in Local Storage/Backend        | Low      | Extended Features          | Pending |
-| 10  | Export/Import Portfolio Data (CSV/JSON)           | Medium   | Extended Features          | Pending |
-| 11  | Add Charting for Price History                    | Low      | Extended Features          | Pending |
-| 12  | Enable User Authentication                        | Low      | Extended Features          | Pending |
-| 13  | Refactor Sprint 1 Code to Follow SOLID Principles | Medium   | Technical Debt             | Pending |
-| TD-02 | UI Visibility Refactor and Design Token Integration | Medium   | Technical Debt             | Pending |
-| TD-03  | Windsurf-Aided Review of UI/UX Design Docs         | Medium   | Technical Debt             | Pending |
-| TD-04  | Visual/UX Refactor of `ui-mockups.md` for Design System Alignment         | Medium   | Technical Debt             | DONE |
+| ID    | Title                                                             | Priority | Feature Category           | Status  |
+| ----- | ----------------------------------------------------------------- | -------- | -------------------------- | ------- |
+| 1     | Add Crypto Asset with Quantity                                    | High     | Core Portfolio Management  | DONE    |
+| 2     | Delete Crypto Asset                                               | High     | Core Portfolio Management  | DONE    |
+| 3     | Calculate and Display Total Portfolio Value                       | High     | Core Portfolio Management  | DONE    |
+| 4     | Fetch Real-Time Prices via CoinGecko API                          | High     | Real-Time Data Integration | DONE    |
+| 5     | Real-Time Value Updates on Change                                 | High     | Real-Time Data Integration | DONE    |
+| 0     | Render Portfolio Overview Layout                                  | High     | UI and Usability           | DONE    |
+| 6     | Filter/Sort Assets by Name or Value                               | Medium   | UI and Usability           | Pending |
+| 7     | Handle UI States (Loading, Error)                                 | Medium   | UI and Usability           | Pending |
+| 8     | Intuitive Interface for Non-Technical Users                       | Medium   | UI and Usability           | Pending |
+| 9     | Persist Portfolio in Local Storage/Backend                        | Low      | Extended Features          | Pending |
+| 10    | Export/Import Portfolio Data (CSV/JSON)                           | Medium   | Extended Features          | Pending |
+| 11    | Add Charting for Price History                                    | Low      | Extended Features          | Pending |
+| 12    | Enable User Authentication                                        | Low      | Extended Features          | Pending |
+| 13    | Refactor Sprint 1 Code to Follow SOLID Principles                 | Medium   | Technical Debt             | Pending |
+| TD-02 | UI Visibility Refactor and Design Token Integration               | Medium   | Technical Debt             | ✅ Done |
+| TD-03 | Windsurf-Aided Review of UI/UX Design Docs                        | Medium   | Technical Debt             | Pending |
+| TD-04 | Visual/UX Refactor of `ui-mockups.md` for Design System Alignment | Medium   | Technical Debt             | DONE    |
+
 ---
 
 Perfect. Here's your new technical debt user story for design doc alignment via Windsurf:
@@ -36,20 +37,20 @@ Perfect. Here's your new technical debt user story for design doc alignment via 
 ---
 
 ## 🧾 User Story TD-04
-**User Story**
-*As a developer/designer preparing for MVP delivery,*
-*I want to visually and stylistically refactor `ui-mockups.md` to match the updated wireframes and style guide, without making any logical changes or altering the set of components/mockups,*
-*so that the mockups serve as an accurate, implementation-ready reference for frontend development.*
 
+**User Story**
+_As a developer/designer preparing for MVP delivery,_
+_I want to visually and stylistically refactor `ui-mockups.md` to match the updated wireframes and style guide, without making any logical changes or altering the set of components/mockups,_
+_so that the mockups serve as an accurate, implementation-ready reference for frontend development._
 
 ---
 
 ## 🧾 User Story TD-03: Align UI/UX Design Docs with Visibility Standards (Windsurf-Aided)
 
 **User Story**
-*As a developer preparing for MVP delivery,*
-*I want Windsurf IDE to review our UI/UX documentation for visibility, consistency, and traceability,*
-*so that the codebase can be aligned with the intended design language and product goals.*
+_As a developer preparing for MVP delivery,_
+_I want Windsurf IDE to review our UI/UX documentation for visibility, consistency, and traceability,_
+_so that the codebase can be aligned with the intended design language and product goals._
 
 **Priority:** Medium
 **Feature Category:** Technical Debt
@@ -59,130 +60,75 @@ Perfect. Here's your new technical debt user story for design doc alignment via 
 
 ### ✅ Acceptance Criteria
 
-* [X] Windsurf reviews the following documents:
+- [x] Windsurf reviews the following documents:
 
-  * `ui-wireframes.md`
-  * `style-guide.md`
-  * `ui-mockups.md`
-  * `product-backlog.md` (focus on design-driven stories)
-* [X] A list of visibility issues and improvement suggestions is generated.
-* [X] Redundancies, inconsistencies, or unclear naming are flagged.
-* [X] Designer artifacts are updated to reflect accepted suggestions (if needed).
-* [X] Summary of improvements is added to `refactor-notes.md`.
-* [X] The resulting guidance informs the follow-up code visibility audit (`TD-02`).
+  - `ui-wireframes.md`
+  - `style-guide.md`
+  - `ui-mockups.md`
+  - `product-backlog.md` (focus on design-driven stories)
+
+- [x] A list of visibility issues and improvement suggestions is generated.
+- [x] Redundancies, inconsistencies, or unclear naming are flagged.
+- [x] Designer artifacts are updated to reflect accepted suggestions (if needed).
+- [x] Summary of improvements is added to `refactor-notes.md`.
+- [x] The resulting guidance informs the follow-up code visibility audit (`TD-02`).
 
 ---
 
 ### 🔧 Implementation Tasks
 
-| Task Type            | Description                                                                        | Status    |
-| -------------------- | ---------------------------------------------------------------------------------- | --------- |
-| 🧠 **Doc Analysis**  | Prompt Windsurf to review UI/UX docs for visibility issues                         | DONE |
-| 📝 **Issue Catalog** | Summarize Windsurf’s findings in a markdown checklist                              | DONE|
-| ✍️ **Revise Docs**   | Apply accepted changes to `ui-wireframes.md`, `style-guide.md`, or `ui-mockups.md` | DONE|
-| 📄 **Sync Summary**  | Log findings to `refactor-notes.md` and close the loop to TD-02 planning           | DONE|
+| Task Type            | Description                                                                        | Status |
+| -------------------- | ---------------------------------------------------------------------------------- | ------ |
+| 🧠 **Doc Analysis**  | Prompt Windsurf to review UI/UX docs for visibility issues                         | DONE   |
+| 📝 **Issue Catalog** | Summarize Windsurf’s findings in a markdown checklist                              | DONE   |
+| ✍️ **Revise Docs**   | Apply accepted changes to `ui-wireframes.md`, `style-guide.md`, or `ui-mockups.md` | DONE   |
+| 📄 **Sync Summary**  | Log findings to `refactor-notes.md` and close the loop to TD-02 planning           | DONE   |
 
 ---
 
+## 🏁 TD-02 – UI Visibility Refactor and Design Token Integration (Windsurf-Informed)
 
-## 🧾 User Story TD-02: UI Visibility Refactor and Design Token Integration (Windsurf-Informed)
+**User Story**
+_As a developer preparing for MVP,_
+_I want to refactor the UI for improved visual hierarchy, accessibility, and layout consistency using design tokens,_
+_so that the interface is clean, readable, and easy to adapt in the future._
 
-**User Story**  
-*As a developer preparing for MVP,*  
-*I want to refactor the UI for improved visual hierarchy, accessibility, and layout consistency using design tokens,*  
-*so that the interface is clean, readable, and easy to adapt in the future.*
-
-**Priority:** Medium  
-**Feature Category:** Technical Debt  
-**Story ID:** TD-02
+**Priority:** Medium
+**Feature Category:** Technical Debt
+**Status:** ✅ Done
+**Completed On:** 2025-06-28
 
 ---
 
 ### ✅ Acceptance Criteria
 
-- [ ] All UI components follow layout and spacing from `ui-mockups.md`
-- [ ] Design tokens from `style-guide.md` are used consistently for:
+- [x] Layout and spacing match `ui-mockups.md`
+- [x] Design tokens from `style-guide.md` used for:
+
   - Typography
-  - Color roles (`primary`, `error`, etc.)
-  - Spacing and border radius
-- [ ] Tailwind config is extended with semantic aliases (`--color-primary`, etc.)
-- [ ] Optional utility class wrappers (`.bg-primary`, `.text-error`) are added to `tokens.css`
-- [ ] All action elements have appropriate accessibility attributes (`aria-label`, tooltips)
-- [ ] The refactor results in **no logic changes**
-- [ ] All tests (unit, integration, E2E) still pass
-- [ ] `refactor-notes.md` documents class-level changes and token mapping decisions
+  - Semantic colors (`primary`, `error`, etc.)
+  - Border radius and spacing
+
+- [x] Tailwind config extended with CSS variable tokens
+- [x] `.bg-primary`, `.text-error`, etc. defined in `tokens.css`
+- [x] All interactive elements have `aria-label`s and accessibility improvements
+- [x] No logic changes introduced; visual only
+- [x] All tests (unit, integration, E2E) pass unchanged
 
 ---
 
-### 🧾 User Story 1: Add Crypto Asset with Quantity
+### 🔧 Implementation Summary
 
-**User Story**  
-As a casual crypto investor,  
-I want to manually add a cryptocurrency with a quantity,  
-so that I can track how much of each asset I own in my portfolio.
+- Migrated from manual CSS to utility-first styling with semantic token wrappers
+- Configured `tailwind.config.js` with variable-driven theme tokens
+- Cleaned up layout, spacing, and element structure across:
 
-**Priority:** High
+  - `PortfolioPage`
+  - `AssetRow`
+  - `AddAssetModal`
 
-**Acceptance Criteria:**
-
-- [x] 1.1 The user can enter a cryptocurrency name or symbol (e.g., BTC, ETH).
-- [x] 1.2 The user can input a numeric quantity (e.g., 0.5 BTC).
-- [x] 1.3 The asset and quantity are added to the portfolio list upon confirmation (e.g., pressing “Add”).
-- [x] 1.4 Invalid or empty inputs are rejected with an appropriate error message.
-- [x] 1.5 The input fields reset after a successful addition.
-- [x] 1.6 The newly added asset appears in the portfolio with its quantity and name.
-
-**Notes:**
-
-- No authentication required.
-- Price value will be fetched later (see real-time batch).
-- UI should be intuitive (e.g., dropdown or autocomplete for asset selection).
-
-### 🧾 User Story 2: Delete Crypto Asset
-
-**User Story**  
-As a personal finance hobbyist,  
-I want to remove an asset from my portfolio,  
-so that I can keep my holdings list accurate and up-to-date.
-
-**Priority:** High
-
-**Acceptance Criteria:**
-
-- [x] 2.1 Each asset listed in the portfolio has a visible delete/remove button.
-- [x] 2.2 Clicking the delete button removes the asset and its data from the portfolio.
-- [x] 2.3 A confirmation prompt appears before deletion (to avoid accidental removal).
-- [x] 2.4 Once deleted, the asset is no longer visible in the list or included in calculations.
-- [x] 2.5 Deletion works correctly for all supported assets without breaking the UI.
-
-**Notes:**
-
-- This complements the "Add Asset" story for basic CRUD operations.
-- No backend or authentication involved.
-- Can be implemented via simple state management (e.g., array filtering).
-
-### 🧾 User Story 3: Calculate and Display Total Portfolio Value
-
-**User Story**  
-As a new crypto enthusiast,  
-I want to see the total value of my holdings calculated in real-time,  
-so that I can understand how much my portfolio is worth overall.
-
-**Priority:** High
-
-**Acceptance Criteria:**
-
-- [x] 2.1 The application multiplies each asset’s quantity by its current market price.
-- [x] 2.2 The portfolio total value is displayed prominently on the interface.
-- [x] 2.3 The total value updates automatically when a new asset is added or an existing one is removed.
-- [x] 2.4 The value updates whenever the fetched market prices change.
-- [x] 2.5 In case of price fetch failure, the total value should be omitted or show a fallback state.
-
-**Notes:**
-
-- Depends on successful price fetching (see Real-Time Data Integration stories).
-- Total should reflect real-time data accuracy.
-- This is a key user need stated in the vision for quick, reliable insight.
+- Validated implementation against `ui-mockups.md` and `style-guide.md`
+- Verified accessibility, tooltips, and test ID integration
 
 ---
 
