@@ -57,7 +57,7 @@ export class PortfolioPage {
     this.assetList = page.locator("[data-testid='asset-list']");
     this.assetItemBySymbol = (symbol: string) =>
       page.getByText(new RegExp(`${symbol}\\s*\\(`, "i"));
-    this.assetQuantityBySymbol = () =>
+    this.assetQuantityBySymbol = (symbol: string) =>
       page.getByText(new RegExp(`Qty:\\s*\\d+(\\.\\d+)?`, "i"));
   }
 
@@ -93,5 +93,33 @@ export class PortfolioPage {
       .locator("div[role='row'], div") // generic fallback if role isn't set
       .filter({ hasText: symbol.toUpperCase() }) // match by BTC, ETH, etc.
       .first();
+  }
+
+  // Method to sort assets by name
+  async sortByName(order: 'asc' | 'desc') {
+    await this.sortDropdown.selectOption(order === 'asc' ? 'name-asc' : 'name-desc');
+  }
+
+  // Method to sort assets by value
+  async sortByValue(order: 'asc' | 'desc') {
+    await this.sortDropdown.selectOption(order === 'asc' ? 'value-asc' : 'value-desc');
+  }
+
+  // Method to get asset names
+  async getAssetNames(): Promise<string[]> {
+    const assetNames = await this.assetList.locator('.asset-name').allTextContents();
+    return assetNames;
+  }
+
+  // Method to get asset values
+  async getAssetValues(): Promise<number[]> {
+    const assetValues = await this.assetList.locator('.asset-value').evaluateAll(nodes => nodes.map(n => parseFloat(n.textContent || '0')));
+    return assetValues;
+  }
+
+  // Method to filter assets by name
+  async filterByName(partialName: string) {
+    await this.filterInput.fill(partialName);
+    await this.page.keyboard.press('Enter');
   }
 }

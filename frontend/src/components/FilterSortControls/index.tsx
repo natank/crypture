@@ -1,6 +1,6 @@
 import React from "react";
 
-type FilterSortControlsProps = {
+export type FilterSortControlsProps = {
   filter: string;
   onFilterChange: (value: string) => void;
   sort: string;
