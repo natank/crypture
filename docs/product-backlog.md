@@ -10,25 +10,25 @@ Stories are grouped by feature category and prioritized based on their importanc
 
 ## 🗂 Summary of Backlog Items
 
-| ID    | Title                                                             | Priority | Feature Category           | Status  |
-| ----- | ----------------------------------------------------------------- | -------- | -------------------------- | ------- |
-| 1     | Add Crypto Asset with Quantity                                    | High     | Core Portfolio Management  | DONE    |
-| 2     | Delete Crypto Asset                                               | High     | Core Portfolio Management  | DONE    |
-| 3     | Calculate and Display Total Portfolio Value                       | High     | Core Portfolio Management  | DONE    |
-| 4     | Fetch Real-Time Prices via CoinGecko API                          | High     | Real-Time Data Integration | DONE    |
-| 5     | Real-Time Value Updates on Change                                 | High     | Real-Time Data Integration | DONE    |
-| 0     | Render Portfolio Overview Layout                                  | High     | UI and Usability           | DONE    |
-| 6     | Filter/Sort Assets by Name or Value                               | Medium   | UI and Usability           | Pending |
-| 7     | Handle UI States (Loading, Error)                                 | Medium   | UI and Usability           | Pending |
-| 8     | Intuitive Interface for Non-Technical Users                       | Medium   | UI and Usability           | Pending |
-| 9     | Persist Portfolio in Local Storage/Backend                        | Low      | Extended Features          | Pending |
-| 10    | Export/Import Portfolio Data (CSV/JSON)                           | Medium   | Extended Features          | Pending |
-| 11    | Add Charting for Price History                                    | Low      | Extended Features          | Pending |
-| 12    | Enable User Authentication                                        | Low      | Extended Features          | Pending |
-| 13    | Refactor Sprint 1 Code to Follow SOLID Principles                 | Medium   | Technical Debt             | Pending |
-| TD-02 | UI Visibility Refactor and Design Token Integration               | Medium   | Technical Debt             | ✅ Done |
-| TD-03 | Windsurf-Aided Review of UI/UX Design Docs                        | Medium   | Technical Debt             | Pending |
-| TD-04 | Visual/UX Refactor of `ui-mockups.md` for Design System Alignment | Medium   | Technical Debt             | DONE    |
+| ID    | Title                                                             | Priority                            | Feature Category           | Status           |
+| ----- | ----------------------------------------------------------------- | ----------------------------------- | -------------------------- | ---------------- | ----------- |
+| 1     | Add Crypto Asset with Quantity                                    | High                                | Core Portfolio Management  | DONE             |
+| 2     | Delete Crypto Asset                                               | High                                | Core Portfolio Management  | DONE             |
+| 3     | Calculate and Display Total Portfolio Value                       | High                                | Core Portfolio Management  | DONE             |
+| 4     | Fetch Real-Time Prices via CoinGecko API                          | High                                | Real-Time Data Integration | DONE             |
+| 5     | Real-Time Value Updates on Change                                 | High                                | Real-Time Data Integration | DONE             |
+| 0     | Render Portfolio Overview Layout                                  | High                                | UI and Usability           | DONE             |
+| +     | 6                                                                 | Filter/Sort Assets by Name or Value | Medium                     | UI and Usability | In Progress |
+| 7     | Handle UI States (Loading, Error)                                 | Medium                              | UI and Usability           | Pending          |
+| 8     | Intuitive Interface for Non-Technical Users                       | Medium                              | UI and Usability           | Pending          |
+| 9     | Persist Portfolio in Local Storage/Backend                        | Low                                 | Extended Features          | Pending          |
+| 10    | Export/Import Portfolio Data (CSV/JSON)                           | Medium                              | Extended Features          | Pending          |
+| 11    | Add Charting for Price History                                    | Low                                 | Extended Features          | Pending          |
+| 12    | Enable User Authentication                                        | Low                                 | Extended Features          | Pending          |
+| 13    | Refactor Sprint 1 Code to Follow SOLID Principles                 | Medium                              | Technical Debt             | Pending          |
+| TD-02 | UI Visibility Refactor and Design Token Integration               | Medium                              | Technical Debt             | ✅ Done          |
+| TD-03 | Windsurf-Aided Review of UI/UX Design Docs                        | Medium                              | Technical Debt             | Pending          |
+| TD-04 | Visual/UX Refactor of `ui-mockups.md` for Design System Alignment | Medium                              | Technical Debt             | DONE             |
 
 ---
 
