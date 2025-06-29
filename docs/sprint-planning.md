@@ -60,11 +60,15 @@ This process ensures that implementation aligns tightly with user needs, design 
 
 # 🚀 Active Stories
 
-> X **Currently focused story:** User Story 6: Filter/Sort Assets by Name or Value
+> X **Currently focused story:** None
 
-## 🟢 FOCUSED Sprint Story: Pending Grooming
+## 🟢 FOCUSED Sprint Story: None
 
 # 📦 Active Sprint stories
+
+---
+
+# 📦 Archived Sprints
 
 ## 🏁 User Story 6: Filter/Sort Assets by Name or Value
 
@@ -72,61 +76,17 @@ This process ensures that implementation aligns tightly with user needs, design 
 
 ### ✅ Acceptance Criteria
 
-- [ ] 6.1 Sort by name (A–Z, Z–A)
-- [ ] 6.2 Sort by value (high → low, low → high)
-- [ ] 6.3 Sort options accessible via dropdown
-- [ ] 6.4 List updates immediately on selection
-- [ ] 6.5 Filter input allows partial name match
-
----
+- [x] 6.1 Sort by name (A–Z, Z–A)
+- [x] 6.2 Sort by value (high → low, low → high)
+- [x] 6.3 Sort options accessible via dropdown
+- [x] 6.4 List updates immediately on selection
+- [x] 6.5 Filter input allows partial name match
 
 ### Design
 
-Based on the current codebase and the requirements for User Story 6, here is a structured proposal for implementing the feature to filter and sort assets by name or value:
+The feature was implemented by integrating a dropdown for sorting options and a text input for filtering within the existing portfolio management components. The `useFilterSort` hook was used to manage the logic, and comprehensive testing was conducted.
 
-✅ Summary of the Approach
-The goal is to enable users to filter and sort their portfolio assets by name or value. This will be achieved by integrating a dropdown for sorting options and a text input for filtering within the existing portfolio management components.
-
-🧩 Proposed Component/Hook Interfaces
-FilterSortControls Component: This component will manage the dropdown for sorting and the input field for filtering.
-Props:
-onSortChange: (sortOption: string) => void
-onFilterChange: (filterText: string) => void
-currentSort: string
-filterText: string
-useFilterSort Hook: Custom hook to encapsulate the logic for filtering and sorting.
-Returns:
-sortedFilteredAssets: PortfolioAsset[]
-setSortOption: (option: string) => void
-setFilterText: (text: string) => void
-🔁 Data Flow and State Integration
-State Management:
-Extend
-usePortfolioState
-to include sorting and filtering logic.
-Maintain sortOption and filterText in the component state.
-Data Flow:
-PortfolioPage
-will use useFilterSort to manage sorting and filtering.
-FilterSortControls will trigger state updates in
-PortfolioPage
-.
-🧪 Testing Hooks (Unit/Integration/E2E)
-Unit Tests:
-Test useFilterSort for correct sorting and filtering logic.
-Integration Tests:
-Ensure FilterSortControls updates the asset list correctly.
-E2E Tests:
-Validate user interactions with the dropdown and filter input using Playwright.
-📦 Existing Logic Reuse
-usePortfolioState: Leverage existing hooks for portfolio state management.
-FilterSortControls: Already imported in
-PortfolioPage
-, can be extended to include new functionality.
-⚠️ Gaps or Recommended Refactors
-Potential Refactor: Consider refactoring FilterSortControls to enhance modularity and testability.
-UI Update: Ensure Tailwind CSS is used for styling the new components, aligning with the existing design system.
-This proposal aligns with the modular, testable design principles and integrates seamlessly with the current portfolio state and UI components. Let me know if you have any questions or need further adjustments!
+---
 
 ### 🔧 Implementation Plan
 
@@ -142,8 +102,6 @@ In this step We will provide a breakdown of the tasks based on the design as imp
 | `e2e/specs/filter-sort-assets.spec.ts` | End-to-end testing via UI          |
 
 ---
-
-# 📦 Archived Sprints
 
 ## 🏁 User Story 1: Add Crypto Asset with Quantity
 

@@ -18,7 +18,7 @@ Stories are grouped by feature category and prioritized based on their importanc
 | 4     | Fetch Real-Time Prices via CoinGecko API                          | High                                | Real-Time Data Integration | DONE             |
 | 5     | Real-Time Value Updates on Change                                 | High                                | Real-Time Data Integration | DONE             |
 | 0     | Render Portfolio Overview Layout                                  | High                                | UI and Usability           | DONE             |
-| +     | 6                                                                 | Filter/Sort Assets by Name or Value | Medium                     | UI and Usability | In Progress |
+| +     | 6                                                                 | Filter/Sort Assets by Name or Value | Medium                     | UI and Usability | DONE          |
 | 7     | Handle UI States (Loading, Error)                                 | Medium                              | UI and Usability           | Pending          |
 | 8     | Intuitive Interface for Non-Technical Users                       | Medium                              | UI and Usability           | Pending          |
 | 9     | Persist Portfolio in Local Storage/Backend                        | Low                                 | Extended Features          | Pending          |
@@ -220,11 +220,11 @@ so that I can quickly find and evaluate specific holdings.
 
 **Acceptance Criteria:**
 
-- [ ] 6.1 The user can sort the portfolio list alphabetically by asset name (A–Z, Z–A).
-- [ ] 6.2 The user can sort by asset value (high to low, low to high).
-- [ ] 6.3 Sorting options are accessible via a dropdown or toggle interface.
-- [ ] 6.4 The list updates immediately upon selection of a sort option.
-- [ ] 6.5 Filter field allows typing to narrow visible assets by name (partial match allowed).
+- [x] 6.1 The user can sort the portfolio list alphabetically by asset name (A–Z, Z–A).
+- [x] 6.2 The user can sort by asset value (high to low, low to high).
+- [x] 6.3 Sorting options are accessible via a dropdown or toggle interface.
+- [x] 6.4 The list updates immediately upon selection of a sort option.
+- [x] 6.5 Filter field allows typing to narrow visible assets by name (partial match allowed).
 
 **Notes:**
 
