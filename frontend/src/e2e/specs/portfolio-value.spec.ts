@@ -79,10 +79,8 @@ test.describe("Portfolio value display", () => {
     });
 
     // 3. Wait for the polling hook to re-fire (default: 60s)
-    await portfolioPage.page.waitForTimeout(3000);
+    await expect(btcRow).toContainText("Total: $20,000", { timeout: 10000 });
 
-    // 4. Validate updated UI reflects new value
-    await expect(btcRow).toContainText("Total: $20,000");
     await expect(portfolioPage.header).toContainText("$20,000");
   });
 });

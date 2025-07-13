@@ -88,19 +88,20 @@ export default function PortfolioPage() {
         <ErrorBanner message=" Error loading prices. Please try again later." />
       )}
 
+      {/* Filter & Sort */}
+      <div className="w-full max-w-4xl mx-auto px-6 md:px-10 mb-6">
+        <FilterSortControls
+          filter={filterText}
+          onFilterChange={setFilterText}
+          sort={sortOption}
+          onSortChange={setSortOption}
+        />
+      </div>
       <main
         role="main"
         className="max-w-4xl mx-auto p-6 md:p-10 bg-surface rounded-lg shadow-lg flex flex-col gap-8 text-balance"
       >
         <section className="flex flex-col gap-6 w-full">
-          {/* Filter & Sort */}
-          <FilterSortControls
-            filter={filterText}
-            onFilterChange={setFilterText}
-            sort={sortOption}
-            onSortChange={setSortOption}
-          />
-
           {/* Asset List */}
           <AssetList
             assets={sortedFilteredAssets}
