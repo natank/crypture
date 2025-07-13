@@ -200,6 +200,9 @@
     padding: var(--space-md);
     margin: var(--space-md);
   }
+  .toolbar-wrapper {
+    @apply bg-white border border-gray-200 rounded-md px-4 py-2 shadow-sm;
+  }
 }
 
 @media (min-width: 640px) {

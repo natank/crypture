@@ -26,11 +26,9 @@ CTA button should use brand color token (see style-guide.md)
 
 ```
 +-------------------------------------------------------------+
-| 🔐 Crypture | Track your crypto clearly                    | ← Branded Header |
+| 🔐 Crypture • Track your crypto clearly   💰 $12,345.67     | ← Condensed Header |
 +-------------------------------------------------------------+
-| 💰 Total Portfolio Value: $12,345.67                       |
-+-------------------------------------------------------------+
-| 🔍 [ Filter assets...        ]  ⬇ Sort: [Value ⬆]         |
+| 🔍 [ Filter assets...        ]  ⬇ Sort: [Value ⬆]         | ← Toolbar Grouped  |
 +-------------------------------------------------------------+
 | Asset    | Qty   | Price     | Value     | [🗑️] Delete     |
 |----------|-------|-----------|-----------|----------------|
@@ -46,7 +44,16 @@ CTA button should use brand color token (see style-guide.md)
 
 Annotations:
 
-Header: Includes app logo (🔐), brand name, and tagline (e.g., “Track your crypto clearly”).
+Header (Condensed):
+Combine logo, app name, tagline, and total value into a single flex row.
+Use Tailwind: flex justify-between items-center px-6 py-3
+
+Toolbar Grouping:
+Wrap search input and sort dropdown in a div with background, border, and padding.
+Suggested utility: .toolbar-wrapper → bg-white border border-gray-200 rounded-md px-4 py-2 shadow-sm
+
+Total Value:
+Align right of header row, formatted using token text-brand-primary text-xl font-
 
 Footer: Lightweight footer with copyright.
 

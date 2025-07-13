@@ -4,19 +4,19 @@ import PortfolioHeader from ".";
 describe("PortfolioHeader", () => {
   it("renders with a total value", () => {
     render(<PortfolioHeader totalValue="12345.67" lastUpdatedAt={12333333} />);
-    const [valueDisplay] = screen.getAllByText(
-      (_, el) =>
-        el?.textContent?.includes("💰 Total Portfolio Value: $12,346") || false
-    );
+    const valueDisplay = screen.getByTestId("total-value");
+
     expect(valueDisplay).toBeInTheDocument();
+    expect(valueDisplay).toHaveTextContent(/\$12,346/);
   });
 
   it("renders fallback when no value is provided", () => {
     render(<PortfolioHeader />);
 
-    expect(screen.getByTestId("total-value")).toHaveTextContent(
-      "💰 Total Portfolio Value: —"
-    );
+    const valueDisplay = screen.getByTestId("total-value");
+
+    expect(valueDisplay).toBeInTheDocument();
+    expect(valueDisplay).toHaveTextContent(/^💰\s*—$/);
   });
 
   it("renders last updated timestamp if provided", () => {

@@ -60,11 +60,55 @@ This process ensures that implementation aligns tightly with user needs, design 
 
 # 🚀 Active Stories
 
-> X **Currently focused story:** None
+> **Currently focused story:** UI-16
 
-## 🟢 FOCUSED Sprint Story: None
+## 🟢 FOCUSED Sprint Story:UI-16
 
 # 📦 Active Sprint stories
+
+## 🟢 FOCUSED Sprint Story: UI-16 – Improve Header & Toolbar Layout
+
+### **User Story UI-16**
+
+_As a crypto portfolio user,_
+_I want the header and filter/sort toolbar to feel more compact and visually distinct from the asset list,_
+_so that I can quickly understand my portfolio status and navigate controls without confusion._
+
+**Priority:** Medium
+**Feature Category:** UI and Usability
+
+---
+
+### ✅ Acceptance Criteria
+
+- [ ] 16.1 Header condenses logo, tagline, and total value into one flex row
+- [ ] 16.2 Toolbar is wrapped with `.toolbar-wrapper` for visual grouping
+- [ ] 16.3 Layout spacing and alignment work on desktop and mobile
+- [ ] 16.4 Follows mockup tokens and accessibility conventions
+- [ ] 16.5 Visual output matches `ui-wireframes.md` and `ui-mockups.md`
+
+---
+
+### 🔧 Technical Breakdown
+
+| File                                       | Task                                                              |
+| ------------------------------------------ | ----------------------------------------------------------------- |
+| `PortfolioPage.tsx`                        | Refactor header layout using `flex justify-between items-center`  |
+| `PortfolioPage.tsx` or `SortFilterBar.tsx` | Wrap sort/filter block with `<div className="toolbar-wrapper">`   |
+| `index.css`                                | Confirm `.toolbar-wrapper` is available under `@layer components` |
+| `PortfolioHeader.stories.tsx`              | Add Storybook preview showing updated layout                      |
+| `__tests__/PortfolioPage.test.tsx`         | Visual + structural regression test if needed                     |
+| `e2e/specs/layout-visual.spec.ts`          | Add coverage (optional) or reuse for visual confirmation          |
+
+---
+
+### 📦 Dev Deliverables
+
+- Updated layout for header and toolbar
+- Responsive, branded spacing
+- Storybook preview for header section
+- Visual QA confirmation
+- Functional parity (no regression in portfolio behavior)
 
 ---
 
