@@ -4,39 +4,53 @@
 
 ---
 
+## Empty State (New Branded Section)
+
+```
++------------------------------------------------------+
+| [🪙 Crypture logo or mascot icon] | ← Visual Identity |
+| Your portfolio is empty. |
+| Start by adding a crypto asset below. |
+| [➕ Add Asset] |
++------------------------------------------------------+
+Annotations:
+
+Mascot/icon reinforces app identity (e.g., minimalist vault, coin symbol)
+
+Use text-gray-600, bg-gray-50, or soft highlight for empty state background
+
+CTA button should use brand color token (see style-guide.md)
+```
+
 ## 🧾 Portfolio Overview Page
 
 ```
 +-------------------------------------------------------------+
-| 💰 Total Portfolio Value: $12,345.67      [✔️ Saved]        |
+| 🔐 Crypture | Track your crypto clearly                    | ← Branded Header |
++-------------------------------------------------------------+
+| 💰 Total Portfolio Value: $12,345.67                       |
 +-------------------------------------------------------------+
 | 🔍 [ Filter assets...        ]  ⬇ Sort: [Value ⬆]         |
-|      (Label: "Filter assets by name or value")   (Label: "Sort by")  |
-|      (UI matches dedicated Sort/Filter Bar below) |
 +-------------------------------------------------------------+
-| Asset (Name)      | Qty   | Price     | Value     | [🗑️ Delete]     |
+| Asset    | Qty   | Price     | Value     | [🗑️] Delete     |
 |----------|-------|-----------|-----------|----------------|
-| BTC (Bitcoin)     | 0.5   | $30,000   | $15,000   | [🗑️ Delete]     |
-| ETH (Ethereum)    | 1.2   | $2,000    | $2,400    | [🗑️ Delete]     |
+| BTC      | 0.5   | $30,000   | $15,000   | [🗑️]            |
+| ETH      | 1.2   | $2,000    | $2,400    | [🗑️]            |
 +-------------------------------------------------------------+
-| ➕ Add Asset [tooltip: "Add a new crypto asset"] | 📤 Export [tooltip: "Export as CSV or JSON"] | 📥 Import [tooltip: "Import portfolio data"] |
+| ➕ Add Asset | 📤 Export | 📥 Import                        |
 +-------------------------------------------------------------+
+| © 2025 Crypture · Powered by 🧠 Clarity Engine             | ← Footer w/ Brand |
++-------------------------------------------------------------+
+
 ```
 
-**Annotations**:
+Annotations:
 
-- Header shows real-time portfolio value.
-- **Portfolio persistence indicator:**
-    - A "Saved" status or sync indicator is displayed in the header to show when portfolio data is up-to-date or syncing.
-    - If changes are pending or saving, show a spinner or "Saving..." status instead.
-- Sort/filter bar helps users navigate assets.
-- **Explicit labels/tooltips:**
-    - Filter input: label or tooltip (e.g., "Filter assets by name or value").
-    - Sort dropdown: label or tooltip (e.g., "Sort by").
-- Asset list includes delete buttons with text label ([🗑️ Delete]) and auto-refresh price/value.
-- Footer includes buttons for Add, Export, Import, each with a tooltip or brief explanation of its function and supported formats.
+Header: Includes app logo (🔐), brand name, and tagline (e.g., “Track your crypto clearly”).
 
----
+Footer: Lightweight footer with copyright.
+
+## Visual Style: Use bg-white, text-blue-600, rounded-b-lg, and shadow-md per mockup guidelines.
 
 ## ➕ Add Asset Modal/Form
 
@@ -60,8 +74,8 @@
 - Validation errors displayed inline, next to the relevant field (field-level error messages, not just global).
 - Loading state on "Add" action, fields disabled during submit.
 - **Button style/placement harmonized:**
-    - [➕ Add Asset] and [🗑️ Delete] use the same button style (primary action left, secondary right) as in asset lists.
-    - Placement and style are consistent across modals and lists.
+  - [➕ Add Asset] and [🗑️ Delete] use the same button style (primary action left, secondary right) as in asset lists.
+  - Placement and style are consistent across modals and lists.
 
 ---
 
@@ -85,24 +99,32 @@
 - Inline delete button.
 - Inline error badge for failed price fetch.
 - **Per-component loading/error indicators:**
-    - Each asset row/card can show a loading spinner ([🔄 Loading...]) or error ([⚠️ Price Fetch Failed]) individually, not just globally.
+  - Each asset row/card can show a loading spinner ([🔄 Loading...]) or error ([⚠️ Price Fetch Failed]) individually, not just globally.
 
 ---
 
 ## 🔁 Loading and Error States
 
 ```
-[🔄 Loading spinner... Fetching data]
++------------------------------------------------------+
+| [🔄 Crypture Spinner Icon]                           | ← Visual Identity |
+| Loading portfolio...                                 |
++------------------------------------------------------+
 
-[⚠️ Error loading prices. Try again later.]
-[🔁 Retry]
++------------------------------------------------------+
+| ⚠️ Error loading prices. Try again later.           |
+| [🧩 Branded Retry Button]                            |
++------------------------------------------------------+
+
 ```
 
 **Annotations**:
 
-- Global spinner during app load.
-- Inline spinners during individual fetches.
-- Error messages include retry actions.
+- Add stylized loader: use branded spinner icon or color (brand.primary)
+
+- Retry button can optionally include logo or brand color border
+
+- Use aria-live="assertive" and WCAG-compliant styling
 
 ---
 
@@ -118,6 +140,40 @@
 
 ---
 
+## 🕳️ Empty State
+
++------------------------------------------------------+
+| [🪙 Crypture logo or mascot icon] | ← Visual Identity |
+| Your portfolio is empty. |
+| Start by adding a crypto asset below. |
+| [➕ Add Asset] |
++------------------------------------------------------+
+
+Annotations:
+
+Mascot/icon reinforces app identity (e.g., minimalist vault, coin symbol)
+
+Use text-gray-600, bg-gray-50, or soft highlight for empty state background
+
+CTA button should use brand color token (see style-guide.md)
+
+## ➕ Footer/Footer Links Zone (New)
+
+```
++-------------------------------------------------------------+
+| Crypture • Clarity for every coin                          |
+| About • Privacy • Contact                                   |
++-------------------------------------------------------------+
+```
+
+Annotations:
+
+- Placed at bottom of page (<footer> zone)
+
+- Font: text-sm text-gray-500, layout: text-center, space-x-4
+
+- Optional: add soft divider (border-t border-gray-200)
+
 ## 🕵️‍♂️ Windsurf Visibility Review Checklist (2025-06-14)
 
 **This section documents clarity, consistency, and backlog alignment issues identified in the wireframes. Each item is mapped to a backlog story and cites the relevant lines above.**
@@ -125,44 +181,44 @@
 ### 📋 Checklist
 
 - [x] **Add explicit labels/tooltips for sort/filter controls**  
-  _Lines 11, 13, 96 – relates to Story 6_  
-  The sort dropdown and filter input should have clear labels/tooltips for accessibility and clarity.
+       _Lines 11, 13, 96 – relates to Story 6_  
+       The sort dropdown and filter input should have clear labels/tooltips for accessibility and clarity.
 
 - [x] **Add text label to delete buttons**  
-  _Lines 15, 17–18, 60, 64 – relates to Story 2, 8_  
-  The delete (🗑️) icon should be accompanied by a text label for clarity and accessibility.
+       _Lines 15, 17–18, 60, 64 – relates to Story 2, 8_  
+       The delete (🗑️) icon should be accompanied by a text label for clarity and accessibility.
 
 - [x] **Add tooltips or explanations for footer actions**  
-  _Line 20 – relates to Story 10_  
-  Footer buttons (Add, Export, Import) should have tooltips or brief text explaining their function and supported formats.
+       _Line 20 – relates to Story 10_  
+       Footer buttons (Add, Export, Import) should have tooltips or brief text explaining their function and supported formats.
 
 - [x] **Standardize sort/filter bar UI across all screens**  
-  _Lines 13, 96 – relates to Story 6, 8_  
-  Ensure a consistent sort/filter UI pattern throughout the app.
+       _Lines 13, 96 – relates to Story 6, 8_  
+       Ensure a consistent sort/filter UI pattern throughout the app.
 
 - [x] **Harmonize button styles/placement in modals and lists**  
-  _Lines 35–43, 57–66 – relates to Story 1, 2_  
-  Use consistent button placement, style, and labeling for actions like Add and Delete.
+       _Lines 35–43, 57–66 – relates to Story 1, 2_  
+       Use consistent button placement, style, and labeling for actions like Add and Delete.
 
 - [x] **Add wireframe/annotation for portfolio persistence**  
-  _Lines 9–22 – relates to Story 9_  
-  Indicate how/when portfolio data is saved (e.g., "Saved" indicator or sync status).
+       _Lines 9–22 – relates to Story 9_  
+       Indicate how/when portfolio data is saved (e.g., "Saved" indicator or sync status).
 
 - [x] **Show field-level error messages in Add Asset modal**  
-  _Line 41 – relates to Story 1, 7_  
-  Display error messages next to invalid fields, not just globally.
+       _Line 41 – relates to Story 1, 7_  
+       Display error messages next to invalid fields, not just globally.
 
 - [x] **Explicitly display both asset symbol and name in all views**  
-  _Lines 15–22, 57–66 – relates to Story 0, 8_  
-  Always show asset symbol and full name together for clarity.
+       _Lines 15–22, 57–66 – relates to Story 0, 8_  
+       Always show asset symbol and full name together for clarity.
 
 - [x] **Clarify sort order and toggling in UI**  
-  _Lines 13, 96 – relates to Story 6_  
-  Make sort order and toggling direction visually clear.
+       _Lines 13, 96 – relates to Story 6_  
+       Make sort order and toggling direction visually clear.
 
 - [x] **Add per-component loading/error indicators**  
-  _Lines 79–83 – relates to Story 7_  
-  Show loading/error states not just globally but also for individual components (e.g., per asset).
+       _Lines 79–83 – relates to Story 7_  
+       Show loading/error states not just globally but also for individual components (e.g., per asset).
 
 ---
 

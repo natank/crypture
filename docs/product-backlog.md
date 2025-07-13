@@ -11,16 +11,19 @@ Stories are grouped by feature category and prioritized based on their importanc
 ## 🗂 Summary of Backlog Items
 
 | ID    | Title                                                             | Priority                            | Feature Category           | Status           |
-| ----- | ----------------------------------------------------------------- | ----------------------------------- | -------------------------- | ---------------- | ----------- |
+| ----- | ----------------------------------------------------------------- | ----------------------------------- | -------------------------- | ---------------- | ---- |
 | 1     | Add Crypto Asset with Quantity                                    | High                                | Core Portfolio Management  | DONE             |
 | 2     | Delete Crypto Asset                                               | High                                | Core Portfolio Management  | DONE             |
 | 3     | Calculate and Display Total Portfolio Value                       | High                                | Core Portfolio Management  | DONE             |
 | 4     | Fetch Real-Time Prices via CoinGecko API                          | High                                | Real-Time Data Integration | DONE             |
 | 5     | Real-Time Value Updates on Change                                 | High                                | Real-Time Data Integration | DONE             |
 | 0     | Render Portfolio Overview Layout                                  | High                                | UI and Usability           | DONE             |
-| +     | 6                                                                 | Filter/Sort Assets by Name or Value | Medium                     | UI and Usability | DONE          |
+| +     | 6                                                                 | Filter/Sort Assets by Name or Value | Medium                     | UI and Usability | DONE |
 | 7     | Handle UI States (Loading, Error)                                 | Medium                              | UI and Usability           | Pending          |
 | 8     | Intuitive Interface for Non-Technical Users                       | Medium                              | UI and Usability           | Pending          |
+| UI-14 | Establish Branded Visual Identity Across App                      | Medium                              | UI and Usability           | ✅ Done          |
+| UI-15 | Align Component Styles with Updated UI Mockups                    | High                                | UI and Usability           | ✅ Done          |
+| UI-16 | Improve Header & Toolbar Layout                                   | Medium                              | UI and Usability           | Planned          |
 | 9     | Persist Portfolio in Local Storage/Backend                        | Low                                 | Extended Features          | Pending          |
 | 10    | Export/Import Portfolio Data (CSV/JSON)                           | Medium                              | Extended Features          | Pending          |
 | 11    | Add Charting for Price History                                    | Low                                 | Extended Features          | Pending          |
@@ -29,10 +32,6 @@ Stories are grouped by feature category and prioritized based on their importanc
 | TD-02 | UI Visibility Refactor and Design Token Integration               | Medium                              | Technical Debt             | ✅ Done          |
 | TD-03 | Windsurf-Aided Review of UI/UX Design Docs                        | Medium                              | Technical Debt             | Pending          |
 | TD-04 | Visual/UX Refactor of `ui-mockups.md` for Design System Alignment | Medium                              | Technical Debt             | DONE             |
-
----
-
-Perfect. Here's your new technical debt user story for design doc alignment via Windsurf:
 
 ---
 
@@ -209,7 +208,7 @@ so that I can view and manage my crypto holdings clearly.
 - Can initially render with an empty portfolio.
 - Based on mockups in `ui-mockups.md`, aligns with User Story 8.
 
-### 🧾 User Story 6: Filter/Sort Assets by Name or Value
+### 🧾 User Story 6: Filter/Sort Assets by Name or Value - Done
 
 **User Story**  
 As a casual crypto investor,  
@@ -280,6 +279,133 @@ so that I can interact with the app confidently.
 - Apply Tailwind utility classes to enforce consistent spacing and clarity.
 
 ---
+
+Here is the updated **`product-backlog.md`** entry to introduce the new branding user story:
+
+---
+
+### 🧾 User Story UI-14: Establish Branded Visual Identity Across App
+
+**User Story**
+_As a crypto portfolio user,
+I want the app to reflect a unique, consistent visual brand,
+so that I feel more confident, emotionally connected, and can distinguish it from generic tools._
+
+---
+
+#### 🎯 Goals
+
+- Define and apply a cohesive brand identity across the UI
+- Update visual assets, styles, and design tokens to reflect brand consistently
+- Introduce branding in layout, components, and feedback states
+
+---
+
+#### ✅ Acceptance Criteria
+
+- [x] UI header includes brand logo, name, and optional tagline
+- [x] Primary and accent brand colors are applied across buttons, headings, and highlights
+- [x] Component styles (modals, buttons, inputs, etc.) use updated brand design tokens
+- [x] Branding is applied to empty states and error/loading banners
+- [x] `style-guide.md` includes updated tokens, colors, and brand tone guidelines
+- [x] `ui-wireframes.md` and `ui-mockups.md` reflect brand layout and visual updates
+- [x] `tailwind.config.js` is extended with brand tokens and semantic utilities
+- [x] Accessibility (WCAG AA) is preserved post-brand update
+
+---
+
+#### 📦 Related Artifacts
+
+- `ui-wireframes.md` – Updated layout showing branded header/footer
+- `ui-mockups.md` – Color-integrated mockups for header, buttons, states
+- `style-guide.md` – Design tokens for `brand.primary`, `brand.accent`, `font.brand`
+- `tailwind.config.js` – Theme extension with brand palette
+- `tokens.css` – Optional class utilities (`.bg-brand-primary`, `.text-brand-accent`)
+- New Components:
+
+  - `BrandedHeader.tsx`
+  - `EmptyState.tsx`
+  - `Logo.tsx`
+
+---
+
+## 🧾 User Story UI-15: Align Component Styles with Updated UI Mockups
+
+**User Story**
+_As a frontend developer delivering the MVP,_
+_I want to update existing components to use the new visual styles from the finalized UI mockups,_
+_so that the application’s visual language reflects the intended brand identity and UX design._
+
+---
+
+### 🎯 Goals
+
+- Refactor all visible components to match updated branding tokens, layout, and tone
+- Replace legacy color tokens (`--color-primary`, `.btn`, `.input`) with semantic brand token utilities
+- Ensure all styling matches `style-guide.md` and `ui-mockups.md` exactly
+
+---
+
+### ✅ Acceptance Criteria
+
+| ID  | Description                                                                                                            |
+| --- | ---------------------------------------------------------------------------------------------------------------------- |
+| AC1 | All shared components (e.g. `Button`, `Input`, `Card`) use `brand-primary`, `brand-accent`, `font-brand` where defined |
+| AC2 | All page-level layout and header/footer sections match `ui-mockups.md` layout                                          |
+| AC3 | Components no longer use hardcoded colors (`blue-600`, `text-gray-900`, etc.) or deprecated tokens (`--color-primary`) |
+| AC4 | `index.css` or tokens layer reflects `.bg-brand-primary`, `.text-brand-accent`, `.font-brand` usage across components  |
+| AC5 | Visual output matches `ui-mockups.md` Sections 1–7, with consistent spacing, radius, and icon tone                     |
+| AC6 | All tests (unit, integration, E2E) continue to pass post-refactor                                                      |
+
+---
+
+### 🧩 Components to Refactor
+
+| Component/File                   | Target Update Area                    |
+| -------------------------------- | ------------------------------------- |
+| `AddAssetModal.tsx`              | Buttons, inputs, modal layout         |
+| `AssetRow.tsx`                   | Font, inline error style, delete icon |
+| `PortfolioHeader.tsx`            | Logo, title, total value display      |
+| `SortFilterBar.tsx`              | Input/select ring, layout, spacing    |
+| `ExportImportControls.tsx`       | CTA buttons (`Export`, `Import`)      |
+| `ErrorBanner.tsx`, `Spinner.tsx` | Branded tokens, tone, accessibility   |
+
+---
+
+### 📄 References
+
+- `style-guide.md` Sections 1.1–1.5, 2.1–2.3, 3.x
+- `ui-mockups.md` Sections 1–7
+- `index.css` – for `.bg-brand-primary`, `.text-brand-accent`, `.font-brand`
+
+---
+
+### ⏳ Effort Estimate
+
+| Task                                | Points    |
+| ----------------------------------- | --------- |
+| Refactor 6–8 atomic components      | 3 pts     |
+| Refactor page-level header/footer   | 1 pt      |
+| QA regression and visual validation | 1 pt      |
+| Cleanup legacy tokens/classes       | 1 pt      |
+| **Total**                           | **6 pts** |
+
+---
+
+### 🧩 Dependencies
+
+- UI mockups and style guide must remain locked (no more design changes)
+- Refactor should avoid logic changes or layout restructuring beyond style
+
+---
+
+### 🏁 Definition of Done
+
+- Visual styles match mockups across all components
+- No usage of hardcoded Tailwind color names in UI
+- All brand token utilities applied consistently
+- Tests remain green
+- Design sign-off approved
 
 ## Extended Features
 

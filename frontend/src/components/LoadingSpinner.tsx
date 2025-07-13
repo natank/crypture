@@ -16,7 +16,7 @@ export default function LoadingSpinner({
       role="status"
       aria-label="Loading"
     >
-      <div className="animate-spin w-8 h-8 border-4 border-primary border-t-transparent rounded-full" />
+      <div className="animate-spin w-8 h-8 border-4 border-brand-primary border-t-transparent rounded-full" />
       {label && <div className="text-text-muted text-base mt-4">{label}</div>}
     </div>
   );

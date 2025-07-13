@@ -91,7 +91,7 @@ describe("AddAssetModal", () => {
     expect(screen.getByLabelText(/quantity/i)).toBeInTheDocument();
 
     // Assert asset selector label
-    expect(screen.getByLabelText(/asset/i)).toBeInTheDocument();
+    expect(screen.getByText("Asset")).toBeInTheDocument();
 
     // Assert asset selector button (mock)
     expect(
@@ -100,10 +100,11 @@ describe("AddAssetModal", () => {
 
     // Assert specific button text
     expect(
-      screen.getByRole("button", { name: /➕ add asset/i })
+      screen.getByRole("button", { name: /add asset/i })
     ).toBeInTheDocument();
+
     expect(
-      screen.getByRole("button", { name: /❌ cancel/i })
+      screen.getByRole("button", { name: /cancel adding asset/i })
     ).toBeInTheDocument();
   });
 
@@ -161,7 +162,8 @@ describe("AddAssetModal", () => {
         setSearch={vi.fn()}
       />
     );
-    const submitButton = screen.getByRole("button", { name: /➕ add asset/i });
+
+    const submitButton = screen.getByRole("button", { name: /add asset/i });
 
     fireEvent.click(submitButton);
 
@@ -190,7 +192,9 @@ describe("AddAssetModal", () => {
         setSearch={vi.fn()}
       />
     );
-    const cancelButton = screen.getByRole("button", { name: /❌ cancel/i });
+    const cancelButton = screen.getByRole("button", {
+      name: /cancel adding asset/i,
+    });
     fireEvent.click(cancelButton);
 
     expect(mockOnClose).toHaveBeenCalledTimes(1);

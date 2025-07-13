@@ -135,7 +135,7 @@ describe("PortfolioPage", () => {
 
   it("displays the filter input and sort dropdown", () => {
     render(<PortfolioPage />);
-    expect(screen.getByPlaceholderText(/filter assets/i)).toBeInTheDocument();
+    expect(screen.getByPlaceholderText(/search assets/i)).toBeInTheDocument();
     expect(screen.getByLabelText(/sort/i)).toBeInTheDocument();
   });
 
@@ -210,7 +210,7 @@ describe("PortfolioPage", () => {
   });
   it("passes priceMap to usePortfolioState and totalValue to PortfolioHeader", async () => {
     const mockPriceMap = { btc: 3000 };
-  
+
     const mockUsePortfolioState = vi.fn(() => ({
       portfolio: [
         {
@@ -223,45 +223,43 @@ describe("PortfolioPage", () => {
       addAsset: vi.fn(),
       totalValue: 12345,
     }));
-  
+
     const mockPortfolioHeader = vi.fn(() => null); // ✅ define before mocking
-  
+
     vi.resetModules(); // ✅ clear cache
-  
+
     vi.doMock("@hooks/usePriceMap", () => ({
       usePriceMap: () => mockPriceMap,
     }));
-  
+
     vi.doMock("@hooks/usePortfolioState", () => ({
       usePortfolioState: mockUsePortfolioState,
     }));
-  
+
     vi.doMock("@components/PortfolioHeader", () => ({
       default: mockPortfolioHeader,
     }));
-  
+
     const { render } = await import("@testing-library/react");
     const { default: PortfolioPage } = await import("@pages/PortfolioPage");
-  
+
     render(<PortfolioPage />);
-  
+
     expect(mockPortfolioHeader).toHaveBeenCalled();
 
     expect(mockPortfolioHeader).toHaveBeenCalled(); // ✅ type guard
 
-    const props = ((mockPortfolioHeader.mock.calls[0] as unknown) as [any])[0];
+    const props = (mockPortfolioHeader.mock.calls[0] as unknown as [any])[0];
 
     expect(props).toEqual(
       expect.objectContaining({
         totalValue: "12345",
         lastUpdatedAt: expect.any(Number),
       })
-    );  
+    );
     // ✅ Also confirm priceMap was passed to hook
     expect(mockUsePortfolioState).toHaveBeenCalledWith(mockPriceMap);
   });
-  
-  
 });
 
 describe("PortfolioPage delete flow", () => {

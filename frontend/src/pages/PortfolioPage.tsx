@@ -15,6 +15,7 @@ import { usePriceMap } from "@hooks/usePriceMap";
 import { useCoinSearch } from "@hooks/useCoinSearch";
 import { useUIState } from "@hooks/useUIState";
 import { useFilterSort } from "@hooks/useFilterSort";
+import AppFooter from "@components/AppFooter";
 
 export default function PortfolioPage() {
   // 1. Fetch + poll coin data
@@ -42,7 +43,13 @@ export default function PortfolioPage() {
     requestDeleteAsset,
   } = useUIState();
 
-  const { sortedFilteredAssets, setSortOption, setFilterText, filterText, sortOption } = useFilterSort(portfolio);
+  const {
+    sortedFilteredAssets,
+    setSortOption,
+    setFilterText,
+    filterText,
+    sortOption,
+  } = useFilterSort(portfolio);
 
   if (loading) {
     return (
@@ -85,7 +92,7 @@ export default function PortfolioPage() {
         role="main"
         className="max-w-4xl mx-auto p-6 md:p-10 bg-surface rounded-lg shadow-lg flex flex-col gap-8 text-balance"
       >
-        <section className="flex flex-col gap-6 w-full" >
+        <section className="flex flex-col gap-6 w-full">
           {/* Filter & Sort */}
           <FilterSortControls
             filter={filterText}
@@ -100,7 +107,7 @@ export default function PortfolioPage() {
             onDelete={handleDeleteAsset}
             onAddAsset={openAddAssetModal}
             addButtonRef={addButtonRef}
-            priceMap={priceMap} // optional, if AssetList/Row needs it
+            priceMap={priceMap}
           />
 
           {/* Footer Action Buttons */}
@@ -115,7 +122,7 @@ export default function PortfolioPage() {
           <AddAssetModal
             onClose={closeAddAssetModal}
             addAsset={addAsset}
-            coins={filteredCoins} // filteredCoins instead of coins
+            coins={filteredCoins}
             search={search}
             setSearch={setSearch}
             error={error}
@@ -137,6 +144,8 @@ export default function PortfolioPage() {
           />
         )}
       </main>
+
+      <AppFooter />
     </>
   );
 }
