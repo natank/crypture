@@ -38,7 +38,7 @@ export class PortfolioPage {
     this.importButton = page.getByTestId("import-button");
 
     // Filter/Sort Controls
-    this.filterInput = page.getByPlaceholder("Filter assets...");
+    this.filterInput = page.getByPlaceholder("Search assets...");
     this.sortDropdown = page.getByTestId("sort-dropdown");
 
     // Modal Elements
@@ -96,30 +96,40 @@ export class PortfolioPage {
   }
 
   // Method to sort assets by name
-  async sortByName(order: 'asc' | 'desc') {
-    await this.sortDropdown.selectOption(order === 'asc' ? 'name-asc' : 'name-desc');
+  async sortByName(order: "asc" | "desc") {
+    await this.sortDropdown.selectOption(
+      order === "asc" ? "name-asc" : "name-desc"
+    );
   }
 
   // Method to sort assets by value
-  async sortByValue(order: 'asc' | 'desc') {
-    await this.sortDropdown.selectOption(order === 'asc' ? 'value-asc' : 'value-desc');
+  async sortByValue(order: "asc" | "desc") {
+    await this.sortDropdown.selectOption(
+      order === "asc" ? "value-asc" : "value-desc"
+    );
   }
 
   // Method to get asset names
   async getAssetNames(): Promise<string[]> {
-    const assetNames = await this.assetList.locator('.asset-name').allTextContents();
+    const assetNames = await this.assetList
+      .locator(".asset-name")
+      .allTextContents();
     return assetNames;
   }
 
   // Method to get asset values
   async getAssetValues(): Promise<number[]> {
-    const assetValues = await this.assetList.locator('.asset-value').evaluateAll(nodes => nodes.map(n => parseFloat(n.textContent || '0')));
+    const assetValues = await this.assetList
+      .locator(".asset-value")
+      .evaluateAll((nodes) =>
+        nodes.map((n) => parseFloat(n.textContent || "0"))
+      );
     return assetValues;
   }
 
   // Method to filter assets by name
   async filterByName(partialName: string) {
     await this.filterInput.fill(partialName);
-    await this.page.keyboard.press('Enter');
+    await this.page.keyboard.press("Enter");
   }
 }

@@ -1,7 +1,7 @@
 import React from "react";
 import AssetRow from "@components/AssetRow";
 import { PortfolioState } from "@hooks/usePortfolioState";
-
+import { PlusIcon } from "lucide-react";
 type AssetListProps = {
   assets: PortfolioState;
   onDelete: (id: string) => void;
@@ -18,24 +18,26 @@ export default function AssetList({
   priceMap,
 }: AssetListProps) {
   return (
-    <section className="flex flex-col gap-8 w-full p-4 sm:p-6 md:p-8" >
+    <section className="flex flex-col gap-6 w-full p-6 sm:p-6 md:p-8">
       {/* Section Header + Add Button */}
-      <div className="flex items-center justify-between gap-4 mb-4" >
-        <h2 className="text-2xl font-bold text-balance text-primary mb-0">Your Assets</h2>
+      <div className="flex items-center justify-between gap-4 mb-4">
+        <h2 className="text-2xl font-brand text-brand-primary mb-0">
+          Your Assets
+        </h2>
         <button
-          ref={addButtonRef}
           onClick={onAddAsset}
-          className="btn"
-          data-testid="add-asset-button"
+          className="bg-brand-primary text-white font-button px-4 py-2 rounded-md hover:bg-purple-700 flex items-center gap-2"
           aria-label="Add Asset"
+          data-testid="add-asset-button"
         >
-          ➕ Add Asset
+          <PlusIcon className="w-4 h-4" aria-hidden="true" />
+          Add Asset
         </button>
       </div>
 
       {/* Asset List or Empty State */}
       {assets.length === 0 ? (
-        <div className="text-text-muted italic text-balance py-8 text-center">
+        <div className="text-gray-500 italic text-center py-8">
           No assets yet. Add one to begin.
         </div>
       ) : (

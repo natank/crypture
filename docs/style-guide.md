@@ -42,7 +42,16 @@ extend: {
 1.3 Gradients (New)
 | Token | Gradient | Tailwind Custom Class |
 | ----------------- | ------------------------------------------- | --------------------- |
-| Brand Gradient 🆕 | `linear-gradient(135deg, #5a31f4, #00bfa5)` | `.bg-brand-gradient` |
+| Brand Gradient 🆕 | `linear-gradient(135deg, #5a31f4, #00bfa5)`              | `.bg-brand-gradient`     | Global header, empty state background     |
+
+**Usage Guidelines:**
+
+- Apply `.bg-brand-gradient` only in high-visibility zones:
+  - Portfolio Page header
+  - Empty portfolio state background
+- Avoid applying to full layouts or dense UIs to preserve clarity
+- Overlay only light or white text (`text-white`, `text-white/80`) for contrast
+- Use sparingly to create a distinctive, branded visual moment
 
 
 ### 1.4 Visual Identity Tokens
@@ -159,7 +168,7 @@ These high-level layout and feedback components apply Crypture’s brand identit
 
 ````html
 <header
-  class="bg-white shadow-md rounded-b-lg px-6 py-4 flex items-center justify-between"
+  class="bg-brand-gradient text-white shadow-md rounded-b-lg px-6 py-4 flex items-center justify-between"
 >
   <h1 class="font-brand flex items-center gap-3 text-brand-primary text-2xl">
     <span class="text-3xl">🔐</span> Crypture
@@ -182,7 +191,7 @@ These high-level layout and feedback components apply Crypture’s brand identit
 ### 3.3 Empty State
 
 ```html
-<div class="text-center py-16 bg-gray-50 rounded-lg">
+<div class="text-center py-16 bg-brand-gradient text-white rounded-lg">
   <div class="text-5xl mb-4">🪙</div>
   <h2 class="font-brand text-brand-primary text-xl mb-2">
     Your portfolio is empty.

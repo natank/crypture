@@ -257,6 +257,14 @@
     color: var(--brand-accent);
   }
 
+  .bg-brand-gradient {
+    background: linear-gradient(
+      135deg,
+      var(--brand-primary),
+      var(--brand-accent)
+    );
+  }
+
   .font-brand {
     font-family: "Space Grotesk", "DM Sans", sans-serif;
     font-weight: 700;

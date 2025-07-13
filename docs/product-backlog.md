@@ -22,7 +22,8 @@ Stories are grouped by feature category and prioritized based on their importanc
 | 7     | Handle UI States (Loading, Error)                                 | Medium                              | UI and Usability           | Pending          |
 | 8     | Intuitive Interface for Non-Technical Users                       | Medium                              | UI and Usability           | Pending          |
 | UI-14 | Establish Branded Visual Identity Across App                      | Medium                              | UI and Usability           | ✅ Done          |
-| UI-15 | Align Component Styles with Updated UI Mockups                    | High                                | UI and Usability           | In Progress      |
+| UI-15 | Align Component Styles with Updated UI Mockups                    | High                                | UI and Usability           | ✅ Done          |
+| UI-16 | Improve Header & Toolbar Layout                                   | Medium                              | UI and Usability           | Planned          |
 | 9     | Persist Portfolio in Local Storage/Backend                        | Low                                 | Extended Features          | Pending          |
 | 10    | Export/Import Portfolio Data (CSV/JSON)                           | Medium                              | Extended Features          | Pending          |
 | 11    | Add Charting for Price History                                    | Low                                 | Extended Features          | Pending          |
@@ -302,14 +303,14 @@ so that I feel more confident, emotionally connected, and can distinguish it fro
 
 #### ✅ Acceptance Criteria
 
-- [ ] UI header includes brand logo, name, and optional tagline
-- [ ] Primary and accent brand colors are applied across buttons, headings, and highlights
-- [ ] Component styles (modals, buttons, inputs, etc.) use updated brand design tokens
-- [ ] Branding is applied to empty states and error/loading banners
-- [ ] `style-guide.md` includes updated tokens, colors, and brand tone guidelines
-- [ ] `ui-wireframes.md` and `ui-mockups.md` reflect brand layout and visual updates
-- [ ] `tailwind.config.js` is extended with brand tokens and semantic utilities
-- [ ] Accessibility (WCAG AA) is preserved post-brand update
+- [x] UI header includes brand logo, name, and optional tagline
+- [x] Primary and accent brand colors are applied across buttons, headings, and highlights
+- [x] Component styles (modals, buttons, inputs, etc.) use updated brand design tokens
+- [x] Branding is applied to empty states and error/loading banners
+- [x] `style-guide.md` includes updated tokens, colors, and brand tone guidelines
+- [x] `ui-wireframes.md` and `ui-mockups.md` reflect brand layout and visual updates
+- [x] `tailwind.config.js` is extended with brand tokens and semantic utilities
+- [x] Accessibility (WCAG AA) is preserved post-brand update
 
 ---
 

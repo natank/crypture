@@ -4,6 +4,7 @@ import { FocusTrap } from "focus-trap-react";
 import { useAddAssetForm } from "@hooks/useAddAssetForm";
 import { PortfolioAsset } from "@hooks/usePortfolioState";
 import { CoinInfo } from "@services/coinService";
+import { PlusIcon } from "lucide-react";
 
 type Props = {
   onClose: () => void;
@@ -35,16 +36,16 @@ export function AddAssetModal({
 
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
-      if (event.key === 'Enter') {
+      if (event.key === "Enter") {
         handleSubmit();
-      } else if (event.key === 'Escape') {
+      } else if (event.key === "Escape") {
         onClose();
       }
     };
 
-    document.addEventListener('keydown', handleKeyDown);
+    document.addEventListener("keydown", handleKeyDown);
     return () => {
-      document.removeEventListener('keydown', handleKeyDown);
+      document.removeEventListener("keydown", handleKeyDown);
     };
   }, [handleSubmit, onClose]);
 
@@ -54,7 +55,7 @@ export function AddAssetModal({
 
   return (
     <div
-      className="modal flex items-center justify-center bg-black/40 backdrop-blur-sm p-4 sm:p-8"
+      className="modal"
       role="dialog"
       aria-modal="true"
       aria-labelledby="add-asset-title"
@@ -68,20 +69,17 @@ export function AddAssetModal({
             document.getElementById("asset-quantity") || document.body,
         }}
       >
-        <div className="modal-content card max-w-lg w-full relative flex flex-col gap-8 sm:gap-6 p-6 sm:p-8" >
+        <div className="modal-content w-full max-w-md space-y-6">
           <h2
             id="add-asset-title"
-            className="text-2xl sm:text-3xl font-bold text-balance text-primary mb-2"
+            className="text-xl font-brand text-brand-primary"
           >
             ➕ Add Crypto Asset
           </h2>
 
-          {/* 🔍 Filterable Asset Selector */}
-          <div className="flex flex-col gap-4">
-            <label
-              htmlFor="asset-select"
-              className="label block text-sm font-medium text-gray-700 mb-1"
-            >
+          {/* 🔍 Asset Selector */}
+          <div className="space-y-2">
+            <label htmlFor="asset-select" className="label">
               Asset
             </label>
             <AssetSelector
@@ -96,28 +94,27 @@ export function AddAssetModal({
           </div>
 
           {/* 🔢 Quantity Input */}
-          <div className="flex flex-col gap-4">
-            <label
-              htmlFor="asset-quantity"
-              className="label block text-sm font-medium text-gray-700 mb-1"
-            >
+          <div className="space-y-2">
+            <label htmlFor="asset-quantity" className="label">
               Quantity
             </label>
             <input
               id="asset-quantity"
               type="number"
               placeholder="0.5"
-              className="input w-full rounded-md border border-border px-3 py-2 text-base shadow-sm focus:outline-none focus-visible:ring-2 focus-visible:ring-primary transition"
+              className="input"
               value={quantity}
               onChange={(e) => setQuantity(e.target.value)}
               disabled={loading}
               ref={initialFocusRef}
+              aria-describedby={formError ? "asset-form-error" : undefined}
             />
           </div>
 
-          {/* ⚠️ Error Message */}
+          {/* ⚠️ Form Error */}
           {formError && (
             <div
+              id="asset-form-error"
               className="text-sm text-error mt-2"
               role="alert"
               aria-live="assertive"
@@ -130,20 +127,28 @@ export function AddAssetModal({
           <div className="flex justify-end gap-4 pt-4">
             <button
               onClick={onClose}
-              className="btn btn-outline px-4 py-2 rounded-md font-medium transition-colors duration-150 shadow-sm border border-primary bg-transparent text-primary focus:outline-none focus-visible:ring-2 focus-visible:ring-primary disabled:opacity-60 disabled:cursor-not-allowed"
+              className="bg-gray-100 text-gray-900 font-button px-4 py-2 rounded-md hover:bg-gray-200"
+              aria-label="Cancel adding asset"
               disabled={loading}
             >
               ❌ Cancel
             </button>
             <button
               onClick={handleSubmit}
-              className="btn px-4 py-2 rounded-md font-medium transition-colors duration-150 shadow-sm focus:outline-none focus-visible:ring-2 focus-visible:ring-primary disabled:opacity-60 disabled:cursor-not-allowed"
+              className="bg-brand-primary text-white font-button px-4 py-2 rounded-md hover:bg-purple-700 flex items-center justify-center min-w-[140px]"
+              aria-label="Add asset"
               disabled={loading}
             >
               {loading ? (
-                <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin mx-auto"></div>
+                <span
+                  className="animate-spin w-4 h-4 border-2 border-white border-t-brand-accent rounded-full"
+                  aria-hidden="true"
+                />
               ) : (
-                "➕ Add Asset"
+                <>
+                  <PlusIcon className="w-4 h-4" aria-hidden="true" />
+                  Add Asset
+                </>
               )}
             </button>
           </div>

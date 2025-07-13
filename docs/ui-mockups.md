@@ -72,6 +72,7 @@ These mockups correspond to the most critical user flows and UI areas:
 | 5   | **Global Loading & Error Banners** | Full-screen spinner, global error banner with retry                        | 5, 7                 | ✅ Done |
 | 6   | **Sort/Filter Bar**                | Inputs for searching and sorting the asset list                            | 6, 8                 | ✅ Done |
 | 7   | **Export/Import Buttons (Stub)**   | Button styles and layout for export/import actions (no modal yet)          | 10                   | ✅ Done |
+| 8   | **Empty State (Branded)**          | Display when no portfolio assets are present                               | 0, 8, UI-14          | ✅ Done |
 
 ---
 
@@ -89,10 +90,10 @@ These mockups correspond to the most critical user flows and UI areas:
 
 ## 📄 1. Portfolio Overview Page
 
-<header class="bg-white shadow-md rounded-b-lg px-6 py-4 flex items-center justify-between">
-  <h1 class="font-brand flex items-center gap-3 text-brand-primary text-2xl">
-    <span class="text-3xl">🔐</span> Crypture
-    <span class="text-sm text-gray-500 font-subtle ml-2">Track your crypto clearly</span>
+<header class="bg-brand-gradient text-white px-6 py-4 rounded-b-lg shadow-md">
+  <h1 class="font-brand flex items-center gap-3 text-2xl">
+    🔐 Crypture
+    <span class="text-sm text-white/80 ml-2">Track your crypto clearly</span>
   </h1>
 </header>
 
@@ -178,7 +179,7 @@ These mockups correspond to the most critical user flows and UI areas:
 ```
 | Element            | Design Tokens Applied                       |
 | ------------------ | ------------------------------------------- |
-| Header             | `font-brand`, `text-brand-primary`          |
+| Header  | `bg-brand-gradient`, `text-white` | Enhance brand recognition visually |
 | Total Value        | `font-brand`, `text-brand-primary`          |
 | Inputs / Dropdowns | `focus:ring-brand-primary`, consistent tone |
 | Buttons            | CTA uses `bg-brand-primary`, others neutral |
@@ -449,3 +450,50 @@ aria-label="Import Portfolio"
 ```
 
 ```
+
+## 📄 8. Empty State (Branded)
+
+### ✨ Purpose
+
+Display a friendly, branded message and CTA when the portfolio is empty.
+
+### 🎨 Developer Snippet
+
+<div class="text-center py-16 bg-brand-gradient text-white rounded-lg">
+  <div class="text-5xl mb-4">🪙</div>
+  <h2 class="font-brand text-xl mb-2">Your portfolio is empty.</h2>
+  <p class="text-white/90 mb-4">Start by adding a crypto asset below.</p>
+  <button class="bg-white text-brand-primary font-button px-4 py-2 rounded-md hover:bg-gray-100">
+    ➕ Add Asset
+  </button>
+</div>
+
+### 🧩 Annotations
+
+| Element    | Design Tokens Applied                                 |
+| ---------- | ----------------------------------------------------- |
+| Background | `bg-brand-gradient`, `text-white`                     |
+| Heading    | `font-brand`, `text-xl`                               |
+| CTA Button | `bg-white`, `text-brand-primary`, `hover:bg-gray-100` |
+| Icon       | Emoji (`🪙`) or future mascot                         |
+
+---
+
+### ✅ Footer Implementation
+
+The footer is now implemented in `AppFooter.tsx` and rendered at the bottom of the `PortfolioPage`.
+
+| Element   | Token/Class Used           | Notes                                 |
+| --------- | -------------------------- | ------------------------------------- |
+| Container | `text-sm text-gray-500`    | Matches brand-subtle tone             |
+| Divider   | `border-t border-gray-200` | Soft section separator                |
+| Links     | `hover:text-brand-accent`  | Styled per branding guideline         |
+| Layout    | `text-center py-4 mt-12`   | Spacing and alignment per style guide |
+
+✅ Integrated in `PortfolioPage.tsx` immediately after `<main>` block.
+
+### 🌈 Gradient Usage Note
+
+- `bg-brand-gradient` is applied in the **global header** and **empty state background**
+- Used sparingly to preserve focus and readability
+- Styled per Section 1.3 in `style-guide.md`

@@ -140,6 +140,23 @@ Footer: Lightweight footer with copyright.
 
 ---
 
+## 🕳️ Empty State
+
++------------------------------------------------------+
+| [🪙 Crypture logo or mascot icon] | ← Visual Identity |
+| Your portfolio is empty. |
+| Start by adding a crypto asset below. |
+| [➕ Add Asset] |
++------------------------------------------------------+
+
+Annotations:
+
+Mascot/icon reinforces app identity (e.g., minimalist vault, coin symbol)
+
+Use text-gray-600, bg-gray-50, or soft highlight for empty state background
+
+CTA button should use brand color token (see style-guide.md)
+
 ## ➕ Footer/Footer Links Zone (New)
 
 ```

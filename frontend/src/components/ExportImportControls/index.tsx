@@ -10,22 +10,22 @@ export default function ExportImportControls({
   onImport,
 }: ExportImportControlsProps) {
   return (
-    <div className="flex justify-end gap-4 mt-6 md:gap-6 lg:gap-8" >
+    <div className="flex justify-end gap-4 mt-6 md:gap-6 lg:gap-8">
       <button
-        className="btn btn-outline rounded-md shadow-md transition duration-200 ease-in-out hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-gray-500"
+        className="bg-brand-primary text-white font-button px-4 py-2 rounded-md hover:bg-purple-700 transition"
         data-testid="export-button"
         aria-label="Export Portfolio"
         onClick={onExport}
       >
-        📤 Export
+        📤 Export Portfolio
       </button>
       <button
-        className="btn btn-outline rounded-md shadow-md transition duration-200 ease-in-out hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-gray-500"
+        className="bg-brand-accent text-white font-button px-4 py-2 rounded-md hover:bg-emerald-600 transition"
         data-testid="import-button"
         aria-label="Import Portfolio"
         onClick={onImport}
       >
-        📥 Import
+        📥 Import Portfolio
       </button>
     </div>
   );
