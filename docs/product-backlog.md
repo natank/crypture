@@ -24,7 +24,7 @@ Stories are grouped by feature category and prioritized based on their importanc
 | UI-14 | Establish Branded Visual Identity Across App                      | Medium   | UI and Usability           | ✅ Done |
 | UI-15 | Align Component Styles with Updated UI Mockups                    | High     | UI and Usability           | ✅ Done |
 | UI-16 | Improve Header & Toolbar Layout                                   | Medium   | UI and Usability           | Planned |
-| 9     | Persist Portfolio in Local Storage/Backend                        | Low      | Extended Features          | Pending |
+| 9     | Persist Portfolio in Local Storage/Backend                        | High     | Extended Features          | ✅ Done |
 | 10    | Export/Import Portfolio Data (CSV/JSON)                           | Medium   | Extended Features          | Pending |
 | 11    | Add Charting for Price History                                    | Low      | Extended Features          | Pending |
 | 12    | Enable User Authentication                                        | Low      | Extended Features          | Pending |
@@ -420,18 +420,28 @@ so that I don’t lose my asset list every time I refresh the page.
 
 **Acceptance Criteria:**
 
-- [ ] 9.1 The portfolio state (assets and quantities) is saved in browser local storage.
-- [ ] 9.2 On app load, previously saved portfolio data is loaded and displayed.
-- [ ] 9.3 Changes to the portfolio (add/remove asset, update quantity) trigger an automatic save.
-- [ ] 9.4 If no data exists in storage, the portfolio starts empty.
-- [ ] 9.5 Local storage usage is documented and does not include sensitive data.
+- [x] 9.1 The portfolio state (assets and quantities) is saved in browser local storage.
+- [x] 9.2 On app load, previously saved portfolio data is loaded and displayed.
+- [x] 9.3 Changes to the portfolio (add/remove asset, update quantity) trigger an automatic save.
+- [x] 9.4 If no data exists in storage, the portfolio starts empty.
+- [x] 9.5 Local storage usage is documented and does not include sensitive data.
 
-**Notes:**
+**Implementation Summary:**
 
-- No backend or authentication required.
-- Use a key like `cryptoPortfolio` in localStorage.
+- Created a `localStorageService` utility to abstract read/write operations.
+- Updated `usePortfolioState` to hydrate from localStorage after `coinMap` is ready and `isLoading` is false.
+- Prevented premature overwrite using an internal `isHydrated` ref.
+- Ensured saving is triggered by all state changes (including empty portfolio).
+- Integrated new hook logic in `PortfolioPage` with `coinMap` and loading state.
 
----
+**Tests:**
+
+- ✅ Unit Tests: Serialization and hydration logic (mocked localStorage)
+- ✅ Integration Tests: `PortfolioPage` loads saved data correctly
+- ✅ E2E Tests: End-to-end behavior for add, delete, and reload scenarios
+
+**Completed On:** 2025-07-19
+**Status:** ✅ Done
 
 ### 🧾 User Story 10: Export Portfolio to CSV/JSON
 

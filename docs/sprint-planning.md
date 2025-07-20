@@ -66,31 +66,34 @@ This process ensures that implementation aligns tightly with user needs, design 
 
 # 📦 Active Sprint stories
 
+# 📦 Archived Sprints
+
 ## 🏁 User Story 9: Persist Portfolio in Local Storage
 
 > **User Story** > _As a personal finance hobbyist,_ > _I want my portfolio to be saved between visits using local storage,_ > _so that I don’t lose my asset list every time I refresh the page._
 
+✅ Status: Complete  
+🗓️ Completed On: 2025-07-19
+
 ### ✅ Acceptance Criteria
 
-- [ ] 9.1 The portfolio state (assets and quantities) is saved in browser local storage.
-- [ ] 9.2 On app load, previously saved portfolio data is loaded and displayed.
-- [ ] 9.3 Changes to the portfolio (add/remove asset, update quantity) trigger an automatic save.
-- [ ] 9.4 If no data exists in storage, the portfolio starts empty.
-- [ ] 9.5 Local storage usage is documented and does not include sensitive data.
+- [x] 9.1 The portfolio state (assets and quantities) is saved in browser local storage.
+- [x] 9.2 On app load, previously saved portfolio data is loaded and displayed.
+- [x] 9.3 Changes to the portfolio (add/remove asset, update quantity) trigger an automatic save.
+- [x] 9.4 If no data exists in storage, the portfolio starts empty.
+- [x] 9.5 Local storage usage is documented and does not include sensitive data.
 
 ---
 
-### 🔧 Technical Breakdown with Status
-
 | Layer                          | Task                                                                     | Files/Modules                                   | Status         |
 | ------------------------------ | ------------------------------------------------------------------------ | ----------------------------------------------- | -------------- |
-| **State Logic**                | Add serialization logic to `usePortfolio` to persist to `localStorage`   | `src/hooks/usePortfolio.ts`                     | ⬜ Not Started |
-| **Initialization**             | Load from `localStorage` on hook init, fallback to `[]` if none          | `usePortfolio.ts`                               | ⬜ Not Started |
-| **Triggering**                 | Use `useEffect` to sync `portfolio` state on change                      | `usePortfolio.ts`                               | ⬜ Not Started |
-| **Keys & Schema**              | Use key `cryptoPortfolio`; structure: `{ asset: string, qty: number }[]` | Defined in same hook                            | ⬜ Not Started |
-| **Testing - Unit**             | Write unit tests for save/load logic, mock `localStorage`                | `__tests__/usePortfolio.localStorage.test.ts`   | ⬜ Not Started |
-| **Testing - Integration**      | Confirm persisted data loads correctly in `PortfolioPage`                | `__tests__/PortfolioPage.localStorage.test.tsx` | ⬜ Not Started |
-| **Testing - E2E**              | Verify full behavior: add → reload → restore UI                          | `e2e/specs/persist-portfolio.spec.ts`           | ⬜ Not Started |
+| **State Logic**                | Add serialization logic to `usePortfolio` to persist to `localStorage`   | `src/hooks/usePortfolio.ts`                     | ✅ Done        |
+| **Initialization**             | Load from `localStorage` on hook init, fallback to `[]` if none          | `usePortfolio.ts`                               | ✅ Done        |
+| **Triggering**                 | Use `useEffect` to sync `portfolio` state on change                      | `usePortfolio.ts`                               | ✅ Done        |
+| **Keys & Schema**              | Use key `cryptoPortfolio`; structure: `{ asset: string, qty: number }[]` | Defined in same hook                            | ✅ Done        |
+| **Testing - Unit**             | Write unit tests for save/load logic, mock `localStorage`                | `__tests__/usePortfolio.localStorage.test.ts`   | ✅ Done        |
+| **Testing - Integration**      | Confirm persisted data loads correctly in `PortfolioPage`                | `__tests__/PortfolioPage.localStorage.test.tsx` | ✅ Done        |
+| **Testing - E2E**              | Verify full behavior: add → reload → restore UI                          | `e2e/specs/persist-portfolio.spec.ts`           | ✅ Done        |
 | **Visual Feedback (Optional)** | Consider adding "💾 Saved" or sync indicator for UX clarity              | `PortfolioHeader.tsx`, optional                 | ⬜ Not Started |
 | **Docs**                       | Add note on `localStorage` usage to project README or `dev-notes.md`     | `README.md` or `docs/dev-notes.md`              | ⬜ Not Started |
 
@@ -130,8 +133,6 @@ This process ensures that implementation aligns tightly with user needs, design 
 - All tests (unit, integration, E2E) pass
 
 ---
-
-# 📦 Archived Sprints
 
 ## 🟢 User Story: UI-16 – Improve Header & Toolbar Layout
 
