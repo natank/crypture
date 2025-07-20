@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 
 import { AddAssetModal } from "@components/AddAssetModal";
 import AssetList from "@components/AssetList";
@@ -16,6 +16,7 @@ import { useCoinSearch } from "@hooks/useCoinSearch";
 import { useUIState } from "@hooks/useUIState";
 import { useFilterSort } from "@hooks/useFilterSort";
 import AppFooter from "@components/AppFooter";
+import { CoinInfo } from "@services/coinService";
 
 export default function PortfolioPage() {
   // 1. Fetch + poll coin data
@@ -28,8 +29,16 @@ export default function PortfolioPage() {
   const { search, setSearch, filteredCoins } = useCoinSearch(allCoins);
 
   // 4. Portfolio logic and total value (from context or local hook)
+  const coinMap = useMemo(() => {
+    const map: Record<string, CoinInfo> = {};
+    for (const coin of allCoins) {
+      map[coin.symbol.toLowerCase()] = coin;
+    }
+    return map;
+  }, [allCoins]);
+
   const { portfolio, addAsset, removeAsset, getAssetById, totalValue } =
-    usePortfolioState(priceMap);
+    usePortfolioState(priceMap, coinMap, loading);
 
   // 5. UI state (modal control)
   const {

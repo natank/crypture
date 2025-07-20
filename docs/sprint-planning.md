@@ -60,13 +60,81 @@ This process ensures that implementation aligns tightly with user needs, design 
 
 # 🚀 Active Stories
 
-> **Currently focused story:** UI-16
+> **Currently focused story:** User Story 9
 
-## 🟢 FOCUSED Sprint Story:UI-16
+## 🟢 FOCUSED Sprint Story: User story 9
 
 # 📦 Active Sprint stories
 
-## 🟢 FOCUSED Sprint Story: UI-16 – Improve Header & Toolbar Layout
+# 📦 Archived Sprints
+
+## 🏁 User Story 9: Persist Portfolio in Local Storage
+
+> **User Story** > _As a personal finance hobbyist,_ > _I want my portfolio to be saved between visits using local storage,_ > _so that I don’t lose my asset list every time I refresh the page._
+
+✅ Status: Complete  
+🗓️ Completed On: 2025-07-19
+
+### ✅ Acceptance Criteria
+
+- [x] 9.1 The portfolio state (assets and quantities) is saved in browser local storage.
+- [x] 9.2 On app load, previously saved portfolio data is loaded and displayed.
+- [x] 9.3 Changes to the portfolio (add/remove asset, update quantity) trigger an automatic save.
+- [x] 9.4 If no data exists in storage, the portfolio starts empty.
+- [x] 9.5 Local storage usage is documented and does not include sensitive data.
+
+---
+
+| Layer                          | Task                                                                     | Files/Modules                                   | Status         |
+| ------------------------------ | ------------------------------------------------------------------------ | ----------------------------------------------- | -------------- |
+| **State Logic**                | Add serialization logic to `usePortfolio` to persist to `localStorage`   | `src/hooks/usePortfolio.ts`                     | ✅ Done        |
+| **Initialization**             | Load from `localStorage` on hook init, fallback to `[]` if none          | `usePortfolio.ts`                               | ✅ Done        |
+| **Triggering**                 | Use `useEffect` to sync `portfolio` state on change                      | `usePortfolio.ts`                               | ✅ Done        |
+| **Keys & Schema**              | Use key `cryptoPortfolio`; structure: `{ asset: string, qty: number }[]` | Defined in same hook                            | ✅ Done        |
+| **Testing - Unit**             | Write unit tests for save/load logic, mock `localStorage`                | `__tests__/usePortfolio.localStorage.test.ts`   | ✅ Done        |
+| **Testing - Integration**      | Confirm persisted data loads correctly in `PortfolioPage`                | `__tests__/PortfolioPage.localStorage.test.tsx` | ✅ Done        |
+| **Testing - E2E**              | Verify full behavior: add → reload → restore UI                          | `e2e/specs/persist-portfolio.spec.ts`           | ✅ Done        |
+| **Visual Feedback (Optional)** | Consider adding "💾 Saved" or sync indicator for UX clarity              | `PortfolioHeader.tsx`, optional                 | ⬜ Not Started |
+| **Docs**                       | Add note on `localStorage` usage to project README or `dev-notes.md`     | `README.md` or `docs/dev-notes.md`              | ⬜ Not Started |
+
+---
+
+### 🧪 Tests & Coverage Plan
+
+| Type        | Scenario                                                     |
+| ----------- | ------------------------------------------------------------ |
+| Unit        | Saving portfolio state to localStorage on change             |
+| Unit        | Loading portfolio state from localStorage on init            |
+| Integration | App initializes from storage, correctly renders saved assets |
+| E2E         | User adds asset → refresh page → asset persists in portfolio |
+| E2E         | User deletes asset → refresh → asset no longer appears       |
+
+---
+
+### ⏱️ Effort Estimate
+
+| Task Category                       | Estimate  |
+| ----------------------------------- | --------- |
+| Hook implementation + logic         | 1 pt      |
+| Unit & integration testing          | 2 pts     |
+| E2E testing                         | 1 pt      |
+| Optional: Visual feedback indicator | 1 pt      |
+| **Total**                           | **5 pts** |
+
+---
+
+### ✅ Definition of Done
+
+- Portfolio data persists across sessions using `localStorage`
+- Page reload restores asset list and recalculates total value
+- Tests verify save/load reliability and no data loss
+- Optional visual indicator for saved state adds UX clarity
+- Matches `style-guide.md` and follows SOLID principles
+- All tests (unit, integration, E2E) pass
+
+---
+
+## 🟢 User Story: UI-16 – Improve Header & Toolbar Layout
 
 ### **User Story UI-16**
 
@@ -81,11 +149,11 @@ _so that I can quickly understand my portfolio status and navigate controls with
 
 ### ✅ Acceptance Criteria
 
-- [ ] 16.1 Header condenses logo, tagline, and total value into one flex row
-- [ ] 16.2 Toolbar is wrapped with `.toolbar-wrapper` for visual grouping
-- [ ] 16.3 Layout spacing and alignment work on desktop and mobile
-- [ ] 16.4 Follows mockup tokens and accessibility conventions
-- [ ] 16.5 Visual output matches `ui-wireframes.md` and `ui-mockups.md`
+- [x] 16.1 Header condenses logo, tagline, and total value into one flex row
+- [x] 16.2 Toolbar is wrapped with `.toolbar-wrapper` for visual grouping
+- [x] 16.3 Layout spacing and alignment work on desktop and mobile
+- [x] 16.4 Follows mockup tokens and accessibility conventions
+- [x] 16.5 Visual output matches `ui-wireframes.md` and `ui-mockups.md`
 
 ---
 
@@ -111,8 +179,6 @@ _so that I can quickly understand my portfolio status and navigate controls with
 - Functional parity (no regression in portfolio behavior)
 
 ---
-
-# 📦 Archived Sprints
 
 ## 🏁 User Story 6: Filter/Sort Assets by Name or Value
 

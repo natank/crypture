@@ -16,7 +16,7 @@ describe("PortfolioHeader", () => {
     const valueDisplay = screen.getByTestId("total-value");
 
     expect(valueDisplay).toBeInTheDocument();
-    expect(valueDisplay).toHaveTextContent(/^💰\s*—$/);
+    expect(valueDisplay).toHaveTextContent(/^💰\s*Total Portfolio Value:\s*—$/);
   });
 
   it("renders last updated timestamp if provided", () => {
