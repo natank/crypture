@@ -258,7 +258,11 @@ describe("PortfolioPage", () => {
       })
     );
     // ✅ Also confirm priceMap was passed to hook
-    expect(mockUsePortfolioState).toHaveBeenCalledWith(mockPriceMap);
+    expect(mockUsePortfolioState).toHaveBeenCalledWith(
+      mockPriceMap,
+      expect.any(Object),
+      expect.any(Boolean)
+    );
   });
 });
 

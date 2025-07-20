@@ -1,5 +1,7 @@
+import { useState, useCallback, useMemo, useEffect, useRef } from "react";
 import { CoinInfo } from "@services/coinService";
-import { useState, useCallback, useMemo } from "react";
+import { loadPortfolio, savePortfolio } from "@services/localStorageService";
+
 export type PortfolioAsset = {
   coinInfo: CoinInfo;
   quantity: number;
@@ -7,13 +9,40 @@ export type PortfolioAsset = {
 
 export type PortfolioState = PortfolioAsset[];
 
-/**
- * Hook to manage portfolio list, modal state, and add-button focus.
- */
 export function usePortfolioState(
-  prices: Record<string, number | undefined | null> = {}
+  prices: Record<string, number | undefined | null> = {},
+  coinMap: Record<string, CoinInfo> = {},
+  isLoading: boolean = false
 ) {
   const [portfolio, setPortfolio] = useState<PortfolioState>([]);
+  const isHydrated = useRef(false);
+
+  // Hydrate from localStorage once coins are loaded
+  useEffect(() => {
+    if (!isLoading && !isHydrated.current && portfolio.length === 0) {
+      const stored = loadPortfolio();
+      const hydrated = stored
+        .map(({ asset, qty }) => {
+          const coinInfo = coinMap[asset];
+          return coinInfo ? { coinInfo, quantity: qty } : null;
+        })
+        .filter(Boolean) as PortfolioState;
+
+      setPortfolio(hydrated);
+      isHydrated.current = true;
+    }
+  }, [isLoading, coinMap, portfolio.length]);
+
+  useEffect(() => {
+    if (!isLoading && isHydrated.current) {
+      const toSave = portfolio.map((a) => ({
+        asset: a.coinInfo.symbol.toLowerCase(),
+        qty: a.quantity,
+      }));
+      savePortfolio(toSave);
+    }
+  }, [portfolio, isLoading]);
+
   const totalValue = useMemo(() => {
     return portfolio.reduce((sum, asset) => {
       const price = prices[asset.coinInfo.symbol.toLowerCase()];

@@ -132,4 +132,16 @@ export class PortfolioPage {
     await this.filterInput.fill(partialName);
     await this.page.keyboard.press("Enter");
   }
+
+  assetQuantity(symbol: string, expectedQty: number) {
+    return this.page.locator(`text=Qty: ${expectedQty}`);
+  }
+
+  async reload() {
+    await this.page.reload();
+  }
+
+  async isEmptyStateVisible() {
+    return await this.page.locator("text=Your portfolio is empty.").isVisible();
+  }
 }
