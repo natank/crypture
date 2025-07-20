@@ -17,7 +17,10 @@ export default function AssetRow({
   const hasPrice = typeof price === "number";
 
   return (
-    <div className="flex items-center justify-between gap-6 py-4 px-4 border-b border-border last:border-b-0 bg-surface rounded-lg shadow-sm hover:shadow-md transition-shadow">
+    <div
+      className="flex items-center justify-between gap-6 py-4 px-4 border-b border-border last:border-b-0 bg-surface rounded-lg shadow-sm hover:shadow-md transition-shadow"
+      data-testid={`asset-row-${asset.coinInfo.symbol}`}
+    >
       {/* Left Section: Asset Info + Error */}
       <div className="flex-1">
         <div className="flex items-center gap-3">

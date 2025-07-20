@@ -90,16 +90,15 @@ These mockups correspond to the most critical user flows and UI areas:
 
 ## 📄 1. Portfolio Overview Page
 
-<header class="bg-brand-gradient text-white px-6 py-4 rounded-b-lg shadow-md">
+<header class="bg-brand-gradient text-white px-6 py-4 rounded-b-lg shadow-md flex items-center justify-between">
   <h1 class="font-brand flex items-center gap-3 text-2xl">
     🔐 Crypture
     <span class="text-sm text-white/80 ml-2">Track your crypto clearly</span>
   </h1>
+  <div class="text-xl font-brand text-brand-primary">
+    💰 $12,345.67
+  </div>
 </header>
-
-| 💰 Total Portfolio Value [✔️ Saved]                                   |
-| --------------------------------------------------------------------- |
-| <span class="text-xl font-brand text-brand-primary">$12,345.67</span> |
 
 ---
 
@@ -363,7 +362,7 @@ Provides tools for users to organize and navigate their asset list by filtering 
 
 ### 🎨 High-Fidelity Mockup – Sort/Filter Bar
 
-<div class="flex flex-wrap items-center gap-4 mb-4">
+<div class="toolbar-wrapper flex flex-wrap items-center gap-4 mb-4 bg-white border border-gray-200 rounded-md px-4 py-2 shadow-sm">
   <!-- Search Input -->
   <div class="relative w-full sm:w-64">
     <span class="absolute inset-y-0 left-3 flex items-center text-gray-500">🔍</span>
@@ -390,6 +389,12 @@ Provides tools for users to organize and navigate their asset list by filtering 
     </select>
   </div>
 </div>
+
+Toolbar has visible grouping: background, border, rounded corners, shadow.
+
+Wrapped in .toolbar-wrapper utility (added to index.css or Tailwind layer).
+
+Fully responsive and WCAG-complian
 
 ### ✅ Token & Style Highlights
 

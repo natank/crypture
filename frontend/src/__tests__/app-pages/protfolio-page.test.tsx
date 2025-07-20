@@ -121,7 +121,9 @@ describe("PortfolioPage", () => {
 
   it("renders without crashing", () => {
     render(<PortfolioPage />);
-    expect(screen.getByText(/total portfolio value/i)).toBeInTheDocument();
+    expect(screen.getByTestId("total-value")).toHaveTextContent(
+      /^\s*💰\s*\$[0-9,]+/
+    );
   });
 
   it("shows the Add, Export, and Import buttons", () => {

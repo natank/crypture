@@ -89,12 +89,10 @@ export class PortfolioPage {
   }
 
   assetRow(symbol: string) {
-    return this.page
-      .locator("div[role='row'], div") // generic fallback if role isn't set
-      .filter({ hasText: symbol.toUpperCase() }) // match by BTC, ETH, etc.
-      .first();
+    return this.page.locator(
+      `[data-testid="asset-row-${symbol.toUpperCase()}"]`
+    );
   }
-
   // Method to sort assets by name
   async sortByName(order: "asc" | "desc") {
     await this.sortDropdown.selectOption(
