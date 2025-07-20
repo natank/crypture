@@ -122,7 +122,7 @@ describe("PortfolioPage", () => {
   it("renders without crashing", () => {
     render(<PortfolioPage />);
     expect(screen.getByTestId("total-value")).toHaveTextContent(
-      /^\s*💰\s*\$[0-9,]+/
+      /^💰\s*Total Portfolio Value:\s*\$\d{1,3}(,\d{3})*$/
     );
   });
 
