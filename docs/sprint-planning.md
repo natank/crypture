@@ -60,11 +60,99 @@ This process ensures that implementation aligns tightly with user needs, design 
 
 # 🚀 Active Stories
 
-> **Currently focused story:** User Story 9
+> **Currently focused story:** User Story 10
 
-## 🟢 FOCUSED Sprint Story: User story 9
+## 🟢 FOCUSED Sprint Story: User story 10
 
 # 📦 Active Sprint stories
+
+## 🟢 User Story 10: Export Portfolio to CSV/JSON
+
+> **User Story** > _As a casual crypto investor,_ > _I want to export my portfolio data in CSV or JSON format,_ > _so that I can back it up or integrate it with my financial tools._
+
+---
+
+### ✅ Acceptance Criteria
+
+- [ ] 10.1 User can choose between CSV and JSON export formats
+- [ ] 10.2 Clicking “Export” triggers file download with current portfolio data
+- [ ] 10.3 File includes asset name, symbol, quantity, and current value
+- [ ] 10.4 Filename is timestamped (e.g., `portfolio-2025-07-20.json`)
+- [ ] 10.5 UI button is clearly labeled and accessible
+
+---
+
+Here's the **updated task breakdown** for **User Story 10**, now including:
+
+- A new **UI enhancement task** for format selection
+- **Ownership** clearly attributed (Developer or Designer)
+- A **Status** column initialized with `🔲 Not Started`
+
+---
+
+### 🔧 Technical Breakdown
+
+| Layer / Role          | Task                                                               | File(s) / Module(s)                               | Owner     | Status         |
+| --------------------- | ------------------------------------------------------------------ | ------------------------------------------------- | --------- | -------------- |
+| **🎨 UI Enhancement** | ➕ **Design format selection UI (CSV/JSON)** for export action     | `ui-mockups.md`, `style-guide.md`                 | Designer  | ✅ Done        |
+| **UI Component**      | Add dropdown for format selection (CSV/JSON)                       | `ExportImportControls.tsx`                        | Developer | ✅ Done        |
+| **Export Logic**      | Create `exportPortfolio(portfolio, prices, format): string/blob`   | `utils/exportPortfolio.ts`                        | Developer | 🔲 Not Started |
+| **Trigger/Handler**   | Connect export button to logic, generate Blob, trigger download    | `PortfolioPage.tsx` or `ExportImportControls.tsx` | Developer | 🔲 Not Started |
+| **Filename Helper**   | Generate timestamped filename (e.g., `portfolio-YYYY-MM-DD.json`)  | `utils/formatDate.ts` or inline helper            | Developer | 🔲 Not Started |
+| **Accessibility**     | Replace tooltip button with passive `ⓘ` span (no focus, no border) | `ExportImportControls.tsx`                        | Developer | ✅ Done        |
+| **Unit Testing**      | Test CSV and JSON generation with valid/empty inputs               | `__tests__/exportPortfolio.test.ts`               | Developer | 🔲 Not Started |
+| **E2E Testing**       | Simulate export via UI → assert download triggered                 | `e2e/specs/export-portfolio.spec.ts`              | Developer | 🔲 Not Started |
+
+---
+
+Would you like me to now update the actual `ui-mockups.md` with a proposed dropdown mockup for format selection?
+
+---
+
+### 📦 Deliverables
+
+| Type        | File / Component                    |
+| ----------- | ----------------------------------- |
+| Utility     | `exportPortfolio.ts`                |
+| UI Update   | `ExportImportControls.tsx`          |
+| Integration | `PortfolioPage.tsx` hook-in         |
+| Tests       | Unit test for export logic          |
+| E2E Test    | End-to-end spec for export workflow |
+
+---
+
+### 🧪 Test Scenarios
+
+| Test Type       | Scenario Description                                  |
+| --------------- | ----------------------------------------------------- |
+| **Unit**        | CSV includes correct headers and values               |
+| **Unit**        | JSON includes all portfolio fields                    |
+| **Integration** | Export button calls logic with correct state          |
+| **E2E**         | User clicks export → file downloads with correct name |
+
+---
+
+### ⏱️ Effort Estimate
+
+| Task Category       | Points    |
+| ------------------- | --------- |
+| Utility function    | 1 pt      |
+| UI control hookup   | 1 pt      |
+| Filename generation | 0.5 pt    |
+| Unit + E2E testing  | 1.5 pt    |
+| **Total**           | **4 pts** |
+
+---
+
+### ✅ Definition of Done
+
+- Exported file includes current portfolio state and matches selected format
+- File downloads automatically with timestamped name
+- UI reflects status clearly and passes accessibility review
+- All tests pass (unit + E2E)
+- Matches design in `ui-mockups.md` and UX tone in `style-guide.md`
+
+---
 
 # 📦 Archived Sprints
 
