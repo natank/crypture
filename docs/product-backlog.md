@@ -25,8 +25,8 @@ Stories are grouped by feature category and prioritized based on their importanc
 | UI-15 | Align Component Styles with Updated UI Mockups                    | High     | UI and Usability           | ✅ Done   |
 | UI-16 | Improve Header & Toolbar Layout                                   | Medium   | UI and Usability           | Planned   |
 | 9     | Persist Portfolio in Local Storage/Backend                        | High     | Extended Features          | ✅ Done   |
-| 10    | Export Portfolio to CSV/JSON                                      | High     | Extended Features          | 🟢 Active |
-| 11    | Import Portfolio from CSV/JSON                                    | High     | Extended Features          | Planned   |
+| 10    | Export Portfolio to CSV/JSON                                      | High     | Extended Features          | ✅ Done   |
+| 11    | Import Portfolio from CSV/JSON                                    | High     | Extended Features          | 🟢 Active |
 | 12    | Add Charting for Price History                                    | Low      | Extended Features          | Pending   |
 | 13    | Enable User Authentication                                        | Low      | Extended Features          | Pending   |
 | 14    | Refactor Sprint 1 Code to Follow SOLID Principles                 | Medium   | Technical Debt             | Pending   |
@@ -444,8 +444,6 @@ so that I don’t lose my asset list every time I refresh the page.
 **Completed On:** 2025-07-19
 **Status:** ✅ Done
 
-Here are the **updated sections for `product-backlog.md`** reflecting the sprint grooming and selection of **User Story 10** for implementation:
-
 ---
 
 ### 🧾 User Story 10: Export Portfolio to CSV/JSON
@@ -456,38 +454,46 @@ _I want to export my portfolio data in CSV or JSON format,_
 _so that I can back it up or integrate it with my financial tools._
 
 **Priority:** High
-**Status:** 🟢 Active
+**Status:** ✅ Done
 
 ---
 
-#### ✅ Acceptance Criteria
+### ✅ Acceptance Criteria
 
-- [ ] 10.1 The user can choose between CSV and JSON formats for export.
-- [ ] 10.2 Clicking "Export" triggers a file download with current portfolio data.
-- [ ] 10.3 The file includes asset name, symbol, quantity, and current value.
-- [ ] 10.4 Exported files are named with a timestamp (e.g., `portfolio-2025-07-20.json`).
-- [ ] 10.5 The export functionality is accessible via a clearly labeled UI element.
-
----
-
-#### 🔧 Implementation Notes
-
-- Format selector (CSV/JSON) to be added to export UI (dropdown or toggle).
-- Use Blob and `URL.createObjectURL()` to trigger file download.
-- Filename to be generated using ISO date (`YYYY-MM-DD`) format.
-- UI already stubbed in `ui-mockups.md` → Section 7.
-- Style and UX to follow `style-guide.md` → Button styling, aria-labels, tone.
-- Unit test: Validate CSV and JSON structure.
-- E2E test: Trigger export via UI and validate download was invoked.
+- [x] 10.1 The user can choose between CSV and JSON formats for export.
+- [x] 10.2 Clicking "Export" triggers a file download with current portfolio data.
+- [x] 10.3 The file includes asset name, symbol, quantity, and current value.
+- [x] 10.4 Exported files are named with a timestamp (e.g., `portfolio-2025-07-20.json`).
+- [x] 10.5 The export functionality is accessible via a clearly labeled UI element.
 
 ---
 
-#### 📎 Related Docs
+### 🔧 Implementation Summary
 
-- `sprint-planning.md` – Task breakdown, effort estimate, and deliverables
-- `ui-mockups.md` – Export button layout, aria-label, visual priority
-- `style-guide.md` – Button styling (`bg-brand-primary`), file naming UX tone
-- `e2e-guide.md` – New spec: `export-portfolio.spec.ts`
+| Area             | Details                                                                        |
+| ---------------- | ------------------------------------------------------------------------------ |
+| **Component**    | `ExportImportControls.tsx` with dropdown and export/import buttons             |
+| **Logic**        | `exportPortfolio()` formats CSV/JSON with proper value calculation             |
+| **Download**     | File is created using `Blob` + `URL.createObjectURL()` and downloaded          |
+| **Filename**     | Generated using `getFormattedDate()` helper (e.g., `portfolio-YYYY-MM-DD.csv`) |
+| **CSV Fix**      | Values are localized with thousands separators and wrapped in quotes           |
+| **Integration**  | `PortfolioPage.tsx` wires in portfolio + prices as props                       |
+| **Tests – Unit** | `exportPortfolio.test.ts` covers CSV/JSON, missing prices, escaping            |
+| **Tests – UI**   | `ExportImportControls.test.tsx` verifies button interaction and mocks          |
+| **Tests – E2E**  | `export-portfolio.spec.ts` simulates real user flow + file download            |
+| **POM Methods**  | `PortfolioPage.addAsset()`, `.selectExportFormat()`, `.clickExportButton()`    |
+| **Mocking**      | `mockCoinGeckoMarkets()` ensures BTC/ETH options are loaded                    |
+
+---
+
+### 🧪 Validation
+
+- ✅ CSV values show correct commas and decimals
+- ✅ Excel/Sheets compatible (quotes escape commas)
+- ✅ JSON is clean, machine-readable
+- ✅ Buttons are accessible and visible in the UI
+- ✅ Works with mocked CoinGecko data and real app state
+- ✅ E2E test confirms download, filename, and content
 
 ---
 

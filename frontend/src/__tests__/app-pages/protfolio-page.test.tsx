@@ -1,6 +1,7 @@
 import { fireEvent, render, screen } from "@testing-library/react";
 import PortfolioPage from "@pages/PortfolioPage";
 import { describe, it, expect } from "vitest";
+import ExportImportControls from "@components/ExportImportControls";
 
 const removeAsset = vi.fn();
 const addAsset = vi.fn();
@@ -126,13 +127,20 @@ describe("PortfolioPage", () => {
     );
   });
 
-  it("shows the Add, Export, and Import buttons", () => {
+  it("renders Add, Export, and Import buttons in PortfolioPage", () => {
     render(<PortfolioPage />);
+
     expect(
       screen.getByRole("button", { name: /add asset/i })
     ).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: /export/i })).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: /import/i })).toBeInTheDocument();
+
+    expect(
+      screen.getByRole("button", { name: /download portfolio/i })
+    ).toBeInTheDocument();
+
+    expect(
+      screen.getByRole("button", { name: /upload portfolio/i })
+    ).toBeInTheDocument();
   });
 
   it("displays the filter input and sort dropdown", () => {

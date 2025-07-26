@@ -19,16 +19,10 @@ import AppFooter from "@components/AppFooter";
 import { CoinInfo } from "@services/coinService";
 
 export default function PortfolioPage() {
-  // 1. Fetch + poll coin data
   const { coins: allCoins, loading, error, lastUpdatedAt } = useCoinList();
-
-  // 2. Derive price map for portfolio valuation
   const priceMap = usePriceMap(allCoins);
-
-  // 3. Filter coins based on search (for modal or asset selector)
   const { search, setSearch, filteredCoins } = useCoinSearch(allCoins);
 
-  // 4. Portfolio logic and total value (from context or local hook)
   const coinMap = useMemo(() => {
     const map: Record<string, CoinInfo> = {};
     for (const coin of allCoins) {
@@ -40,7 +34,6 @@ export default function PortfolioPage() {
   const { portfolio, addAsset, removeAsset, getAssetById, totalValue } =
     usePortfolioState(priceMap, coinMap, loading);
 
-  // 5. UI state (modal control)
   const {
     shouldShowAddAssetModal,
     shouldShowDeleteConfirmationModal,
@@ -77,10 +70,6 @@ export default function PortfolioPage() {
     requestDeleteAsset(id);
   };
 
-  const handleExport = () => {
-    console.log("Export clicked");
-  };
-
   const handleImport = () => {
     console.log("Import clicked");
   };
@@ -97,7 +86,6 @@ export default function PortfolioPage() {
         <ErrorBanner message=" Error loading prices. Please try again later." />
       )}
 
-      {/* Filter & Sort */}
       <div className="w-full max-w-4xl mx-auto px-6 md:px-10 mb-6">
         <FilterSortControls
           filter={filterText}
@@ -106,12 +94,12 @@ export default function PortfolioPage() {
           onSortChange={setSortOption}
         />
       </div>
+
       <main
         role="main"
         className="max-w-4xl mx-auto p-6 md:p-10 bg-surface rounded-lg shadow-lg flex flex-col gap-8 text-balance"
       >
         <section className="flex flex-col gap-6 w-full">
-          {/* Asset List */}
           <AssetList
             assets={sortedFilteredAssets}
             onDelete={handleDeleteAsset}
@@ -120,14 +108,17 @@ export default function PortfolioPage() {
             priceMap={priceMap}
           />
 
-          {/* Footer Action Buttons */}
+          {/* ✅ PASS DATA for export */}
           <ExportImportControls
-            onExport={handleExport}
+            portfolio={portfolio.map((item) => ({
+              asset: item.coinInfo.symbol,
+              quantity: item.quantity,
+            }))}
+            prices={priceMap}
             onImport={handleImport}
           />
         </section>
 
-        {/* Add Asset Modal */}
         {shouldShowAddAssetModal && (
           <AddAssetModal
             onClose={closeAddAssetModal}
@@ -139,7 +130,6 @@ export default function PortfolioPage() {
           />
         )}
 
-        {/* Delete Modal */}
         {assetToDelete && (
           <DeleteConfirmationModal
             assetName={assetToDelete.coinInfo.name}

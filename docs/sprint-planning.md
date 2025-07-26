@@ -60,11 +60,62 @@ This process ensures that implementation aligns tightly with user needs, design 
 
 # 🚀 Active Stories
 
-> **Currently focused story:** User Story 10
+> **Currently focused story:** User Story 11
 
-## 🟢 FOCUSED Sprint Story: User story 10
+## 🟢 FOCUSED Sprint Story: User story 11
 
 # 📦 Active Sprint stories
+
+### 🧾 User Story 11: Import Portfolio from CSV/JSON
+
+**User Story**  
+As a personal finance hobbyist,  
+I want to import my crypto holdings from a CSV or JSON file,  
+so that I can quickly set up my portfolio without manual entry.
+
+**Priority:** High
+
+**Acceptance Criteria:**
+
+- [ ] 11.1 The user can upload a `.csv` or `.json` file via an import button or drop zone.
+- [ ] 11.2 Valid files populate the portfolio with the imported data.
+- [ ] 11.3 Invalid formats or missing fields trigger a clear validation error message.
+- [ ] 11.4 The import function preserves existing portfolio items or offers a “replace” option.
+- [ ] 11.5 A preview of parsed data is shown before applying the import.
+
+**Notes:**
+
+- CSV format must include at least: asset, quantity.
+- JSON structure must match export format.
+
+Here is the **task list for User Story 11** added to the `sprint-planning.md` under the "🟢 FOCUSED Sprint Story: User story 11" section:
+
+---
+
+#### 🔧 Technical Breakdown: Story 11 – Import Portfolio from CSV/JSON
+
+| Layer / Role          | Task                                                                                                                                                                                                                                           | File(s) / Module(s)                       | Owner     | Status         |
+| --------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------- | --------- | -------------- |
+| **Data Utility**      | ✅ Implemented `parseImportedFile()` to support CSV and JSON parsing in `utils/import-portfolio.ts`. Handles file reading, extension detection, and basic row mapping with lowercase normalization. Validation will be added in the next task. | `utils/import-portfolio.ts`               | Developer | ✅ Done        |
+| **Validation**        | Add validation logic for required fields (`asset`, `quantity`)                                                                                                                                                                                 | `utils/parseImportedFile.ts`              | Developer | 🔲 Not Started |
+| **Merge Logic**       | Implement `applyImport()` with replace/append behavior                                                                                                                                                                                         | `utils/applyImport.ts`                    | Developer | 🔲 Not Started |
+| **State Hook**        | Integrate `applyImport()` into `usePortfolioState` or controller                                                                                                                                                                               | `hooks/usePortfolio.ts`                   | Developer | 🔲 Not Started |
+| **Conflict Handling** | Handle de-dupe and sum quantities in append mode                                                                                                                                                                                               | `applyImport.ts`, `usePortfolio.ts`       | Developer | 🔲 Not Started |
+| **UI Component**      | Build `ImportPortfolioModal.tsx` with file upload + preview UI                                                                                                                                                                                 | `components/ImportPortfolioModal.tsx`     | Developer | 🔲 Not Started |
+| **UI Controls**       | Add replace/append toggle + UX copy                                                                                                                                                                                                            | `ImportPortfolioModal.tsx`                | Developer | 🔲 Not Started |
+| **Error Handling**    | Display banner for malformed or invalid files                                                                                                                                                                                                  | `ImportPortfolioModal.tsx`                | Developer | 🔲 Not Started |
+| **UI Wiring**         | Wire modal into `ExportImportControls.tsx`                                                                                                                                                                                                     | `ExportImportControls.tsx`                | Developer | 🔲 Not Started |
+| **Confirmation Step** | Trigger preview + confirmation before applying                                                                                                                                                                                                 | `ImportPortfolioModal.tsx`                | Developer | 🔲 Not Started |
+| **Unit Testing**      | Write unit tests for `parseImportedFile()`                                                                                                                                                                                                     | `__tests__/parseImportedFile.test.ts`     | Developer | 🔲 Not Started |
+| **Unit Testing**      | Write unit tests for `applyImport()` merge logic                                                                                                                                                                                               | `__tests__/applyImport.test.ts`           | Developer | 🔲 Not Started |
+| **Integration Test**  | Full import flow (file → preview → apply)                                                                                                                                                                                                      | `__tests__/ImportPortfolioModal.test.tsx` | Developer | 🔲 Not Started |
+| **E2E Test**          | Playwright test for import workflow with CoinGecko mock                                                                                                                                                                                        | `e2e/specs/import-portfolio.spec.ts`      | Developer | 🔲 Not Started |
+| **Documentation**     | Add tooltip/help text for supported import formats                                                                                                                                                                                             | `ImportPortfolioModal.tsx`, tooltips      | Developer | 🔲 Not Started |
+| **Arch Notes**        | Update `architecture-overview.md` to reflect import format handling                                                                                                                                                                            | `architecture-overview.md`, Ch. 11        | Developer | 🔲 Not Started |
+
+---
+
+# 📦 Archived Sprints
 
 ## 🟢 User Story 10: Export Portfolio to CSV/JSON
 
@@ -74,11 +125,11 @@ This process ensures that implementation aligns tightly with user needs, design 
 
 ### ✅ Acceptance Criteria
 
-- [ ] 10.1 User can choose between CSV and JSON export formats
-- [ ] 10.2 Clicking “Export” triggers file download with current portfolio data
-- [ ] 10.3 File includes asset name, symbol, quantity, and current value
-- [ ] 10.4 Filename is timestamped (e.g., `portfolio-2025-07-20.json`)
-- [ ] 10.5 UI button is clearly labeled and accessible
+- [x] 10.1 User can choose between CSV and JSON export formats
+- [x] 10.2 Clicking “Export” triggers file download with current portfolio data
+- [x] 10.3 File includes asset name, symbol, quantity, and current value
+- [x] 10.4 Filename is timestamped (e.g., `portfolio-2025-07-20.json`)
+- [x] 10.5 UI button is clearly labeled and accessible
 
 ---
 
@@ -92,16 +143,21 @@ Here's the **updated task breakdown** for **User Story 10**, now including:
 
 ### 🔧 Technical Breakdown
 
-| Layer / Role          | Task                                                               | File(s) / Module(s)                               | Owner     | Status         |
-| --------------------- | ------------------------------------------------------------------ | ------------------------------------------------- | --------- | -------------- |
-| **🎨 UI Enhancement** | ➕ **Design format selection UI (CSV/JSON)** for export action     | `ui-mockups.md`, `style-guide.md`                 | Designer  | ✅ Done        |
-| **UI Component**      | Add dropdown for format selection (CSV/JSON)                       | `ExportImportControls.tsx`                        | Developer | ✅ Done        |
-| **Export Logic**      | Create `exportPortfolio(portfolio, prices, format): string/blob`   | `utils/exportPortfolio.ts`                        | Developer | 🔲 Not Started |
-| **Trigger/Handler**   | Connect export button to logic, generate Blob, trigger download    | `PortfolioPage.tsx` or `ExportImportControls.tsx` | Developer | 🔲 Not Started |
-| **Filename Helper**   | Generate timestamped filename (e.g., `portfolio-YYYY-MM-DD.json`)  | `utils/formatDate.ts` or inline helper            | Developer | 🔲 Not Started |
-| **Accessibility**     | Replace tooltip button with passive `ⓘ` span (no focus, no border) | `ExportImportControls.tsx`                        | Developer | ✅ Done        |
-| **Unit Testing**      | Test CSV and JSON generation with valid/empty inputs               | `__tests__/exportPortfolio.test.ts`               | Developer | 🔲 Not Started |
-| **E2E Testing**       | Simulate export via UI → assert download triggered                 | `e2e/specs/export-portfolio.spec.ts`              | Developer | 🔲 Not Started |
+| Layer / Role         | Task                                                                  | File(s) / Module(s)                              | Owner     | Status  |
+| -------------------- | --------------------------------------------------------------------- | ------------------------------------------------ | --------- | ------- |
+| **UI Component**     | Add format dropdown and export/import buttons                         | `ExportImportControls.tsx`                       | Developer | ✅ Done |
+| **Export Logic**     | Implement `exportPortfolio()` with JSON/CSV formatting + escaping     | `utils/exportPortfolio.ts`                       | Developer | ✅ Done |
+| **Helper Utility**   | Add `getFormattedDate()` for timestamped filenames                    | `utils/formatDate.ts`                            | Developer | ✅ Done |
+| **Event Handling**   | Connect export button to Blob logic and trigger file download         | `ExportImportControls.tsx`                       | Developer | ✅ Done |
+| **Integration**      | Wire `ExportImportControls` into `PortfolioPage.tsx` with props       | `PortfolioPage.tsx`                              | Developer | ✅ Done |
+| **Formatting Fix**   | Localize CSV values (commas) and wrap in quotes for Excel             | `exportPortfolio.ts`                             | Developer | ✅ Done |
+| **Unit Testing**     | Write unit tests for `exportPortfolio()` covering CSV/JSON/missing    | `__tests__/exportPortfolio.test.ts`              | Developer | ✅ Done |
+| **Integration Test** | Test export behavior and mock helpers inside component test           | `__tests__/ExportImportControls.test.tsx`        | Developer | ✅ Done |
+| **Accessibility**    | Ensure aria-labels are readable + add `data-testid` for E2E targeting | `ExportImportControls.tsx`                       | Developer | ✅ Done |
+| **E2E Testing**      | Add full Playwright test for export flow (with CoinGecko mock)        | `e2e/specs/export-portfolio.spec.ts`             | Developer | ✅ Done |
+| **POM Update**       | Add `addAsset`, `selectExportFormat`, `clickExportButton` methods     | `e2e/pom-pages/portfolio.pom.ts`                 | Developer | ✅ Done |
+| **Mock Injection**   | Ensure `mockCoinGeckoMarkets()` is used before test runs              | `export-portfolio.spec.ts`                       | Developer | ✅ Done |
+| **Bug Fix**          | Use exact label match: "BTC – Bitcoin" in dropdown select             | `PortfolioPage.addAsset()` in `portfolio.pom.ts` | Developer | ✅ Done |
 
 ---
 
@@ -153,8 +209,6 @@ Would you like me to now update the actual `ui-mockups.md` with a proposed dropd
 - Matches design in `ui-mockups.md` and UX tone in `style-guide.md`
 
 ---
-
-# 📦 Archived Sprints
 
 ## 🏁 User Story 9: Persist Portfolio in Local Storage
 

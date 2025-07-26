@@ -1,18 +1,34 @@
 import React, { useState } from "react";
+import { exportPortfolio } from "@utils/exportPortfolio";
+import { getFormattedDate } from "@utils/formatDate";
 
 type ExportImportControlsProps = {
-  onExport: (format: "csv" | "json") => void;
+  portfolio: { asset: string; quantity: number }[];
+  prices: Record<string, number>;
   onImport?: () => void;
 };
 
 export default function ExportImportControls({
-  onExport,
+  portfolio,
+  prices,
   onImport,
 }: ExportImportControlsProps) {
   const [format, setFormat] = useState<"csv" | "json">("csv");
 
   const handleExportClick = () => {
-    onExport(format);
+    const dataStr = exportPortfolio(portfolio, prices, format);
+    const blob = new Blob([dataStr], {
+      type: format === "json" ? "application/json" : "text/csv",
+    });
+
+    const url = URL.createObjectURL(blob);
+    const filename = `portfolio-${getFormattedDate(new Date())}.${format}`;
+
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = filename;
+    a.click();
+    URL.revokeObjectURL(url);
   };
 
   return (
@@ -47,6 +63,7 @@ export default function ExportImportControls({
       {/* Action Buttons */}
       <div className="flex gap-3 flex-wrap">
         <button
+          data-testid="export-button"
           onClick={handleExportClick}
           className="bg-brand-primary text-white font-button px-4 py-2 rounded-md hover:bg-purple-700 transition"
           aria-label={`Download portfolio as ${format.toUpperCase()} file`}
@@ -56,6 +73,7 @@ export default function ExportImportControls({
 
         {onImport && (
           <button
+            data-testid="import-button"
             onClick={onImport}
             className="bg-brand-accent text-white font-button px-4 py-2 rounded-md hover:bg-emerald-600 transition"
             aria-label="Upload portfolio file"

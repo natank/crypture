@@ -142,4 +142,18 @@ export class PortfolioPage {
   async isEmptyStateVisible() {
     return await this.page.locator("text=Your portfolio is empty.").isVisible();
   }
+
+  async selectExportFormat(option: "CSV" | "JSON") {
+    await this.page
+      .getByLabel(/select file format/i)
+      .selectOption(option.toLowerCase());
+  }
+
+  async clickExportButton() {
+    await this.page
+      .getByRole("button", {
+        name: /download portfolio as/i,
+      })
+      .click();
+  }
 }

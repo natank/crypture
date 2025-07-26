@@ -51,7 +51,6 @@ The Crypto Portfolio Tracker is a React + TypeScript application that allows use
 **Consumes:**
 
 - `docs/sprint-planning.md`
-- `docs/sprint-progress-tracker.md`
 
 ### 🧑‍🔧 Scrum Master Agent
 
@@ -69,7 +68,6 @@ The Crypto Portfolio Tracker is a React + TypeScript application that allows use
 **Produces:**
 
 - `docs/sprint-planning.md`
-- `docs/sprint-progress-tracker.md`
 
 **Consumes:**
 
@@ -175,12 +173,11 @@ Responsible for creating user interface wireframes, mockups, and visual componen
 
 ## 8. **Documentation Plan**
 
-| Document                     | Maintained By     | Description                           |
-| ---------------------------- | ----------------- | ------------------------------------- |
-| `product-vision.md`          | PO Agent          | High-level goals and success criteria |
-| `product-backlog.md`         | PO Agent          | Prioritized feature list              |
-| `sprint-planning.md`         | Scrum Master, Dev | Sprint goals and task breakdown       |
-| `sprint-progress-tracker.md` | Scrum Master      | Daily/weekly progress updates         |
+| Document             | Maintained By     | Description                           |
+| -------------------- | ----------------- | ------------------------------------- |
+| `product-vision.md`  | PO Agent          | High-level goals and success criteria |
+| `product-backlog.md` | PO Agent          | Prioritized feature list              |
+| `sprint-planning.md` | Scrum Master, Dev | Sprint goals and task breakdown       |
 
 ## 9. **Testing Strategy**
 

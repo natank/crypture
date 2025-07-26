@@ -68,3 +68,96 @@ To integrate additional localStorage-based features:
 3. If hydration is conditional (e.g., requires fetched data), mirror the `isHydrated` + `isLoading` pattern.
 4. Write integration tests for hydration logic, and E2E tests for visible behavior.
 5. Validate that writes do not happen prematurely or overwrite user data on boot.
+
+Here is a scaffolded section you can append organically to the `architecture-overview.md`, following the structure of existing sections like "Portfolio Persistence Flow":
+
+---
+
+## 📁 11. Export/Import File Architecture
+
+### 🎯 Purpose
+
+This section describes the structure and handling of portfolio export/import files in CSV and JSON formats. It ensures consistent formatting for integration with spreadsheets, backups, or third-party finance tools, and supports reliable data interchange across app versions and environments.
+
+---
+
+### 📦 File Structure Overview
+
+#### ✅ CSV Format
+
+- **File extension**: `.csv`
+- **Encoding**: UTF-8
+- **Delimiter**: Comma (`,`)
+- **Quoting**: Values with commas are wrapped in double quotes
+
+**Headers**:
+
+```csv
+Asset,Quantity,Value (USD)
+```
+
+**Example**:
+
+```csv
+Asset,Quantity,Value (USD)
+btc,2,"60,000.00"
+eth,1.5,"3,000.00"
+```
+
+#### ✅ JSON Format
+
+- **File extension**: `.json`
+- **Encoding**: UTF-8
+- **Structure**: Array of asset records
+
+```ts
+type ExportedPortfolio = {
+  asset: string; // e.g., "btc"
+  quantity: number; // e.g., 2
+  value: number; // e.g., 60000
+}[];
+```
+
+**Example**:
+
+```json
+[
+  {
+    "asset": "btc",
+    "quantity": 2,
+    "value": 60000
+  },
+  {
+    "asset": "eth",
+    "quantity": 1.5,
+    "value": 3000
+  }
+]
+```
+
+---
+
+### 📥 Download Behavior
+
+- Files are generated via `Blob` and `URL.createObjectURL()`.
+- Filename follows: `portfolio-YYYY-MM-DD.csv|json` via `getFormattedDate()`.
+- Triggered programmatically by injecting and clicking an anchor element (`<a download>`).
+- All downloads use the browser’s default location unless overridden.
+
+---
+
+### 🧪 Test Coverage
+
+| Test Type   | Covered Behavior                                      |
+| ----------- | ----------------------------------------------------- |
+| Unit        | `exportPortfolio()` logic for CSV/JSON and formatting |
+| Integration | `ExportImportControls` triggers correct logic         |
+| E2E         | Download file triggers with correct content + name    |
+
+---
+
+### 📐 Design Notes
+
+- Matches UX and label tone in `style-guide.md` (e.g., “Download portfolio as file”)
+- Conforms to structure shown in `ui-mockups.md` export/import toolbar
+- Filename and content format is stable and consistent for re-import support
