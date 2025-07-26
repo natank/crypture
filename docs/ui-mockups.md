@@ -421,14 +421,42 @@ Align with style-guide.md Sections 2.1 and 3.3
 
 ### 🎨 Developer snippet High-Fidelity Mockup – Export/Import Buttons
 
-<div class="flex justify-end gap-4 mt-6">
-  <!-- Branded Export Button -->
-  <button
-    class="bg-brand-primary text-white font-button px-4 py-2 rounded-md hover:bg-purple-700"
-    aria-label="Export Portfolio"
-  >
-    📤 Export Portfolio
-  </button>
+<!-- 📦 Branded Export/Import Toolbar -->
+<div class="mt-8 bg-white border border-gray-200 rounded-lg shadow-sm px-6 py-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+  <!-- Format Selector with Tooltip -->
+  <div class="flex items-center gap-3">
+    <label for="export-format" class="font-subtle text-sm text-gray-700">
+      Format:
+    </label>
+    <select
+      id="export-format"
+      aria-label="Select file format for export"
+      class="text-base rounded-md border border-gray-200 px-3 py-2 focus:ring-2 focus:ring-brand-primary focus:outline-none"
+    >
+      <option value="csv">CSV (.csv)</option>
+      <option value="json">JSON (.json)</option>
+    </select>
+    <span class="text-gray-400 text-sm" title="Choose a format for download.">
+      ⓘ
+    </span>
+  </div>
+
+  <!-- Action Buttons -->
+  <div class="flex gap-3 flex-wrap">
+    <button
+      class="bg-brand-primary text-white font-button px-4 py-2 rounded-md hover:bg-purple-700 transition"
+      aria-label="Download portfolio as file"
+    >
+      📤 Export Portfolio
+    </button>
+    <button
+      class="bg-brand-accent text-white font-button px-4 py-2 rounded-md hover:bg-emerald-600 transition"
+      aria-label="Upload portfolio file"
+    >
+      📥 Import Portfolio
+    </button>
+  </div>
+</div>
 
   <!-- Branded Accent Import Button -->
 

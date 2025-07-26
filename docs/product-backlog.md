@@ -10,28 +10,29 @@ Stories are grouped by feature category and prioritized based on their importanc
 
 ## 🗂 Summary of Backlog Items
 
-| ID    | Title                                                             | Priority | Feature Category           | Status  |
-| ----- | ----------------------------------------------------------------- | -------- | -------------------------- | ------- |
-| 1     | Add Crypto Asset with Quantity                                    | High     | Core Portfolio Management  | ✅ Done |
-| 2     | Delete Crypto Asset                                               | High     | Core Portfolio Management  | ✅ Done |
-| 3     | Calculate and Display Total Portfolio Value                       | High     | Core Portfolio Management  | ✅ Done |
-| 4     | Fetch Real-Time Prices via CoinGecko API                          | High     | Real-Time Data Integration | ✅ Done |
-| 5     | Real-Time Value Updates on Change                                 | High     | Real-Time Data Integration | ✅ Done |
-| 0     | Render Portfolio Overview Layout                                  | High     | UI and Usability           | ✅ Done |
-| 6     | Filter/Sort Assets by Name or Value                               | High     | UI and Usability           | ✅ Done |
-| 7     | Handle UI States (Loading, Error)                                 | Medium   | UI and Usability           | Pending |
-| 8     | Intuitive Interface for Non-Technical Users                       | Medium   | UI and Usability           | Pending |
-| UI-14 | Establish Branded Visual Identity Across App                      | Medium   | UI and Usability           | ✅ Done |
-| UI-15 | Align Component Styles with Updated UI Mockups                    | High     | UI and Usability           | ✅ Done |
-| UI-16 | Improve Header & Toolbar Layout                                   | Medium   | UI and Usability           | Planned |
-| 9     | Persist Portfolio in Local Storage/Backend                        | High     | Extended Features          | ✅ Done |
-| 10    | Export/Import Portfolio Data (CSV/JSON)                           | Medium   | Extended Features          | Pending |
-| 11    | Add Charting for Price History                                    | Low      | Extended Features          | Pending |
-| 12    | Enable User Authentication                                        | Low      | Extended Features          | Pending |
-| 13    | Refactor Sprint 1 Code to Follow SOLID Principles                 | Medium   | Technical Debt             | Pending |
-| TD-02 | UI Visibility Refactor and Design Token Integration               | Medium   | Technical Debt             | ✅ Done |
-| TD-03 | Windsurf-Aided Review of UI/UX Design Docs                        | Medium   | Technical Debt             | ✅ Done |
-| TD-04 | Visual/UX Refactor of `ui-mockups.md` for Design System Alignment | Medium   | Technical Debt             | ✅ Done |
+| ID    | Title                                                             | Priority | Feature Category           | Status    |
+| ----- | ----------------------------------------------------------------- | -------- | -------------------------- | --------- |
+| 1     | Add Crypto Asset with Quantity                                    | High     | Core Portfolio Management  | ✅ Done   |
+| 2     | Delete Crypto Asset                                               | High     | Core Portfolio Management  | ✅ Done   |
+| 3     | Calculate and Display Total Portfolio Value                       | High     | Core Portfolio Management  | ✅ Done   |
+| 4     | Fetch Real-Time Prices via CoinGecko API                          | High     | Real-Time Data Integration | ✅ Done   |
+| 5     | Real-Time Value Updates on Change                                 | High     | Real-Time Data Integration | ✅ Done   |
+| 0     | Render Portfolio Overview Layout                                  | High     | UI and Usability           | ✅ Done   |
+| 6     | Filter/Sort Assets by Name or Value                               | High     | UI and Usability           | ✅ Done   |
+| 7     | Handle UI States (Loading, Error)                                 | Medium   | UI and Usability           | Pending   |
+| 8     | Intuitive Interface for Non-Technical Users                       | Medium   | UI and Usability           | Pending   |
+| UI-14 | Establish Branded Visual Identity Across App                      | Medium   | UI and Usability           | ✅ Done   |
+| UI-15 | Align Component Styles with Updated UI Mockups                    | High     | UI and Usability           | ✅ Done   |
+| UI-16 | Improve Header & Toolbar Layout                                   | Medium   | UI and Usability           | Planned   |
+| 9     | Persist Portfolio in Local Storage/Backend                        | High     | Extended Features          | ✅ Done   |
+| 10    | Export Portfolio to CSV/JSON                                      | High     | Extended Features          | 🟢 Active |
+| 11    | Import Portfolio from CSV/JSON                                    | High     | Extended Features          | Planned   |
+| 12    | Add Charting for Price History                                    | Low      | Extended Features          | Pending   |
+| 13    | Enable User Authentication                                        | Low      | Extended Features          | Pending   |
+| 14    | Refactor Sprint 1 Code to Follow SOLID Principles                 | Medium   | Technical Debt             | Pending   |
+| TD-02 | UI Visibility Refactor and Design Token Integration               | Medium   | Technical Debt             | ✅ Done   |
+| TD-03 | Windsurf-Aided Review of UI/UX Design Docs                        | Medium   | Technical Debt             | ✅ Done   |
+| TD-04 | Visual/UX Refactor of `ui-mockups.md` for Design System Alignment | Medium   | Technical Debt             | ✅ Done   |
 
 ---
 
@@ -443,27 +444,50 @@ so that I don’t lose my asset list every time I refresh the page.
 **Completed On:** 2025-07-19
 **Status:** ✅ Done
 
+Here are the **updated sections for `product-backlog.md`** reflecting the sprint grooming and selection of **User Story 10** for implementation:
+
+---
+
 ### 🧾 User Story 10: Export Portfolio to CSV/JSON
 
-**User Story**  
-As a casual crypto investor,  
-I want to export my portfolio data in CSV or JSON format,  
-so that I can back it up or integrate it with my financial tools.
+**User Story**
+_As a casual crypto investor,_
+_I want to export my portfolio data in CSV or JSON format,_
+_so that I can back it up or integrate it with my financial tools._
 
 **Priority:** High
+**Status:** 🟢 Active
 
-**Acceptance Criteria:**
+---
+
+#### ✅ Acceptance Criteria
 
 - [ ] 10.1 The user can choose between CSV and JSON formats for export.
 - [ ] 10.2 Clicking "Export" triggers a file download with current portfolio data.
 - [ ] 10.3 The file includes asset name, symbol, quantity, and current value.
-- [ ] 10.4 Exported files are named with a timestamp (e.g., `portfolio-2025-05-16.json`).
+- [ ] 10.4 Exported files are named with a timestamp (e.g., `portfolio-2025-07-20.json`).
 - [ ] 10.5 The export functionality is accessible via a clearly labeled UI element.
 
-**Notes:**
+---
 
-- Ensure exported data matches current in-app state.
-- Use browser download API or create blob.
+#### 🔧 Implementation Notes
+
+- Format selector (CSV/JSON) to be added to export UI (dropdown or toggle).
+- Use Blob and `URL.createObjectURL()` to trigger file download.
+- Filename to be generated using ISO date (`YYYY-MM-DD`) format.
+- UI already stubbed in `ui-mockups.md` → Section 7.
+- Style and UX to follow `style-guide.md` → Button styling, aria-labels, tone.
+- Unit test: Validate CSV and JSON structure.
+- E2E test: Trigger export via UI and validate download was invoked.
+
+---
+
+#### 📎 Related Docs
+
+- `sprint-planning.md` – Task breakdown, effort estimate, and deliverables
+- `ui-mockups.md` – Export button layout, aria-label, visual priority
+- `style-guide.md` – Button styling (`bg-brand-primary`), file naming UX tone
+- `e2e-guide.md` – New spec: `export-portfolio.spec.ts`
 
 ---
 
@@ -515,7 +539,7 @@ so that I can understand how my investments have changed over time.
 
 ---
 
-### 🧾 User Story 13: Refactor Sprint 1 Code to Follow SOLID Principles
+### 🧾 User Story 14: Refactor Sprint 1 Code to Follow SOLID Principles
 
 **User Story**  
 As a developer maintaining this portfolio app,  
