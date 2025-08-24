@@ -64,7 +64,7 @@ export default function AssetRow({
 
       {/* Delete Button */}
       <button
-        className="p-2 rounded-full hover:bg-gray-100 text-error transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-error"
+        className="p-2 rounded-full hover:bg-gray-100 text-error transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-error min-w-[44px] min-h-[44px] flex items-center justify-center"
         aria-label={`Delete ${asset.coinInfo.symbol.toUpperCase()}`}
         title={`Delete ${asset.coinInfo.symbol.toUpperCase()}`}
         onClick={() => onDelete(asset.coinInfo.id)}
