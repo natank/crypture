@@ -60,7 +60,8 @@ export class PortfolioPage {
     this.assetItemBySymbol = (symbol: string) =>
       page.getByText(new RegExp(`${symbol}\\s*\\(`, "i"));
     this.assetQuantityBySymbol = (symbol: string) =>
-      page.getByText(new RegExp(`Qty:\\s*\\d+(\\.\\d+)?`, "i"));
+      this.assetRow(symbol).getByText(new RegExp(`Qty:\\s*\\d+(\\.\\d+)?`, "i"));
+
   }
 
   // --------- Page Actions ---------
@@ -168,7 +169,7 @@ export class PortfolioPage {
   }
 
   assetQuantity(symbol: string, expectedQty: number) {
-    return this.page.locator(`text=Qty: ${expectedQty}`);
+    return this.assetRow(symbol).locator(`text=Qty: ${expectedQty}`);
   }
 
   async reload() {

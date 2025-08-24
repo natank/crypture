@@ -3,16 +3,25 @@
 ### 📁 Project Structure
 
 ```
-src/e2e/
-├── fixtures.ts                  # Shared POM-based test fixtures
-├── specs/                       # All Playwright test specs
-│   └── delete-asset.spec.ts     # Example test
-├── pom-pages/                   # Page Object Model classes
+frontend/src/e2e/
+├── fixtures.ts                       # Shared POM-based test fixtures
+├── test-setup.ts                     # Global setup, routing mocks, etc.
+├── mocks/
+│   └── mockCoinGecko.ts              # API mocks (e.g., CoinGecko)
+├── pom-pages/                        # Page Object Model classes
 │   ├── portfolio.pom.ts
 │   ├── add-asset-modal.pom.ts
 │   └── delete-confirmation-modal.pom.ts
-├── utils/                       # Reusable helpers for E2E
-└── test-setup.ts               # Global setup, routing mocks, etc.
+├── specs/
+│   ├── a11y/                         # Accessibility specs
+│   │   └── contrast.spec.ts (example)
+│   ├── features/                     # Feature-focused specs
+│   │   └── ...
+│   └── flows/                        # Cross-feature user flows
+│       ├── import-portfolio.spec.ts  # Import flow (scaffolded)
+│       └── ...
+└── utils/
+    └── aa11y-check.ts                # Reusable utilities
 ```
 
 ---
@@ -22,7 +31,7 @@ src/e2e/
 - **Framework**: [Playwright](https://playwright.dev/)
 - **Language**: TypeScript
 - **Testing Strategy**: Page Object Model (POM) + custom fixtures
-- **Location**: All E2E tests are co-located in `src/e2e/`
+- **Location**: All E2E assets are under `frontend/src/e2e/` with specs organized by `a11y`, `features`, and `flows`.
 
 ---
 
@@ -33,6 +42,52 @@ src/e2e/
 | Portfolio Dashboard       | `portfolio.pom.ts`                 | `PortfolioPage`           |
 | Add Asset Modal           | `add-asset-modal.pom.ts`           | `AddAssetModal`           |
 | Delete Confirmation Modal | `delete-confirmation-modal.pom.ts` | `DeleteConfirmationModal` |
+
+---
+
+### 🔑 POM Entry Points (PortfolioPage)
+
+- `goto()` – navigate to app root
+- `addAsset(symbol: string, quantity: number)` – opens modal and adds asset
+- `assetRow(symbol: string)` – locator for a specific asset row (by symbol)
+- `selectExportFormat(label: "CSV" | "JSON")` – choose export format
+- `clickExportButton()` – trigger export action
+- `isModalVisible()` – check modal visibility
+
+Example:
+
+```ts
+import { test, expect } from "../fixtures";
+
+test("add and export portfolio", async ({ portfolioPage }) => {
+  await portfolioPage.goto();
+  await portfolioPage.addAsset("BTC", 0.5);
+  await expect(portfolioPage.assetRow("BTC")).toBeVisible();
+
+  await portfolioPage.selectExportFormat("JSON");
+  await portfolioPage.clickExportButton();
+});
+```
+
+Import flow test IDs used in specs for reference:
+- `data-testid="import-file-input"`
+- `data-testid="import-replace-button"`
+
+### 🏷️ Test Selectors Reference
+
+Common `data-testid` values used in E2E and component tests:
+
+- `add-asset-button` — `@components/AssetList/index.tsx`
+- `asset-select` — `@components/AssetSelector.tsx`
+- `export-button` — `@components/ExportImportControls/index.tsx`
+- `import-button` — `@components/ExportImportControls/index.tsx`
+- `import-file-input` — `@components/ExportImportControls/index.tsx`
+- `import-merge-button` — `@components/ImportPreviewModal.tsx`
+- `import-replace-button` — `@components/ImportPreviewModal.tsx`
+- `filter-input` — `@components/FilterSortControls/index.tsx`
+- `sort-dropdown` — `@components/FilterSortControls/index.tsx`
+- `total-value` — `@components/PortfolioHeader/index.tsx`
+- `asset-list` — rendered list container in Portfolio wiring tests
 
 All classes:
 
@@ -195,3 +250,19 @@ The mock returns a fixed response for Bitcoin and Ethereum:
 📌 Note: If your test depends on different data, copy and customize the mock for your test scenario.
 
 This avoids flakiness due to API rate limits, downtime, or unexpected data changes.
+
+---
+
+### 🧾 Changelog
+
+- 2025-08-24
+  - Added placeholder for Import Portfolio E2E spec: `src/e2e/specs/import-portfolio.spec.ts`
+  - Recommended scenarios:
+    - Happy path import with valid JSON
+    - CSV with missing required field → validation error
+    - Merge vs Replace behavior from preview modal
+  - Run a single spec locally:
+
+```bash
+cd frontend
+npm run test:e2e -- src/e2e/specs/import-portfolio.spec.ts

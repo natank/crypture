@@ -9,7 +9,7 @@ import tseslint from "typescript-eslint";
 import importPlugin from "eslint-plugin-import";
 import noRelativeImportPaths from "eslint-plugin-no-relative-import-paths";
 
-export default tseslint.config({ ignores: ["dist"] }, {
+export default tseslint.config({ ignores: ["dist", "coverage"] }, {
   extends: [js.configs.recommended, ...tseslint.configs.recommended],
   files: ["**/*.{ts,tsx}"],
   languageOptions: {
@@ -61,4 +61,44 @@ export default tseslint.config({ ignores: ["dist"] }, {
       },
     },
   },
-}, storybook.configs["flat/recommended"]);
+  // Overrides for tests and stories
+},
+{
+  files: [
+    "**/__tests__/**/*.{ts,tsx}",
+    "**/*.test.{ts,tsx}",
+    "src/e2e/**/*.{ts,tsx}",
+  ],
+  rules: {
+    "@typescript-eslint/no-explicit-any": "off",
+    // Allow relative imports in tests/e2e for convenience
+    "no-relative-import-paths/no-relative-import-paths": "off",
+    "@typescript-eslint/ban-ts-comment": ["warn", { "ts-ignore": true }],
+  },
+},
+{
+  files: ["**/__stories__/**/*.{ts,tsx}", "**/*.stories.{ts,tsx}"],
+  rules: {
+    "storybook/no-renderer-packages": "off",
+    // Keep other storybook recommended rules via plugin include below
+  },
+},
+storybook.configs["flat/recommended"],
+// Final overrides to ensure precedence
+{
+  files: [
+    "**/__tests__/**/*.{ts,tsx}",
+    "**/*.test.{ts,tsx}",
+    "src/e2e/**/*.{ts,tsx}",
+  ],
+  rules: {
+    "@typescript-eslint/no-unused-vars": "off",
+  },
+},
+{
+  files: ["**/__stories__/**/*.{ts,tsx}", "**/*.stories.{ts,tsx}"],
+  rules: {
+    "storybook/no-renderer-packages": "off",
+    "no-relative-import-paths/no-relative-import-paths": "off",
+  },
+});

@@ -26,7 +26,7 @@ Stories are grouped by feature category and prioritized based on their importanc
 | UI-16 | Improve Header & Toolbar Layout                                   | Medium   | UI and Usability           | Planned   |
 | 9     | Persist Portfolio in Local Storage/Backend                        | High     | Extended Features          | ✅ Done   |
 | 10    | Export Portfolio to CSV/JSON                                      | High     | Extended Features          | ✅ Done   |
-| 11    | Import Portfolio from CSV/JSON                                    | High     | Extended Features          | Planned   |
+| 11    | Import Portfolio from CSV/JSON                                    | High     | Extended Features          | ✅ Done   |
 | 12    | Add Charting for Price History                                    | Low      | Extended Features          | Pending   |
 | 13    | Enable User Authentication                                        | Low      | Extended Features          | Pending   |
 | 14    | Refactor Sprint 1 Code to Follow SOLID Principles                 | Medium   | Technical Debt             | Pending   |
@@ -499,15 +499,18 @@ As a personal finance hobbyist,
 I want to import my crypto holdings from a CSV or JSON file,  
 so that I can quickly set up my portfolio without manual entry.
 
-**Priority:** High
+**Priority:** High  
+**Status:** ✅ Done  
+**Completed On:** 2025-08-24  
+**Traceability:** See `docs/sprint-planning.md` (User Story 11) and `docs/sprint-progress-tracker.md` (2025-08-24).
 
 **Acceptance Criteria:**
 
-- [ ] 11.1 The user can upload a `.csv` or `.json` file via an import button or drop zone.
-- [ ] 11.2 Valid files populate the portfolio with the imported data.
-- [ ] 11.3 Invalid formats or missing fields trigger a clear validation error message.
-- [ ] 11.4 The import function preserves existing portfolio items or offers a “replace” option.
-- [ ] 11.5 A preview of parsed data is shown before applying the import.
+- [x] 11.1 The user can upload a `.csv` or `.json` file via an import button or drop zone.
+- [x] 11.2 Valid files populate the portfolio with the imported data.
+- [x] 11.3 Invalid formats or missing fields trigger a clear validation error message.
+- [x] 11.4 The import function preserves existing portfolio items or offers a “replace” option.
+- [x] 11.5 A preview of parsed data is shown before applying the import.
 
 **Notes:**
 

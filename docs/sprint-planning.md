@@ -96,7 +96,54 @@ This process ensures that implementation aligns tightly with user needs, design 
 
 ---
 
-Would you like me to now update the actual `ui-mockups.md` with a proposed dropdown mockup for format selection?
+## 🟢 User Story 11: Import Portfolio from CSV/JSON
+
+> As a casual crypto investor,
+> I want to import my portfolio from a CSV or JSON file,
+> so that I can quickly bootstrap or restore my holdings.
+
+### ✅ Acceptance Criteria
+
+- [x] 11.1 The user can upload a `.csv` or `.json` file via an import button or drop zone.
+- [x] 11.2 Valid files populate the portfolio with the imported data.
+- [x] 11.3 Invalid formats or missing fields trigger a clear validation error message.
+- [x] 11.4 The import function preserves existing portfolio items or offers a “replace” option.
+- [x] 11.5 A preview of parsed data is shown before applying the import.
+
+### 🔧 Technical Breakdown
+
+| Layer / Role        | Task                                                                    | File(s) / Module(s)                         | Owner     | Status |
+| ------------------- | ----------------------------------------------------------------------- | ------------------------------------------- | --------- | ------ |
+| Import Service      | Parse and validate CSV/JSON, infer format, normalize assets             | `src/services/portfolioIOService.ts`        | Developer | ✅ Done |
+| Import Hook         | Manage file selection, preview state, merge/replace, errors             | `src/hooks/usePortfolioImportExport.ts`     | Developer | ✅ Done |
+| Preview UI          | Show parsed items with Cancel/Merge/Replace actions                     | `src/components/ImportPreviewModal.tsx`     | Developer | ✅ Done |
+| Page Wiring         | Wire import controls + modal to hook callbacks                          | `src/pages/PortfolioPage.tsx`               | Developer | ✅ Done |
+| Unit Tests          | Service parsing (JSON/CSV), error paths, hook behavior, modal wiring    | `src/__tests__/services/portfolioIOService.test.ts`, `src/__tests__/hooks/usePortfolioImportExport.test.tsx`, `src/__tests__/pages/PortfolioPage.wiring.test.tsx` | Developer | ✅ Done |
+| E2E (Optional)      | Import flow happy path + validation error surface                       | `src/e2e/specs/import-portfolio.spec.ts`    | Developer | ⬜ Todo |
+
+### 📦 Deliverables
+
+| Type        | File / Component                        |
+| ----------- | --------------------------------------- |
+| Service     | `portfolioIOService.ts`                 |
+| Hook        | `usePortfolioImportExport.ts`           |
+| Component   | `ImportPreviewModal.tsx`                |
+| Wiring      | `PortfolioPage.tsx`                     |
+| Tests       | Unit + wiring tests for import flow     |
+
+Status: ✅ Complete  
+Completed On: 2025-08-24
+
+#### 🧪 Quality & Traceability
+
+- Tests passing (latest run): 150/150
+- Coverage thresholds enforced in `frontend/vitest.config.ts`:
+  - lines: 60%
+  - functions: 80%
+  - statements: 60%
+  - branches: 70%
+
+
 
 ---
 
