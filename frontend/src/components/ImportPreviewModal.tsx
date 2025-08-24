@@ -70,14 +70,14 @@ export default function ImportPreviewModal({ items, onCancel, onReplace, onMerge
             className="px-4 py-2 rounded-md bg-brand-accent text-white hover:bg-emerald-600 transition"
             data-testid="import-merge-button"
           >
-            Merge
+            Merge Import
           </button>
           <button
             onClick={onReplace}
             className="px-4 py-2 rounded-md bg-brand-primary text-white hover:bg-blue-700 transition"
             data-testid="import-replace-button"
           >
-            Replace
+            Replace Portfolio
           </button>
         </div>
       </div>

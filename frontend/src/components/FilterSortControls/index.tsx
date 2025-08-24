@@ -40,6 +40,20 @@ export default function FilterSortControls({
           disabled={disabled}
           className={`pl-10 pr-3 py-2 border border-gray-200 rounded-md w-full text-base text-gray-900 placeholder:text-gray-500 focus:ring-2 focus:ring-brand-primary focus:outline-none ${disabled ? "opacity-60 cursor-not-allowed" : ""}`}
         />
+        {/* Clear filter button */}
+        {filter && (
+          <button
+            type="button"
+            onClick={() => !disabled && onFilterChange("")}
+            className="absolute inset-y-0 right-2 my-auto px-2 h-8 text-sm text-gray-600 hover:text-gray-800 rounded-md hover:bg-gray-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary"
+            aria-label="Clear filter"
+            data-testid="clear-filter-button"
+            disabled={disabled}
+            aria-disabled={disabled}
+          >
+            Clear
+          </button>
+        )}
       </div>
 
       {/* 🔃 Sort Dropdown */}
