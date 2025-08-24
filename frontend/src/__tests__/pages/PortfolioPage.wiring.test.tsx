@@ -4,15 +4,32 @@ import * as coinList from "@hooks/useCoinList";
 import PortfolioPage from "@pages/PortfolioPage";
 
 // Mock child components that are heavy/irrelevant for wiring
-vi.mock("@components/AssetList", () => ({ default: () => <div data-testid="asset-list" /> }));
-vi.mock("@components/FilterSortControls", () => ({ default: () => <div data-testid="filter-sort" /> }));
+vi.mock("@components/AssetList", () => ({
+  default: ({ disabled }: { disabled?: boolean }) => (
+    <div>
+      <button data-testid="add-asset-button" disabled={!!disabled} />
+    </div>
+  ),
+}));
+vi.mock("@components/FilterSortControls", () => ({
+  default: ({ disabled }: { disabled?: boolean }) => (
+    <div data-testid="filter-sort" data-disabled={disabled ? "true" : "false"} />
+  ),
+}));
 vi.mock("@components/PortfolioHeader", () => ({ default: () => <div data-testid="header" /> }));
 vi.mock("@components/AppFooter", () => ({ default: () => <div data-testid="footer" /> }));
 vi.mock("@components/AddAssetModal", () => ({ AddAssetModal: () => null }));
 vi.mock("@components/DeleteConfirmationModal", () => ({ default: () => null }));
 
 vi.mock("@hooks/useCoinList", () => {
-  const impl = vi.fn(() => ({ coins: [], loading: false, error: null, lastUpdatedAt: new Date().toISOString() }));
+  const impl = vi.fn(() => ({
+    coins: [],
+    loading: false,
+    error: null,
+    lastUpdatedAt: Date.now(),
+    refreshing: false,
+    retry: vi.fn(),
+  }));
   return { useCoinList: impl };
 });
 vi.mock("@hooks/usePriceMap", () => ({ usePriceMap: () => ({}) }));
@@ -83,13 +100,59 @@ describe("PortfolioPage wiring", () => {
       dismissPreview: vi.fn(),
       exportPortfolio: vi.fn(),
     });
+  });
+
+  afterEach(() => {
     // reset useCoinList mock to default non-error state
-    (coinList.useCoinList as unknown as jest.Mock | vi.Mock).mockImplementation(() => ({
+    (coinList.useCoinList as unknown as vi.Mock).mockImplementation(() => ({
       coins: [],
       loading: false,
       error: null,
-      lastUpdatedAt: new Date().toISOString(),
+      lastUpdatedAt: Date.now(),
+      refreshing: false,
+      retry: vi.fn(),
     }));
+  });
+
+  it("invokes retry when clicking Retry on error banner", () => {
+    const retry = vi.fn();
+    (coinList.useCoinList as unknown as vi.Mock).mockImplementation(() => ({
+      coins: [],
+      loading: false,
+      error: "Network",
+      lastUpdatedAt: Date.now(),
+      refreshing: false,
+      retry,
+    }));
+
+    render(<PortfolioPage />);
+    const retryBtn = screen.getByRole("button", { name: /retry/i });
+    fireEvent.click(retryBtn);
+    expect(retry).toHaveBeenCalled();
+  });
+
+  it("shows updating spinner and disables add button when refreshing", () => {
+    (coinList.useCoinList as unknown as vi.Mock).mockImplementation(() => ({
+      coins: [],
+      loading: false,
+      error: null,
+      lastUpdatedAt: Date.now(),
+      refreshing: true,
+      retry: vi.fn(),
+    }));
+
+    render(<PortfolioPage />);
+
+    // Inline spinner should be present (role status from LoadingSpinner)
+    expect(screen.getAllByRole("status").length).toBeGreaterThan(0);
+
+    // Add button should be disabled
+    const addBtn = screen.getByTestId("add-asset-button");
+    expect(addBtn).toBeDisabled();
+
+    // Filter/Sort controls should be disabled
+    const filterSort = screen.getByTestId("filter-sort");
+    expect(filterSort).toHaveAttribute("data-disabled", "true");
   });
 
   it("shows ImportPreviewModal when importPreview is present and triggers applyMerge", () => {
@@ -132,11 +195,13 @@ describe("PortfolioPage wiring", () => {
   });
 
   it("shows general error banner when coin list has an error", () => {
-    (coinList.useCoinList as unknown as jest.Mock | vi.Mock).mockImplementation(() => ({
+    (coinList.useCoinList as unknown as vi.Mock).mockImplementation(() => ({
       coins: [],
       loading: false,
       error: "Network",
-      lastUpdatedAt: new Date().toISOString(),
+      lastUpdatedAt: Date.now(),
+      refreshing: false,
+      retry: vi.fn(),
     }));
 
     // Ensure importError is null so only general error shows (plus no detailed import error message)

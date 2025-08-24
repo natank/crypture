@@ -18,20 +18,26 @@ export function useCoinList({
   const [error, setError] = useState<string | null>(null);
   const prevCoinsRef = useRef<CoinInfo[]>([]);
   const [lastUpdatedAt, setLastUpdatedAt] = useState<number | null>(null);
+  const [refreshing, setRefreshing] = useState(false);
 
   const fetchAndUpdate = async () => {
+    const isInitial = loading && !lastUpdatedAt && prevCoinsRef.current.length === 0 && coins.length === 0;
+    if (!isInitial) setRefreshing(true);
     try {
       const data = await fetchTopCoins();
 
       if (!lastUpdatedAt || !deepEqual(prevCoinsRef.current, data)) {
         setCoins(data);
-        setLastUpdatedAt(Date.now());
         prevCoinsRef.current = data;
       }
+      setLastUpdatedAt(Date.now());
+      // clear any previous error on success
+      if (error) setError(null);
     } catch (err) {
       setError((err as Error).message);
     } finally {
-      setLoading(false);
+      if (loading) setLoading(false);
+      setRefreshing(false);
     }
   };
 
@@ -49,5 +55,7 @@ export function useCoinList({
     loading,
     error,
     lastUpdatedAt,
+    refreshing,
+    retry: fetchAndUpdate,
   };
 }

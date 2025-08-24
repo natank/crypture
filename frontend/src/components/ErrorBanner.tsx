@@ -15,7 +15,7 @@ export default function ErrorBanner({ message, onRetry }: ErrorBannerProps) {
       {onRetry && (
         <button
           onClick={onRetry}
-          className="ml-2 text-brand-primary underline hover:text-brand-accent font-button"
+          className="ml-2 text-brand-primary underline hover:text-brand-accent font-button cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary rounded-sm"
           aria-label="Retry"
         >
           🔁 Retry

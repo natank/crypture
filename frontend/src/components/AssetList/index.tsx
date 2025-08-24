@@ -8,6 +8,7 @@ type AssetListProps = {
   onAddAsset: () => void;
   addButtonRef: React.RefObject<HTMLButtonElement | null>;
   priceMap: Record<string, number>;
+  disabled?: boolean;
 };
 
 export default function AssetList({
@@ -16,6 +17,7 @@ export default function AssetList({
   onAddAsset,
   addButtonRef,
   priceMap,
+  disabled = false,
 }: AssetListProps) {
   return (
     <section className="flex flex-col gap-6 w-full p-6 sm:p-6 md:p-8">
@@ -27,9 +29,13 @@ export default function AssetList({
         <button
           ref={addButtonRef}
           onClick={onAddAsset}
-          className="bg-brand-primary text-white font-button px-4 py-2 rounded-md hover:bg-purple-700 flex items-center gap-2"
+          className={`bg-brand-primary text-white font-button px-4 py-2 rounded-md flex items-center gap-2 ${
+            disabled ? "opacity-60 cursor-not-allowed" : "hover:bg-purple-700"
+          }`}
           aria-label="Add Asset"
           data-testid="add-asset-button"
+          disabled={disabled}
+          aria-disabled={disabled}
         >
           <PlusIcon className="w-4 h-4" aria-hidden="true" />
           Add Asset
@@ -38,7 +44,10 @@ export default function AssetList({
 
       {/* Asset List or Empty State */}
       {assets.length === 0 ? (
-        <div className="text-gray-500 italic text-center py-8">
+        <div
+          className="text-gray-500 italic text-center py-8"
+          data-testid="empty-state"
+        >
           No assets yet. Add one to begin.
         </div>
       ) : (

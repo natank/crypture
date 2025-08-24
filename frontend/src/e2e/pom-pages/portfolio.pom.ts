@@ -176,7 +176,16 @@ export class PortfolioPage {
     await this.page.reload();
   }
 
+  emptyState() {
+    // Prefer stable test id for empty state
+    return this.page.getByTestId("empty-state");
+  }
+
   async isEmptyStateVisible() {
-    return await this.page.locator("text=Your portfolio is empty.").isVisible();
+    // Match current empty state copy and be tolerant to future tweaks
+    const emptyState = this.page.getByText(
+      /No assets yet\.|No assets yet|Your portfolio is empty\./i
+    );
+    return await emptyState.isVisible();
   }
 }
