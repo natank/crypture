@@ -79,10 +79,15 @@ export default function PortfolioPage() {
     priceMap: priceMap as Record<string, number>,
   });
 
+  const e2eMode =
+    typeof window !== "undefined" &&
+    new URLSearchParams(window.location.search).get("e2e") === "1";
+
   if (loading) {
     return (
       <main
         role="main"
+        aria-busy={true}
         className="flex flex-col justify-center items-center h-screen text-center"
       >
         <LoadingSpinner label=" Loading portfolio..." fullScreen />
@@ -114,6 +119,20 @@ export default function PortfolioPage() {
         </div>
       )}
 
+      {/* Test-only control to trigger deterministic refresh in E2E */}
+      {e2eMode && (
+        <div className="w-full max-w-4xl mx-auto px-6 md:px-10 mb-2">
+          <button
+            type="button"
+            onClick={retry}
+            className="text-sm text-brand-primary underline"
+            data-testid="refresh-now"
+          >
+            Refresh now
+          </button>
+        </div>
+      )}
+
       {(error || importError) && (
         <ErrorBanner
           message=" Error loading prices. Please try again later."
@@ -138,6 +157,7 @@ export default function PortfolioPage() {
       </div>
       <main
         role="main"
+        aria-busy={refreshing}
         className="max-w-4xl mx-auto p-6 md:p-10 bg-surface rounded-lg shadow-lg flex flex-col gap-8 text-balance"
       >
         <section className="flex flex-col gap-6 w-full">

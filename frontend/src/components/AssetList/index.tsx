@@ -44,7 +44,10 @@ export default function AssetList({
 
       {/* Asset List or Empty State */}
       {assets.length === 0 ? (
-        <div className="text-gray-500 italic text-center py-8">
+        <div
+          className="text-gray-500 italic text-center py-8"
+          data-testid="empty-state"
+        >
           No assets yet. Add one to begin.
         </div>
       ) : (

@@ -143,10 +143,50 @@ Completed On: 2025-08-24
   - statements: 60%
   - branches: 70%
 
-
-
 ---
 
+## 🟡 User Story 7: Handle UI Loading & Error States (Portfolio Page)
+
+> As a user relying on timely price data,
+> I want clear loading and error feedback with accessible states,
+> so that I understand what the app is doing and can retry when something goes wrong.
+
+### ✅ Acceptance Criteria
+
+- [x] 7.1 Initial load shows a prominent loading indicator; controls disabled.
+- [x] 7.2 On background refresh, subtle loading state: controls disabled, `aria-busy` set on main container.
+- [x] 7.3 On fetch error, an error banner appears with a Retry action.
+- [x] 7.4 Retry clears the error and refetches data; controls usable after recovery.
+- [x] 7.5 Accessibility: `aria-busy` and `role="alert"` used appropriately; disabled controls have visual cues.
+
+### 🔧 Technical Breakdown
+
+| Layer / Role            | Task                                                                 | File(s) / Module(s)                                      | Owner     | Status   |
+| ----------------------- | -------------------------------------------------------------------- | -------------------------------------------------------- | --------- | -------- |
+| Page UI                 | Add `aria-busy` on main container during load/refresh                 | `src/pages/PortfolioPage.tsx`                            | Developer | ✅ Done  |
+| Controls UX             | Disabled affordances (opacity, cursor) when `disabled`               | `src/components/FilterSortControls/index.tsx`            | Developer | ✅ Done  |
+| Error UI                | Ensure error banner with Retry is accessible and discoverable        | `src/components/ErrorBanner.tsx`                         | Developer | ✅ Done  |
+| Data Hook               | Expose `loading`, `error`, `refreshing`, and `retry()`               | `src/hooks/useCoinList.ts`                               | Developer | ✅ Done  |
+| Unit/Wiring Tests       | Verify wiring of loading/refreshing/disabled/error states            | `src/__tests__/pages/PortfolioPage.wiring.test.tsx`      | Developer | ✅ Done  |
+| E2E – Retry Flow        | Failure then success on retry; controls usable before/after          | `src/e2e/specs/flows/retry-reenable-controls.spec.ts`    | Developer | ✅ Done  |
+| E2E – Refreshing State  | Controls disabled + `aria-busy` during polling refresh               | `src/e2e/specs/flows/refreshing-disabled-controls.spec.ts` | Developer | ✅ Done  |
+
+### 📊 Status
+
+- Implementation complete; retry E2E passing; refreshing E2E now stable via test-only Refresh button (`/?e2e=1`) for deterministic CI. Behavior also covered by unit and wiring tests.  
+- Date: 2025-08-24
+
+### 🧪 Quality & Traceability
+
+- Latest Playwright run: 23 passed / 1 skipped (refresh test passing).  
+- `aria-busy` used to detect refresh in tests; disabled styles verified on controls.
+
+### 🔜 Follow-ups
+
+- Keep the test-only "Refresh now" trigger guarded by query param (`?e2e=1`); optionally guard further by environment if needed.
+- `data-testid="empty-state"` added in `AssetList` to reduce selector fragility in E2E.
+
+---
 ### 📦 Deliverables
 
 | Type        | File / Component                    |

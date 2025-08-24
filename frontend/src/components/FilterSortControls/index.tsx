@@ -38,7 +38,7 @@ export default function FilterSortControls({
             onFilterChange(e.target.value);
           }}
           disabled={disabled}
-          className="pl-10 pr-3 py-2 border border-gray-200 rounded-md w-full text-base text-gray-900 placeholder:text-gray-500 focus:ring-2 focus:ring-brand-primary focus:outline-none"
+          className={`pl-10 pr-3 py-2 border border-gray-200 rounded-md w-full text-base text-gray-900 placeholder:text-gray-500 focus:ring-2 focus:ring-brand-primary focus:outline-none ${disabled ? "opacity-60 cursor-not-allowed" : ""}`}
         />
       </div>
 
@@ -62,7 +62,7 @@ export default function FilterSortControls({
             onSortChange(e.target.value);
           }}
           disabled={disabled}
-          className="px-3 py-2 border border-gray-200 rounded-md bg-white text-base sm:w-48 w-full focus:ring-2 focus:ring-brand-primary focus:outline-none"
+          className={`px-3 py-2 border border-gray-200 rounded-md bg-white text-base sm:w-48 w-full focus:ring-2 focus:ring-brand-primary focus:outline-none ${disabled ? "opacity-60 cursor-not-allowed" : ""}`}
         >
           <option value="value-desc">Value ⬇</option>
           <option value="value-asc">Value ⬆</option>

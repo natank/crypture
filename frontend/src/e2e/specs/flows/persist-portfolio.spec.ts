@@ -39,6 +39,6 @@ test.describe("📦 Persist Portfolio", () => {
 
     // Confirm empty state persists
     await expect(portfolioPage.assetRow("ETH")).not.toBeVisible();
-    await expect(portfolioPage.isEmptyStateVisible()).toBeTruthy();
+    await expect(portfolioPage.emptyState()).toBeVisible();
   });
 });
