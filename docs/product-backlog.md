@@ -19,8 +19,8 @@ Stories are grouped by feature category and prioritized based on their importanc
 | 5     | Real-Time Value Updates on Change                                 | High     | Real-Time Data Integration | ✅ Done   |
 | 0     | Render Portfolio Overview Layout                                  | High     | UI and Usability           | ✅ Done   |
 | 6     | Filter/Sort Assets by Name or Value                               | High     | UI and Usability           | ✅ Done   |
-| 7     | Handle UI States (Loading, Error)                                 | Medium   | UI and Usability           | Pending   |
-| 8     | Intuitive Interface for Non-Technical Users                       | Medium   | UI and Usability           | Pending   |
+| 7     | Handle UI States (Loading, Error)                                 | Medium   | UI and Usability           | ✅ Done   |
+| 8     | Intuitive Interface for Non-Technical Users                       | Medium   | UI and Usability           | Planned   |
 | UI-14 | Establish Branded Visual Identity Across App                      | Medium   | UI and Usability           | ✅ Done   |
 | UI-15 | Align Component Styles with Updated UI Mockups                    | High     | UI and Usability           | ✅ Done   |
 | UI-16 | Improve Header & Toolbar Layout                                   | Medium   | UI and Usability           | Planned   |
@@ -233,7 +233,7 @@ so that I can quickly find and evaluate specific holdings.
 
 ---
 
-### 🧾 User Story 7: Handle UI States (Loading, Error)
+### 🧾 User Story 7: Handle UI States (Loading, Error) - Done
 
 **User Story**  
 As a new crypto enthusiast,  
@@ -244,11 +244,11 @@ so that I understand what's happening and avoid confusion.
 
 **Acceptance Criteria:**
 
-- [ ] 7.1 When price data is being fetched, a visible loading spinner or indicator is shown.
-- [ ] 7.2 If the API call fails, a clear error message is displayed in the UI.
-- [ ] 7.3 The error message provides actionable info (e.g., “Try again later”).
-- [ ] 7.4 While loading, the “Add Asset” button is disabled or shows a spinner.
-- [ ] 7.5 The UI recovers gracefully after an error (e.g., retry fetch, manual refresh).
+- [x] 7.1 When price data is being fetched, a visible loading spinner or indicator is shown.
+- [x] 7.2 If the API call fails, a clear error message is displayed in the UI.
+- [x] 7.3 The error message provides actionable info (e.g., “Try again later”).
+- [x] 7.4 While loading, the “Add Asset” button is disabled or shows a spinner.
+- [x] 7.5 The UI recovers gracefully after an error (e.g., retry fetch, manual refresh).
 
 **Notes:**
 

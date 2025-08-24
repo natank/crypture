@@ -8,6 +8,7 @@ type Props = {
   onSelect: (coin: CoinInfo) => void;
   disabled?: boolean;
   error?: string | null;
+  describedById?: string;
 };
 
 export function AssetSelector({
@@ -18,6 +19,7 @@ export function AssetSelector({
   onSelect,
   disabled = false,
   error,
+  describedById,
 }: Props) {
   return (
     <div className="flex flex-col gap-3" >
@@ -32,6 +34,7 @@ export function AssetSelector({
           disabled={disabled}
           className="input w-full"
           aria-labelledby="asset-select-label"
+          aria-describedby={describedById}
           aria-required="true"
           onChange={(e) => {
             const selected = coins.find((c) => c.id === e.target.value);

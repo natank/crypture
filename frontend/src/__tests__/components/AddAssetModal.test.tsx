@@ -47,15 +47,13 @@ vi.mock("@components/AssetSelector", () => ({
 }));
 
 beforeEach(() => {
-  beforeEach(() => {
-    mockUseAddAssetForm.mockReturnValue({
-      setSelectedCoin: mockSetSelectedCoin,
-      quantity: "",
-      setQuantity: mockSetQuantity,
-      loading: false,
-      error: null,
-      handleSubmit: mockHandleSubmit,
-    });
+  mockUseAddAssetForm.mockReturnValue({
+    setSelectedCoin: mockSetSelectedCoin,
+    quantity: "",
+    setQuantity: mockSetQuantity,
+    loading: false,
+    error: null,
+    handleSubmit: mockHandleSubmit,
   });
 });
 
