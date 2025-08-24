@@ -38,3 +38,38 @@ export async function fetchTopCoins(): Promise<CoinInfo[]> {
     throw new Error("Unable to fetch coin list");
   }
 }
+
+export type PriceHistoryPoint = [number, number]; // [timestamp, price]
+
+export type PriceHistoryResponse = {
+  prices: PriceHistoryPoint[];
+};
+
+export async function fetchAssetHistory(
+  assetId: string,
+  days: number
+): Promise<PriceHistoryPoint[]> {
+  const HISTORY_URL =
+    `https://api.coingecko.com/api/v3/coins/${assetId}/market_chart` +
+    `?vs_currency=usd&days=${days}&interval=daily&x_cg_demo_api_key=${API_KEY}`;
+
+  try {
+    const response = await fetch(HISTORY_URL);
+
+    if (!response.ok) {
+      throw new Error(`CoinGecko API error: ${response.status}`);
+    }
+
+    const data: PriceHistoryResponse = await response.json();
+
+    return data.prices;
+  } catch (error: unknown) {
+    if (
+      error instanceof Error &&
+      error.message.startsWith("CoinGecko API error")
+    ) {
+      throw error;
+    }
+    throw new Error("Unable to fetch asset history");
+  }
+}

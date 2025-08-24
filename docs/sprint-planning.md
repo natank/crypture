@@ -90,15 +90,16 @@ _so that I can understand how my investments have changed over time._
 
 | Layer / Role       | Task                                                                     | File(s) / Module(s)                         | Status    |
 | ------------------ | ------------------------------------------------------------------------ | ------------------------------------------- | --------- |
-| **UI Component**   | Create `AssetChart.tsx` to render the chart using Recharts.              | `src/components/AssetChart.tsx`             | To Do     |
-| **UI Component**   | Add modal/expandable section in `AssetRow.tsx` to display chart on click. | `src/components/AssetRow.tsx`               | To Do     |
-| **UI Component**   | Implement time range selector (7D, 30D, 1Y) within the chart view.       | `src/components/AssetChart.tsx`             | To Do     |
-| **Data Hook**      | Create `useAssetHistory.ts` to fetch historical price data.              | `src/hooks/useAssetHistory.ts`              | To Do     |
-| **API Service**    | Add `fetchAssetHistory(assetId, days)` to `coinGecko.ts` service.        | `src/services/coinGecko.ts`                 | To Do     |
-| **State Mgmt**     | Manage chart visibility state in `PortfolioPage.tsx`.                    | `src/pages/PortfolioPage.tsx`               | To Do     |
-| **Unit Testing**   | Test `useAssetHistory` hook logic with mocked API calls.                 | `__tests__/hooks/useAssetHistory.test.ts`   | To Do     |
-| **Component Test** | Storybook stories for `AssetChart.tsx` with mock data states.            | `src/components/AssetChart.stories.tsx`     | To Do     |
-| **E2E Testing**    | (Optional) Spec to click asset, view chart, change time range.           | `e2e/specs/view-asset-chart.spec.ts`        | To Do     |
+| **UI Component**   | Create `AssetChart.tsx` to render the chart using Recharts.              | `src/components/AssetChart.tsx`             | ✅ Done   |
+| **UI Component**   | Add modal/expandable section in `AssetRow.tsx` to display chart on click. | `src/components/AssetRow.tsx`               | ✅ Done   |
+| **UI Component**   | Implement time range selector (7D, 30D, 1Y) within the chart view.       | `src/components/AssetChart.tsx`             | ✅ Done   |
+| **Data Hook**      | Create `useAssetHistory.ts` to fetch historical price data.              | `src/hooks/useAssetHistory.ts`              | ✅ Done   |
+| **API Service**    | Add `fetchAssetHistory(assetId, days)` to `coinService.ts` service.      | `src/services/coinService.ts`               | ✅ Done   |
+| **State Mgmt**     | Manage chart visibility and data fetching via custom hooks.              | `src/hooks/useAssetChartController.ts`      | ✅ Done   |
+| **Unit Testing**   | Test `useAssetHistory` hook logic with mocked API calls.                 | `__tests__/hooks/useAssetHistory.test.ts`   | ✅ Done   |
+| **Unit Testing**   | Test `useAssetChartController` hook logic for state and side effects.    | `__tests__/hooks/useAssetChartController.test.ts` | ✅ Done   |
+| **Component Test** | Storybook stories for `AssetChart.tsx` with mock data states.            | `src/components/AssetChart.stories.tsx`     | ✅ Done   |
+| **E2E Testing**    | (Optional) Spec to click asset, view chart, change time range.           | `e2e/specs/features/view-asset-chart.spec.ts` | ✅ Done   |
 
 ---
 
