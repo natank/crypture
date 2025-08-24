@@ -60,20 +60,62 @@ This process ensures that implementation aligns tightly with user needs, design 
 
 # 🚀 Active Stories
 
-> **Currently focused story:** TBD
-
-## 🟢 FOCUSED Sprint Story: User story UI-Infra-01
-
-# 📦 Active Sprint stories
-
-## 🛠 Technical Story: UI-Infra-01 — Accessibility & Process Foundations
-Status: ✅ Complete
-Completed On: 2025-08-24
-
-This story has been archived. See the Archived Sprints section for full details and acceptance criteria.
+> **Currently focused story:** To be groomed
 
 ---
 
+
+# 📦 Archived Sprints
+
+## 🟢 User Story 12: Add Charting for Price History
+
+_As a new crypto enthusiast,_
+_I want to view historical price trends for each asset in a chart,_
+_so that I can understand how my investments have changed over time._
+
+**Priority:** Low
+**Feature Category:** Extended Features
+**Status:** ✅ Complete
+**Completed On:** 2025-08-24
+
+---
+
+### ✅ Acceptance Criteria
+
+- [x] 12.1 The user can select an asset to view a historical price chart.
+- [x] 12.2 The chart displays price trends over selectable time ranges (e.g., 7D, 30D, 1Y).
+- [x] 12.3 Price data is fetched from the CoinGecko API or mock API.
+- [x] 12.4 The chart includes axes, tooltips, and labels for usability.
+- [x] 12.5 In case of data fetch failure, the chart area shows an appropriate fallback message.
+
+---
+
+### 🔧 Technical Breakdown
+
+| Layer / Role       | Task                                                                     | File(s) / Module(s)                         | Status    |
+| ------------------ | ------------------------------------------------------------------------ | ------------------------------------------- | --------- |
+| **UI Component**   | Create `AssetChart.tsx` to render the chart using Recharts.              | `src/components/AssetChart.tsx`             | ✅ Done   |
+| **UI Component**   | Add modal/expandable section in `AssetRow.tsx` to display chart on click. | `src/components/AssetRow.tsx`               | ✅ Done   |
+| **UI Component**   | Implement time range selector (7D, 30D, 1Y) within the chart view.       | `src/components/AssetChart.tsx`             | ✅ Done   |
+| **Data Hook**      | Create `useAssetHistory.ts` to fetch historical price data.              | `src/hooks/useAssetHistory.ts`              | ✅ Done   |
+| **API Service**    | Add `fetchAssetHistory(assetId, days)` to `coinService.ts` service.      | `src/services/coinService.ts`               | ✅ Done   |
+| **State Mgmt**     | Manage chart visibility and data fetching via custom hooks.              | `src/hooks/useAssetChartController.ts`      | ✅ Done   |
+| **Unit Testing**   | Test `useAssetHistory` hook logic with mocked API calls.                 | `__tests__/hooks/useAssetHistory.test.ts`   | ✅ Done   |
+| **Unit Testing**   | Test `useAssetChartController` hook logic for state and side effects.    | `__tests__/hooks/useAssetChartController.test.ts` | ✅ Done   |
+| **Component Test** | Storybook stories for `AssetChart.tsx` with mock data states.            | `src/components/AssetChart.stories.tsx`     | ✅ Done   |
+| **E2E Testing**    | (Optional) Spec to click asset, view chart, change time range.           | `e2e/specs/features/view-asset-chart.spec.ts` | ✅ Done   |
+
+---
+
+### 📦 Dev Deliverables
+
+- A reusable `AssetChart` component.
+- A new `useAssetHistory` hook for fetching chart data.
+- Integration into the `AssetRow` to trigger the chart view.
+- Storybook stories for the chart component.
+- Unit tests for the data hook.
+
+---
 
 ## 🟢 User Story: UI-16 – Improve Header & Toolbar Layout
 
@@ -83,6 +125,9 @@ _so that I can quickly understand my portfolio status and navigate controls with
 
 **Priority:** Medium
 **Feature Category:** UI and Usability
+
+Status: ✅ Complete
+Completed On: 2025-08-24
 
 ---
 
@@ -118,10 +163,6 @@ _so that I can quickly understand my portfolio status and navigate controls with
 - Functional parity (no regression in portfolio behavior)
 
 ---
-
-
-
-# 📦 Archived Sprints
 
 ## 🛠 Technical Story: UI-Infra-01 — Accessibility & Process Foundations
 Status: ✅ Complete  

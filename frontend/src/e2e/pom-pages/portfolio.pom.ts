@@ -27,6 +27,10 @@ export class PortfolioPage {
   readonly assetItemBySymbol: (symbol: string) => Locator;
   readonly assetQuantityBySymbol: (symbol: string) => Locator;
 
+  // Chart
+  readonly chartContainerBySymbol: (symbol: string) => Locator;
+  readonly timeRangeButtonByDays: (symbol: string, days: number) => Locator;
+
   constructor(page: Page) {
     this.page = page;
 
@@ -62,6 +66,17 @@ export class PortfolioPage {
     this.assetQuantityBySymbol = (symbol: string) =>
       this.assetRow(symbol).getByText(new RegExp(`Qty:\\s*\\d+(\\.\\d+)?`, "i"));
 
+    // Chart
+    this.chartContainerBySymbol = (symbol: string) =>
+      page.locator(`[data-testid='asset-chart-container-${symbol.toUpperCase()}']`);
+    this.timeRangeButtonByDays = (symbol: string, days: number) =>
+      this.chartContainerBySymbol(symbol).getByTestId(`time-range-button-${days}`);
+    this.chartBySymbol = (symbol: string) =>
+      this.chartContainerBySymbol(symbol).locator("canvas");
+    this.chartLegendBySymbol = (symbol: string) =>
+      this.chartContainerBySymbol(symbol).locator("[data-testid='chart-legend']");
+    this.chartLegendItemBySymbolAndLabel = (symbol: string, label: string) =>
+      this.chartLegendBySymbol(symbol).locator(`text=${label}`);
   }
 
   // --------- Page Actions ---------
@@ -118,6 +133,18 @@ export class PortfolioPage {
 
   async isModalVisible(): Promise<boolean> {
     return await this.modal.isVisible();
+  }
+
+  async toggleChart(symbol: string) {
+    await this.assetRow(symbol).click();
+  }
+
+  async isChartVisible(symbol: string): Promise<boolean> {
+    return await this.chartContainerBySymbol(symbol).isVisible();
+  }
+
+  async selectTimeRange(symbol: string, days: 7 | 30 | 365) {
+    await this.timeRangeButtonByDays(symbol, days).click();
   }
 
   async openDeleteModalFor(symbol: string) {
