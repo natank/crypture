@@ -60,9 +60,12 @@ This process ensures that implementation aligns tightly with user needs, design 
 
 # 🚀 Active Stories
 
-> **Currently focused story:** User Story 12 – Add Charting for Price History
+> **Currently focused story:** To be groomed
 
 ---
+
+
+# 📦 Archived Sprints
 
 ## 🟢 User Story 12: Add Charting for Price History
 
@@ -72,17 +75,18 @@ _so that I can understand how my investments have changed over time._
 
 **Priority:** Low
 **Feature Category:** Extended Features
-**Status:** 🚧 In Progress
+**Status:** ✅ Complete
+**Completed On:** 2025-08-24
 
 ---
 
 ### ✅ Acceptance Criteria
 
-- [ ] 12.1 The user can select an asset to view a historical price chart.
-- [ ] 12.2 The chart displays price trends over selectable time ranges (e.g., 7D, 30D, 1Y).
-- [ ] 12.3 Price data is fetched from the CoinGecko API or mock API.
-- [ ] 12.4 The chart includes axes, tooltips, and labels for usability.
-- [ ] 12.5 In case of data fetch failure, the chart area shows an appropriate fallback message.
+- [x] 12.1 The user can select an asset to view a historical price chart.
+- [x] 12.2 The chart displays price trends over selectable time ranges (e.g., 7D, 30D, 1Y).
+- [x] 12.3 Price data is fetched from the CoinGecko API or mock API.
+- [x] 12.4 The chart includes axes, tooltips, and labels for usability.
+- [x] 12.5 In case of data fetch failure, the chart area shows an appropriate fallback message.
 
 ---
 
@@ -112,10 +116,6 @@ _so that I can understand how my investments have changed over time._
 - Unit tests for the data hook.
 
 ---
-
-
-
-# 📦 Archived Sprints
 
 ## 🟢 User Story: UI-16 – Improve Header & Toolbar Layout
 

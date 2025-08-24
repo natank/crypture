@@ -27,7 +27,7 @@ Stories are grouped by feature category and prioritized based on their importanc
 | 9     | Persist Portfolio in Local Storage/Backend                        | High     | Extended Features          | ✅ Done   |
 | 10    | Export Portfolio to CSV/JSON                                      | High     | Extended Features          | ✅ Done   |
 | 11    | Import Portfolio from CSV/JSON                                    | High     | Extended Features          | ✅ Done   |
-| 12    | Add Charting for Price History                                    | Low      | Extended Features          | Planned   |
+| 12    | Add Charting for Price History                                    | Low      | Extended Features          | ✅ Done   |
 | 13    | Enable User Authentication                                        | Low      | Extended Features          | Pending   |
 | 14    | Refactor Sprint 1 Code to Follow SOLID Principles                 | Medium   | Technical Debt             | Pending   |
 | TD-02 | UI Visibility Refactor and Design Token Integration               | Medium   | Technical Debt             | ✅ Done   |
@@ -529,14 +529,16 @@ I want to view historical price trends for each asset in a chart,
 so that I can understand how my investments have changed over time.
 
 **Priority:** Medium
+**Status:** ✅ Done
+**Completed On:** 2025-08-24
 
 **Acceptance Criteria:**
 
-- [ ] 12.1 The user can select an asset to view a historical price chart.
-- [ ] 12.2 The chart displays price trends over selectable time ranges (e.g., 7D, 30D, 1Y).
-- [ ] 12.3 Price data is fetched from the CoinGecko API or mock API.
-- [ ] 12.4 The chart includes axes, tooltips, and labels for usability.
-- [ ] 12.5 In case of data fetch failure, the chart area shows an appropriate fallback message.
+- [x] 12.1 The user can select an asset to view a historical price chart.
+- [x] 12.2 The chart displays price trends over selectable time ranges (e.g., 7D, 30D, 1Y).
+- [x] 12.3 Price data is fetched from the CoinGecko API or mock API.
+- [x] 12.4 The chart includes axes, tooltips, and labels for usability.
+- [x] 12.5 In case of data fetch failure, the chart area shows an appropriate fallback message.
 
 **Notes:**
 
