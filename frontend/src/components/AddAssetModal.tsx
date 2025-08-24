@@ -74,12 +74,12 @@ export function AddAssetModal({
             id="add-asset-title"
             className="text-xl font-brand text-brand-primary"
           >
-            ➕ Add Crypto Asset
+            <span aria-hidden="true">➕</span> Add Crypto Asset
           </h2>
 
           {/* 🔍 Asset Selector */}
           <div className="space-y-2">
-            <label htmlFor="asset-select" className="label">
+            <label htmlFor="asset-select" className="label" id="asset-select-label">
               Asset
             </label>
             <AssetSelector
@@ -90,7 +90,11 @@ export function AddAssetModal({
               onSelect={setSelectedCoin}
               disabled={loading}
               error={error}
+              describedById="asset-select-help"
             />
+            <p id="asset-select-help" className="text-xs text-gray-500">
+              Choose a crypto asset from the list. Use the filter below to narrow results.
+            </p>
           </div>
 
           {/* 🔢 Quantity Input */}
@@ -101,14 +105,18 @@ export function AddAssetModal({
             <input
               id="asset-quantity"
               type="number"
-              placeholder="0.5"
+              placeholder="Enter quantity (e.g., 0.5)"
               className="input"
               value={quantity}
               onChange={(e) => setQuantity(e.target.value)}
               disabled={loading}
               ref={initialFocusRef}
-              aria-describedby={formError ? "asset-form-error" : undefined}
+              aria-describedby={formError ? "asset-form-error asset-quantity-help" : "asset-quantity-help"}
+              inputMode="decimal"
             />
+            <p id="asset-quantity-help" className="text-xs text-gray-500">
+              Enter how much of the selected asset you own. Decimals are allowed.
+            </p>
           </div>
 
           {/* ⚠️ Form Error */}
@@ -131,7 +139,7 @@ export function AddAssetModal({
               aria-label="Cancel adding asset"
               disabled={loading}
             >
-              ❌ Cancel
+              <span aria-hidden="true">❌</span> Cancel
             </button>
             <button
               onClick={handleSubmit}

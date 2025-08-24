@@ -232,6 +232,57 @@ Completed On: 2025-08-24
 
 ---
 
+# 🟡 User Story 8: Intuitive Interface for Non-Technical Users — Planned (Sprint)
+
+> As a casual or new crypto user,
+> I want the interface to be clean and easy to use without needing technical knowledge,
+> so that I can interact with the app confidently.
+
+### ✅ Acceptance Criteria
+
+- [x] 8.1 Form fields have clear labels and placeholder text (e.g., “Enter quantity”).
+- [x] 8.2 Buttons use action-oriented language (e.g., “Add Asset”, “Clear”).
+- [x] 8.3 Icons and labels are used to clarify function (e.g., trash can icon for delete).
+- [x] 8.4 The layout is responsive and functional on mobile devices.
+- [x] 8.5 Instructions or tooltips are available for any complex actions.
+
+### 🔧 Technical Breakdown
+
+| Layer / Role    | Task                                                                 | File(s) / Module(s)                                  | Status   |
+| ---------------- | -------------------------------------------------------------------- | ---------------------------------------------------- | -------- |
+| Forms & Labels   | Ensure explicit labels, placeholders, and helper text                | `src/components/AddAssetModal.tsx`                   | Done     |
+| Controls Copy    | Action-oriented button text across controls                          | `src/components/FilterSortControls/index.tsx`        | Done     |
+| Hints/Tooltips   | Add guidance for Import/Export usage and formats                     | `src/components/ExportImportControls.tsx`            | Done     |
+| Empty/Help State | Provide next-step guidance when portfolio is empty                   | `src/components/AssetList/index.tsx`                 | Planned  |
+| Mobile Polish    | Verify spacing, hit targets, focus rings, and no overflow on mobile | `src/pages/PortfolioPage.tsx`, global styles         | Done     |
+| A11y Audit       | Review aria labels, roles, focus order, and contrast                 | Various components                                   | Planned  |
+
+### 📦 Deliverables
+
+- Updated labels and helper text in `AddAssetModal.tsx`
+- Clear action text in `FilterSortControls/index.tsx`
+- Import/Export hints in `ExportImportControls.tsx`
+- Helpful empty state copy in `AssetList/index.tsx`
+- Mobile spacing/focus polish in `PortfolioPage.tsx`
+- Unit/E2E tests covering accessible names and guidance text
+
+### 🧪 Quality & Traceability
+
+- Unit tests for accessible names on key controls
+- E2E checks for guidance visibility and mobile viewport sanity
+- Contrast and focus checks aligned with WCAG AA
+
+### ⏱️ Effort Estimate
+
+- Estimate: 3–4 pts
+
+### 📊 Status
+
+- Planned; implementation not started
+- Target window: current sprint
+
+---
+
 # 📦 Archived Sprints
 
 ## 🏁 User Story 9: Persist Portfolio in Local Storage

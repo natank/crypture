@@ -188,3 +188,17 @@ Responsible for creating user interface wireframes, mockups, and visual componen
 - **Integration Tests**: For state updates and API behavior
 - **Manual Testing**: For UI rendering and user workflows
 - **Testability Focus**: Refactor for testability using SRP and modular design
+
+---
+
+## 10. **Pull Request Process & Template**
+
+To ensure consistent, traceable changes aligned with backlog and sprint planning:
+
+- **Template Location**: See `.github/PULL_REQUEST_TEMPLATE.md` for the required PR structure.
+- **Required Traceability**: Each PR must link to:
+  - `docs/product-backlog.md` story section (ID and title)
+  - `docs/sprint-planning.md` corresponding sprint/story section
+  - Any relevant E2E/Unit test specs added or changed
+- **Content Checklist** (enforced by the template): Summary, Changes, Files Changed, Acceptance Criteria mapping, How to Test, Screenshots (if UI), Notes, Linked Work, and a completion Checklist (lint/tests/a11y/docs).
+- **Usage**: When opening a PR on GitHub, the template auto-populates. Fill all sections before requesting review.

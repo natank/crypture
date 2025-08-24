@@ -27,7 +27,7 @@ export default function DeleteConfirmationModal({
           id="delete-modal-title"
           className="text-2xl sm:text-3xl font-bold text-error text-balance mb-2"
         >
-          🗑️ Remove {assetName}?
+          <span aria-hidden="true">🗑️</span> Remove {assetName}?
         </h2>
         <p className="text-base text-text-muted text-balance">
           This action will permanently delete this asset from your portfolio.<br />
@@ -38,13 +38,13 @@ export default function DeleteConfirmationModal({
             onClick={onCancel}
             className="btn btn-outline"
           >
-            ❌ Cancel
+            <span aria-hidden="true">❌</span> Cancel
           </button>
           <button
             onClick={onConfirm}
             className="btn bg-error hover:bg-error/90 focus-visible:ring-error"
           >
-            ✅ Confirm Delete
+            <span aria-hidden="true">✅</span> Confirm Delete
           </button>
         </div>
       </div>
