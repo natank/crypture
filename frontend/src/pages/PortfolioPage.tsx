@@ -133,6 +133,7 @@ export default function PortfolioPage() {
           onFilterChange={setFilterText}
           sort={sortOption}
           onSortChange={setSortOption}
+          disabled={!!(loading || refreshing)}
         />
       </div>
       <main

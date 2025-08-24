@@ -11,7 +11,11 @@ vi.mock("@components/AssetList", () => ({
     </div>
   ),
 }));
-vi.mock("@components/FilterSortControls", () => ({ default: () => <div data-testid="filter-sort" /> }));
+vi.mock("@components/FilterSortControls", () => ({
+  default: ({ disabled }: { disabled?: boolean }) => (
+    <div data-testid="filter-sort" data-disabled={disabled ? "true" : "false"} />
+  ),
+}));
 vi.mock("@components/PortfolioHeader", () => ({ default: () => <div data-testid="header" /> }));
 vi.mock("@components/AppFooter", () => ({ default: () => <div data-testid="footer" /> }));
 vi.mock("@components/AddAssetModal", () => ({ AddAssetModal: () => null }));
@@ -145,6 +149,10 @@ describe("PortfolioPage wiring", () => {
     // Add button should be disabled
     const addBtn = screen.getByTestId("add-asset-button");
     expect(addBtn).toBeDisabled();
+
+    // Filter/Sort controls should be disabled
+    const filterSort = screen.getByTestId("filter-sort");
+    expect(filterSort).toHaveAttribute("data-disabled", "true");
   });
 
   it("shows ImportPreviewModal when importPreview is present and triggers applyMerge", () => {
