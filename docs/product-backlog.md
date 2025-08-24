@@ -20,14 +20,14 @@ Stories are grouped by feature category and prioritized based on their importanc
 | 0     | Render Portfolio Overview Layout                                  | High     | UI and Usability           | ✅ Done   |
 | 6     | Filter/Sort Assets by Name or Value                               | High     | UI and Usability           | ✅ Done   |
 | 7     | Handle UI States (Loading, Error)                                 | Medium   | UI and Usability           | ✅ Done   |
-| 8     | Intuitive Interface for Non-Technical Users                       | Medium   | UI and Usability           | Planned   |
+| 8     | Intuitive Interface for Non-Technical Users                       | Medium   | UI and Usability           | ✅ Done   |
 | UI-14 | Establish Branded Visual Identity Across App                      | Medium   | UI and Usability           | ✅ Done   |
 | UI-15 | Align Component Styles with Updated UI Mockups                    | High     | UI and Usability           | ✅ Done   |
-| UI-16 | Improve Header & Toolbar Layout                                   | Medium   | UI and Usability           | Planned   |
+| UI-16 | Improve Header & Toolbar Layout                                   | Medium   | UI and Usability           | ✅ Done   |
 | 9     | Persist Portfolio in Local Storage/Backend                        | High     | Extended Features          | ✅ Done   |
 | 10    | Export Portfolio to CSV/JSON                                      | High     | Extended Features          | ✅ Done   |
 | 11    | Import Portfolio from CSV/JSON                                    | High     | Extended Features          | ✅ Done   |
-| 12    | Add Charting for Price History                                    | Low      | Extended Features          | Pending   |
+| 12    | Add Charting for Price History                                    | Low      | Extended Features          | Planned   |
 | 13    | Enable User Authentication                                        | Low      | Extended Features          | Pending   |
 | 14    | Refactor Sprint 1 Code to Follow SOLID Principles                 | Medium   | Technical Debt             | Pending   |
 | TD-02 | UI Visibility Refactor and Design Token Integration               | Medium   | Technical Debt             | ✅ Done   |
@@ -53,6 +53,8 @@ _I want Windsurf IDE to review our UI/UX documentation for visibility, consisten
 _so that the codebase can be aligned with the intended design language and product goals._
 
 **Priority:** Medium
+**Status:** ✅ Done
+**Completed On:** 2025-08-24
 **Feature Category:** Technical Debt
 **Story ID:** `TD-03`
 
@@ -268,11 +270,11 @@ so that I can interact with the app confidently.
 
 **Acceptance Criteria:**
 
-- [ ] 8.1 Form fields have clear labels and placeholder text (e.g., “Enter quantity”).
-- [ ] 8.2 Buttons use action-oriented language (e.g., “Add Asset”, “Clear”).
-- [ ] 8.3 Icons and labels are used to clarify function (e.g., trash can icon for delete).
-- [ ] 8.4 The layout is responsive and functional on mobile devices.
-- [ ] 8.5 Instructions or tooltips are available for any complex actions.
+- [x] 8.1 Form fields have clear labels and placeholder text (e.g., “Enter quantity”).
+- [x] 8.2 Buttons use action-oriented language (e.g., “Add Asset”, “Clear”).
+- [x] 8.3 Icons and labels are used to clarify function (e.g., trash can icon for delete).
+- [x] 8.4 The layout is responsive and functional on mobile devices.
+- [x] 8.5 Instructions or tooltips are available for any complex actions.
 
 **Notes:**
 

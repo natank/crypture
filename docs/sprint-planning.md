@@ -60,20 +60,61 @@ This process ensures that implementation aligns tightly with user needs, design 
 
 # 🚀 Active Stories
 
-> **Currently focused story:** TBD
-
-## 🟢 FOCUSED Sprint Story: User story UI-Infra-01
-
-# 📦 Active Sprint stories
-
-## 🛠 Technical Story: UI-Infra-01 — Accessibility & Process Foundations
-Status: ✅ Complete
-Completed On: 2025-08-24
-
-This story has been archived. See the Archived Sprints section for full details and acceptance criteria.
+> **Currently focused story:** User Story 12 – Add Charting for Price History
 
 ---
 
+## 🟢 User Story 12: Add Charting for Price History
+
+_As a new crypto enthusiast,_
+_I want to view historical price trends for each asset in a chart,_
+_so that I can understand how my investments have changed over time._
+
+**Priority:** Low
+**Feature Category:** Extended Features
+**Status:** 🚧 In Progress
+
+---
+
+### ✅ Acceptance Criteria
+
+- [ ] 12.1 The user can select an asset to view a historical price chart.
+- [ ] 12.2 The chart displays price trends over selectable time ranges (e.g., 7D, 30D, 1Y).
+- [ ] 12.3 Price data is fetched from the CoinGecko API or mock API.
+- [ ] 12.4 The chart includes axes, tooltips, and labels for usability.
+- [ ] 12.5 In case of data fetch failure, the chart area shows an appropriate fallback message.
+
+---
+
+### 🔧 Technical Breakdown
+
+| Layer / Role       | Task                                                                     | File(s) / Module(s)                         | Status    |
+| ------------------ | ------------------------------------------------------------------------ | ------------------------------------------- | --------- |
+| **UI Component**   | Create `AssetChart.tsx` to render the chart using Recharts.              | `src/components/AssetChart.tsx`             | To Do     |
+| **UI Component**   | Add modal/expandable section in `AssetRow.tsx` to display chart on click. | `src/components/AssetRow.tsx`               | To Do     |
+| **UI Component**   | Implement time range selector (7D, 30D, 1Y) within the chart view.       | `src/components/AssetChart.tsx`             | To Do     |
+| **Data Hook**      | Create `useAssetHistory.ts` to fetch historical price data.              | `src/hooks/useAssetHistory.ts`              | To Do     |
+| **API Service**    | Add `fetchAssetHistory(assetId, days)` to `coinGecko.ts` service.        | `src/services/coinGecko.ts`                 | To Do     |
+| **State Mgmt**     | Manage chart visibility state in `PortfolioPage.tsx`.                    | `src/pages/PortfolioPage.tsx`               | To Do     |
+| **Unit Testing**   | Test `useAssetHistory` hook logic with mocked API calls.                 | `__tests__/hooks/useAssetHistory.test.ts`   | To Do     |
+| **Component Test** | Storybook stories for `AssetChart.tsx` with mock data states.            | `src/components/AssetChart.stories.tsx`     | To Do     |
+| **E2E Testing**    | (Optional) Spec to click asset, view chart, change time range.           | `e2e/specs/view-asset-chart.spec.ts`        | To Do     |
+
+---
+
+### 📦 Dev Deliverables
+
+- A reusable `AssetChart` component.
+- A new `useAssetHistory` hook for fetching chart data.
+- Integration into the `AssetRow` to trigger the chart view.
+- Storybook stories for the chart component.
+- Unit tests for the data hook.
+
+---
+
+
+
+# 📦 Archived Sprints
 
 ## 🟢 User Story: UI-16 – Improve Header & Toolbar Layout
 
@@ -83,6 +124,9 @@ _so that I can quickly understand my portfolio status and navigate controls with
 
 **Priority:** Medium
 **Feature Category:** UI and Usability
+
+Status: ✅ Complete
+Completed On: 2025-08-24
 
 ---
 
@@ -118,10 +162,6 @@ _so that I can quickly understand my portfolio status and navigate controls with
 - Functional parity (no regression in portfolio behavior)
 
 ---
-
-
-
-# 📦 Archived Sprints
 
 ## 🛠 Technical Story: UI-Infra-01 — Accessibility & Process Foundations
 Status: ✅ Complete  
