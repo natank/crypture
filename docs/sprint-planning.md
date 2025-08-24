@@ -60,80 +60,22 @@ This process ensures that implementation aligns tightly with user needs, design 
 
 # 🚀 Active Stories
 
-> **Currently focused story:** UI-Infra-01
+> **Currently focused story:** TBD
 
 ## 🟢 FOCUSED Sprint Story: User story UI-Infra-01
 
 # 📦 Active Sprint stories
 
-
 ## 🛠 Technical Story: UI-Infra-01 — Accessibility & Process Foundations
-Status: 🚧 In Progress
-Updated On: 2025-08-24
+Status: ✅ Complete
+Completed On: 2025-08-24
 
-> Strengthen accessibility, mobile UX consistency, and PR/documentation workflow to reduce regressions and accelerate future UI work.
-
-### ✅ Acceptance Criteria
-
-- [x] TS1.1 A shared a11y utility layer exists with documented tokens/helpers:
-  - `sr-only`, `focus-ring` (focus-visible), and `tap-44` (min 44x44px) utilities.
-  - Usage examples referenced in component docs.
-- [x] TS1.2 An `Icon` component enforces sensible defaults:
-  - Decorative by default (`aria-hidden="true"`), with optional `title`/`aria-label` props.
-  - Replaces inline emoji usage in at least two target components.
-- [x] TS1.3 E2E smoke coverage for a11y and mobile:
-  - Mobile viewport spec asserts critical controls are visible and tappable (44x44) and guidance text present for Import/Export.
-  - Basic axe/lighthouse-style a11y check has no critical violations on the portfolio page (allow non-blocking warnings).
-- [ ] TS1.4 PR workflow template improvements are adopted:
-  - Checklist includes a11y review and docs sync (sprint + PR docs), and mobile screenshots.
-- [ ] TS1.5 Documentation workflow clarified and linked in PR template:
-  - `docs/pull-requests.md` describes required updates for UI changes.
-  - References `docs/sprint-planning.md` sections to keep AC and Tech Breakdown in sync.
-
-### 🔧 Technical Breakdown
-
-| Layer / Role          | Task                                                                                  | File(s) / Module(s)                                                                 |
-| --------------------- | ------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------- |
-| A11y Utilities        | Define `sr-only`, `focus-ring`, `tap-44` utilities via Tailwind components layer      | `frontend/src/index.css` (add @layer components)                                   |
-| Icon Wrapper          | Create `Icon` component with a11y defaults and props                                  | `frontend/src/components/Icon.tsx`                                                 |
-| Component Adoption    | Replace inline emoji usages with `Icon` where appropriate (sample: 2–3 components)     | `ExportImportControls/index.tsx`, `AssetRow/index.tsx`, `ErrorBanner.tsx`          |
-| E2E – Mobile/A11y     | Add viewport smoke spec and a11y scan (axe or equivalent)                              | `frontend/src/e2e/specs/a11y-mobile-smoke.spec.ts`                                 |
-| Docs – PR Workflow    | Clarify doc sync steps and a11y checklist                                              | `docs/pull-requests.md`                                                             |
-| Docs – Design Review  | Add short design review guidance, link from PR template                                | `docs/software-development-plan.md` or `docs/design-review.md` (new, if needed)     |
-| PR Template           | Ensure template includes a11y/mobile/doc checklist items                               | `.github/PULL_REQUEST_TEMPLATE.md`                                                  |
-
-### 📦 Deliverables
-
-- A11y utilities available as CSS classes and referenced in coding guidelines.
-- `Icon.tsx` with tests and examples.
-- Updated components adopting `Icon` in key places.
-- E2E spec validating mobile viewport basics and guidance text presence.
-- Updated `docs/pull-requests.md` with doc-sync and a11y steps.
-- Updated PR template with a11y/mobile/doc checklist.
-
-### 🧪 Quality & Traceability
-
-- Unit tests for `Icon.tsx` (renders decorative vs labeled, title tooltip optional).
-- E2E passes on mobile viewport and reports no critical a11y violations.
-- Lint/typecheck green; existing unit tests unaffected.
-
-### ⏱️ Effort Estimate
-
-- Estimate: 3–5 pts
-
-### ✅ Definition of Done
-
-- Utilities (`sr-only`, `focus-ring`, `tap-44`) implemented and documented.
-- `Icon` component adopted in at least two components without regressions.
-- E2E a11y/mobile smoke test added and passing in CI.
-- PR template and PR docs updated; checklists enforced in review.
-- All tests pass (unit + E2E), and sprint docs updated accordingly.
+This story has been archived. See the Archived Sprints section for full details and acceptance criteria.
 
 ---
 
-## 🟢 User Story: UI-16 – Improve Header & Toolbar Layout
 
-### **User Story UI-16**
+## 🟢 User Story: UI-16 – Improve Header & Toolbar Layout
 
 _As a crypto portfolio user,_
 _I want the header and filter/sort toolbar to feel more compact and visually distinct from the asset list,_
@@ -177,7 +119,41 @@ _so that I can quickly understand my portfolio status and navigate controls with
 
 ---
 
+
+
 # 📦 Archived Sprints
+
+## 🛠 Technical Story: UI-Infra-01 — Accessibility & Process Foundations
+Status: ✅ Complete  
+Completed On: 2025-08-24
+
+> Strengthen accessibility, mobile UX consistency, and PR/documentation workflow to reduce regressions and accelerate future UI work.
+
+### ✅ Acceptance Criteria
+
+- [x] TS1.1 A shared a11y utility layer exists with documented tokens/helpers:
+  - `sr-only`, `focus-ring` (focus-visible), and `tap-44` (min 44x44px) utilities.
+  - Usage examples referenced in component docs.
+- [x] TS1.2 An `Icon` component enforces sensible defaults:
+  - Decorative by default (`aria-hidden="true"`), with optional `title`/`aria-label` props.
+  - Replaces inline emoji usage in at least two target components.
+- [x] TS1.3 E2E smoke coverage for a11y and mobile:
+  - Mobile viewport spec asserts critical controls are visible and tappable (44x44) and guidance text present for Import/Export.
+  - Basic axe/lighthouse-style a11y check has no critical violations on the portfolio page (allow non-blocking warnings).
+- [x] TS1.4 PR workflow template improvements are adopted: (✅ Complete — 2025-08-24)
+  - Checklist includes a11y review and docs sync (sprint + PR docs), and mobile screenshots.
+- [x] TS1.5 Documentation workflow clarified and linked in PR template: (✅ Complete — 2025-08-24)
+  - `docs/pull-requests.md` describes required updates for UI changes.
+  - References `docs/sprint-planning.md` sections to keep AC and Tech Breakdown in sync.
+
+### 📦 Deliverables
+
+- A11y utilities available as CSS classes and referenced in coding guidelines.
+- `Icon.tsx` with tests and examples.
+- Updated components adopting `Icon` in key places.
+- E2E spec validating mobile viewport basics and guidance text presence.
+- Updated `docs/pull-requests.md` with doc-sync and a11y steps.
+- Updated PR template with a11y/mobile/doc checklist.
 
 ## 🟢 User Story 10: Export Portfolio to CSV/JSON
 
