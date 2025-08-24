@@ -1,4 +1,5 @@
 import React, { useRef, useState } from "react";
+import Icon from "@components/Icon";
 
 type ExportImportControlsProps = {
   onExport: (format: "csv" | "json") => void;
@@ -51,13 +52,11 @@ export default function ExportImportControls({
           <option value="csv">CSV (.csv)</option>
           <option value="json">JSON (.json)</option>
         </select>
-        <span
+        <Icon
+          glyph={"ⓘ"}
           title="Choose a format for download."
           className="text-gray-400 text-sm cursor-default select-none"
-          aria-hidden="true"
-        >
-          ⓘ
-        </span>
+        />
       </div>
 
       {/* Hidden file input for Import */}
@@ -83,25 +82,25 @@ export default function ExportImportControls({
       <div className="flex gap-3 flex-wrap">
         <button
           onClick={handleExportClick}
-          className="bg-brand-primary text-white font-button px-4 py-2 rounded-md hover:bg-purple-700 transition"
+          className="bg-brand-primary text-white font-button px-4 py-2 rounded-md hover:bg-purple-700 transition tap-44 focus-ring"
           aria-label="Export Portfolio"
           aria-describedby="export-help"
           data-testid="export-button"
           title="Download portfolio in selected format"
         >
-          <span aria-hidden="true">📤</span> Export Portfolio
+          <Icon glyph={"📤"} /> Export Portfolio
         </button>
 
         {onImport && (
           <button
             onClick={handleImportClick}
-            className="bg-brand-accent text-white font-button px-4 py-2 rounded-md hover:bg-emerald-600 transition"
+            className="bg-brand-accent text-white font-button px-4 py-2 rounded-md hover:bg-emerald-600 transition tap-44 focus-ring"
             aria-label="Import Portfolio"
             aria-describedby="import-help"
             data-testid="import-button"
             title="Select a JSON/CSV file to import"
           >
-            <span aria-hidden="true">📥</span> Import Portfolio
+            <Icon glyph={"📥"} /> Import Portfolio
           </button>
         )}
       </div>

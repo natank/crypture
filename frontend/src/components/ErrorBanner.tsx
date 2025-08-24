@@ -1,4 +1,6 @@
 // src/components/ErrorBanner.tsx
+import Icon from "@components/Icon";
+
 type ErrorBannerProps = {
   message: string;
   onRetry?: () => void;
@@ -11,14 +13,14 @@ export default function ErrorBanner({ message, onRetry }: ErrorBannerProps) {
       role="alert"
       aria-live="assertive"
     >
-      <span aria-hidden="true">⚠️</span> {message}
+      <Icon glyph={"⚠️"} /> {message}
       {onRetry && (
         <button
           onClick={onRetry}
           className="ml-2 text-brand-primary underline hover:text-brand-accent font-button cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary rounded-sm"
           aria-label="Retry"
         >
-          <span aria-hidden="true">🔁</span> Retry
+          <Icon glyph={"🔁"} /> Retry
         </button>
       )}
     </div>

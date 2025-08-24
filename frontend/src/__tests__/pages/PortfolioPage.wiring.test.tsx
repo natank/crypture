@@ -104,7 +104,7 @@ describe("PortfolioPage wiring", () => {
 
   afterEach(() => {
     // reset useCoinList mock to default non-error state
-    (coinList.useCoinList as unknown as vi.Mock).mockImplementation(() => ({
+    vi.mocked(coinList.useCoinList).mockImplementation(() => ({
       coins: [],
       loading: false,
       error: null,
@@ -116,7 +116,7 @@ describe("PortfolioPage wiring", () => {
 
   it("invokes retry when clicking Retry on error banner", () => {
     const retry = vi.fn();
-    (coinList.useCoinList as unknown as vi.Mock).mockImplementation(() => ({
+    vi.mocked(coinList.useCoinList).mockImplementation(() => ({
       coins: [],
       loading: false,
       error: "Network",
@@ -132,7 +132,7 @@ describe("PortfolioPage wiring", () => {
   });
 
   it("shows updating spinner and disables add button when refreshing", () => {
-    (coinList.useCoinList as unknown as vi.Mock).mockImplementation(() => ({
+    vi.mocked(coinList.useCoinList).mockImplementation(() => ({
       coins: [],
       loading: false,
       error: null,
@@ -195,7 +195,7 @@ describe("PortfolioPage wiring", () => {
   });
 
   it("shows general error banner when coin list has an error", () => {
-    (coinList.useCoinList as unknown as vi.Mock).mockImplementation(() => ({
+    vi.mocked(coinList.useCoinList).mockImplementation(() => ({
       coins: [],
       loading: false,
       error: "Network",

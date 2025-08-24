@@ -60,13 +60,105 @@ This process ensures that implementation aligns tightly with user needs, design 
 
 # 🚀 Active Stories
 
-> **Currently focused story:** User Story 10
+> **Currently focused story:** TBD
 
-## 🟢 FOCUSED Sprint Story: User story 10 — ✅ Completed on 2025-08-24
+## 🟢 FOCUSED Sprint Story: User story UI-Infra-01
 
 # 📦 Active Sprint stories
 
+## 🛠 Technical Story: UI-Infra-01 — Accessibility & Process Foundations
+Status: ✅ Complete
+Completed On: 2025-08-24
+
+This story has been archived. See the Archived Sprints section for full details and acceptance criteria.
+
+---
+
+
+## 🟢 User Story: UI-16 – Improve Header & Toolbar Layout
+
+_As a crypto portfolio user,_
+_I want the header and filter/sort toolbar to feel more compact and visually distinct from the asset list,_
+_so that I can quickly understand my portfolio status and navigate controls without confusion._
+
+**Priority:** Medium
+**Feature Category:** UI and Usability
+
+---
+
+### ✅ Acceptance Criteria
+
+- [x] 16.1 Header condenses logo, tagline, and total value into one flex row
+- [x] 16.2 Toolbar is wrapped with `.toolbar-wrapper` for visual grouping
+- [x] 16.3 Layout spacing and alignment work on desktop and mobile
+- [x] 16.4 Follows mockup tokens and accessibility conventions
+- [x] 16.5 Visual output matches `ui-wireframes.md` and `ui-mockups.md`
+
+---
+
+### 🔧 Technical Breakdown
+
+| File                                       | Task                                                              |
+| ------------------------------------------ | ----------------------------------------------------------------- |
+| `PortfolioPage.tsx`                        | Refactor header layout using `flex justify-between items-center`  |
+| `PortfolioPage.tsx` or `SortFilterBar.tsx` | Wrap sort/filter block with `<div className="toolbar-wrapper">`   |
+| `index.css`                                | Confirm `.toolbar-wrapper` is available under `@layer components` |
+| `PortfolioHeader.stories.tsx`              | Add Storybook preview showing updated layout                      |
+| `__tests__/PortfolioPage.test.tsx`         | Visual + structural regression test if needed                     |
+| `e2e/specs/layout-visual.spec.ts`          | Add coverage (optional) or reuse for visual confirmation          |
+
+---
+
+### 📦 Dev Deliverables
+
+- Updated layout for header and toolbar
+- Responsive, branded spacing
+- Storybook preview for header section
+- Visual QA confirmation
+- Functional parity (no regression in portfolio behavior)
+
+---
+
+
+
+# 📦 Archived Sprints
+
+## 🛠 Technical Story: UI-Infra-01 — Accessibility & Process Foundations
+Status: ✅ Complete  
+Completed On: 2025-08-24
+
+> Strengthen accessibility, mobile UX consistency, and PR/documentation workflow to reduce regressions and accelerate future UI work.
+
+### ✅ Acceptance Criteria
+
+- [x] TS1.1 A shared a11y utility layer exists with documented tokens/helpers:
+  - `sr-only`, `focus-ring` (focus-visible), and `tap-44` (min 44x44px) utilities.
+  - Usage examples referenced in component docs.
+- [x] TS1.2 An `Icon` component enforces sensible defaults:
+  - Decorative by default (`aria-hidden="true"`), with optional `title`/`aria-label` props.
+  - Replaces inline emoji usage in at least two target components.
+- [x] TS1.3 E2E smoke coverage for a11y and mobile:
+  - Mobile viewport spec asserts critical controls are visible and tappable (44x44) and guidance text present for Import/Export.
+  - Basic axe/lighthouse-style a11y check has no critical violations on the portfolio page (allow non-blocking warnings).
+- [x] TS1.4 PR workflow template improvements are adopted: (✅ Complete — 2025-08-24)
+  - Checklist includes a11y review and docs sync (sprint + PR docs), and mobile screenshots.
+- [x] TS1.5 Documentation workflow clarified and linked in PR template: (✅ Complete — 2025-08-24)
+  - `docs/pull-requests.md` describes required updates for UI changes.
+  - References `docs/sprint-planning.md` sections to keep AC and Tech Breakdown in sync.
+
+### 📦 Deliverables
+
+- A11y utilities available as CSS classes and referenced in coding guidelines.
+- `Icon.tsx` with tests and examples.
+- Updated components adopting `Icon` in key places.
+- E2E spec validating mobile viewport basics and guidance text presence.
+- Updated `docs/pull-requests.md` with doc-sync and a11y steps.
+- Updated PR template with a11y/mobile/doc checklist.
+
 ## 🟢 User Story 10: Export Portfolio to CSV/JSON
+
+Status: ✅ Complete  
+Completed On: 2025-08-24
 
 > **User Story** > _As a casual crypto investor,_ > _I want to export my portfolio data in CSV or JSON format,_ > _so that I can back it up or integrate it with my financial tools._
 
@@ -145,7 +237,10 @@ Completed On: 2025-08-24
 
 ---
 
-## 🟡 User Story 7: Handle UI Loading & Error States (Portfolio Page)
+## 🟢 User Story 7: Handle UI Loading & Error States (Portfolio Page)
+
+Status: ✅ Complete  
+Completed On: 2025-08-24
 
 > As a user relying on timely price data,
 > I want clear loading and error feedback with accessible states,
@@ -232,7 +327,10 @@ Completed On: 2025-08-24
 
 ---
 
-# 🟡 User Story 8: Intuitive Interface for Non-Technical Users — Planned (Sprint)
+## 🟢 User Story 8: Intuitive Interface for Non-Technical Users
+
+Status: ✅ Complete  
+Completed On: 2025-08-24
 
 > As a casual or new crypto user,
 > I want the interface to be clean and easy to use without needing technical knowledge,
@@ -283,7 +381,7 @@ Completed On: 2025-08-24
 
 ---
 
-# 📦 Archived Sprints
+
 
 ## 🏁 User Story 9: Persist Portfolio in Local Storage
 
@@ -348,52 +446,6 @@ Completed On: 2025-08-24
 - Optional visual indicator for saved state adds UX clarity
 - Matches `style-guide.md` and follows SOLID principles
 - All tests (unit, integration, E2E) pass
-
----
-
-## 🟢 User Story: UI-16 – Improve Header & Toolbar Layout
-
-### **User Story UI-16**
-
-_As a crypto portfolio user,_
-_I want the header and filter/sort toolbar to feel more compact and visually distinct from the asset list,_
-_so that I can quickly understand my portfolio status and navigate controls without confusion._
-
-**Priority:** Medium
-**Feature Category:** UI and Usability
-
----
-
-### ✅ Acceptance Criteria
-
-- [x] 16.1 Header condenses logo, tagline, and total value into one flex row
-- [x] 16.2 Toolbar is wrapped with `.toolbar-wrapper` for visual grouping
-- [x] 16.3 Layout spacing and alignment work on desktop and mobile
-- [x] 16.4 Follows mockup tokens and accessibility conventions
-- [x] 16.5 Visual output matches `ui-wireframes.md` and `ui-mockups.md`
-
----
-
-### 🔧 Technical Breakdown
-
-| File                                       | Task                                                              |
-| ------------------------------------------ | ----------------------------------------------------------------- |
-| `PortfolioPage.tsx`                        | Refactor header layout using `flex justify-between items-center`  |
-| `PortfolioPage.tsx` or `SortFilterBar.tsx` | Wrap sort/filter block with `<div className="toolbar-wrapper">`   |
-| `index.css`                                | Confirm `.toolbar-wrapper` is available under `@layer components` |
-| `PortfolioHeader.stories.tsx`              | Add Storybook preview showing updated layout                      |
-| `__tests__/PortfolioPage.test.tsx`         | Visual + structural regression test if needed                     |
-| `e2e/specs/layout-visual.spec.ts`          | Add coverage (optional) or reuse for visual confirmation          |
-
----
-
-### 📦 Dev Deliverables
-
-- Updated layout for header and toolbar
-- Responsive, branded spacing
-- Storybook preview for header section
-- Visual QA confirmation
-- Functional parity (no regression in portfolio behavior)
 
 ---
 

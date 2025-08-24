@@ -181,6 +181,8 @@ Responsible for creating user interface wireframes, mockups, and visual componen
 | `product-backlog.md`         | PO Agent          | Prioritized feature list              |
 | `sprint-planning.md`         | Scrum Master, Dev | Sprint goals and task breakdown       |
 | `sprint-progress-tracker.md` | Scrum Master      | Daily/weekly progress updates         |
+| `a11y-utilities.md`          | Dev               | Shared CSS utilities for accessibility and mobile UX |
+| `icon-component.md`          | Dev               | Guidance and API for standardized, accessible icons |
 
 ## 9. **Testing Strategy**
 
@@ -200,5 +202,6 @@ To ensure consistent, traceable changes aligned with backlog and sprint planning
   - `docs/product-backlog.md` story section (ID and title)
   - `docs/sprint-planning.md` corresponding sprint/story section
   - Any relevant E2E/Unit test specs added or changed
+- **Accessibility Guidance**: Follow `docs/a11y-utilities.md` and `docs/icon-component.md` for focus, touch targets, and icon labeling. Reference these in PRs when a11y is impacted.
 - **Content Checklist** (enforced by the template): Summary, Changes, Files Changed, Acceptance Criteria mapping, How to Test, Screenshots (if UI), Notes, Linked Work, and a completion Checklist (lint/tests/a11y/docs).
 - **Usage**: When opening a PR on GitHub, the template auto-populates. Fill all sections before requesting review.
