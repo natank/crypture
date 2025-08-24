@@ -1,10 +1,11 @@
-import { useMemo, useState } from "react";
+import { useMemo } from "react";
 
 import { AddAssetModal } from "@components/AddAssetModal";
 import AssetList from "@components/AssetList";
 import DeleteConfirmationModal from "@components/DeleteConfirmationModal";
 import ErrorBanner from "@components/ErrorBanner";
 import ExportImportControls from "@components/ExportImportControls";
+import ImportPreviewModal from "@components/ImportPreviewModal";
 import FilterSortControls from "@components/FilterSortControls";
 import LoadingSpinner from "@components/LoadingSpinner";
 import PortfolioHeader from "@components/PortfolioHeader";
@@ -17,9 +18,7 @@ import { useUIState } from "@hooks/useUIState";
 import { useFilterSort } from "@hooks/useFilterSort";
 import AppFooter from "@components/AppFooter";
 import { CoinInfo } from "@services/coinService";
-import { exportPortfolio } from "@utils/exportPortfolio";
-import { buildExportFilename } from "@utils/filename";
-import { parsePortfolioFile } from "@services/portfolioIOService";
+import { usePortfolioImportExport } from "@hooks/usePortfolioImportExport";
 
 export default function PortfolioPage() {
   // 1. Fetch + poll coin data
@@ -63,6 +62,23 @@ export default function PortfolioPage() {
     sortOption,
   } = useFilterSort(portfolio);
 
+  // Import/Export logic via custom hook
+  const {
+    importPreview,
+    importError,
+    onFileSelected,
+    applyMerge,
+    applyReplace,
+    dismissPreview,
+    exportPortfolio,
+  } = usePortfolioImportExport({
+    coinMap,
+    addAsset,
+    resetPortfolio,
+    portfolio,
+    priceMap: priceMap as Record<string, number>,
+  });
+
   if (loading) {
     return (
       <main
@@ -80,43 +96,8 @@ export default function PortfolioPage() {
     requestDeleteAsset(id);
   };
 
-  const handleExport = (format: "csv" | "json") => {
-    // Derive a minimal portfolio list for export
-    const items = portfolio.map((a) => ({
-      asset: a.coinInfo.symbol.toLowerCase(),
-      quantity: a.quantity,
-    }));
-
-    const content = exportPortfolio(items, priceMap as Record<string, number>, format);
-    const mime = format === "csv" ? "text/csv;charset=utf-8" : "application/json;charset=utf-8";
-    const blob = new Blob([content], { type: mime });
-    const url = URL.createObjectURL(blob);
-    const filename = buildExportFilename(format);
-
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = filename;
-    document.body.appendChild(a);
-    a.click();
-    a.remove();
-    URL.revokeObjectURL(url);
-  };
-
-  const handleImport = async (file: File) => {
-    try {
-      const imported = await parsePortfolioFile(file);
-      // Replace current portfolio with imported data
-      resetPortfolio();
-      for (const item of imported) {
-        const coinInfo = coinMap[item.asset];
-        if (!coinInfo) continue; // skip unknown symbols
-        addAsset({ coinInfo, quantity: item.quantity });
-      }
-    } catch (e) {
-      console.error("Failed to import portfolio:", e);
-      // In a future iteration, surface a user-facing error banner/toast
-    }
-  };
+  const handleExport = exportPortfolio;
+  const handleImport = onFileSelected;
 
   return (
     <>
@@ -126,8 +107,13 @@ export default function PortfolioPage() {
         className="flex items-center justify-between mb-4"
       />
 
-      {error && (
+      {(error || importError) && (
         <ErrorBanner message=" Error loading prices. Please try again later." />
+      )}
+      {importError && (
+        <div className="max-w-4xl mx-auto px-6 md:px-10 mt-2">
+          <ErrorBanner message={` ${importError}`} />
+        </div>
       )}
 
       {/* Filter & Sort */}
@@ -154,10 +140,7 @@ export default function PortfolioPage() {
           />
 
           {/* Footer Action Buttons */}
-          <ExportImportControls
-            onExport={handleExport}
-            onImport={handleImport}
-          />
+          <ExportImportControls onExport={handleExport} onImport={handleImport} />
         </section>
 
         {/* Add Asset Modal */}
@@ -187,6 +170,15 @@ export default function PortfolioPage() {
           />
         )}
       </main>
+
+      {importPreview && (
+        <ImportPreviewModal
+          items={importPreview}
+          onCancel={dismissPreview}
+          onMerge={applyMerge}
+          onReplace={applyReplace}
+        />
+      )}
 
       <AppFooter />
     </>

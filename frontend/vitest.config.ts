@@ -22,6 +22,12 @@ export default defineConfig({
         "**/stories/**",
         "**/.vite/**",
       ],
+      thresholds: {
+        lines: 60,
+        functions: 80,
+        statements: 60,
+        branches: 70,
+      },
     },
   },
   resolve: {
