@@ -17,6 +17,9 @@ import { useUIState } from "@hooks/useUIState";
 import { useFilterSort } from "@hooks/useFilterSort";
 import AppFooter from "@components/AppFooter";
 import { CoinInfo } from "@services/coinService";
+import { exportPortfolio } from "@utils/exportPortfolio";
+import { buildExportFilename } from "@utils/filename";
+import { parsePortfolioFile } from "@services/portfolioIOService";
 
 export default function PortfolioPage() {
   // 1. Fetch + poll coin data
@@ -37,7 +40,7 @@ export default function PortfolioPage() {
     return map;
   }, [allCoins]);
 
-  const { portfolio, addAsset, removeAsset, getAssetById, totalValue } =
+  const { portfolio, addAsset, removeAsset, getAssetById, totalValue, resetPortfolio } =
     usePortfolioState(priceMap, coinMap, loading);
 
   // 5. UI state (modal control)
@@ -77,12 +80,42 @@ export default function PortfolioPage() {
     requestDeleteAsset(id);
   };
 
-  const handleExport = () => {
-    console.log("Export clicked");
+  const handleExport = (format: "csv" | "json") => {
+    // Derive a minimal portfolio list for export
+    const items = portfolio.map((a) => ({
+      asset: a.coinInfo.symbol.toLowerCase(),
+      quantity: a.quantity,
+    }));
+
+    const content = exportPortfolio(items, priceMap as Record<string, number>, format);
+    const mime = format === "csv" ? "text/csv;charset=utf-8" : "application/json;charset=utf-8";
+    const blob = new Blob([content], { type: mime });
+    const url = URL.createObjectURL(blob);
+    const filename = buildExportFilename(format);
+
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = filename;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    URL.revokeObjectURL(url);
   };
 
-  const handleImport = () => {
-    console.log("Import clicked");
+  const handleImport = async (file: File) => {
+    try {
+      const imported = await parsePortfolioFile(file);
+      // Replace current portfolio with imported data
+      resetPortfolio();
+      for (const item of imported) {
+        const coinInfo = coinMap[item.asset];
+        if (!coinInfo) continue; // skip unknown symbols
+        addAsset({ coinInfo, quantity: item.quantity });
+      }
+    } catch (e) {
+      console.error("Failed to import portfolio:", e);
+      // In a future iteration, surface a user-facing error banner/toast
+    }
   };
 
   return (

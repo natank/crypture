@@ -1,8 +1,8 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 
 type ExportImportControlsProps = {
   onExport: (format: "csv" | "json") => void;
-  onImport?: () => void;
+  onImport?: (file: File) => void;
 };
 
 export default function ExportImportControls({
@@ -10,9 +10,25 @@ export default function ExportImportControls({
   onImport,
 }: ExportImportControlsProps) {
   const [format, setFormat] = useState<"csv" | "json">("csv");
+  const fileInputRef = useRef<HTMLInputElement | null>(null);
 
   const handleExportClick = () => {
     onExport(format);
+  };
+
+  const handleImportClick = () => {
+    if (!onImport) return;
+    fileInputRef.current?.click();
+  };
+
+  const handleFileChange: React.ChangeEventHandler<HTMLInputElement> = (e) => {
+    if (!onImport) return;
+    const file = e.target.files?.[0];
+    if (file) {
+      onImport(file);
+      // reset value to allow re-selecting the same file
+      e.currentTarget.value = "";
+    }
   };
 
   return (
@@ -44,21 +60,33 @@ export default function ExportImportControls({
         </span>
       </div>
 
+      {/* Hidden file input for Import */}
+      <input
+        ref={fileInputRef}
+        type="file"
+        accept=".json,.csv,application/json,text/csv"
+        className="hidden"
+        onChange={handleFileChange}
+        data-testid="import-file-input"
+      />
+
       {/* Action Buttons */}
       <div className="flex gap-3 flex-wrap">
         <button
           onClick={handleExportClick}
           className="bg-brand-primary text-white font-button px-4 py-2 rounded-md hover:bg-purple-700 transition"
-          aria-label={`Download portfolio as ${format.toUpperCase()} file`}
+          aria-label="Export Portfolio"
+          data-testid="export-button"
         >
           📤 Export Portfolio
         </button>
 
         {onImport && (
           <button
-            onClick={onImport}
+            onClick={handleImportClick}
             className="bg-brand-accent text-white font-button px-4 py-2 rounded-md hover:bg-emerald-600 transition"
-            aria-label="Upload portfolio file"
+            aria-label="Import Portfolio"
+            data-testid="import-button"
           >
             📥 Import Portfolio
           </button>

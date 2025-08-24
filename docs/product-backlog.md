@@ -25,7 +25,7 @@ Stories are grouped by feature category and prioritized based on their importanc
 | UI-15 | Align Component Styles with Updated UI Mockups                    | High     | UI and Usability           | ✅ Done   |
 | UI-16 | Improve Header & Toolbar Layout                                   | Medium   | UI and Usability           | Planned   |
 | 9     | Persist Portfolio in Local Storage/Backend                        | High     | Extended Features          | ✅ Done   |
-| 10    | Export Portfolio to CSV/JSON                                      | High     | Extended Features          | 🟢 Active |
+| 10    | Export Portfolio to CSV/JSON                                      | High     | Extended Features          | ✅ Done   |
 | 11    | Import Portfolio from CSV/JSON                                    | High     | Extended Features          | Planned   |
 | 12    | Add Charting for Price History                                    | Low      | Extended Features          | Pending   |
 | 13    | Enable User Authentication                                        | Low      | Extended Features          | Pending   |
@@ -456,17 +456,18 @@ _I want to export my portfolio data in CSV or JSON format,_
 _so that I can back it up or integrate it with my financial tools._
 
 **Priority:** High
-**Status:** 🟢 Active
+**Status:** ✅ Done
+**Completed On:** 2025-08-24
 
 ---
 
 #### ✅ Acceptance Criteria
 
-- [ ] 10.1 The user can choose between CSV and JSON formats for export.
-- [ ] 10.2 Clicking "Export" triggers a file download with current portfolio data.
-- [ ] 10.3 The file includes asset name, symbol, quantity, and current value.
-- [ ] 10.4 Exported files are named with a timestamp (e.g., `portfolio-2025-07-20.json`).
-- [ ] 10.5 The export functionality is accessible via a clearly labeled UI element.
+- [x] 10.1 The user can choose between CSV and JSON formats for export.
+- [x] 10.2 Clicking "Export" triggers a file download with current portfolio data.
+- [x] 10.3 The file includes asset name, symbol, quantity, and current value.
+- [x] 10.4 Exported files are named with a timestamp (e.g., `portfolio-2025-07-20.json`).
+- [x] 10.5 The export functionality is accessible via a clearly labeled UI element.
 
 ---
 

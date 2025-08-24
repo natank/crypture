@@ -1,7 +1,7 @@
-import { test, expect } from "../fixtures";
+import { test, expect } from "@e2e/fixtures";
 import { mockCoinGeckoMarkets } from "@e2e/mocks/mockCoinGecko";
 
-test.describe.skip("Export Portfolio", () => {
+test.describe("Export Portfolio", () => {
   test("user can export portfolio as CSV", async ({ page, portfolioPage }) => {
     await mockCoinGeckoMarkets(page); // ✅ ensure BTC & ETH are available
 
