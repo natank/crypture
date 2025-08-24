@@ -78,7 +78,7 @@ export default function ExportImportControls({
           aria-label="Export Portfolio"
           data-testid="export-button"
         >
-          📤 Export Portfolio
+          <span aria-hidden="true">📤</span> Export Portfolio
         </button>
 
         {onImport && (
@@ -88,7 +88,7 @@ export default function ExportImportControls({
             aria-label="Import Portfolio"
             data-testid="import-button"
           >
-            📥 Import Portfolio
+            <span aria-hidden="true">📥</span> Import Portfolio
           </button>
         )}
       </div>

@@ -22,7 +22,7 @@ export default function FilterSortControls({
         <label htmlFor="filter-assets" className="sr-only">
           Filter assets
         </label>
-        <span className="absolute inset-y-0 left-3 flex items-center text-gray-500">
+        <span className="absolute inset-y-0 left-3 flex items-center text-gray-500" aria-hidden="true">
           🔍
         </span>
         <input

@@ -74,7 +74,7 @@ export function AddAssetModal({
             id="add-asset-title"
             className="text-xl font-brand text-brand-primary"
           >
-            ➕ Add Crypto Asset
+            <span aria-hidden="true">➕</span> Add Crypto Asset
           </h2>
 
           {/* 🔍 Asset Selector */}
@@ -139,7 +139,7 @@ export function AddAssetModal({
               aria-label="Cancel adding asset"
               disabled={loading}
             >
-              ❌ Cancel
+              <span aria-hidden="true">❌</span> Cancel
             </button>
             <button
               onClick={handleSubmit}

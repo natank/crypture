@@ -69,7 +69,7 @@ export default function AssetRow({
         title={`Delete ${asset.coinInfo.symbol.toUpperCase()}`}
         onClick={() => onDelete(asset.coinInfo.id)}
       >
-        🗑️
+        <span aria-hidden="true">🗑️</span>
       </button>
     </div>
   );
