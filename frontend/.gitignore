@@ -25,3 +25,10 @@ dist-ssr
 
 *storybook.log
 storybook-static
+
+# E2E downloads
+downloads/
+
+# TypeScript build info
+*.tsbuildinfo*
+tsconfig.tsbuildinfo
