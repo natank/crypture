@@ -1,5 +1,5 @@
 import { test, expect } from "@playwright/test";
-import { PortfolioPage } from "../pom-pages/portfolio.pom";
+import { PortfolioPage } from "@e2e/pom-pages/portfolio.pom";
 
 // Test suite for sorting and filtering assets
 

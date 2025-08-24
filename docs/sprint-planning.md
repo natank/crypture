@@ -62,7 +62,7 @@ This process ensures that implementation aligns tightly with user needs, design 
 
 > **Currently focused story:** User Story 10
 
-## 🟢 FOCUSED Sprint Story: User story 10
+## 🟢 FOCUSED Sprint Story: User story 10 — ✅ Completed on 2025-08-24
 
 # 📦 Active Sprint stories
 
@@ -74,34 +74,25 @@ This process ensures that implementation aligns tightly with user needs, design 
 
 ### ✅ Acceptance Criteria
 
-- [ ] 10.1 User can choose between CSV and JSON export formats
-- [ ] 10.2 Clicking “Export” triggers file download with current portfolio data
-- [ ] 10.3 File includes asset name, symbol, quantity, and current value
-- [ ] 10.4 Filename is timestamped (e.g., `portfolio-2025-07-20.json`)
-- [ ] 10.5 UI button is clearly labeled and accessible
-
----
-
-Here's the **updated task breakdown** for **User Story 10**, now including:
-
-- A new **UI enhancement task** for format selection
-- **Ownership** clearly attributed (Developer or Designer)
-- A **Status** column initialized with `🔲 Not Started`
+- [x] 10.1 User can choose between CSV and JSON export formats
+- [x] 10.2 Clicking “Export” triggers file download with current portfolio data
+- [x] 10.3 File includes asset name, symbol, quantity, and current value
+- [x] 10.4 Filename is timestamped (e.g., `portfolio-2025-07-20.json`)
+- [x] 10.5 UI button is clearly labeled and accessible
 
 ---
 
 ### 🔧 Technical Breakdown
 
-| Layer / Role          | Task                                                               | File(s) / Module(s)                               | Owner     | Status         |
-| --------------------- | ------------------------------------------------------------------ | ------------------------------------------------- | --------- | -------------- |
-| **🎨 UI Enhancement** | ➕ **Design format selection UI (CSV/JSON)** for export action     | `ui-mockups.md`, `style-guide.md`                 | Designer  | ✅ Done        |
-| **UI Component**      | Add dropdown for format selection (CSV/JSON)                       | `ExportImportControls.tsx`                        | Developer | ✅ Done        |
-| **Export Logic**      | Create `exportPortfolio(portfolio, prices, format): string/blob`   | `utils/exportPortfolio.ts`                        | Developer | 🔲 Not Started |
-| **Trigger/Handler**   | Connect export button to logic, generate Blob, trigger download    | `PortfolioPage.tsx` or `ExportImportControls.tsx` | Developer | 🔲 Not Started |
-| **Filename Helper**   | Generate timestamped filename (e.g., `portfolio-YYYY-MM-DD.json`)  | `utils/formatDate.ts` or inline helper            | Developer | 🔲 Not Started |
-| **Accessibility**     | Replace tooltip button with passive `ⓘ` span (no focus, no border) | `ExportImportControls.tsx`                        | Developer | ✅ Done        |
-| **Unit Testing**      | Test CSV and JSON generation with valid/empty inputs               | `__tests__/exportPortfolio.test.ts`               | Developer | 🔲 Not Started |
-| **E2E Testing**       | Simulate export via UI → assert download triggered                 | `e2e/specs/export-portfolio.spec.ts`              | Developer | 🔲 Not Started |
+| Layer / Role     | Task                                                                 | File(s) / Module(s)                               | Owner     | Status   |
+| ---------------- | -------------------------------------------------------------------- | ------------------------------------------------- | --------- | -------- |
+| UI Component     | Add format selector (CSV/JSON) and Export button                     | `src/components/ExportImportControls/`            | Developer | ✅ Done  |
+| Export Logic     | Implement `exportPortfolio(portfolio, prices, format)` returning Blob | `src/utils/exportPortfolio.ts`                    | Developer | ✅ Done  |
+| Filename Helper  | Generate timestamped filename `portfolio-YYYY-MM-DD.<ext>`            | `src/utils/filename.ts` (or inline helper)        | Developer | ✅ Done  |
+| Wiring/Handler   | Hook up handler to trigger download with selected format              | `src/pages/PortfolioPage.tsx`                     | Developer | ✅ Done  |
+| Accessibility    | Ensure export control has clear label and ARIA as needed             | `ExportImportControls`                            | Developer | ✅ Done  |
+| Unit Testing     | Validate CSV/JSON structure, empty portfolio behavior                 | `__tests__/exportPortfolio.test.ts`               | Developer | ✅ Done  |
+| E2E Testing      | Click export → verify download and filename                           | `src/e2e/specs/export-portfolio.spec.ts`          | Developer | ✅ Done  |
 
 ---
 

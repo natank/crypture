@@ -10,6 +10,7 @@ export class PortfolioPage {
   readonly addAssetButton: Locator;
   readonly exportButton: Locator;
   readonly importButton: Locator;
+  readonly exportFormatSelect: Locator;
   readonly filterInput: Locator;
   readonly sortDropdown: Locator;
 
@@ -36,6 +37,7 @@ export class PortfolioPage {
     this.addAssetButton = page.getByTestId("add-asset-button");
     this.exportButton = page.getByTestId("export-button");
     this.importButton = page.getByTestId("import-button");
+    this.exportFormatSelect = page.getByLabel(/select file format/i);
 
     // Filter/Sort Controls
     this.filterInput = page.getByPlaceholder("Search assets...");
@@ -71,10 +73,44 @@ export class PortfolioPage {
     await this.addAssetButton.click();
   }
 
+  async selectExportFormat(label: "CSV" | "JSON") {
+    const value = label.toLowerCase();
+    await this.exportFormatSelect.selectOption(value);
+  }
+
+  async clickExportButton() {
+    await this.exportButton.click();
+  }
+
   async addAsset(symbol: string, quantity: number) {
     await this.openAddAssetModal();
 
-    await this.modalAssetSelect.selectOption({ label: symbol });
+    // First try selecting by option value which is CoinGecko coin.id
+    const idMap: Record<string, string> = { BTC: "bitcoin", ETH: "ethereum" };
+    const labelMap: Record<string, string> = {
+      BTC: "Bitcoin (BTC)",
+      ETH: "Ethereum (ETH)",
+    };
+
+    const regex = new RegExp(`\\(${symbol}\\)`, "i");
+
+    try {
+      const value = idMap[symbol] ?? symbol.toLowerCase();
+      await this.modalAssetSelect.selectOption({ value });
+    } catch {
+      try {
+        // Fallback to exact label
+        await this.modalAssetSelect.selectOption({ label: labelMap[symbol] ?? symbol });
+      } catch {
+        // Final fallback: find option containing (SYMBOL) and select by its value
+        const option = this.modalAssetSelect
+          .locator("option")
+          .filter({ hasText: regex });
+        const valueAttr = await option.first().getAttribute("value");
+        if (!valueAttr) throw new Error(`No option found for symbol ${symbol}`);
+        await this.modalAssetSelect.selectOption(valueAttr);
+      }
+    }
     await this.modalQuantityInput.fill(quantity.toString());
     await this.modalConfirmButton.click();
   }

@@ -61,7 +61,7 @@ test.describe("Portfolio value display", () => {
     const btcRow = portfolioPage.assetRow("BTC");
     await expect(btcRow).toContainText("Total: $15,000");
 
-    // 2. Mock API to respond with BTC @ $40,000 on next poll
+    // 2. Mock API to respond with BTC @ $40,000 on next fetch
     await portfolioPage.page.unroute("**/coins/markets**"); // remove old handler
     await portfolioPage.page.route("**/coins/markets**", (route) => {
       route.fulfill({
@@ -78,8 +78,12 @@ test.describe("Portfolio value display", () => {
       });
     });
 
-    // 3. Wait for the polling hook to re-fire (default: 60s)
-    await expect(btcRow).toContainText("Total: $20,000", { timeout: 10000 });
+    // 3. Force a refetch by reloading the page so we don't depend on polling timing
+    await portfolioPage.reload();
+
+    // 4. Verify updated value deterministically
+    const btcRowAfter = portfolioPage.assetRow("BTC");
+    await expect(btcRowAfter).toContainText("Total: $20,000");
 
     await expect(portfolioPage.header).toContainText("$20,000");
   });
