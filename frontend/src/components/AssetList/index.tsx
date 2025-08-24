@@ -29,7 +29,7 @@ export default function AssetList({
         <button
           ref={addButtonRef}
           onClick={onAddAsset}
-          className={`bg-brand-primary text-white font-button px-4 py-2 rounded-md flex items-center gap-2 ${
+          className={`bg-brand-primary text-white font-button px-4 py-2 rounded-md flex items-center gap-2 tap-44 focus-ring ${
             disabled ? "opacity-60 cursor-not-allowed" : "hover:bg-purple-700"
           }`}
           aria-label="Add Asset"

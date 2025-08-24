@@ -49,7 +49,7 @@ describe("usePortfolioImportExport", () => {
   });
 
   it("parses file and sets preview; replace applies and resets portfolio", async () => {
-    (parsePortfolioFile as unknown as vi.Mock).mockResolvedValue([
+    vi.mocked(parsePortfolioFile).mockResolvedValue([
       { asset: "btc", quantity: 1.5 },
       { asset: "eth", quantity: 3 },
     ]);
@@ -83,7 +83,7 @@ describe("usePortfolioImportExport", () => {
   });
 
   it("merge applies without reset", async () => {
-    (parsePortfolioFile as unknown as vi.Mock).mockResolvedValue([
+    vi.mocked(parsePortfolioFile).mockResolvedValue([
       { asset: "btc", quantity: 2 },
     ]);
 
@@ -106,7 +106,7 @@ describe("usePortfolioImportExport", () => {
   });
 
   it("sets error when parse fails", async () => {
-    (parsePortfolioFile as unknown as vi.Mock).mockRejectedValue(new Error("Invalid file"));
+    vi.mocked(parsePortfolioFile).mockRejectedValue(new Error("Invalid file"));
 
     const hook = setupHook({
       coinMap,
