@@ -71,12 +71,23 @@ export default function ExportImportControls({
       />
 
       {/* Action Buttons */}
+      {/* Screen reader hints for complex actions */}
+      <p id="export-help" className="sr-only">
+        Exports your current portfolio to a file using the selected format.
+      </p>
+      <p id="import-help" className="sr-only">
+        Imports a portfolio from a JSON or CSV file. You will be able to preview
+        the result and choose to merge or replace your current portfolio.
+      </p>
+
       <div className="flex gap-3 flex-wrap">
         <button
           onClick={handleExportClick}
           className="bg-brand-primary text-white font-button px-4 py-2 rounded-md hover:bg-purple-700 transition"
           aria-label="Export Portfolio"
+          aria-describedby="export-help"
           data-testid="export-button"
+          title="Download portfolio in selected format"
         >
           <span aria-hidden="true">📤</span> Export Portfolio
         </button>
@@ -86,7 +97,9 @@ export default function ExportImportControls({
             onClick={handleImportClick}
             className="bg-brand-accent text-white font-button px-4 py-2 rounded-md hover:bg-emerald-600 transition"
             aria-label="Import Portfolio"
+            aria-describedby="import-help"
             data-testid="import-button"
+            title="Select a JSON/CSV file to import"
           >
             <span aria-hidden="true">📥</span> Import Portfolio
           </button>
