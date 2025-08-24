@@ -22,7 +22,7 @@ import { usePortfolioImportExport } from "@hooks/usePortfolioImportExport";
 
 export default function PortfolioPage() {
   // 1. Fetch + poll coin data
-  const { coins: allCoins, loading, error, lastUpdatedAt } = useCoinList();
+  const { coins: allCoins, loading, error, lastUpdatedAt, refreshing, retry } = useCoinList();
 
   // 2. Derive price map for portfolio valuation
   const priceMap = usePriceMap(allCoins);
@@ -107,8 +107,18 @@ export default function PortfolioPage() {
         className="flex items-center justify-between mb-4"
       />
 
+      {/* Lightweight updating indicator during background refreshes */}
+      {refreshing && (
+        <div className="w-full max-w-4xl mx-auto px-6 md:px-10 -mt-2 mb-2" aria-live="polite">
+          <LoadingSpinner label=" Updating prices…" />
+        </div>
+      )}
+
       {(error || importError) && (
-        <ErrorBanner message=" Error loading prices. Please try again later." />
+        <ErrorBanner
+          message=" Error loading prices. Please try again later."
+          onRetry={retry}
+        />
       )}
       {importError && (
         <div className="max-w-4xl mx-auto px-6 md:px-10 mt-2">
@@ -137,6 +147,7 @@ export default function PortfolioPage() {
             onAddAsset={openAddAssetModal}
             addButtonRef={addButtonRef}
             priceMap={priceMap}
+            disabled={!!(loading || refreshing)}
           />
 
           {/* Footer Action Buttons */}
