@@ -29,10 +29,37 @@ Stories are grouped by feature category and prioritized based on their importanc
 | 11    | Import Portfolio from CSV/JSON                                    | High     | Extended Features          | ✅ Done   |
 | 12    | Add Charting for Price History                                    | Low      | Extended Features          | ✅ Done   |
 | 13    | Enable User Authentication                                        | Low      | Extended Features          | Pending   |
-| 14    | Refactor Sprint 1 Code to Follow SOLID Principles                 | Medium   | Technical Debt             | Pending   |
+| 14    | Add Landing Page with Navigation to Portfolio                     | High     | UI and Usability           | ✅ Done   |
+| 15    | Refactor Sprint 1 Code to Follow SOLID Principles                 | Medium   | Technical Debt             | Pending   |
 | TD-02 | UI Visibility Refactor and Design Token Integration               | Medium   | Technical Debt             | ✅ Done   |
 | TD-03 | Windsurf-Aided Review of UI/UX Design Docs                        | Medium   | Technical Debt             | ✅ Done   |
 | TD-04 | Visual/UX Refactor of `ui-mockups.md` for Design System Alignment | Medium   | Technical Debt             | ✅ Done   |
+
+---
+
+## 🧾 User Story 14: Add Landing Page with Navigation to Portfolio
+
+**User Story**  
+_As a new user,_  
+_I want to see an informative landing page when I first visit the site,_  
+_so that I can understand what the application does before viewing the portfolio._
+
+**Acceptance Criteria**  
+- [x] A landing page is displayed at the root URL (`/`)
+- [x] The landing page includes a clear call-to-action to view the portfolio
+- [x] Navigation to `/portfolio` shows the portfolio view
+- [x] The about page is accessible via `/about`
+- [x] All internal links use React Router for SPA navigation
+- [x] The header logo links back to the landing page
+- [x] Responsive design works on all device sizes
+
+**Technical Notes**
+- Implemented with React Router v6
+- Added responsive design using Tailwind CSS
+- Maintained existing portfolio functionality at the new route
+
+**Dependencies**  
+- None
 
 ---
 
