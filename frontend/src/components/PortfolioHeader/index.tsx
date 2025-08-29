@@ -1,7 +1,10 @@
+import React from "react";
+import { Link } from "react-router-dom";
+
 type PortfolioHeaderProps = {
-  totalValue?: string | null;
+  totalValue?: string | number | null;
   lastUpdatedAt?: number | null;
-  className?: string; // Add this line
+  className?: string;
 };
 
 export default function PortfolioHeader({
@@ -29,11 +32,13 @@ export default function PortfolioHeader({
     >
       <div className="w-full max-w-4xl mx-auto px-6 flex items-center justify-between flex-wrap gap-4">
         <h1 className="font-brand flex items-center gap-3 text-2xl">
-          <span className="text-3xl">🔐</span>
-          Crypture
-          <span className="text-sm text-white/80 font-subtle ml-2">
-            Track your crypto clearly
-          </span>
+          <Link to="/" className="flex items-center gap-2 hover:opacity-90 transition-opacity">
+            <span className="text-3xl">🔐</span>
+            <span>Crypture</span>
+            <span className="text-sm text-white/80 font-subtle ml-2">
+              Track your crypto clearly
+            </span>
+          </Link>
         </h1>
 
         <div className="text-right">
