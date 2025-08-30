@@ -6,6 +6,7 @@ This package contains all design assets and documentation for the Crypture landi
 ## Contents
 
 ### 1. Design Files
+- `high-fidelity-mockups.md` - Comprehensive design specifications and style guide
 - `desktop-mockup-spec.md` - Detailed specifications for desktop (1440px)
 - `tablet-mockup-spec.md` - Responsive adaptations for tablet (768px)
 - `mobile-mockup-spec.md` - Mobile-first specifications (375px)
@@ -15,8 +16,13 @@ This package contains all design assets and documentation for the Crypture landi
 - `microinteractions.md` - Detailed interaction states and animations
 
 ### 3. Assets
-- `/assets/` - Optimized images and icons
-  - `logo/` - Logo variations (light/dark, SVG/PNG)
+- **Logo Files**
+  - Current location: `/docs/Logo/` (temporary)
+  - **Required location:** `/docs/landing page docs/assets/logo/`
+  - **Action Required:** Developers need to move only the logo files that are used in the final design from the temporary location to the specified assets directory
+  - Includes: All logo variations (light/dark, SVG/PNG)
+
+- Other Assets
   - `screenshots/` - High-fidelity mockups
   - `icons/` - UI icons in SVG format
 
