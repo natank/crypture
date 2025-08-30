@@ -20,7 +20,7 @@
       "@test-setup": ["e2e/test-setup.ts"],
       "@assets/*": ["../public/assets/*"],
     },
-    "types": ["node", "playwright", "vitest", "vitest/globals"],
+    "types": ["node", "playwright", "vitest", "vitest/globals", "framer-motion"],
     "moduleResolution": "node",
     "esModuleInterop": true,
     "skipLibCheck": true,

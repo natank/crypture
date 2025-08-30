@@ -1,5 +1,5 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 type PortfolioHeaderProps = {
   totalValue?: string | number | null;
@@ -25,21 +25,41 @@ export default function PortfolioHeader({
     ? `${Math.floor((Date.now() - lastUpdatedAt) / 1000)}s ago`
     : null;
 
+  const navigate = useNavigate();
+
+  const scrollToTop = (e: React.MouseEvent) => {
+    e.preventDefault();
+    // Navigate to the root path (landing page)
+    navigate('/');
+  };
+
   return (
     <header
       role="banner"
-      className={`bg-brand-gradient text-white shadow-md rounded-b-lg mb-6 ${className}`}
+      className={`bg-gradient-to-r from-teal-500 to-indigo-600 text-white shadow-md rounded-b-lg mb-6 ${className}`}
     >
-      <div className="w-full max-w-4xl mx-auto px-6 flex items-center justify-between flex-wrap gap-4">
-        <h1 className="font-brand flex items-center gap-3 text-2xl">
-          <Link to="/" className="flex items-center gap-2 hover:opacity-90 transition-opacity">
-            <span className="text-3xl">🔐</span>
-            <span>Crypture</span>
-            <span className="text-sm text-white/80 font-subtle ml-2">
-              Track your crypto clearly
+      <div className="w-full max-w-7xl mx-auto px-6 py-4 flex items-center justify-between flex-wrap gap-4">
+        <div className="flex items-center space-x-4">
+          <a 
+            href="#" 
+            onClick={scrollToTop}
+            className="flex items-center space-x-2 group hover:opacity-90 transition-opacity"
+          >
+            <div className="p-1.5 bg-white/10 rounded-lg backdrop-blur-sm">
+              <img
+                className="h-8 w-auto"
+                src="/logo/svg/crypture-logo-negative-space-monochrome.svg"
+                alt="Crypture"
+              />
+            </div>
+            <span className="text-xl font-bold text-white">
+              Crypture
             </span>
-          </Link>
-        </h1>
+          </a>
+          <span className="hidden md:inline-block text-sm text-white/80 font-medium">
+            Track your crypto clearly
+          </span>
+        </div>
 
         <div className="text-right">
           <div
