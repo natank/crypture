@@ -8,7 +8,7 @@ coverage/
 # docs/
 test-results
 
-
+*.temp/*
 # Logs
 logs
 *.log
