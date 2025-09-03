@@ -28,7 +28,44 @@ The Crypto Portfolio Tracker is a React + TypeScript application that allows use
 - Enable user authentication
 - Export/import portfolio data
 
-## 4. **Project Roles and Responsibilities**
+## 4. **Quality Assurance & Bug Tracking**
+
+For detailed information about our bug tracking process, please see the [Bug Tracking Workflow](./bug-tracking-workflow.md) document.
+
+### Key QA Processes:
+- **Test Planning**: All features must include test plans in their technical specifications
+- **Test Automation**: Unit, integration, and E2E tests are required for all new features
+- **Bug Triage**: Regular triage meetings to prioritize and assign bugs
+- **Quality Gates**: All code must pass automated tests and code review before merging
+- **Release Testing**: Full regression testing before each release
+
+### 🚀 Release Process
+
+1. **Pre-Release**
+   - Complete all features for the release
+   - Verify all critical and high-priority bugs are resolved
+   - Update version number in package.json
+   - Update CHANGELOG.md with release notes
+   - Ensure all tests are passing
+   - Perform final QA verification including regression testing
+   - Confirm all known issues are documented and triaged
+
+2. **Release**
+   - Create release branch (release/vX.Y.Z)
+   - Merge to main branch
+   - Create version tag (vX.Y.Z)
+   - Push tags to trigger CI/CD pipeline
+   - Verify successful deployment to staging environment
+   - Perform smoke testing on staging
+
+3. **Post-Release**
+   - Verify production deployment
+   - Monitor for any issues in production
+   - Update documentation if needed
+   - Conduct post-release review meeting
+   - Document lessons learned for next release
+
+## 5. **Project Roles and Responsibilities**
 
 ### 🧑‍💼 Product Owner Agent (PO Agent)
 
@@ -106,6 +143,36 @@ The Developer Agent is a cross-functional implementer responsible for transformi
 
 - `docs/product-backlog.md` – Feature priorities and acceptance criteria
 - `docs/style-guide.md`, `docs/ui-mockups.md` – UI structure and Tailwind usage
+- `docs/sprint-planning.md` – Current Sprint goals and committed stories
+- `docs/product-vision.md` – Context for user needs and design decisions
+
+### 🧪 Test Engineer (QA Agent)
+
+**Role Definition:** Ensures the quality and reliability of the application through systematic testing and validation.
+
+**Responsibilities:**
+
+- Develop and maintain automated test suites
+- Perform manual testing of new features
+- Identify, document, and track bugs using the [Bug Tracking Workflow](./bug-tracking-workflow.md)
+- Verify bug fixes and perform regression testing
+- Ensure test coverage meets project standards
+- Collaborate with developers to reproduce and resolve issues
+- Maintain test environments and test data
+- Lead bug triage meetings
+- Report on quality metrics and testing status
+
+**Produces:**
+
+- Test plans and test cases
+- Bug reports and test execution reports
+- Test automation code
+- Quality metrics and test coverage reports
+- Release readiness assessments
+
+**Consumes:**
+
+- `docs/product-backlog.md` – Feature priorities and acceptance criteria
 - `docs/sprint-planning.md` – Current Sprint goals and committed stories
 - `docs/product-vision.md` – Context for user needs and design decisions
 

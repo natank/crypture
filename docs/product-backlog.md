@@ -28,12 +28,103 @@ Stories are grouped by feature category and prioritized based on their importanc
 | 10    | Export Portfolio to CSV/JSON                                      | High     | Extended Features          | ✅ Done   |
 | 11    | Import Portfolio from CSV/JSON                                    | High     | Extended Features          | ✅ Done   |
 | 12    | Add Charting for Price History                                    | Low      | Extended Features          | ✅ Done   |
-| 13    | Enable User Authentication                                        | Low      | Extended Features          | Pending   |
+| 13    | Enable User Authentication                                        | Low      | Extended Features          | 🔄 Pending   |
+| 16    | Edit Asset Quantity                                               | High     | Core Portfolio Management  | 🔄 Pending   |
+| 17    | Improve Asset Addition Feedback & Visibility                     | Medium   | UI and Usability           | 🔄 Pending   |
 | 14    | Add Landing Page with Navigation to Portfolio                     | High     | UI and Usability           | ✅ Done   |
-| 15    | Refactor Sprint 1 Code to Follow SOLID Principles                 | Medium   | Technical Debt             | Pending   |
+| 15    | Refactor Sprint 1 Code to Follow SOLID Principles                 | Medium   | Technical Debt             | 🔄 Pending   |
 | TD-02 | UI Visibility Refactor and Design Token Integration               | Medium   | Technical Debt             | ✅ Done   |
 | TD-03 | Windsurf-Aided Review of UI/UX Design Docs                        | Medium   | Technical Debt             | ✅ Done   |
 | TD-04 | Visual/UX Refactor of `ui-mockups.md` for Design System Alignment | Medium   | Technical Debt             | ✅ Done   |
+
+---
+
+## 🧾 User Story 17: Comprehensive Asset Management Feedback System
+
+**User Story**  
+_As a portfolio manager,_  
+_I want clear, consistent, and accessible feedback for all portfolio management actions_  
+_so I can confidently track and verify my asset changes._
+
+### Asset Addition & Editing
+- [ ] **17.1** Show existing quantity in the asset selector dropdown (e.g., "Bitcoin (BTC) - Owned: 1.5")
+- [ ] **17.2** Display toast notifications for all asset operations:
+  - **Add Success (new)**: "✓ Added 1.5 BTC to your portfolio"
+  - **Add Success (existing)**: "✓ Added 1.5 BTC (Total: 3.0 BTC)"
+  - **Edit Success**: "✓ Updated BTC quantity to 3.0"
+  - **Error (validation)**: "✗ Invalid quantity: Must be a positive number"
+  - **Error (API)**: "✗ Failed to save changes. Please try again."
+
+### Import Operations
+- [ ] **17.3** Show import preview with summary before confirmation
+- [ ] **17.4** Display toast notifications for import results:
+  - **Success**: "✓ Imported 5 assets (2 updated, 3 new)"
+  - **Partial Success**: "✓ Imported 4/5 assets (1 skipped - invalid format)"
+  - **Error**: "✗ Import failed: Invalid file format"
+
+### Export Operations
+- [ ] **17.5** Show success toast after export with:
+  - Number of assets exported
+  - File format and name
+  - Visual confirmation (✓ icon)
+- [ ] **17.6** Show error toast for failed exports
+
+### Visual Feedback
+- [ ] **17.7** Loading states for all async operations
+- [ ] **17.8** Highlight recently added/updated assets
+- [ ] **17.9** Warning for unusual quantity inputs
+
+### Accessibility & Help
+- [ ] **17.10** All notifications accessible via screen readers
+- [ ] **17.11** Tooltips explaining quantity summing behavior
+- [ ] **17.12** Dismissible help banner for first-time users
+- [ ] **17.13** Keyboard navigation support for all interactive elements
+
+**Technical Notes**
+- Reuse existing `react-hot-toast` implementation
+- Add new toast components for different notification types
+- Implement proper ARIA labels and roles
+- Add analytics events for user interactions
+- Update e2e tests for all new feedback mechanisms
+
+**Dependencies**
+- Completion of User Story #16 (Edit Asset Quantity)
+
+**Priority**: High  
+**Story Points**: 8 (Medium-high complexity, multiple components and states)
+
+---
+
+## 🧾 User Story 16: Edit Asset Quantity
+
+**User Story**  
+_As a portfolio manager,_  
+_I want to edit the quantity of an existing asset directly,_  
+_so that I can easily adjust my holdings without deleting and recreating assets._
+
+**Acceptance Criteria**  
+- [ ] 16.1 An edit (pencil) icon appears next to the delete button for each asset
+- [ ] 16.2 Clicking the edit icon enables inline editing of the quantity
+- [ ] 16.3 Quantity input supports decimal values up to 8 decimal places
+- [ ] 16.4 Input validation prevents negative numbers and invalid formats
+- [ ] 16.5 Changes are saved only when explicitly confirmed (Enter key or save button)
+- [ ] 16.6 Original values can be restored by pressing Escape or cancel button
+- [ ] 16.7 The UI provides visual feedback during save operations
+- [ ] 16.8 All quantity changes are recorded in the transaction history
+- [ ] 16.9 The total portfolio value updates immediately after a successful edit
+- [ ] 16.10 The feature is accessible via keyboard navigation (tab, enter, escape)
+- [ ] 16.11 Mobile touch interactions are fully supported
+- [ ] 16.12 Error messages are clear and helpful when validation fails
+
+**Technical Notes**
+- Use existing design system components where possible
+- Maintain existing state management patterns
+- Add unit tests for the edit functionality
+- Include integration tests for the complete edit flow
+- Document any new utility functions or hooks
+
+**Dependencies**
+- None
 
 ---
 
