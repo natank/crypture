@@ -85,6 +85,74 @@ describe("usePortfolio", () => {
 
     expect(result.current.portfolio).toEqual([]);
   });
+
+  it("updates asset quantity", () => {
+    const { result } = renderHook(() => usePortfolioState());
+
+    act(() => {
+      result.current.addAsset(btc);
+      result.current.updateAssetQuantity("bitcoin", 5);
+    });
+
+    expect(result.current.portfolio).toEqual([{ ...btc, quantity: 5 }]);
+  });
+
+  it("does not mutate state when updating quantity", () => {
+    const { result } = renderHook(() => usePortfolioState());
+
+    act(() => {
+      result.current.addAsset(btc);
+      result.current.addAsset(eth);
+    });
+
+    const portfolioBefore = result.current.portfolio;
+
+    act(() => {
+      result.current.updateAssetQuantity("bitcoin", 3);
+    });
+
+    // Ensure immutability
+    expect(result.current.portfolio).not.toBe(portfolioBefore);
+    expect(result.current.portfolio[0].quantity).toBe(3);
+    expect(result.current.portfolio[1]).toEqual(eth); // ETH unchanged
+  });
+
+  it("updates total value when quantity is updated", () => {
+    const prices = { btc: 30000 };
+    const { result } = renderHook(() => usePortfolioState(prices));
+
+    act(() => {
+      result.current.addAsset({
+        coinInfo: {
+          id: "bitcoin",
+          name: "Bitcoin",
+          symbol: "BTC",
+          current_price: 30000,
+        },
+        quantity: 1,
+      });
+    });
+
+    expect(result.current.totalValue).toBe(30000);
+
+    act(() => {
+      result.current.updateAssetQuantity("bitcoin", 2);
+    });
+
+    expect(result.current.totalValue).toBe(60000);
+  });
+
+  it("handles updating non-existent asset gracefully", () => {
+    const { result } = renderHook(() => usePortfolioState());
+
+    act(() => {
+      result.current.addAsset(btc);
+      result.current.updateAssetQuantity("nonexistent", 10);
+    });
+
+    // Portfolio should remain unchanged
+    expect(result.current.portfolio).toEqual([btc]);
+  });
 });
 
 describe("getAssetById", () => {

@@ -1,4 +1,5 @@
 import { fireEvent, render, screen } from "@testing-library/react";
+import { MemoryRouter } from "react-router-dom";
 import PortfolioPage from "@pages/PortfolioPage";
 import { describe, it, expect } from "vitest";
 
@@ -120,14 +121,22 @@ describe("PortfolioPage", () => {
   });
 
   it("renders without crashing", () => {
-    render(<PortfolioPage />);
+    render(
+      <MemoryRouter>
+        <PortfolioPage />
+      </MemoryRouter>
+    );
     expect(screen.getByTestId("total-value")).toHaveTextContent(
       /^💰\s*Total Portfolio Value:\s*\$\d{1,3}(,\d{3})*$/
     );
   });
 
   it("shows the Add, Export, and Import buttons", () => {
-    render(<PortfolioPage />);
+    render(
+      <MemoryRouter>
+        <PortfolioPage />
+      </MemoryRouter>
+    );
     expect(
       screen.getByRole("button", { name: /add asset/i })
     ).toBeInTheDocument();
@@ -136,7 +145,11 @@ describe("PortfolioPage", () => {
   });
 
   it("displays the filter input and sort dropdown", () => {
-    render(<PortfolioPage />);
+    render(
+      <MemoryRouter>
+        <PortfolioPage />
+      </MemoryRouter>
+    );
     expect(screen.getByPlaceholderText(/search assets/i)).toBeInTheDocument();
     expect(screen.getByLabelText(/sort/i)).toBeInTheDocument();
   });
@@ -168,7 +181,11 @@ describe("PortfolioPage", () => {
     }));
 
     const { default: PortfolioPage } = await import("@pages/PortfolioPage");
-    const { getByText } = render(<PortfolioPage />);
+    const { getByText } = render(
+      <MemoryRouter>
+        <PortfolioPage />
+      </MemoryRouter>
+    );
 
     // Asset still renders
     expect(getByText(/btc/i)).toBeInTheDocument();
@@ -190,7 +207,11 @@ describe("PortfolioPage", () => {
   });
 
   it("renders DeleteConfirmationModal when delete is requested", async () => {
-    const { getByLabelText, getByTestId } = render(<PortfolioPage />);
+    const { getByLabelText, getByTestId } = render(
+      <MemoryRouter>
+        <PortfolioPage />
+      </MemoryRouter>
+    );
 
     // Simulate delete click
     const deleteButton = getByLabelText("Delete BTC");
@@ -200,7 +221,11 @@ describe("PortfolioPage", () => {
     expect(getByTestId("mock-delete-modal")).toBeInTheDocument();
   });
   it("provides correct assetName to DeleteConfirmationModal", async () => {
-    const { getByLabelText, getByTestId } = render(<PortfolioPage />);
+    const { getByLabelText, getByTestId } = render(
+      <MemoryRouter>
+        <PortfolioPage />
+      </MemoryRouter>
+    );
 
     // Trigger deletion of Bitcoin (BTC)
     fireEvent.click(getByLabelText("Delete BTC"));
@@ -245,7 +270,11 @@ describe("PortfolioPage", () => {
     const { render } = await import("@testing-library/react");
     const { default: PortfolioPage } = await import("@pages/PortfolioPage");
 
-    render(<PortfolioPage />);
+    render(
+      <MemoryRouter>
+        <PortfolioPage />
+      </MemoryRouter>
+    );
 
     expect(mockPortfolioHeader).toHaveBeenCalled();
 
@@ -270,7 +299,11 @@ describe("PortfolioPage", () => {
 
 describe("PortfolioPage delete flow", () => {
   it("calls removeAsset and cancelDeleteAsset when confirm is clicked", () => {
-    const { getByTestId } = render(<PortfolioPage />);
+    const { getByTestId } = render(
+      <MemoryRouter>
+        <PortfolioPage />
+      </MemoryRouter>
+    );
 
     const confirmButton = getByTestId("confirm-delete");
     fireEvent.click(confirmButton);
@@ -316,7 +349,11 @@ describe("PortfolioPage (AddAssetModal rendering)", () => {
 
   it("renders AddAssetModal when shouldShowAddAssetModal is true", async () => {
     const { default: PortfolioPage } = await import("@pages/PortfolioPage");
-    const { getByTestId } = render(<PortfolioPage />);
+    const { getByTestId } = render(
+      <MemoryRouter>
+        <PortfolioPage />
+      </MemoryRouter>
+    );
     expect(getByTestId("mock-add-asset-modal")).toBeInTheDocument();
   });
 });

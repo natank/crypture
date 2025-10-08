@@ -4,7 +4,7 @@ import { AxeBuilder } from "@axe-core/playwright";
 test("Portfolio page has no contrast accessibility violations", async ({
   page,
 }) => {
-  await page.goto("/");
+  await page.goto("/portfolio");
 
   const results = await new AxeBuilder({ page }).include("body").analyze();
 

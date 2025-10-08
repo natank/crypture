@@ -1,4 +1,5 @@
 import { useMemo } from "react";
+import { Toaster } from "react-hot-toast";
 
 import { AddAssetModal } from "@components/AddAssetModal";
 import AssetList from "@components/AssetList";
@@ -21,16 +22,10 @@ import { CoinInfo } from "@services/coinService";
 import { usePortfolioImportExport } from "@hooks/usePortfolioImportExport";
 
 export default function PortfolioPage() {
-  // 1. Fetch + poll coin data
   const { coins: allCoins, loading, error, lastUpdatedAt, refreshing, retry } = useCoinList();
-
-  // 2. Derive price map for portfolio valuation
   const priceMap = usePriceMap(allCoins);
-
-  // 3. Filter coins based on search (for modal or asset selector)
   const { search, setSearch, filteredCoins } = useCoinSearch(allCoins);
 
-  // 4. Portfolio logic and total value (from context or local hook)
   const coinMap = useMemo(() => {
     const map: Record<string, CoinInfo> = {};
     for (const coin of allCoins) {
@@ -39,10 +34,8 @@ export default function PortfolioPage() {
     return map;
   }, [allCoins]);
 
-  const { portfolio, addAsset, removeAsset, getAssetById, totalValue, resetPortfolio } =
+  const { portfolio, addAsset, removeAsset, updateAssetQuantity, getAssetById, totalValue, resetPortfolio } =
     usePortfolioState(priceMap, coinMap, loading);
-
-  // 5. UI state (modal control)
   const {
     shouldShowAddAssetModal,
     shouldShowDeleteConfirmationModal,
@@ -106,6 +99,7 @@ export default function PortfolioPage() {
 
   return (
     <>
+      <Toaster position="top-right" />
       <PortfolioHeader
         totalValue={totalValue.toString()}
         lastUpdatedAt={lastUpdatedAt}
@@ -165,6 +159,7 @@ export default function PortfolioPage() {
           <AssetList
             assets={sortedFilteredAssets}
             onDelete={handleDeleteAsset}
+            onUpdateQuantity={updateAssetQuantity}
             onAddAsset={openAddAssetModal}
             addButtonRef={addButtonRef}
             priceMap={priceMap}

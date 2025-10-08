@@ -30,6 +30,9 @@ export class PortfolioPage {
   // Chart
   readonly chartContainerBySymbol: (symbol: string) => Locator;
   readonly timeRangeButtonByDays: (symbol: string, days: number) => Locator;
+  readonly chartBySymbol: (symbol: string) => Locator;
+  readonly chartLegendBySymbol: (symbol: string) => Locator;
+  readonly chartLegendItemBySymbolAndLabel: (symbol: string, label: string) => Locator;
 
   constructor(page: Page) {
     this.page = page;
@@ -82,7 +85,7 @@ export class PortfolioPage {
   // --------- Page Actions ---------
 
   async goto() {
-    await this.page.goto("/");
+    await this.page.goto("/portfolio");
   }
 
   async openAddAssetModal() {

@@ -34,6 +34,8 @@ extend: {
 | **Brand Primary** | `#5a31f4` | `bg-brand-primary`, `text-brand-primary` |
 | **Brand Accent**  | `#00bfa5` | `bg-brand-accent`, `text-brand-accent`   |
 | Error             | `#dc2626` | `bg-red-600`, `text-red-600`             |
+| Success           | `#16a34a` | `bg-green-600`, `text-green-600`         |
+| Warning           | `#f59e0b` | `bg-amber-500`, `text-amber-500`         |
 | Background        | `#f9fafb` | `bg-gray-50`                             |
 | Foreground        | `#111827` | `text-gray-900`                          |
 | Subtle Text       | `#6b7280` | `text-gray-500`                          |
@@ -206,6 +208,46 @@ These high-level layout and feedback components apply Crypture’s brand identit
 ```
 
 ### 3.4 Spinner & Error Banner
+
+### 3.5 Notification / Toast
+
+**Purpose**: Provide brief, non-blocking feedback on user actions.
+
+```html
+<!-- Success Toast -->
+<div class="max-w-sm w-full bg-white shadow-lg rounded-lg pointer-events-auto ring-1 ring-black ring-opacity-5 overflow-hidden">
+  <div class="p-4">
+    <div class="flex items-start">
+      <div class="flex-shrink-0">
+        <svg class="h-6 w-6 text-green-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+        </svg>
+      </div>
+      <div class="ml-3 w-0 flex-1 pt-0.5">
+        <p class="text-sm font-medium text-gray-900">Successfully added!</p>
+        <p class="mt-1 text-sm text-gray-500">Added 1.5 BTC to your portfolio.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Error Toast -->
+<div class="max-w-sm w-full bg-white shadow-lg rounded-lg pointer-events-auto ring-1 ring-black ring-opacity-5 overflow-hidden">
+  <div class="p-4">
+    <div class="flex items-start">
+      <div class="flex-shrink-0">
+        <svg class="h-6 w-6 text-red-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
+        </svg>
+      </div>
+      <div class="ml-3 w-0 flex-1 pt-0.5">
+        <p class="text-sm font-medium text-gray-900">Action failed!</p>
+        <p class="mt-1 text-sm text-gray-500">Could not save your changes.</p>
+      </div>
+    </div>
+  </div>
+</div>
+```
 
 ```html
 <!-- Spinner -->

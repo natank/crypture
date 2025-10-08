@@ -34,3 +34,22 @@ export async function mockCoinGeckoMarkets(
     }
   );
 }
+
+export async function mockCoinGeckoChartData(page: Page) {
+  await page.route(
+    "**/api.coingecko.com/api/v3/coins/*/market_chart**",
+    async (route) => {
+      // Mock chart data with 30 days of price history
+      const prices = Array.from({ length: 30 }, (_, i) => [
+        Date.now() - (29 - i) * 24 * 60 * 60 * 1000,
+        30000 + Math.random() * 5000
+      ]);
+      
+      route.fulfill({
+        status: 200,
+        contentType: "application/json",
+        body: JSON.stringify({ prices }),
+      });
+    }
+  );
+}

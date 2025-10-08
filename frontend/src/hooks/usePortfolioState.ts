@@ -79,6 +79,16 @@ export function usePortfolioState(
     );
   }, []);
 
+  const updateAssetQuantity = useCallback((assetId: string, newQuantity: number) => {
+    setPortfolio((prev) =>
+      prev.map((asset) =>
+        asset.coinInfo.id === assetId
+          ? { ...asset, quantity: newQuantity }
+          : asset
+      )
+    );
+  }, []);
+
   const resetPortfolio = useCallback(() => {
     setPortfolio([]);
   }, []);
@@ -88,6 +98,7 @@ export function usePortfolioState(
     getAssetById,
     addAsset,
     removeAsset,
+    updateAssetQuantity,
     resetPortfolio,
     totalValue,
   };

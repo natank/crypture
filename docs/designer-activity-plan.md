@@ -141,6 +141,43 @@ This document outlines the step-by-step plan for the Designer Agent to fulfill t
 
 ---
 
+### **Step 7: Design for User Story #17 - Comprehensive Feedback System**
+
+- **Goal**: Design all required UX components for US #17 to ensure users receive clear, consistent, and accessible feedback for all portfolio management actions.
+- **Method**: Create high-fidelity mockups for all new UI states and components, and update the style guide accordingly.
+
+#### 🎨 Design Deliverables for US #17
+
+1.  **Toast Notifications (`ui-mockups.md`)**
+    *   **Success**: For adding, updating, importing, and exporting assets.
+        *   *Visuals*: Green background, checkmark icon (✓).
+        *   *Content*: Clear, concise message (e.g., "✓ Added 1.5 BTC to your portfolio").
+    *   **Error**: For validation failures, API errors, or failed operations.
+        *   *Visuals*: Red background, cross icon (✗).
+        *   *Content*: Actionable error message (e.g., "✗ Invalid quantity: Must be a positive number").
+    *   **Info/Partial Success**: For imports with skipped items.
+        *   *Visuals*: Blue or yellow background, info icon (ℹ️).
+        *   *Content*: Summary of the operation (e.g., "✓ Imported 4/5 assets (1 skipped)").
+
+2.  **Import/Export Feedback (`ui-mockups.md`)**
+    *   **Import Preview Modal**: A modal showing a summary of assets to be imported before user confirmation.
+    *   **Export Confirmation**: A simple success toast confirming the file download.
+
+3.  **Inline & Visual Feedback (`ui-mockups.md`)**
+    *   **Asset Selector Enhancement**: Mockup showing the owned quantity directly in the asset dropdown (e.g., "Bitcoin (BTC) - Owned: 1.5").
+    *   **Recently Updated Highlight**: A subtle visual treatment (e.g., temporary background flash or highlight) for rows that have been recently added or updated.
+    *   **Unusual Quantity Warning**: A non-blocking tooltip or inline message for unusually large quantity inputs.
+
+4.  **Style Guide Updates (`style-guide.md`)**
+    *   **Notification Component**: Define color variables, typography, icons, and spacing for toast notifications.
+    *   **State Colors**: Add specific colors for success, error, warning, and info states to the palette.
+
+5.  **Accessibility & Help Components (`ui-mockups.md`)**
+    *   **Tooltips**: Design for tooltips explaining the quantity summing behavior.
+    *   **Help Banner**: A dismissible banner for first-time users explaining a key feature.
+
+---
+
 ## 📂 Document Relationships
 
 **Produces:**
