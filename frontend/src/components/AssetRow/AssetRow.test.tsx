@@ -14,7 +14,7 @@ const mockAsset: PortfolioAsset = {
 
 describe("AssetRow", () => {
   it("renders asset name and quantity", () => {
-    render(<AssetRow asset={mockAsset} onDelete={() => {}} />);
+    render(<AssetRow asset={mockAsset} onUpdateQuantity={() => {}} onDelete={() => {}} />);
     expect(
       screen.getByText((_, element) => {
         const text = element?.textContent?.toLowerCase() ?? '';
@@ -28,7 +28,7 @@ describe("AssetRow", () => {
 
   it("fires delete handler on click", () => {
     const handleDelete = vi.fn();
-    render(<AssetRow asset={mockAsset} onDelete={handleDelete} />);
+    render(<AssetRow asset={mockAsset} onUpdateQuantity={() => {}} onDelete={handleDelete} />);
     fireEvent.click(screen.getByRole("button", { name: /delete btc/i }));
     expect(handleDelete).toHaveBeenCalledWith("btc");
   });
@@ -36,6 +36,7 @@ describe("AssetRow", () => {
   it("renders price and value when provided", () => {
     render(
       <AssetRow
+        onUpdateQuantity={() => {}}
         asset={mockAsset}
         price={30000}
         value={15000}
@@ -48,7 +49,7 @@ describe("AssetRow", () => {
   });
 
   it("renders fallback and inline error badge when price is missing", () => {
-    render(<AssetRow asset={mockAsset} onDelete={() => {}} />);
+    render(<AssetRow asset={mockAsset} onUpdateQuantity={() => {}} onDelete={() => {}} />);
     expect(screen.getByText("Price: —")).toBeInTheDocument();
     expect(screen.getByText("Total: —")).toBeInTheDocument();
     expect(screen.getAllByText(/price fetch failed/i)).toHaveLength(2); // badge + label

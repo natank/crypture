@@ -510,6 +510,125 @@ Display a friendly, branded message and CTA when the portfolio is empty.
 | CTA Button | `bg-white`, `text-brand-primary`, `hover:bg-gray-100` |
 | Icon       | Emoji (`🪙`) or future mascot                         |
 
+--- 
+
+## 📄 9. Feedback Components (User Story #17)
+
+This section details the UI mockups for the comprehensive asset feedback system.
+
+### 9.1 Toast Notifications
+
+**Context**: Toasts appear in the top-right corner of the viewport to provide non-blocking feedback.
+
+**a. Success Toast**
+
+*Appears after a successful action, like adding or updating an asset.*
+
+```html
+<div class="max-w-sm w-full bg-white dark:bg-gray-800 shadow-lg rounded-lg pointer-events-auto ring-1 ring-black ring-opacity-5 overflow-hidden">
+  <div class="p-4">
+    <div class="flex items-start">
+      <div class="flex-shrink-0">
+        <!-- CheckCircleIcon -->
+        <svg class="h-6 w-6 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+        </svg>
+      </div>
+      <div class="ml-3 w-0 flex-1 pt-0.5">
+        <p class="text-sm font-medium text-gray-900 dark:text-gray-100">Asset Added Successfully</p>
+        <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">Bitcoin (BTC) was added to your portfolio.</p>
+      </div>
+    </div>
+  </div>
+</div>
+```
+
+**b. Error Toast**
+
+*Appears when an action fails completely.*
+
+```html
+<div class="max-w-sm w-full bg-white dark:bg-gray-800 shadow-lg rounded-lg pointer-events-auto ring-1 ring-black ring-opacity-5 overflow-hidden">
+  <div class="p-4">
+    <div class="flex items-start">
+      <div class="flex-shrink-0">
+        <!-- XCircleIcon -->
+        <svg class="h-6 w-6 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
+        </svg>
+      </div>
+      <div class="ml-3 w-0 flex-1 pt-0.5">
+        <p class="text-sm font-medium text-gray-900 dark:text-gray-100">Error Saving Asset</p>
+        <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">Could not connect to the server. Please try again.</p>
+      </div>
+    </div>
+  </div>
+</div>
+```
+
+**c. Warning/Info Toast**
+
+*For partial successes or important information, like during CSV import.*
+
+```html
+<div class="max-w-sm w-full bg-white dark:bg-gray-800 shadow-lg rounded-lg pointer-events-auto ring-1 ring-black ring-opacity-5 overflow-hidden">
+  <div class="p-4">
+    <div class="flex items-start">
+      <div class="flex-shrink-0">
+        <!-- InformationCircleIcon -->
+        <svg class="h-6 w-6 text-amber-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+        </svg>
+      </div>
+      <div class="ml-3 w-0 flex-1 pt-0.5">
+        <p class="text-sm font-medium text-gray-900 dark:text-gray-100">Import Partially Complete</p>
+        <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">Imported 8 of 10 assets. 2 had invalid data.</p>
+      </div>
+    </div>
+  </div>
+</div>
+```
+
+### 9.2 Import Preview Modal
+
+**Context**: Shown after a user uploads a CSV file, allowing them to confirm the data before it's added to their portfolio.
+
+```html
+<div class="fixed inset-0 bg-gray-500 bg-opacity-75 flex items-center justify-center">
+  <div class="bg-white dark:bg-gray-800 rounded-lg shadow-xl max-w-2xl w-full">
+    <div class="p-6">
+      <h3 class="text-lg font-medium text-gray-900 dark:text-gray-100">Confirm Import</h3>
+      <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">Review the assets found in your file. Uncheck any you wish to skip.</p>
+    </div>
+    <div class="border-t border-gray-200 dark:border-gray-700 px-6 py-4" style="max-height: 400px; overflow-y: auto;">
+      <!-- Table of assets to import -->
+    </div>
+    <div class="px-6 py-4 bg-gray-50 dark:bg-gray-900 flex justify-end space-x-3">
+      <button class="px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-200 bg-white dark:bg-gray-700 border rounded-md">Cancel</button>
+      <button class="px-4 py-2 text-sm font-medium text-white bg-brand-primary rounded-md">Confirm & Import 8 Assets</button>
+    </div>
+  </div>
+</div>
+```
+
+### 9.3 Inline Visual Feedback
+
+**Context**: A subtle highlight is applied to an asset row immediately after it has been added or updated, drawing the user's attention to the change.
+
+*The highlight fades out after a few seconds.*
+
+```html
+<!-- Standard Asset Row -->
+<div class="flex items-center p-4 border-b border-gray-200 dark:border-gray-700">
+  <!-- ... asset details ... -->
+</div>
+
+<!-- Newly Added/Updated Asset Row with Highlight -->
+<div class="flex items-center p-4 border-b border-gray-200 dark:border-gray-700 bg-teal-50 dark:bg-teal-900/20 transition-colors duration-1000 ease-out">
+  <!-- ... asset details ... -->
+</div>
+```
+
 ---
 
 ### ✅ Footer Implementation

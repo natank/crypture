@@ -29,7 +29,7 @@ Stories are grouped by feature category and prioritized based on their importanc
 | 11    | Import Portfolio from CSV/JSON                                    | High     | Extended Features          | ✅ Done   |
 | 12    | Add Charting for Price History                                    | Low      | Extended Features          | ✅ Done   |
 | 13    | Enable User Authentication                                        | Low      | Extended Features          | 🔄 Pending   |
-| 16    | Edit Asset Quantity                                               | High     | Core Portfolio Management  | 🔄 Pending   |
+| 16    | Edit Asset Quantity                                               | High     | Core Portfolio Management  | ✅ Done   |
 | 17    | Improve Asset Addition Feedback & Visibility                     | Medium   | UI and Usability           | 🔄 Pending   |
 | 14    | Add Landing Page with Navigation to Portfolio                     | High     | UI and Usability           | ✅ Done   |
 | 15    | Refactor Sprint 1 Code to Follow SOLID Principles                 | Medium   | Technical Debt             | 🔄 Pending   |
@@ -97,12 +97,12 @@ _so I can confidently track and verify my asset changes._
 
 ## 🧾 User Story 16: Edit Asset Quantity
 
-**User Story**  
+### **User Story**  
 _As a portfolio manager,_  
 _I want to edit the quantity of an existing asset directly,_  
 _so that I can easily adjust my holdings without deleting and recreating assets._
 
-**Acceptance Criteria**  
+### **Acceptance Criteria**  
 - [ ] 16.1 An edit (pencil) icon appears next to the delete button for each asset
 - [ ] 16.2 Clicking the edit icon enables inline editing of the quantity
 - [ ] 16.3 Quantity input supports decimal values up to 8 decimal places
@@ -123,10 +123,8 @@ _so that I can easily adjust my holdings without deleting and recreating assets.
 - Include integration tests for the complete edit flow
 - Document any new utility functions or hooks
 
-**Dependencies**
-- None
-
 ---
+
 
 ## 🧾 User Story 14: Add Landing Page with Navigation to Portfolio
 

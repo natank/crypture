@@ -5,6 +5,7 @@ import { PlusIcon } from "lucide-react";
 type AssetListProps = {
   assets: PortfolioState;
   onDelete: (id: string) => void;
+  onUpdateQuantity: (id: string, newQuantity: number) => void;
   onAddAsset: () => void;
   addButtonRef: React.RefObject<HTMLButtonElement | null>;
   priceMap: Record<string, number>;
@@ -14,6 +15,7 @@ type AssetListProps = {
 export default function AssetList({
   assets,
   onDelete,
+  onUpdateQuantity,
   onAddAsset,
   addButtonRef,
   priceMap,
@@ -65,6 +67,7 @@ export default function AssetList({
                 price={price}
                 value={value}
                 onDelete={onDelete}
+                onUpdateQuantity={onUpdateQuantity}
               />
             );
           })}
