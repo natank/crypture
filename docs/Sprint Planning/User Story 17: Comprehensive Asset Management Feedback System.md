@@ -164,19 +164,20 @@ export function useAssetHighlight(assetId: string, triggerCount: number) {
 
 ## 2. Implementation Plan
 
-### Phase 1: Notification Infrastructure (Shippable)
-- [ ] Create `frontend/src/hooks/useNotifications.ts`
+### Phase 1: Notification Infrastructure (Shippable) ✅ **COMPLETE**
+- [x] Create `frontend/src/hooks/useNotifications.tsx`
   - Wrap `react-hot-toast` with consistent API
   - Default durations: success 4s, error 8s, warning 6s
   - Return `{ success, error, warning, info }` methods
-- [ ] Create custom toast components in `frontend/src/components/Toast/`
+- [x] Create custom toast components in `frontend/src/components/Toast/`
   - `SuccessToast.tsx`: Green background, checkmark icon
   - `ErrorToast.tsx`: Red background, X icon
   - `WarningToast.tsx`: Amber background, warning icon
-- [ ] Add ARIA labels to toast components
+- [x] Add ARIA labels to toast components
   - `role="status"` for success/info
   - `role="alert"` for errors/warnings
   - `aria-live="polite"` for non-critical, `"assertive"` for errors
+- [x] Unit tests created and passing (30 tests: 12 hook + 18 components)
 
 ### Phase 2: Add Asset Notifications (Shippable)
 - [ ] Update `useAddAssetForm.ts`
