@@ -179,6 +179,7 @@ export default function PortfolioPage() {
             search={search}
             setSearch={setSearch}
             error={error}
+            portfolio={portfolio}
           />
         )}
 

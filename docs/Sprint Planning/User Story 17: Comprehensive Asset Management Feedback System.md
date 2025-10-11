@@ -179,22 +179,26 @@ export function useAssetHighlight(assetId: string, triggerCount: number) {
   - `aria-live="polite"` for non-critical, `"assertive"` for errors
 - [x] Unit tests created and passing (30 tests: 12 hook + 18 components)
 
-### Phase 2: Add Asset Notifications (Shippable)
-- [ ] Update `useAddAssetForm.ts`
+### Phase 2: Add Asset Notifications (Shippable) ✅ **COMPLETE**
+- [x] Update `useAddAssetForm.ts`
   - On success: check if asset existed → format message accordingly
   - Call `notifications.success()` with appropriate message
   - On error: call `notifications.error()` with validation message
-- [ ] Update `PortfolioPage.tsx`
+- [x] Update `PortfolioPage.tsx`
   - Pass `portfolio` to `AddAssetModal` for owned quantity check
-- [ ] Update `AssetSelector.tsx`
+- [x] Update `AssetSelector.tsx`
   - Accept `portfolio?: PortfolioState` prop
   - Map coins → show " - Owned: X" suffix if asset in portfolio
   - Keep existing behavior if prop not provided
-- [ ] **E2E Tests**: Create `e2e/specs/features/notifications.spec.ts`
-  - Test: Add new asset shows success notification with correct message
-  - Test: Add to existing asset shows "Total: X" message
-  - Test: Validation error shows error toast
-  - Test: Asset row highlights after addition and fades after 3s
+  - Performance: useMemo for O(1) owned quantity lookup
+- [x] Updated existing unit tests (mocked useNotifications)
+- [x] **E2E Tests**: Create `e2e/specs/features/notifications.spec.ts`
+  - Test: Add new asset shows success notification with correct message ✅
+  - Test: Add to existing asset shows "Total: X" message ✅
+  - Test: Validation error shows error toast ✅
+  - Test: Shows owned quantity in asset selector ✅
+  - Test: Edge cases (negative, zero, modal behavior) ✅
+  - Note: Asset highlight test deferred to Phase 5 (Visual Feedback)
 
 ### Phase 3: Delete Asset Notifications (Shippable)
 - [ ] Update `PortfolioPage.tsx` delete handler

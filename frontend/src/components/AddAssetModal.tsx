@@ -2,7 +2,7 @@ import { useEffect, useRef } from "react";
 import { AssetSelector } from "@components/AssetSelector";
 import { FocusTrap } from "focus-trap-react";
 import { useAddAssetForm } from "@hooks/useAddAssetForm";
-import { PortfolioAsset } from "@hooks/usePortfolioState";
+import { PortfolioAsset, PortfolioState } from "@hooks/usePortfolioState";
 import { CoinInfo } from "@services/coinService";
 import { PlusIcon } from "lucide-react";
 
@@ -13,6 +13,7 @@ type Props = {
   search: string;
   setSearch: React.Dispatch<React.SetStateAction<string>>;
   error?: string | null;
+  portfolio?: PortfolioState;
 };
 
 export function AddAssetModal({
@@ -22,6 +23,7 @@ export function AddAssetModal({
   search,
   setSearch,
   error,
+  portfolio,
 }: Props) {
   const {
     setSelectedCoin,
@@ -30,7 +32,7 @@ export function AddAssetModal({
     loading,
     error: formError,
     handleSubmit,
-  } = useAddAssetForm(addAsset, onClose);
+  } = useAddAssetForm(addAsset, onClose, portfolio);
 
   const initialFocusRef = useRef<HTMLInputElement | null>(null);
 
@@ -91,6 +93,7 @@ export function AddAssetModal({
               disabled={loading}
               error={error}
               describedById="asset-select-help"
+              portfolio={portfolio}
             />
             <p id="asset-select-help" className="text-xs text-gray-500">
               Choose a crypto asset from the list. Use the filter below to narrow results.

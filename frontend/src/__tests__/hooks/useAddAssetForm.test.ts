@@ -4,6 +4,16 @@ import { useAddAssetForm } from "@hooks/useAddAssetForm";
 import type { CoinInfo } from "@services/coinService";
 import { PortfolioAsset } from "@hooks/usePortfolioState";
 
+// Mock useNotifications
+vi.mock("@hooks/useNotifications", () => ({
+  useNotifications: () => ({
+    success: vi.fn(),
+    error: vi.fn(),
+    warning: vi.fn(),
+    info: vi.fn(),
+  }),
+}));
+
 // 🧪 Mocks
 let mockOnSubmit: (asset: PortfolioAsset) => void;
 let mockOnClose: () => void;
@@ -119,7 +129,7 @@ describe("useAddAssetForm", () => {
 
     expect(mockFailingSubmit).toHaveBeenCalled();
     expect(mockOnClose).not.toHaveBeenCalled();
-    expect(result.current.error).toMatch(/failed to add asset/i);
+    expect(result.current.error).toBe("Simulated failure");
     expect(result.current.loading).toBe(false);
   });
 });
