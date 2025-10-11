@@ -62,8 +62,8 @@ This process ensures that implementation aligns tightly with user needs, design 
 
 > **Currently focused story:** To be groomed
 
----
-
+## 🧾 User Story 17: Comprehensive Asset Management Feedback System
+see : "User Story 17: Comprehensive Asset Management Feedback System.md" doc.
 
 # 📦 Archived Sprints
 
@@ -1311,7 +1311,7 @@ _so that the interface is clean, readable, and easy to adapt in the future._
 
 ---
 
-## 🧾 User Story 16: Edit Asset Quantity
+## 🟢 User Story 16: Edit Asset Quantity
 
 **User Story**  
 _As a portfolio manager,_  
