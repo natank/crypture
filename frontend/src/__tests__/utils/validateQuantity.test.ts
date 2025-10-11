@@ -71,7 +71,10 @@ describe('validateQuantity', () => {
     });
 
     it('should handle very large numbers', () => {
-      expect(validateQuantity('999999999')).toEqual({ valid: true });
+      const result = validateQuantity('999999999');
+      expect(result.valid).toBe(true);
+      // This is > 1M so it will have a warning (Phase 6)
+      expect(result.warning).toBeDefined();
     });
 
     it('should reject negative zero', () => {
@@ -87,6 +90,65 @@ describe('validateQuantity', () => {
     it('should handle scientific notation (parsed by parseFloat)', () => {
       // parseFloat handles scientific notation
       expect(validateQuantity('1e-7')).toEqual({ valid: true });
+    });
+  });
+
+  describe('unusual value warnings (Phase 6)', () => {
+    it('should warn for very large quantities (> 1,000,000)', () => {
+      const result = validateQuantity('1500000');
+      expect(result.valid).toBe(true);
+      expect(result.error).toBeUndefined();
+      expect(result.warning).toContain('Large quantity');
+      expect(result.warning).toContain('1,500,000');
+    });
+
+    it('should warn for dust amounts (< 0.00000001)', () => {
+      const result = validateQuantity('0.00000001');
+      // This is exactly at threshold, so no warning
+      expect(result.valid).toBe(true);
+      expect(result.warning).toBeUndefined();
+      
+      // Test with a value below threshold (but within 8 decimals)
+      const dustResult = validateQuantity('0.00000000');
+      // This is zero, so it should error
+      expect(dustResult.valid).toBe(false);
+      
+      // Use scientific notation for very small valid number
+      const tinyResult = validateQuantity('1e-9');
+      expect(tinyResult.valid).toBe(true);
+      expect(tinyResult.warning).toContain('Very small amount');
+      expect(tinyResult.warning).toContain('dust');
+    });
+
+    it('should not warn for normal quantities', () => {
+      const result = validateQuantity('100');
+      expect(result.valid).toBe(true);
+      expect(result.error).toBeUndefined();
+      expect(result.warning).toBeUndefined();
+    });
+
+    it('should warn at exactly 1,000,001', () => {
+      const result = validateQuantity('1000001');
+      expect(result.valid).toBe(true);
+      expect(result.warning).toBeDefined();
+    });
+
+    it('should not warn at exactly 1,000,000', () => {
+      const result = validateQuantity('1000000');
+      expect(result.valid).toBe(true);
+      expect(result.warning).toBeUndefined();
+    });
+
+    it('should not warn at 0.00000001 (exactly at threshold)', () => {
+      const result = validateQuantity('0.00000001');
+      expect(result.valid).toBe(true);
+      expect(result.warning).toBeUndefined();
+    });
+
+    it('should not warn above dust threshold', () => {
+      const result = validateQuantity('0.0000001');
+      expect(result.valid).toBe(true);
+      expect(result.warning).toBeUndefined();
     });
   });
 });

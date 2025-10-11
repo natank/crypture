@@ -26,12 +26,16 @@ export function AddAssetModal({
   portfolio,
 }: Props) {
   const {
+    selectedCoin,
     setSelectedCoin,
     quantity,
     setQuantity,
     loading,
     error: formError,
     handleSubmit,
+    showLargeQuantityWarning,
+    handleConfirmLargeQuantity,
+    handleCancelLargeQuantity,
   } = useAddAssetForm(addAsset, onClose, portfolio);
 
   const initialFocusRef = useRef<HTMLInputElement | null>(null);
@@ -165,6 +169,42 @@ export function AddAssetModal({
           </div>
         </div>
       </FocusTrap>
+
+      {/* Large Quantity Confirmation Dialog (Phase 6) */}
+      {showLargeQuantityWarning && (
+        <div 
+          className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-[60]"
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="large-quantity-warning-title"
+        >
+          <div className="bg-white rounded-lg shadow-xl p-6 max-w-md mx-4">
+            <h3 id="large-quantity-warning-title" className="text-lg font-bold text-gray-900 mb-4">
+              ⚠️ Confirm Large Quantity
+            </h3>
+            <p className="text-gray-700 mb-2">
+              You entered <strong>{parseFloat(quantity).toLocaleString()}</strong> {selectedCoin?.symbol.toUpperCase()}.
+            </p>
+            <p className="text-gray-600 mb-6">
+              This is an unusually large quantity. Please verify this is correct before proceeding.
+            </p>
+            <div className="flex gap-3 justify-end">
+              <button
+                onClick={handleCancelLargeQuantity}
+                className="px-4 py-2 rounded-md border border-gray-300 text-gray-700 hover:bg-gray-50 transition focus-ring"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={handleConfirmLargeQuantity}
+                className="px-4 py-2 rounded-md bg-brand-primary text-white hover:bg-purple-700 transition focus-ring"
+              >
+                Confirm
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

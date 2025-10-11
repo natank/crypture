@@ -34,6 +34,8 @@ export default function AssetRow({
   const [draftQuantity, setDraftQuantity] = useState(asset.quantity.toString());
   const [validationError, setValidationError] = useState<string | undefined>();
   const [isSaving, setIsSaving] = useState(false);
+  const [showLargeQuantityConfirm, setShowLargeQuantityConfirm] = useState(false);
+  const [pendingQuantity, setPendingQuantity] = useState<number | null>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const originalQuantity = useRef(asset.quantity);
 
@@ -81,6 +83,27 @@ export default function AssetRow({
       return;
     }
 
+    // Check for large quantity - require confirmation (Phase 6)
+    const LARGE_QUANTITY_THRESHOLD = 1000000;
+    if (newQuantity > LARGE_QUANTITY_THRESHOLD) {
+      setPendingQuantity(newQuantity);
+      setShowLargeQuantityConfirm(true);
+      return;
+    }
+
+    // Show non-blocking warning for dust amounts only
+    if (validation.warning && newQuantity < 0.00000001) {
+      toast(validation.warning, {
+        icon: '⚠️',
+        duration: 5000,
+      });
+    }
+
+    // Proceed with save
+    await performSave(newQuantity);
+  };
+
+  const performSave = async (newQuantity: number) => {
     setIsSaving(true);
     try {
       onUpdateQuantity(asset.coinInfo.id, newQuantity);
@@ -95,6 +118,20 @@ export default function AssetRow({
     } finally {
       setIsSaving(false);
     }
+  };
+
+  const handleConfirmLargeQuantity = async () => {
+    setShowLargeQuantityConfirm(false);
+    if (pendingQuantity !== null) {
+      await performSave(pendingQuantity);
+      setPendingQuantity(null);
+    }
+  };
+
+  const handleCancelLargeQuantity = () => {
+    setShowLargeQuantityConfirm(false);
+    setPendingQuantity(null);
+    // Keep in edit mode so user can fix the value
   };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -260,6 +297,42 @@ export default function AssetRow({
       {isChartVisible && (
         <div className="p-4 bg-surface-soft" data-testid={`asset-chart-container-${asset.coinInfo.symbol}`}>
           <AssetChart {...chartProps} />
+        </div>
+      )}
+
+      {/* Large Quantity Confirmation Dialog (Phase 6) */}
+      {showLargeQuantityConfirm && pendingQuantity !== null && (
+        <div 
+          className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="large-quantity-title"
+        >
+          <div className="bg-white rounded-lg shadow-xl p-6 max-w-md mx-4">
+            <h3 id="large-quantity-title" className="text-lg font-bold text-gray-900 mb-4">
+              ⚠️ Confirm Large Quantity
+            </h3>
+            <p className="text-gray-700 mb-2">
+              You entered <strong>{pendingQuantity.toLocaleString()}</strong> {asset.coinInfo.symbol.toUpperCase()}.
+            </p>
+            <p className="text-gray-600 mb-6">
+              This is an unusually large quantity. Please verify this is correct before proceeding.
+            </p>
+            <div className="flex gap-3 justify-end">
+              <button
+                onClick={handleCancelLargeQuantity}
+                className="px-4 py-2 rounded-md border border-gray-300 text-gray-700 hover:bg-gray-50 transition focus-ring"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={handleConfirmLargeQuantity}
+                className="px-4 py-2 rounded-md bg-brand-primary text-white hover:bg-purple-700 transition focus-ring"
+              >
+                Confirm
+              </button>
+            </div>
+          </div>
         </div>
       )}
     </div>
