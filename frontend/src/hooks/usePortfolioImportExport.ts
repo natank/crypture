@@ -34,24 +34,56 @@ export function usePortfolioImportExport({
   };
 
   const applyReplace = () => {
-    if (!importPreview) return;
+    if (!importPreview) return { added: 0, skipped: 0 };
+    
     resetPortfolio();
+    let added = 0;
+    let skipped = 0;
+    
     for (const item of importPreview) {
       const coinInfo = coinMap[item.asset];
-      if (!coinInfo) continue;
+      if (!coinInfo) {
+        skipped++;
+        continue;
+      }
       addAsset({ coinInfo, quantity: item.quantity });
+      added++;
     }
+    
     setImportPreview(null);
+    return { added, skipped };
   };
 
   const applyMerge = () => {
-    if (!importPreview) return;
+    if (!importPreview) return { added: 0, updated: 0, skipped: 0 };
+    
+    let added = 0;
+    let updated = 0;
+    let skipped = 0;
+    
     for (const item of importPreview) {
       const coinInfo = coinMap[item.asset];
-      if (!coinInfo) continue;
+      if (!coinInfo) {
+        skipped++;
+        continue;
+      }
+      
+      // Check if asset already exists in portfolio
+      const existingAsset = portfolio.find(
+        (asset) => asset.coinInfo.id === coinInfo.id
+      );
+      
       addAsset({ coinInfo, quantity: item.quantity });
+      
+      if (existingAsset) {
+        updated++;
+      } else {
+        added++;
+      }
     }
+    
     setImportPreview(null);
+    return { added, updated, skipped };
   };
 
   const dismissPreview = () => setImportPreview(null);
@@ -74,6 +106,8 @@ export function usePortfolioImportExport({
     a.click();
     a.remove();
     URL.revokeObjectURL(url);
+    
+    return { filename, count: portfolio.length };
   };
 
   return {

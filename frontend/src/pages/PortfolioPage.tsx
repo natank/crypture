@@ -97,8 +97,64 @@ export default function PortfolioPage() {
     requestDeleteAsset(id);
   };
 
-  const handleExport = exportPortfolio;
-  const handleImport = onFileSelected;
+  const handleExport = (format: "csv" | "json") => {
+    try {
+      if (portfolio.length === 0) {
+        notifications.warning("⚠️ Your portfolio is empty. Add assets before exporting.");
+        return;
+      }
+      
+      const result = exportPortfolio(format);
+      notifications.success(
+        `✓ Exported ${result.count} asset${result.count !== 1 ? 's' : ''} to ${result.filename}`
+      );
+    } catch (err) {
+      const errorMessage = err instanceof Error ? err.message : "Failed to export portfolio";
+      notifications.error(`✗ ${errorMessage}`);
+    }
+  };
+
+  const handleImport = (file: File) => {
+    onFileSelected(file);
+  };
+
+  const handleApplyMerge = () => {
+    try {
+      const result = applyMerge();
+      
+      if (result.skipped > 0) {
+        notifications.warning(
+          `⚠️ Imported ${result.added} new, updated ${result.updated} existing. Skipped ${result.skipped} unknown asset${result.skipped !== 1 ? 's' : ''}.`
+        );
+      } else {
+        notifications.success(
+          `✓ Successfully imported ${result.added} new and updated ${result.updated} existing asset${result.added + result.updated !== 1 ? 's' : ''}`
+        );
+      }
+    } catch (err) {
+      const errorMessage = err instanceof Error ? err.message : "Failed to merge portfolio";
+      notifications.error(`✗ ${errorMessage}`);
+    }
+  };
+
+  const handleApplyReplace = () => {
+    try {
+      const result = applyReplace();
+      
+      if (result.skipped > 0) {
+        notifications.warning(
+          `⚠️ Replaced portfolio with ${result.added} asset${result.added !== 1 ? 's' : ''}. Skipped ${result.skipped} unknown asset${result.skipped !== 1 ? 's' : ''}.`
+        );
+      } else {
+        notifications.success(
+          `✓ Successfully replaced portfolio with ${result.added} asset${result.added !== 1 ? 's' : ''}`
+        );
+      }
+    } catch (err) {
+      const errorMessage = err instanceof Error ? err.message : "Failed to replace portfolio";
+      notifications.error(`✗ ${errorMessage}`);
+    }
+  };
 
   return (
     <>
@@ -170,7 +226,11 @@ export default function PortfolioPage() {
           />
 
           {/* Footer Action Buttons */}
-          <ExportImportControls onExport={handleExport} onImport={handleImport} />
+          <ExportImportControls 
+            onExport={handleExport} 
+            onImport={handleImport} 
+            portfolioCount={portfolio.length}
+          />
         </section>
 
         {/* Add Asset Modal */}
@@ -214,8 +274,8 @@ export default function PortfolioPage() {
         <ImportPreviewModal
           items={importPreview}
           onCancel={dismissPreview}
-          onMerge={applyMerge}
-          onReplace={applyReplace}
+          onMerge={handleApplyMerge}
+          onReplace={handleApplyReplace}
         />
       )}
 

@@ -211,25 +211,34 @@ export function useAssetHighlight(assetId: string, triggerCount: number) {
   - Test: Shows empty state after deleting last asset ✅
   - 3 new E2E tests added (total: 10/10 passing)
 
-### Phase 4: Import/Export Notifications (Shippable)
-- [ ] Update `usePortfolioImportExport.ts`
-  - Track counts during `applyMerge`/`applyReplace`: `{ added, updated }`
+### Phase 4: Import/Export Notifications (Shippable) ✅ **COMPLETE**
+- [x] Update `usePortfolioImportExport.ts`
+  - Track counts during `applyMerge`/`applyReplace`: `{ added, updated, skipped }`
   - Return result object from apply methods
-- [ ] Update `PortfolioPage.tsx` import handlers
+  - Export returns `{ filename, count }`
+- [x] Update `PortfolioPage.tsx` import/export handlers
   - On success: format message with counts
   - On partial: show warning with skipped count
   - On error: show error message
-- [ ] Update `ExportImportControls/index.tsx`
-  - Add loading state during export
-  - Trigger success toast after download with filename + count
-  - Catch export errors and show error toast
-- [ ] **E2E Tests**: Create `e2e/specs/features/import-export-feedback.spec.ts`
-  - Test: Export shows success toast with filename and asset count
-  - Test: Import shows preview modal with summary counts
-  - Test: Import success shows single batch toast (not individual toasts)
-  - Test: Import partial success shows warning with skipped count
-  - Test: Import error shows error toast with helpful message
-  - Test: Export with empty portfolio shows warning toast
+  - Empty portfolio check before export
+  - Created `handleApplyMerge` and `handleApplyReplace` wrappers
+- [x] Update `ExportImportControls/index.tsx`
+  - Add loading state during export (isExporting)
+  - Disable export button when portfolio is empty
+  - Accept `portfolioCount` prop
+  - Loading indicator while exporting
+- [x] Updated unit tests (mocks for return values)
+- [x] **E2E Tests**: Create `e2e/specs/features/import-export-feedback.spec.ts`
+  - Test: Export shows success toast with filename and asset count ✅
+  - Test: Import shows preview modal with summary counts ✅
+  - Test: Import success shows single batch toast (not individual toasts) ✅
+  - Test: Import partial success shows warning with skipped count ✅
+  - Test: Import error shows error toast with helpful message ✅
+  - Test: Export with empty portfolio (button disabled) ✅
+  - Test: Replace operation with success toast ✅
+  - Test: Merge updates existing assets correctly ✅
+  - Test: Loading state during export ✅
+  - 9 new E2E tests added (total: 19/19 passing)
 
 ### Phase 5: Visual Feedback (Shippable)
 - [ ] Create `useAssetHighlight.ts` hook

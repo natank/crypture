@@ -4,17 +4,26 @@ import Icon from "@components/Icon";
 type ExportImportControlsProps = {
   onExport: (format: "csv" | "json") => void;
   onImport?: (file: File) => void;
+  portfolioCount?: number;
 };
 
 export default function ExportImportControls({
   onExport,
   onImport,
+  portfolioCount = 0,
 }: ExportImportControlsProps) {
   const [format, setFormat] = useState<"csv" | "json">("csv");
+  const [isExporting, setIsExporting] = useState(false);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
 
   const handleExportClick = () => {
-    onExport(format);
+    setIsExporting(true);
+    try {
+      onExport(format);
+    } finally {
+      // Small delay to show loading state
+      setTimeout(() => setIsExporting(false), 300);
+    }
   };
 
   const handleImportClick = () => {
@@ -82,13 +91,22 @@ export default function ExportImportControls({
       <div className="flex gap-3 flex-wrap">
         <button
           onClick={handleExportClick}
-          className="bg-brand-primary text-white font-button px-4 py-2 rounded-md hover:bg-purple-700 transition tap-44 focus-ring"
+          className="bg-brand-primary text-white font-button px-4 py-2 rounded-md hover:bg-purple-700 transition tap-44 focus-ring disabled:opacity-50 disabled:cursor-not-allowed"
           aria-label="Export Portfolio"
           aria-describedby="export-help"
           data-testid="export-button"
           title="Download portfolio in selected format"
+          disabled={isExporting || portfolioCount === 0}
         >
-          <Icon glyph={"📤"} /> Export Portfolio
+          {isExporting ? (
+            <>
+              <span className="animate-spin inline-block">⏳</span> Exporting...
+            </>
+          ) : (
+            <>
+              <Icon glyph={"📤"} /> Export Portfolio
+            </>
+          )}
         </button>
 
         {onImport && (
