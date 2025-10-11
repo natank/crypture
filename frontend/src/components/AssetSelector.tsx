@@ -35,8 +35,24 @@ export function AssetSelector({
     }, {} as Record<string, number>);
   }, [portfolio]);
 
+  // Check if user has any assets to show the summing tip
+  const hasOwnedAssets = Object.keys(ownedQuantities).length > 0;
+
   return (
     <div className="flex flex-col gap-3" >
+      {hasOwnedAssets && (
+        <div 
+          className="text-sm text-blue-700 bg-blue-50 border border-blue-200 rounded-md px-3 py-2 flex items-start gap-2"
+          role="note"
+          aria-label="Information about adding to existing assets"
+        >
+          <span aria-hidden="true">ℹ️</span>
+          <span>
+            <strong>Tip:</strong> Adding to an existing asset will increase your total quantity.
+          </span>
+        </div>
+      )}
+      
       {error ? (
         <div className="text-sm text-red-600" role="alert" aria-live="assertive">
           ⚠️ {error}

@@ -10,6 +10,7 @@ import ImportPreviewModal from "@components/ImportPreviewModal";
 import FilterSortControls from "@components/FilterSortControls";
 import LoadingSpinner from "@components/LoadingSpinner";
 import PortfolioHeader from "@components/PortfolioHeader";
+import { HelpBanner } from "@components/HelpBanner";
 
 import { usePortfolioState } from "@hooks/usePortfolioState";
 import { useCoinList } from "@hooks/useCoinList";
@@ -197,11 +198,39 @@ export default function PortfolioPage() {
         className="flex items-center justify-between mb-4"
       />
 
+      {/* Help Banner (Phase 7) */}
+      <HelpBanner 
+        message="Tip: You can add multiple purchases of the same asset. Your quantities will be summed automatically, making it easy to track assets bought at different times or prices."
+      />
+
+      {/* Error banner if coin list fails */}
+      {error && (
+        <ErrorBanner
+          message={error}
+          onRetry={retry}
+        />
+      )}
+
+      {importError && (
+        <ErrorBanner
+          message={importError}
+        />
+      )}
+
+      {/* Filter/Sort Controls */}
+      <FilterSortControls
+        filter={filterText}
+        onFilterChange={setFilterText}
+        sort={sortOption}
+        onSortChange={setSortOption}
+        disabled={!!(loading || refreshing)}
+      />
+
       {/* Lightweight updating indicator during background refreshes */}
       {refreshing && (
         <div className="w-full max-w-4xl mx-auto px-6 md:px-10 -mt-2 mb-2" aria-live="polite">
-          <LoadingSpinner label=" Updating prices…" />
-        </div>
+        <LoadingSpinner label=" Updating prices…" />
+      </div>
       )}
 
       {/* Test-only control to trigger deterministic refresh in E2E */}

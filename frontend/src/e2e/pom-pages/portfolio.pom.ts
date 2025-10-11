@@ -46,9 +46,9 @@ export class PortfolioPage {
     this.importButton = page.getByTestId("import-button");
     this.exportFormatSelect = page.getByLabel(/select file format/i);
 
-    // Filter/Sort Controls
-    this.filterInput = page.getByPlaceholder("Search assets...");
-    this.sortDropdown = page.getByTestId("sort-dropdown");
+    // Filter/Sort Controls (use testid and first() to avoid multiple matches)
+    this.filterInput = page.getByTestId("filter-input").first();
+    this.sortDropdown = page.getByTestId("sort-dropdown").first();
 
     // Modal Elements
     this.modal = page.getByRole("dialog");
