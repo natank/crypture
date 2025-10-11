@@ -4,6 +4,7 @@ import Icon from "@components/Icon";
 import { PortfolioAsset } from "@hooks/usePortfolioState";
 import AssetChart from "@components/AssetChart";
 import { useAssetChartController } from "@hooks/useAssetChartController";
+import { useAssetHighlight } from "@hooks/useAssetHighlight";
 import { validateQuantity } from "@utils/validateQuantity";
 import toast from "react-hot-toast";
 
@@ -13,6 +14,7 @@ type AssetRowProps = {
   value?: number;
   onDelete: (id: string) => void;
   onUpdateQuantity: (id: string, newQuantity: number) => void;
+  highlightTrigger?: number;
 };
 
 export default function AssetRow({
@@ -21,8 +23,10 @@ export default function AssetRow({
   value,
   onDelete,
   onUpdateQuantity,
+  highlightTrigger = 0,
 }: AssetRowProps) {
   const { isChartVisible, chartProps, handleToggleChart } = useAssetChartController(asset.coinInfo.id);
+  const isHighlighted = useAssetHighlight(asset.coinInfo.id, highlightTrigger);
   const hasPrice = typeof price === "number";
   
   // Edit state
@@ -116,7 +120,11 @@ export default function AssetRow({
   return (
     <div className="border-b border-border last:border-b-0 rounded-lg shadow-sm hover:shadow-md transition-shadow mb-2">
       <div
-        className="flex items-center justify-between gap-6 py-4 px-4 bg-surface cursor-pointer"
+        className={`flex items-center justify-between gap-6 py-4 px-4 cursor-pointer transition-colors duration-1000 ${
+          isHighlighted 
+            ? 'bg-teal-50 dark:bg-teal-900/20' 
+            : 'bg-surface'
+        }`}
         data-testid={`asset-row-${asset.coinInfo.symbol}`}
         onClick={handleToggleChart}
         role="button"

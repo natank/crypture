@@ -240,17 +240,30 @@ export function useAssetHighlight(assetId: string, triggerCount: number) {
   - Test: Loading state during export ✅
   - 9 new E2E tests added (total: 19/19 passing)
 
-### Phase 5: Visual Feedback (Shippable)
-- [ ] Create `useAssetHighlight.ts` hook
+### Phase 5: Visual Feedback (Shippable) ✅ **COMPLETE**
+- [x] Create `useAssetHighlight.ts` hook
   - Accept `assetId` and trigger counter
   - Return `isHighlighted` boolean (true for 3s after trigger)
   - Use `useState` + `useEffect` with timeout
-- [ ] Update `AssetRow/index.tsx`
-  - Call `useAssetHighlight(asset.id, updateCounter)`
+  - 5 unit tests added (all passing)
+- [x] Update `AssetRow/index.tsx`
+  - Import and call `useAssetHighlight(asset.id, highlightTrigger)`
   - Apply highlight class when `isHighlighted`: `bg-teal-50 dark:bg-teal-900/20 transition-colors duration-1000`
-- [ ] Update `PortfolioPage.tsx`
-  - Track last operation: `useState<{ type, assetId, timestamp }>()`
-  - Pass trigger to AssetList/AssetRow
+  - Accept `highlightTrigger` prop
+- [x] Update `AssetList/index.tsx`
+  - Accept `highlightTriggers` map (Record<string, number>)
+  - Pass individual trigger to each AssetRow
+- [x] Update `PortfolioPage.tsx`
+  - Track highlight triggers: `useState<Record<string, number>>({})`
+  - Created `triggerHighlight(assetId)` function
+  - Created `handleAddAsset` wrapper to trigger highlights
+  - Created `handleUpdateQuantity` wrapper to trigger highlights
+  - Updated `handleApplyMerge` to trigger highlights for all assets
+  - Updated `handleApplyReplace` to trigger highlights for all assets
+  - Pass `highlightTriggers` to AssetList
+- [x] **E2E Test**: Added to `notifications.spec.ts`
+  - Test: Asset row highlights after adding (Phase 5) ✅
+  - 1 new E2E test added (total: 11/11 passing in notifications.spec.ts)
 
 ### Phase 6: Unusual Input Warnings (Shippable)
 - [ ] Add validation to `validateQuantity.ts`

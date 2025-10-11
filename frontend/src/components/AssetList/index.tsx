@@ -10,6 +10,7 @@ type AssetListProps = {
   addButtonRef: React.RefObject<HTMLButtonElement | null>;
   priceMap: Record<string, number>;
   disabled?: boolean;
+  highlightTriggers?: Record<string, number>;
 };
 
 export default function AssetList({
@@ -20,6 +21,7 @@ export default function AssetList({
   addButtonRef,
   priceMap,
   disabled = false,
+  highlightTriggers = {},
 }: AssetListProps) {
   return (
     <section className="flex flex-col gap-6 w-full p-6 sm:p-6 md:p-8">
@@ -68,6 +70,7 @@ export default function AssetList({
                 value={value}
                 onDelete={onDelete}
                 onUpdateQuantity={onUpdateQuantity}
+                highlightTrigger={highlightTriggers[asset.coinInfo.id] || 0}
               />
             );
           })}

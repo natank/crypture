@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import { Toaster } from "react-hot-toast";
 
 import { AddAssetModal } from "@components/AddAssetModal";
@@ -58,6 +58,16 @@ export default function PortfolioPage() {
 
   const notifications = useNotifications();
 
+  // Track highlight triggers for visual feedback (Phase 5)
+  const [highlightTriggers, setHighlightTriggers] = useState<Record<string, number>>({});
+
+  const triggerHighlight = (assetId: string) => {
+    setHighlightTriggers(prev => ({
+      ...prev,
+      [assetId]: (prev[assetId] || 0) + 1,
+    }));
+  };
+
   // Import/Export logic via custom hook
   const {
     importPreview,
@@ -93,6 +103,18 @@ export default function PortfolioPage() {
 
   const assetToDelete = getAssetById(assetIdPendingDeletion || "");
 
+  const handleAddAsset = (asset: { coinInfo: CoinInfo; quantity: number }) => {
+    addAsset(asset);
+    // Trigger highlight for the added/updated asset
+    triggerHighlight(asset.coinInfo.id);
+  };
+
+  const handleUpdateQuantity = (id: string, newQuantity: number) => {
+    updateAssetQuantity(id, newQuantity);
+    // Trigger highlight for the updated asset
+    triggerHighlight(id);
+  };
+
   const handleDeleteAsset = (id: string) => {
     requestDeleteAsset(id);
   };
@@ -122,6 +144,11 @@ export default function PortfolioPage() {
     try {
       const result = applyMerge();
       
+      // Trigger highlights for all imported/updated assets
+      portfolio.forEach(asset => {
+        triggerHighlight(asset.coinInfo.id);
+      });
+      
       if (result.skipped > 0) {
         notifications.warning(
           `⚠️ Imported ${result.added} new, updated ${result.updated} existing. Skipped ${result.skipped} unknown asset${result.skipped !== 1 ? 's' : ''}.`
@@ -140,6 +167,11 @@ export default function PortfolioPage() {
   const handleApplyReplace = () => {
     try {
       const result = applyReplace();
+      
+      // Trigger highlights for all replaced assets
+      portfolio.forEach(asset => {
+        triggerHighlight(asset.coinInfo.id);
+      });
       
       if (result.skipped > 0) {
         notifications.warning(
@@ -218,11 +250,12 @@ export default function PortfolioPage() {
           <AssetList
             assets={sortedFilteredAssets}
             onDelete={handleDeleteAsset}
-            onUpdateQuantity={updateAssetQuantity}
+            onUpdateQuantity={handleUpdateQuantity}
             onAddAsset={openAddAssetModal}
             addButtonRef={addButtonRef}
             priceMap={priceMap}
             disabled={!!(loading || refreshing)}
+            highlightTriggers={highlightTriggers}
           />
 
           {/* Footer Action Buttons */}
@@ -237,7 +270,7 @@ export default function PortfolioPage() {
         {shouldShowAddAssetModal && (
           <AddAssetModal
             onClose={closeAddAssetModal}
-            addAsset={addAsset}
+            addAsset={handleAddAsset}
             coins={filteredCoins}
             search={search}
             setSearch={setSearch}
