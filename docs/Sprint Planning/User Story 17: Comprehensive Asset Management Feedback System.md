@@ -190,11 +190,19 @@ export function useAssetHighlight(assetId: string, triggerCount: number) {
   - Accept `portfolio?: PortfolioState` prop
   - Map coins → show " - Owned: X" suffix if asset in portfolio
   - Keep existing behavior if prop not provided
+- [ ] **E2E Tests**: Create `e2e/specs/features/notifications.spec.ts`
+  - Test: Add new asset shows success notification with correct message
+  - Test: Add to existing asset shows "Total: X" message
+  - Test: Validation error shows error toast
+  - Test: Asset row highlights after addition and fades after 3s
 
 ### Phase 3: Delete Asset Notifications (Shippable)
 - [ ] Update `PortfolioPage.tsx` delete handler
   - After `removeAsset()`: call `notifications.success("✓ Removed [name] from portfolio")`
   - On error: call `notifications.error("✗ Failed to remove asset")`
+- [ ] **E2E Tests**: Add to `e2e/specs/features/notifications.spec.ts`
+  - Test: Delete asset shows confirmation toast with asset name
+  - Test: Delete confirmation modal + success notification flow
 
 ### Phase 4: Import/Export Notifications (Shippable)
 - [ ] Update `usePortfolioImportExport.ts`
@@ -208,6 +216,13 @@ export function useAssetHighlight(assetId: string, triggerCount: number) {
   - Add loading state during export
   - Trigger success toast after download with filename + count
   - Catch export errors and show error toast
+- [ ] **E2E Tests**: Create `e2e/specs/features/import-export-feedback.spec.ts`
+  - Test: Export shows success toast with filename and asset count
+  - Test: Import shows preview modal with summary counts
+  - Test: Import success shows single batch toast (not individual toasts)
+  - Test: Import partial success shows warning with skipped count
+  - Test: Import error shows error toast with helpful message
+  - Test: Export with empty portfolio shows warning toast
 
 ### Phase 5: Visual Feedback (Shippable)
 - [ ] Create `useAssetHighlight.ts` hook
@@ -229,6 +244,9 @@ export function useAssetHighlight(assetId: string, triggerCount: number) {
 - [ ] Update `AddAssetModal.tsx` and `AssetRow` edit mode
   - Show warning toast for unusual values (non-blocking)
   - User can proceed after acknowledgment
+- [ ] **E2E Tests**: Add to `e2e/specs/features/notifications.spec.ts`
+  - Test: Large quantity (> 1M) shows warning toast but allows proceed
+  - Test: Tiny quantity (< 0.00000001) shows warning toast but allows proceed
 
 ### Phase 7: Accessibility & Help (Shippable)
 - [ ] Add tooltips to `AssetSelector` explaining summing behavior
@@ -239,6 +257,17 @@ export function useAssetHighlight(assetId: string, triggerCount: number) {
 - [ ] Audit all interactive elements for keyboard nav
   - Verify tab order, Enter/Space handlers
   - Test with screen reader (VoiceOver/NVDA)
+- [ ] **E2E Tests**: Create `e2e/specs/a11y/notification-accessibility.spec.ts`
+  - Test: Toasts have proper ARIA attributes (role, aria-live)
+  - Test: Success toasts use role="status" with aria-live="polite"
+  - Test: Error toasts use role="alert" with aria-live="assertive"
+  - Test: Keyboard navigation skips past toasts (not focusable)
+  - Test: Help banner is dismissible and persists preference
+  - Test: Tooltips are keyboard accessible (focus + hover)
+- [ ] **E2E Tests**: Add mobile viewport tests to existing specs
+  - Test: Notifications visible on mobile (375x667)
+  - Test: Touch targets meet 44x44px minimum (tap-44)
+  - Test: Toast positioning doesn't overlap with keyboard
 
 ### Analytics Events
 ```typescript
@@ -670,7 +699,12 @@ frontend/src/utils/validateQuantity.ts       (add warnings for unusual values)
 - [ ] All 13 acceptance criteria implemented and verified
 - [ ] Unit tests: 25+ new tests, all passing
 - [ ] Integration tests: 5+ scenarios, all passing
-- [ ] E2E tests: 8+ specs, all passing (including a11y)
+- [ ] **E2E tests: 20+ specs, all passing** (including a11y + mobile)
+  - Phase 2: 4 notification tests
+  - Phase 3: 2 delete notification tests
+  - Phase 4: 6 import/export feedback tests
+  - Phase 6: 2 unusual input warning tests
+  - Phase 7: 9 accessibility + mobile tests
 - [ ] Code review completed, no blocking issues
 - [ ] Accessibility audit: WCAG AA compliance verified
 - [ ] Screen reader tested (VoiceOver on macOS, NVDA on Windows)
