@@ -200,13 +200,16 @@ export function useAssetHighlight(assetId: string, triggerCount: number) {
   - Test: Edge cases (negative, zero, modal behavior) ✅
   - Note: Asset highlight test deferred to Phase 5 (Visual Feedback)
 
-### Phase 3: Delete Asset Notifications (Shippable)
-- [ ] Update `PortfolioPage.tsx` delete handler
-  - After `removeAsset()`: call `notifications.success("✓ Removed [name] from portfolio")`
+### Phase 3: Delete Asset Notifications (Shippable) ✅ **COMPLETE**
+- [x] Update `PortfolioPage.tsx` delete handler
+  - After `removeAsset()`: call `notifications.success("✓ Removed [name] (symbol) from portfolio")`
   - On error: call `notifications.error("✗ Failed to remove asset")`
-- [ ] **E2E Tests**: Add to `e2e/specs/features/notifications.spec.ts`
-  - Test: Delete asset shows confirmation toast with asset name
-  - Test: Delete confirmation modal + success notification flow
+  - Added try-catch error handling
+- [x] **E2E Tests**: Add to `e2e/specs/features/notifications.spec.ts`
+  - Test: Delete asset shows confirmation toast with asset name ✅
+  - Test: Delete confirmation modal + success notification flow ✅
+  - Test: Shows empty state after deleting last asset ✅
+  - 3 new E2E tests added (total: 10/10 passing)
 
 ### Phase 4: Import/Export Notifications (Shippable)
 - [ ] Update `usePortfolioImportExport.ts`

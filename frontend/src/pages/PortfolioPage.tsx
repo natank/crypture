@@ -17,6 +17,7 @@ import { usePriceMap } from "@hooks/usePriceMap";
 import { useCoinSearch } from "@hooks/useCoinSearch";
 import { useUIState } from "@hooks/useUIState";
 import { useFilterSort } from "@hooks/useFilterSort";
+import { useNotifications } from "@hooks/useNotifications";
 import AppFooter from "@components/AppFooter";
 import { CoinInfo } from "@services/coinService";
 import { usePortfolioImportExport } from "@hooks/usePortfolioImportExport";
@@ -54,6 +55,8 @@ export default function PortfolioPage() {
     filterText,
     sortOption,
   } = useFilterSort(portfolio);
+
+  const notifications = useNotifications();
 
   // Import/Export logic via custom hook
   const {
@@ -190,8 +193,16 @@ export default function PortfolioPage() {
             isOpen={shouldShowDeleteConfirmationModal}
             onCancel={cancelDeleteAsset}
             onConfirm={() => {
-              if (assetIdPendingDeletion) {
-                removeAsset(assetIdPendingDeletion);
+              if (assetIdPendingDeletion && assetToDelete) {
+                try {
+                  const assetName = assetToDelete.coinInfo.name;
+                  const assetSymbol = assetToDelete.coinInfo.symbol.toUpperCase();
+                  removeAsset(assetIdPendingDeletion);
+                  notifications.success(`✓ Removed ${assetName} (${assetSymbol}) from portfolio`);
+                } catch (err) {
+                  const errorMessage = err instanceof Error ? err.message : "Failed to remove asset";
+                  notifications.error(`✗ ${errorMessage}`);
+                }
               }
               cancelDeleteAsset();
             }}

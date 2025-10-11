@@ -216,3 +216,135 @@ test.describe("Add Asset Notifications - Edge Cases", () => {
     await expect(page.getByText(/Qty: 1/)).toBeVisible();
   });
 });
+
+test.describe("Delete Asset Notifications", () => {
+  test.beforeEach(async ({ page }) => {
+    // Mock CoinGecko API to avoid external requests
+    mockCoinGeckoMarkets(page);
+    mockCoinGeckoChartData(page);
+  });
+
+  test("shows success notification when deleting asset", async ({ page }) => {
+    await page.goto("/portfolio");
+
+    // First add an asset to delete
+    await page.getByRole("button", { name: /add asset/i }).click();
+    await page.locator("select#asset-select").selectOption({ label: "Bitcoin (BTC)" });
+    await page.getByLabel(/quantity/i).fill("1.5");
+    await page
+      .getByRole("dialog")
+      .getByRole("button", { name: /add asset/i })
+      .click();
+
+    // Wait for modal to close
+    await expect(page.getByRole("dialog")).not.toBeVisible({ timeout: 3000 });
+
+    // Verify asset is in portfolio
+    await expect(page.getByText(/Bitcoin/)).toBeVisible();
+
+    // Click delete button (use last() to avoid strict mode violation with asset row)
+    await page.getByRole("button", { name: /Delete BTC/i }).last().click();
+
+    // Confirm deletion in modal
+    const deleteModal = page.getByRole("dialog");
+    await expect(deleteModal).toBeVisible();
+    await expect(deleteModal.getByText(/Remove Bitcoin/i)).toBeVisible();
+    
+    await deleteModal.getByRole("button", { name: /Confirm Delete/i }).click();
+
+    // Wait for modal to close
+    await expect(deleteModal).not.toBeVisible({ timeout: 3000 });
+
+    // Verify success toast appears with asset name
+    const successToast = page.locator('[role="status"]', {
+      hasText: /Removed.*Bitcoin/i,
+    });
+    await expect(successToast).toBeVisible({ timeout: 3000 });
+
+    // Verify asset is removed from portfolio (check specific element, not just any text)
+    await expect(page.getByTestId("asset-row-BTC")).not.toBeVisible();
+  });
+
+  test("delete confirmation modal + success notification flow", async ({ page }) => {
+    await page.goto("/portfolio");
+
+    // Add Ethereum for this test
+    await page.getByRole("button", { name: /add asset/i }).click();
+    await page.locator("select#asset-select").selectOption({ label: "Ethereum (ETH)" });
+    await page.getByLabel(/quantity/i).fill("5.0");
+    await page
+      .getByRole("dialog")
+      .getByRole("button", { name: /add asset/i })
+      .click();
+
+    // Wait for modal to close
+    await expect(page.getByRole("dialog")).not.toBeVisible({ timeout: 3000 });
+
+    // Verify asset exists
+    await expect(page.getByText(/Ethereum/)).toBeVisible();
+    await expect(page.getByText(/Qty: 5/)).toBeVisible();
+
+    // Click delete button (use last() to avoid strict mode violation with asset row)
+    await page.getByRole("button", { name: /Delete ETH/i }).last().click();
+
+    // Verify delete confirmation modal appears
+    const deleteModal = page.getByRole("dialog");
+    await expect(deleteModal).toBeVisible();
+    await expect(deleteModal.getByText(/Ethereum/)).toBeVisible();
+
+    // Cancel first time
+    await deleteModal.getByRole("button", { name: /Cancel/i }).click();
+
+    // Modal should close and asset should still be there
+    await expect(deleteModal).not.toBeVisible({ timeout: 3000 });
+    await expect(page.getByText(/Ethereum/)).toBeVisible();
+
+    // Try deleting again
+    await page.getByRole("button", { name: /Delete ETH/i }).last().click();
+    await expect(deleteModal).toBeVisible();
+
+    // Confirm deletion
+    await deleteModal.getByRole("button", { name: /Confirm Delete/i }).click();
+
+    // Wait for modal to close
+    await expect(deleteModal).not.toBeVisible({ timeout: 3000 });
+
+    // Verify success toast
+    const successToast = page.locator('[role="status"]', {
+      hasText: /Removed.*Ethereum/i,
+    });
+    await expect(successToast).toBeVisible({ timeout: 3000 });
+
+    // Verify asset is removed (check specific element)
+    await expect(page.getByTestId("asset-row-ETH")).not.toBeVisible();
+  });
+
+  test("shows empty state after deleting last asset", async ({ page }) => {
+    await page.goto("/portfolio");
+
+    // Add a single asset
+    await page.getByRole("button", { name: /add asset/i }).click();
+    await page.locator("select#asset-select").selectOption({ label: "Bitcoin (BTC)" });
+    await page.getByLabel(/quantity/i).fill("1.0");
+    await page
+      .getByRole("dialog")
+      .getByRole("button", { name: /add asset/i })
+      .click();
+
+    await expect(page.getByRole("dialog")).not.toBeVisible({ timeout: 3000 });
+
+    // Delete the only asset (use last() to avoid strict mode violation with asset row)
+    await page.getByRole("button", { name: /Delete BTC/i }).last().click();
+    const deleteModal = page.getByRole("dialog");
+    await deleteModal.getByRole("button", { name: /Confirm Delete/i }).click();
+
+    // Verify success toast
+    const successToast = page.locator('[role="status"]', {
+      hasText: /Removed Bitcoin/i,
+    });
+    await expect(successToast).toBeVisible({ timeout: 3000 });
+
+    // Verify empty state message appears
+    await expect(page.getByText(/No assets yet/i)).toBeVisible();
+  });
+});
