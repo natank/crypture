@@ -6,13 +6,16 @@
  * - Cannot be zero
  * - Maximum 8 decimal places (standard for crypto)
  * - No special characters except decimal point
+ * - Warns for unusually large values (> 1,000,000)
+ * - Warns for dust amounts (< 0.00000001)
  * 
  * @param value - The string value to validate (from input field)
- * @returns Validation result with error message if invalid
+ * @returns Validation result with error message if invalid, warning if unusual
  */
 export type ValidationResult = {
   valid: boolean;
   error?: string;
+  warning?: string;
 };
 
 export function validateQuantity(value: string): ValidationResult {
@@ -52,6 +55,24 @@ export function validateQuantity(value: string): ValidationResult {
     return {
       valid: false,
       error: 'Maximum 8 decimal places allowed',
+    };
+  }
+
+  // Check for unusual values (non-blocking warnings)
+  const LARGE_QUANTITY_THRESHOLD = 1000000;
+  const DUST_AMOUNT_THRESHOLD = 0.00000001;
+
+  if (numValue > LARGE_QUANTITY_THRESHOLD) {
+    return {
+      valid: true,
+      warning: `⚠️ Large quantity (${numValue.toLocaleString()}). Please verify this is correct.`,
+    };
+  }
+
+  if (numValue < DUST_AMOUNT_THRESHOLD) {
+    return {
+      valid: true,
+      warning: `⚠️ Very small amount (${numValue}). This may be a dust amount.`,
     };
   }
 

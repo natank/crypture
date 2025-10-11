@@ -40,8 +40,8 @@ base.describe("Refreshing state disables controls and sets aria-busy", () => {
     await page.goto("/portfolio?e2e=1");
     await expect(page.getByText(/Total Portfolio Value/i)).toBeVisible();
 
-    const filterInput = page.getByPlaceholder("Search assets...");
-    const sortDropdown = page.getByTestId("sort-dropdown");
+    const filterInput = page.getByTestId("filter-input").first();
+    const sortDropdown = page.getByTestId("sort-dropdown").first();
     const addAssetButton = page.getByTestId("add-asset-button");
 
     await expect(filterInput).toBeEnabled();

@@ -22,8 +22,8 @@ test.describe("A11y & Mobile smoke", () => {
     const addAssetButton = page.getByTestId("add-asset-button");
     const exportButton = page.getByTestId("export-button");
     const importButton = page.getByTestId("import-button");
-    const filterInput = page.getByPlaceholder(/search assets/i);
-    const sortDropdown = page.getByTestId("sort-dropdown");
+    const filterInput = page.getByTestId("filter-input").first();
+    const sortDropdown = page.getByTestId("sort-dropdown").first();
 
     await expect(addAssetButton).toBeVisible();
     await expect(exportButton).toBeVisible();

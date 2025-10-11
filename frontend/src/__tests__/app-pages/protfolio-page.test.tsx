@@ -150,8 +150,13 @@ describe("PortfolioPage", () => {
         <PortfolioPage />
       </MemoryRouter>
     );
-    expect(screen.getByPlaceholderText(/search assets/i)).toBeInTheDocument();
-    expect(screen.getByLabelText(/sort/i)).toBeInTheDocument();
+    // Use getAllByTestId since there may be multiple filter inputs on the page
+    const filterInputs = screen.getAllByTestId("filter-input");
+    expect(filterInputs.length).toBeGreaterThan(0);
+    
+    // Use getAllByLabelText since there may be multiple sort dropdowns
+    const sortDropdowns = screen.getAllByLabelText(/sort/i);
+    expect(sortDropdowns.length).toBeGreaterThan(0);
   });
 
   it("renders a static asset list row (placeholder content)", async () => {

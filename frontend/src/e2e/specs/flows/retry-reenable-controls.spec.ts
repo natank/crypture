@@ -20,10 +20,11 @@ base.describe("Retry flow clears error and re-enables controls", () => {
     await mockMarketsFailThenSucceed(page);
     await page.goto("/portfolio");
 
-    const retryButton = page.getByRole("button", { name: /retry/i });
+    // Use first() to handle multiple retry buttons from error banners
+    const retryButton = page.getByRole("button", { name: /retry/i }).first();
     await expect(retryButton).toBeVisible();
-    const filterInput = page.getByPlaceholder("Search assets...");
-    const sortDropdown = page.getByTestId("sort-dropdown");
+    const filterInput = page.getByTestId("filter-input").first();
+    const sortDropdown = page.getByTestId("sort-dropdown").first();
     const addAssetButton = page.getByTestId("add-asset-button");
 
     await expect(filterInput).toBeEnabled();

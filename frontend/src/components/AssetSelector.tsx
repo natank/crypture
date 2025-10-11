@@ -1,4 +1,6 @@
+import { useMemo } from "react";
 import type { CoinInfo } from "@services/coinService";
+import type { PortfolioState } from "@hooks/usePortfolioState";
 
 type Props = {
   id?: string;
@@ -9,6 +11,7 @@ type Props = {
   disabled?: boolean;
   error?: string | null;
   describedById?: string;
+  portfolio?: PortfolioState;
 };
 
 export function AssetSelector({
@@ -20,9 +23,36 @@ export function AssetSelector({
   disabled = false,
   error,
   describedById,
+  portfolio,
 }: Props) {
+  // Pre-compute owned quantities map for O(1) lookup (performance optimization)
+  const ownedQuantities = useMemo(() => {
+    if (!portfolio || portfolio.length === 0) return {};
+    
+    return portfolio.reduce((acc, asset) => {
+      acc[asset.coinInfo.id] = asset.quantity;
+      return acc;
+    }, {} as Record<string, number>);
+  }, [portfolio]);
+
+  // Check if user has any assets to show the summing tip
+  const hasOwnedAssets = Object.keys(ownedQuantities).length > 0;
+
   return (
     <div className="flex flex-col gap-3" >
+      {hasOwnedAssets && (
+        <div 
+          className="text-sm text-blue-700 bg-blue-50 border border-blue-200 rounded-md px-3 py-2 flex items-start gap-2"
+          role="note"
+          aria-label="Information about adding to existing assets"
+        >
+          <span aria-hidden="true">ℹ️</span>
+          <span>
+            <strong>Tip:</strong> Adding to an existing asset will increase your total quantity.
+          </span>
+        </div>
+      )}
+      
       {error ? (
         <div className="text-sm text-red-600" role="alert" aria-live="assertive">
           ⚠️ {error}
@@ -42,11 +72,22 @@ export function AssetSelector({
           }}
         >
           <option value="">Select a crypto asset</option>
-          {coins.map((coin) => (
-            <option key={coin.id} value={coin.id} aria-label={`${coin.name} (${coin.symbol.toUpperCase()})`}>
-              {coin.name} ({coin.symbol.toUpperCase()})
-            </option>
-          ))}
+          {coins.map((coin) => {
+            const ownedQty = ownedQuantities[coin.id];
+            const displayName = ownedQty 
+              ? `${coin.name} (${coin.symbol.toUpperCase()}) - Owned: ${ownedQty}`
+              : `${coin.name} (${coin.symbol.toUpperCase()})`;
+            
+            return (
+              <option 
+                key={coin.id} 
+                value={coin.id} 
+                aria-label={displayName}
+              >
+                {displayName}
+              </option>
+            );
+          })}
         </select>
       )}
 
