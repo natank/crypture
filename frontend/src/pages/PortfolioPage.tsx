@@ -86,24 +86,7 @@ export default function PortfolioPage() {
     priceMap: priceMap as Record<string, number>,
   });
 
-  const e2eMode =
-    typeof window !== "undefined" &&
-    new URLSearchParams(window.location.search).get("e2e") === "1";
-
-  if (loading) {
-    return (
-      <main
-        role="main"
-        aria-busy={true}
-        className="flex flex-col justify-center items-center h-screen text-center"
-      >
-        <LoadingSpinner label=" Loading portfolio..." fullScreen />
-      </main>
-    );
-  }
-
-  const assetToDelete = getAssetById(assetIdPendingDeletion || "");
-
+  // All event handlers wrapped with useCallback for stable references
   const handleAddAsset = useCallback((asset: { coinInfo: CoinInfo; quantity: number }) => {
     addAsset(asset);
     // Trigger highlight for the added/updated asset
@@ -188,6 +171,25 @@ export default function PortfolioPage() {
       notifications.error(`✗ ${errorMessage}`);
     }
   }, [applyReplace, portfolio, triggerHighlight, notifications]);
+
+  const e2eMode =
+    typeof window !== "undefined" &&
+    new URLSearchParams(window.location.search).get("e2e") === "1";
+
+  // Early return for loading state - placed AFTER all hooks
+  if (loading) {
+    return (
+      <main
+        role="main"
+        aria-busy={true}
+        className="flex flex-col justify-center items-center h-screen text-center"
+      >
+        <LoadingSpinner label=" Loading portfolio..." fullScreen />
+      </main>
+    );
+  }
+
+  const assetToDelete = getAssetById(assetIdPendingDeletion || "");
 
   return (
     <>
