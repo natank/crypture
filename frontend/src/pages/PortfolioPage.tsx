@@ -110,17 +110,17 @@ export default function PortfolioPage() {
     triggerHighlight(asset.coinInfo.id);
   }, [addAsset, triggerHighlight]);
 
-  const handleUpdateQuantity = (id: string, newQuantity: number) => {
+  const handleUpdateQuantity = useCallback((id: string, newQuantity: number) => {
     updateAssetQuantity(id, newQuantity);
     // Trigger highlight for the updated asset
     triggerHighlight(id);
-  };
+  }, [updateAssetQuantity, triggerHighlight]);
 
-  const handleDeleteAsset = (id: string) => {
+  const handleDeleteAsset = useCallback((id: string) => {
     requestDeleteAsset(id);
-  };
+  }, [requestDeleteAsset]);
 
-  const handleExport = (format: "csv" | "json") => {
+  const handleExport = useCallback((format: "csv" | "json") => {
     try {
       if (portfolio.length === 0) {
         notifications.warning("⚠️ Your portfolio is empty. Add assets before exporting.");
@@ -135,13 +135,13 @@ export default function PortfolioPage() {
       const errorMessage = err instanceof Error ? err.message : "Failed to export portfolio";
       notifications.error(`✗ ${errorMessage}`);
     }
-  };
+  }, [portfolio.length, exportPortfolio, notifications]);
 
-  const handleImport = (file: File) => {
+  const handleImport = useCallback((file: File) => {
     onFileSelected(file);
-  };
+  }, [onFileSelected]);
 
-  const handleApplyMerge = () => {
+  const handleApplyMerge = useCallback(() => {
     try {
       const result = applyMerge();
       
@@ -163,9 +163,9 @@ export default function PortfolioPage() {
       const errorMessage = err instanceof Error ? err.message : "Failed to merge portfolio";
       notifications.error(`✗ ${errorMessage}`);
     }
-  };
+  }, [applyMerge, portfolio, triggerHighlight, notifications]);
 
-  const handleApplyReplace = () => {
+  const handleApplyReplace = useCallback(() => {
     try {
       const result = applyReplace();
       
@@ -187,7 +187,7 @@ export default function PortfolioPage() {
       const errorMessage = err instanceof Error ? err.message : "Failed to replace portfolio";
       notifications.error(`✗ ${errorMessage}`);
     }
-  };
+  }, [applyReplace, portfolio, triggerHighlight, notifications]);
 
   return (
     <>
