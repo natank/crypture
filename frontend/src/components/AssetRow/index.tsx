@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, memo } from "react";
 import InlineErrorBadge from "@components/InlineErrorBadge";
 import Icon from "@components/Icon";
 import { PortfolioAsset } from "@hooks/usePortfolioState";
