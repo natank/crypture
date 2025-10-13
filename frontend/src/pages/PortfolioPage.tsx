@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useMemo, useState, useCallback } from "react";
 import { Toaster } from "react-hot-toast";
 
 import { AddAssetModal } from "@components/AddAssetModal";
