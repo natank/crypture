@@ -62,12 +62,12 @@ export default function PortfolioPage() {
   // Track highlight triggers for visual feedback (Phase 5)
   const [highlightTriggers, setHighlightTriggers] = useState<Record<string, number>>({});
 
-  const triggerHighlight = (assetId: string) => {
+  const triggerHighlight = useCallback((assetId: string) => {
     setHighlightTriggers(prev => ({
       ...prev,
       [assetId]: (prev[assetId] || 0) + 1,
     }));
-  };
+  }, []); // Empty deps - setHighlightTriggers is stable
 
   // Import/Export logic via custom hook
   const {
