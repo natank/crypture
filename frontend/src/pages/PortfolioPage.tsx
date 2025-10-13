@@ -104,11 +104,11 @@ export default function PortfolioPage() {
 
   const assetToDelete = getAssetById(assetIdPendingDeletion || "");
 
-  const handleAddAsset = (asset: { coinInfo: CoinInfo; quantity: number }) => {
+  const handleAddAsset = useCallback((asset: { coinInfo: CoinInfo; quantity: number }) => {
     addAsset(asset);
     // Trigger highlight for the added/updated asset
     triggerHighlight(asset.coinInfo.id);
-  };
+  }, [addAsset, triggerHighlight]);
 
   const handleUpdateQuantity = (id: string, newQuantity: number) => {
     updateAssetQuantity(id, newQuantity);
