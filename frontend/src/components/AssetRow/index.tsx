@@ -17,7 +17,7 @@ type AssetRowProps = {
   highlightTrigger?: number;
 };
 
-export default function AssetRow({
+const AssetRow = memo(function AssetRow({
   asset,
   price,
   value,
@@ -337,4 +337,20 @@ export default function AssetRow({
       )}
     </div>
   );
-}
+}, (prevProps, nextProps) => {
+  // Custom comparison function for fine-grained control
+  // Return true if props are equal (skip re-render)
+  // Return false if props changed (do re-render)
+  
+  return (
+    prevProps.asset.coinInfo.id === nextProps.asset.coinInfo.id &&
+    prevProps.asset.quantity === nextProps.asset.quantity &&
+    prevProps.price === nextProps.price &&
+    prevProps.value === nextProps.value &&
+    prevProps.highlightTrigger === nextProps.highlightTrigger
+    // Note: onDelete and onUpdateQuantity are stable (useCallback from Story 3)
+    // We don't compare them here because they should never change
+  );
+});
+
+export default AssetRow;
