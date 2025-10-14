@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo } from "react";
 import AssetRow from "@components/AssetRow";
 import { PortfolioState } from "@hooks/usePortfolioState";
 import { PlusIcon } from "lucide-react";
