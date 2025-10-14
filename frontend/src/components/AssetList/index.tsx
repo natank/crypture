@@ -23,6 +23,25 @@ export default function AssetList({
   disabled = false,
   highlightTriggers = {},
 }: AssetListProps) {
+  // Memoize enriched assets with price and value calculations
+  // Only recalculates when assets, priceMap, or highlightTriggers change
+  const enrichedAssets = useMemo(() => {
+    return assets.map((asset) => {
+      const symbol = asset.coinInfo.symbol.toLowerCase();
+      const price = priceMap[symbol];
+      const value =
+        typeof price === "number" ? price * asset.quantity : undefined;
+      const highlightTrigger = highlightTriggers[asset.coinInfo.id] || 0;
+
+      return {
+        asset,
+        price,
+        value,
+        highlightTrigger,
+      };
+    });
+  }, [assets, priceMap, highlightTriggers]);
+
   return (
     <section className="flex flex-col gap-6 w-full p-6 sm:p-6 md:p-8">
       {/* Section Header + Add Button */}
@@ -56,24 +75,17 @@ export default function AssetList({
         </div>
       ) : (
         <div className="divide-y divide-border">
-          {assets.map((asset) => {
-            const symbol = asset.coinInfo.symbol.toLowerCase();
-            const price = priceMap[symbol];
-            const value =
-              typeof price === "number" ? price * asset.quantity : undefined;
-
-            return (
-              <AssetRow
-                key={asset.coinInfo.id}
-                asset={asset}
-                price={price}
-                value={value}
-                onDelete={onDelete}
-                onUpdateQuantity={onUpdateQuantity}
-                highlightTrigger={highlightTriggers[asset.coinInfo.id] || 0}
-              />
-            );
-          })}
+          {enrichedAssets.map(({ asset, price, value, highlightTrigger }) => (
+            <AssetRow
+              key={asset.coinInfo.id}
+              asset={asset}
+              price={price}
+              value={value}
+              onDelete={onDelete}
+              onUpdateQuantity={onUpdateQuantity}
+              highlightTrigger={highlightTrigger}
+            />
+          ))}
         </div>
       )}
     </section>
