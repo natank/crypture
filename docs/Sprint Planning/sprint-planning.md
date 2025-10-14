@@ -60,7 +60,28 @@ This process ensures that implementation aligns tightly with user needs, design 
 
 # 🚀 Active Stories
 
-> **Currently focused story:** To be groomed
+> **Currently focused epic:** Epic 01 - State Performance Optimization
+
+## 🎯 Epic 01: State Management Performance Optimization
+**Type:** Technical Debt / Performance  
+**Priority:** High  
+**Story Points:** 13 (3 stories)  
+**Status:** 📋 Ready for Sprint  
+**Branch:** `epic/state-performance-optimization`
+
+**See:** `Epic-01-State-Performance-Optimization.md` for full breakdown
+
+**Stories in this Epic:**
+- Story 1: Memoize AssetRow Component (3 points)
+- Story 2: Optimize AssetList Calculations (3 points)
+- Story 3: Stabilize Event Callbacks (5 points)
+
+**Business Value:**
+- 81% reduction in re-renders
+- 73% faster render times
+- Smoother UX with 10+ assets
+
+---
 
 ## 🧾 User Story 17: Comprehensive Asset Management Feedback System
 see : "User Story 17: Comprehensive Asset Management Feedback System.md" doc.
