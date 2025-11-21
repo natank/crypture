@@ -48,8 +48,8 @@ _I want clear, consistent, and accessible feedback for all portfolio management 
 _so I can confidently track and verify my asset changes._
 
 ### Asset Addition & Editing
-- [ ] **17.1** Show existing quantity in the asset selector dropdown (e.g., "Bitcoin (BTC) - Owned: 1.5")
-- [ ] **17.2** Display toast notifications for all asset operations:
+- [x] **17.1** Show existing quantity in the asset selector dropdown (e.g., "Bitcoin (BTC) - Owned: 1.5")
+- [x] **17.2** Display toast notifications for all asset operations:
   - **Add Success (new)**: "✓ Added 1.5 BTC to your portfolio"
   - **Add Success (existing)**: "✓ Added 1.5 BTC (Total: 3.0 BTC)"
   - **Edit Success**: "✓ Updated BTC quantity to 3.0"
@@ -57,29 +57,29 @@ _so I can confidently track and verify my asset changes._
   - **Error (API)**: "✗ Failed to save changes. Please try again."
 
 ### Import Operations
-- [ ] **17.3** Show import preview with summary before confirmation
-- [ ] **17.4** Display toast notifications for import results:
+- [x] **17.3** Show import preview with summary before confirmation
+- [x] **17.4** Display toast notifications for import results:
   - **Success**: "✓ Imported 5 assets (2 updated, 3 new)"
   - **Partial Success**: "✓ Imported 4/5 assets (1 skipped - invalid format)"
   - **Error**: "✗ Import failed: Invalid file format"
 
 ### Export Operations
-- [ ] **17.5** Show success toast after export with:
+- [x] **17.5** Show success toast after export with:
   - Number of assets exported
   - File format and name
   - Visual confirmation (✓ icon)
-- [ ] **17.6** Show error toast for failed exports
+- [x] **17.6** Show error toast for failed exports
 
 ### Visual Feedback
-- [ ] **17.7** Loading states for all async operations
-- [ ] **17.8** Highlight recently added/updated assets
-- [ ] **17.9** Warning for unusual quantity inputs
+- [x] **17.7** Loading states for all async operations
+- [x] **17.8** Highlight recently added/updated assets
+- [x] **17.9** Warning for unusual quantity inputs
 
 ### Accessibility & Help
-- [ ] **17.10** All notifications accessible via screen readers
-- [ ] **17.11** Tooltips explaining quantity summing behavior
-- [ ] **17.12** Dismissible help banner for first-time users
-- [ ] **17.13** Keyboard navigation support for all interactive elements
+- [x] **17.10** All notifications accessible via screen readers
+- [x] **17.11** Tooltips explaining quantity summing behavior
+- [x] **17.12** Dismissible help banner for first-time users
+- [x] **17.13** Keyboard navigation support for all interactive elements
 
 **Technical Notes**
 - Reuse existing `react-hot-toast` implementation

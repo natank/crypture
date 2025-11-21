@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useMemo, useState, useCallback } from "react";
 import { Toaster } from "react-hot-toast";
 
 import { AddAssetModal } from "@components/AddAssetModal";
@@ -62,12 +62,12 @@ export default function PortfolioPage() {
   // Track highlight triggers for visual feedback (Phase 5)
   const [highlightTriggers, setHighlightTriggers] = useState<Record<string, number>>({});
 
-  const triggerHighlight = (assetId: string) => {
+  const triggerHighlight = useCallback((assetId: string) => {
     setHighlightTriggers(prev => ({
       ...prev,
       [assetId]: (prev[assetId] || 0) + 1,
     }));
-  };
+  }, []); // Empty deps - setHighlightTriggers is stable
 
   // Import/Export logic via custom hook
   const {
@@ -86,41 +86,24 @@ export default function PortfolioPage() {
     priceMap: priceMap as Record<string, number>,
   });
 
-  const e2eMode =
-    typeof window !== "undefined" &&
-    new URLSearchParams(window.location.search).get("e2e") === "1";
-
-  if (loading) {
-    return (
-      <main
-        role="main"
-        aria-busy={true}
-        className="flex flex-col justify-center items-center h-screen text-center"
-      >
-        <LoadingSpinner label=" Loading portfolio..." fullScreen />
-      </main>
-    );
-  }
-
-  const assetToDelete = getAssetById(assetIdPendingDeletion || "");
-
-  const handleAddAsset = (asset: { coinInfo: CoinInfo; quantity: number }) => {
+  // All event handlers wrapped with useCallback for stable references
+  const handleAddAsset = useCallback((asset: { coinInfo: CoinInfo; quantity: number }) => {
     addAsset(asset);
     // Trigger highlight for the added/updated asset
     triggerHighlight(asset.coinInfo.id);
-  };
+  }, [addAsset, triggerHighlight]);
 
-  const handleUpdateQuantity = (id: string, newQuantity: number) => {
+  const handleUpdateQuantity = useCallback((id: string, newQuantity: number) => {
     updateAssetQuantity(id, newQuantity);
     // Trigger highlight for the updated asset
     triggerHighlight(id);
-  };
+  }, [updateAssetQuantity, triggerHighlight]);
 
-  const handleDeleteAsset = (id: string) => {
+  const handleDeleteAsset = useCallback((id: string) => {
     requestDeleteAsset(id);
-  };
+  }, [requestDeleteAsset]);
 
-  const handleExport = (format: "csv" | "json") => {
+  const handleExport = useCallback((format: "csv" | "json") => {
     try {
       if (portfolio.length === 0) {
         notifications.warning("⚠️ Your portfolio is empty. Add assets before exporting.");
@@ -135,13 +118,13 @@ export default function PortfolioPage() {
       const errorMessage = err instanceof Error ? err.message : "Failed to export portfolio";
       notifications.error(`✗ ${errorMessage}`);
     }
-  };
+  }, [portfolio.length, exportPortfolio, notifications]);
 
-  const handleImport = (file: File) => {
+  const handleImport = useCallback((file: File) => {
     onFileSelected(file);
-  };
+  }, [onFileSelected]);
 
-  const handleApplyMerge = () => {
+  const handleApplyMerge = useCallback(() => {
     try {
       const result = applyMerge();
       
@@ -163,9 +146,9 @@ export default function PortfolioPage() {
       const errorMessage = err instanceof Error ? err.message : "Failed to merge portfolio";
       notifications.error(`✗ ${errorMessage}`);
     }
-  };
+  }, [applyMerge, portfolio, triggerHighlight, notifications]);
 
-  const handleApplyReplace = () => {
+  const handleApplyReplace = useCallback(() => {
     try {
       const result = applyReplace();
       
@@ -187,7 +170,26 @@ export default function PortfolioPage() {
       const errorMessage = err instanceof Error ? err.message : "Failed to replace portfolio";
       notifications.error(`✗ ${errorMessage}`);
     }
-  };
+  }, [applyReplace, portfolio, triggerHighlight, notifications]);
+
+  const e2eMode =
+    typeof window !== "undefined" &&
+    new URLSearchParams(window.location.search).get("e2e") === "1";
+
+  // Early return for loading state - placed AFTER all hooks
+  if (loading) {
+    return (
+      <main
+        role="main"
+        aria-busy={true}
+        className="flex flex-col justify-center items-center h-screen text-center"
+      >
+        <LoadingSpinner label=" Loading portfolio..." fullScreen />
+      </main>
+    );
+  }
+
+  const assetToDelete = getAssetById(assetIdPendingDeletion || "");
 
   return (
     <>
