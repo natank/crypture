@@ -10,32 +10,33 @@ Stories are grouped by feature category and prioritized based on their importanc
 
 ## 🗂 Summary of Backlog Items
 
-| ID    | Title                                                             | Priority | Feature Category           | Status    |
-| ----- | ----------------------------------------------------------------- | -------- | -------------------------- | --------- |
-| 1     | Add Crypto Asset with Quantity                                    | High     | Core Portfolio Management  | ✅ Done   |
-| 2     | Delete Crypto Asset                                               | High     | Core Portfolio Management  | ✅ Done   |
-| 3     | Calculate and Display Total Portfolio Value                       | High     | Core Portfolio Management  | ✅ Done   |
-| 4     | Fetch Real-Time Prices via CoinGecko API                          | High     | Real-Time Data Integration | ✅ Done   |
-| 5     | Real-Time Value Updates on Change                                 | High     | Real-Time Data Integration | ✅ Done   |
-| 0     | Render Portfolio Overview Layout                                  | High     | UI and Usability           | ✅ Done   |
-| 6     | Filter/Sort Assets by Name or Value                               | High     | UI and Usability           | ✅ Done   |
-| 7     | Handle UI States (Loading, Error)                                 | Medium   | UI and Usability           | ✅ Done   |
-| 8     | Intuitive Interface for Non-Technical Users                       | Medium   | UI and Usability           | ✅ Done   |
-| UI-14 | Establish Branded Visual Identity Across App                      | Medium   | UI and Usability           | ✅ Done   |
-| UI-15 | Align Component Styles with Updated UI Mockups                    | High     | UI and Usability           | ✅ Done   |
-| UI-16 | Improve Header & Toolbar Layout                                   | Medium   | UI and Usability           | ✅ Done   |
-| 9     | Persist Portfolio in Local Storage/Backend                        | High     | Extended Features          | ✅ Done   |
-| 10    | Export Portfolio to CSV/JSON                                      | High     | Extended Features          | ✅ Done   |
-| 11    | Import Portfolio from CSV/JSON                                    | High     | Extended Features          | ✅ Done   |
-| 12    | Add Charting for Price History                                    | Low      | Extended Features          | ✅ Done   |
-| 13    | Enable User Authentication                                        | Low      | Extended Features          | 🔄 Pending   |
-| 16    | Edit Asset Quantity                                               | High     | Core Portfolio Management  | ✅ Done   |
-| 17    | Comprehensive Asset Management Feedback System                    | High     | UI and Usability           | ✅ Done   |
-| 14    | Add Landing Page with Navigation to Portfolio                     | High     | UI and Usability           | ✅ Done   |
-| 15    | Refactor Sprint 1 Code to Follow SOLID Principles                 | Medium   | Technical Debt             | 🔄 Pending   |
-| TD-02 | UI Visibility Refactor and Design Token Integration               | Medium   | Technical Debt             | ✅ Done   |
-| TD-03 | Windsurf-Aided Review of UI/UX Design Docs                        | Medium   | Technical Debt             | ✅ Done   |
-| TD-04 | Visual/UX Refactor of `ui-mockups.md` for Design System Alignment | Medium   | Technical Debt             | ✅ Done   |
+| ID | Title | Priority | Feature Category | Status | Related Requirement |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| 1 | Add Crypto Asset with Quantity | High | Core Portfolio Management | ✅ Done | [REQ-001-core-portfolio](requirements/REQ-001-core-portfolio.md) |
+| 2 | Delete Crypto Asset | High | Core Portfolio Management | ✅ Done | [REQ-001-core-portfolio](requirements/REQ-001-core-portfolio.md) |
+| 3 | Calculate and Display Total Portfolio Value | High | Core Portfolio Management | ✅ Done | [REQ-001-core-portfolio](requirements/REQ-001-core-portfolio.md) |
+| 4 | Fetch Real-Time Prices via CoinGecko API | High | Real-Time Data Integration | ✅ Done | [REQ-002-real-time-data](requirements/REQ-002-real-time-data.md) |
+| 5 | Real-Time Value Updates on Change | High | Real-Time Data Integration | ✅ Done | [REQ-002-real-time-data](requirements/REQ-002-real-time-data.md) |
+| 0 | Render Portfolio Overview Layout | High | UI and Usability | ✅ Done | [REQ-003-ui-usability](requirements/REQ-003-ui-usability.md) |
+| 6 | Filter/Sort Assets by Name or Value | High | UI and Usability | ✅ Done | [REQ-003-ui-usability](requirements/REQ-003-ui-usability.md) |
+| 7 | Handle UI States (Loading, Error) | Medium | UI and Usability | ✅ Done | [REQ-003-ui-usability](requirements/REQ-003-ui-usability.md) |
+| 8 | Intuitive Interface for Non-Technical Users | Medium | UI and Usability | ✅ Done | [REQ-003-ui-usability](requirements/REQ-003-ui-usability.md) |
+| UI-14 | Establish Branded Visual Identity Across App | Medium | UI and Usability | ✅ Done | [REQ-004-branding](requirements/REQ-004-branding.md) |
+| UI-15 | Align Component Styles with Updated UI Mockups | High | UI and Usability | ✅ Done | [REQ-004-branding](requirements/REQ-004-branding.md) |
+| UI-16 | Improve Header & Toolbar Layout | Medium | UI and Usability | ✅ Done | [REQ-004-branding](requirements/REQ-004-branding.md) |
+| 9 | Persist Portfolio in Local Storage/Backend | High | Extended Features | ✅ Done | [REQ-005-persistence](requirements/REQ-005-persistence.md) |
+| 10 | Export Portfolio to CSV/JSON | High | Extended Features | ✅ Done | [REQ-006-import-export](requirements/REQ-006-import-export.md) |
+| 11 | Import Portfolio from CSV/JSON | High | Extended Features | ✅ Done | [REQ-006-import-export](requirements/REQ-006-import-export.md) |
+| 12 | Add Charting for Price History | Low | Extended Features | ✅ Done | [REQ-007-charting](requirements/REQ-007-charting.md) |
+| 13 | Enable User Authentication | Low | Extended Features | 🔄 Pending | [REQ-008-auth](requirements/REQ-008-auth.md) |
+| 16 | Edit Asset Quantity | High | Core Portfolio Management | ✅ Done | [REQ-001-core-portfolio](requirements/REQ-001-core-portfolio.md) |
+| 17 | Improve Asset Addition Feedback & Visibility | Medium | UI and Usability | 🔄 Pending | [REQ-009-feedback](requirements/REQ-009-feedback.md) |
+| 14 | Add Landing Page with Navigation to Portfolio | High | UI and Usability | ✅ Done | [REQ-003-ui-usability](requirements/REQ-003-ui-usability.md) |
+| 15 | Refactor Sprint 1 Code to Follow SOLID Principles | Medium | Technical Debt | 🔄 Pending | [REQ-010-tech-debt](requirements/REQ-010-tech-debt.md) |
+| TD-02 | UI Visibility Refactor and Design Token Integration | Medium | Technical Debt | ✅ Done | [REQ-010-tech-debt](requirements/REQ-010-tech-debt.md) |
+| TD-03 | Windsurf-Aided Review of UI/UX Design Docs | Medium | Technical Debt | ✅ Done | [REQ-010-tech-debt](requirements/REQ-010-tech-debt.md) |
+| TD-04 | Visual/UX Refactor of `ui-mockups.md` for Design System Alignment | Medium | Technical Debt | ✅ Done | [REQ-010-tech-debt](requirements/REQ-010-tech-debt.md) |
+| 999 | Demo Feature for Process Validation | Low | Demo | 🔄 Pending | [REQ-999-demo-feature](requirements/REQ-999-demo-feature.md) |
 
 ---
 

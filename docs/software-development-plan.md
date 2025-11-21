@@ -242,14 +242,29 @@ Responsible for creating user interface wireframes, mockups, and visual componen
 
 ## 8. **Documentation Plan**
 
-| Document                     | Maintained By     | Description                           |
-| ---------------------------- | ----------------- | ------------------------------------- |
-| `product-vision.md`          | PO Agent          | High-level goals and success criteria |
-| `product-backlog.md`         | PO Agent          | Prioritized feature list              |
-| `sprint-planning.md`         | Scrum Master, Dev | Sprint goals and task breakdown       |
-| `sprint-progress-tracker.md` | Scrum Master      | Daily/weekly progress updates         |
-| `a11y-utilities.md`          | Dev               | Shared CSS utilities for accessibility and mobile UX |
-| `icon-component.md`          | Dev               | Guidance and API for standardized, accessible icons |
+The project follows a structured documentation process to ensure traceability and clarity.
+
+### Documentation Hierarchy
+
+1.  **Product Backlog (`docs/product-backlog.md`)**: The single source of truth for all features. Items are tracked in a table with IDs and links to requirements.
+2.  **Requirements (`docs/requirements/REQ-[ID]-[Name].md`)**: Detailed product requirements linked to backlog items. Each requirement document defines functional and non-functional requirements.
+3.  **User Stories (`docs/stories/STORY-[ID]-[Name].md`)**: Implementation-ready stories linked to requirements. Each story includes description, acceptance criteria, planning, architecture, and task breakdown.
+
+### Traceability Flow
+`Backlog Item` -> `Requirement` -> `User Story`
+
+### Artifacts Table
+
+| Document | Maintained By | Description |
+| :--- | :--- | :--- |
+| `product-vision.md` | PO Agent | High-level goals and success criteria |
+| `product-backlog.md` | PO Agent | Prioritized feature list with links to requirements |
+| `requirements/*.md` | PO Agent | Detailed product requirements |
+| `stories/*.md` | PO Agent / Dev | Detailed user stories and implementation plans |
+| `sprint-planning.md` | Scrum Master, Dev | Sprint goals and task breakdown |
+| `sprint-progress-tracker.md` | Scrum Master | Daily/weekly progress updates |
+| `a11y-utilities.md` | Dev | Shared CSS utilities for accessibility and mobile UX |
+| `icon-component.md` | Dev | Guidance and API for standardized, accessible icons |
 
 ## 9. **Testing Strategy**
 
