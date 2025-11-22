@@ -48,3 +48,56 @@
 - **Visuals**:
   - Use `text-green-500` and `text-red-500` for price changes.
   - Use `animate-pulse` for loading states.
+
+---
+
+## 📝 Pull Request Description
+
+### Summary
+Implements the **Trending & Discovery Feed** feature, adding trending coins and top movers (gainers/losers) to the Market Overview page. This enhancement helps users discover new investment opportunities and stay informed about market momentum.
+
+### Changes Made
+
+#### Backend/Services
+- **`coinService.ts`**: Added `fetchTrendingCoins()` and `fetchTopMovers()` functions
+- **`market.ts`**: Added TypeScript interfaces for `TrendingCoin`, `TrendingApiResponse`, and `MarketMover`
+- **`formatters.ts`**: Added `formatCurrency()` helper for consistent price formatting
+
+#### Hooks
+- **`useTrendingCoins.ts`**: Custom hook to fetch and manage trending coins data
+- **`useTopMovers.ts`**: Custom hook to fetch and manage top gainers/losers data
+
+#### Components
+- **`TrendingSection.tsx`**: Displays top 8 trending coins in a responsive grid
+- **`TopMoversSection.tsx`**: Displays top 5 gainers and top 5 losers in side-by-side sections
+- **`MarketOverview/index.tsx`**: Integrated new sections below market metrics
+
+#### Testing
+- **Unit Tests**:
+  - `useTrendingCoins.test.ts`: Tests for trending coins hook
+  - `useTopMovers.test.ts`: Tests for top movers hook
+  - `TrendingSection.test.tsx`: Component tests for trending section
+  - `TopMoversSection.test.tsx`: Component tests for top movers section
+- **E2E Tests**:
+  - `trending-discovery.spec.ts`: End-to-end tests for the complete feature
+  - Updated `market-page.pom.ts`: Added locators for new sections
+
+#### Bug Fixes
+- Fixed lint error in `useNotifications.tsx` (removed unsupported `aria-label` from `ariaProps`)
+
+### Test Results
+- ✅ All unit tests passing (285 tests)
+- ✅ All E2E tests passing (66 tests)
+- ✅ No TypeScript errors
+- ✅ Feature verified in browser
+
+### Screenshots
+The feature displays:
+- 🔥 **Trending Coins (24h)**: Grid of 8 trending coins with rank, icon, name, and symbol
+- 🚀 **Top Gainers**: 5 coins with highest 24h price increase (green)
+- 📉 **Top Losers**: 5 coins with lowest 24h price change (red)
+
+### Related
+- **Story**: STORY-019-trending-discovery.md
+- **Requirement**: REQ-011-market-intel.md
+- **Backlog Item**: #19

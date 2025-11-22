@@ -19,6 +19,14 @@ export class MarketPage {
     readonly activeCryptos: Locator;
     readonly activeMarkets: Locator;
 
+    // Trending & Discovery
+    readonly trendingSection: Locator;
+    readonly topGainersSection: Locator;
+    readonly topLosersSection: Locator;
+    readonly trendingCoins: Locator;
+    readonly topGainers: Locator;
+    readonly topLosers: Locator;
+
     constructor(page: Page) {
         this.page = page;
 
@@ -37,6 +45,18 @@ export class MarketPage {
         this.ethDominance = page.getByTestId("metric-eth-dominance");
         this.activeCryptos = page.getByTestId("metric-active-cryptos");
         this.activeMarkets = page.getByTestId("metric-active-markets");
+
+        // Trending & Discovery
+        this.trendingSection = page.getByRole("heading", { name: /trending coins/i });
+        this.topGainersSection = page.getByRole("heading", { name: /top gainers/i });
+        this.topLosersSection = page.getByRole("heading", { name: /top losers/i });
+
+        // We can scope these to their respective containers if needed, but for now simple text matching or structure is fine
+        // Assuming the structure: TrendingSection -> grid -> divs
+        this.trendingCoins = page.locator('text=Trending Coins').locator('..').locator('.grid > div');
+
+        this.topGainers = page.locator('text=Top Gainers').locator('..').locator('.space-y-4 > div');
+        this.topLosers = page.locator('text=Top Losers').locator('..').locator('.space-y-4 > div');
     }
 
     async goto() {
