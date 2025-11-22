@@ -87,8 +87,9 @@ For detailed information about our bug tracking process, please see the [Bug Tra
 
 **Consumes:**
 
-- `docs/sprint-planning.md`
-- `docs/sprint-progress-tracker.md`
+- `docs/product-backlog.md` - Prioritized backlog with status tracking
+- `docs/requirements/*.md` - Detailed requirements
+- `docs/stories/*.md` - User stories with implementation status
 
 ### 🧑‍🔧 Scrum Master Agent
 
@@ -105,8 +106,8 @@ For detailed information about our bug tracking process, please see the [Bug Tra
 
 **Produces:**
 
-- `docs/sprint-planning.md`
-- `docs/sprint-progress-tracker.md`
+- Facilitates planning sessions using product backlog and stories
+- Tracks progress through status updates in backlog items and story documents
 
 **Consumes:**
 
@@ -120,7 +121,8 @@ The Developer Agent is a cross-functional implementer responsible for transformi
 
 **Responsibilities:**
 
-- use the sprint-planning to check the current story you work on and plan next step.
+- Check `product-backlog.md` for prioritized items and their status.
+- Review story documents in `docs/stories/` for current work and next steps.
 - Break down each committed user story into scoped, technical tasks using the documented strategy.
 - Implement UI components, custom hooks, and state logic following Tailwind CSS design patterns and mockups.
 - Collaborate with Designer and PO agents to clarify functionality and maintain usability.
@@ -128,7 +130,7 @@ The Developer Agent is a cross-functional implementer responsible for transformi
 - Write tests to ensure feature quality and stability:
   - **Unit & integration tests** using `vitest` + `@testing-library/react` (RTL).
   - **E2E tests using Playwright + POM** Follow the project-standard conventions in e2e-guide.md for folder structure, fixtures, and test writing patterns.
-- Update the `sprint-planning.md` with a clear, structured task list for each user story.
+- Update story documents with task breakdown and implementation notes.
 - Follow component decomposition practices to isolate UI, logic, and side effects.
 - Provide feedback during sprint review and suggest improvements to design or architecture.
 
@@ -137,13 +139,14 @@ The Developer Agent is a cross-functional implementer responsible for transformi
 - Feature implementations inside `src/` (e.g., `pages/`, `hooks/`, `components/`)
 - Unit tests and integration tests in `__tests__/` or colocated with components
 - E2E test specs and page objects in `e2e/` using Playwright
-- Updates to `docs/sprint-planning.md` under Technical Breakdown
+- Updates to story documents in `docs/stories/` with technical breakdown and progress
 
 **Consumes:**
 
-- `docs/product-backlog.md` – Feature priorities and acceptance criteria
+- `docs/product-backlog.md` – Feature priorities, status, and acceptance criteria
+- `docs/requirements/*.md` – Detailed product requirements
+- `docs/stories/*.md` – Current stories and implementation plans
 - `docs/style-guide.md`, `docs/ui-mockups.md` – UI structure and Tailwind usage
-- `docs/sprint-planning.md` – Current Sprint goals and committed stories
 - `docs/product-vision.md` – Context for user needs and design decisions
 
 ### 🧪 Test Engineer (QA Agent)
@@ -172,8 +175,9 @@ The Developer Agent is a cross-functional implementer responsible for transformi
 
 **Consumes:**
 
-- `docs/product-backlog.md` – Feature priorities and acceptance criteria
-- `docs/sprint-planning.md` – Current Sprint goals and committed stories
+- `docs/product-backlog.md` – Feature priorities, status, and acceptance criteria
+- `docs/requirements/*.md` – Detailed product requirements
+- `docs/stories/*.md` – User stories with test scenarios
 - `docs/product-vision.md` – Context for user needs and design decisions
 
 ### 🎨 Designer Agent
@@ -199,8 +203,8 @@ Responsible for creating user interface wireframes, mockups, and visual componen
   **Consumes:**
 
 - `docs/product-vision.md`
-- `docs/product-backlog.md`
-- `docs/sprint-planning.md` (for awareness of upcoming features)
+- `docs/product-backlog.md` – For prioritized features and status
+- `docs/requirements/*.md` – For detailed feature requirements
 - `docs/designer-activity-plan.md` – Self-authored guide used for tracking and iterating on design responsibilities and progress.
 
 ## 5. **Development Approach**
@@ -258,11 +262,9 @@ The project follows a structured documentation process to ensure traceability an
 | Document | Maintained By | Description |
 | :--- | :--- | :--- |
 | `product-vision.md` | PO Agent | High-level goals and success criteria |
-| `product-backlog.md` | PO Agent | Prioritized feature list with links to requirements |
-| `requirements/*.md` | PO Agent | Detailed product requirements |
-| `stories/*.md` | PO Agent / Dev | Detailed user stories and implementation plans |
-| `sprint-planning.md` | Scrum Master, Dev | Sprint goals and task breakdown |
-| `sprint-progress-tracker.md` | Scrum Master | Daily/weekly progress updates |
+| `product-backlog.md` | PO Agent | Prioritized feature list with status and links to requirements |
+| `requirements/*.md` | PO Agent | Detailed product requirements with traceability |
+| `stories/*.md` | PO Agent / Dev | User stories with implementation plans, tasks, and status |
 | `a11y-utilities.md` | Dev | Shared CSS utilities for accessibility and mobile UX |
 | `icon-component.md` | Dev | Guidance and API for standardized, accessible icons |
 
@@ -277,12 +279,13 @@ The project follows a structured documentation process to ensure traceability an
 
 ## 10. **Pull Request Process & Template**
 
-To ensure consistent, traceable changes aligned with backlog and sprint planning:
+To ensure consistent, traceable changes aligned with product backlog:
 
 - **Template Location**: See `.github/PULL_REQUEST_TEMPLATE.md` for the required PR structure.
 - **Required Traceability**: Each PR must link to:
-  - `docs/product-backlog.md` story section (ID and title)
-  - `docs/sprint-planning.md` corresponding sprint/story section
+  - `docs/product-backlog.md` backlog item (ID and title)
+  - `docs/requirements/REQ-XXX-name.md` corresponding requirement document
+  - `docs/stories/STORY-XXX-name.md` corresponding story document
   - Any relevant E2E/Unit test specs added or changed
 - **Accessibility Guidance**: Follow `docs/a11y-utilities.md` and `docs/icon-component.md` for focus, touch targets, and icon labeling. Reference these in PRs when a11y is impacted.
 - **Content Checklist** (enforced by the template): Summary, Changes, Files Changed, Acceptance Criteria mapping, How to Test, Screenshots (if UI), Notes, Linked Work, and a completion Checklist (lint/tests/a11y/docs).
