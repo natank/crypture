@@ -15,17 +15,16 @@ describe("PortfolioHeader", () => {
     expect(valueDisplay).toHaveTextContent(/\$12,346/);
   });
 
-  it("renders fallback when no value is provided", () => {
+  it("does not render total value when not provided", () => {
     render(
       <MemoryRouter>
         <PortfolioHeader />
       </MemoryRouter>
     );
 
-    const valueDisplay = screen.getByTestId("total-value");
+    const valueDisplay = screen.queryByTestId("total-value");
 
-    expect(valueDisplay).toBeInTheDocument();
-    expect(valueDisplay).toHaveTextContent(/^💰\s*Total Portfolio Value:\s*—$/);
+    expect(valueDisplay).not.toBeInTheDocument();
   });
 
   it("renders last updated timestamp if provided", () => {
