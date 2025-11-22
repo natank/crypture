@@ -2,6 +2,7 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-d
 import LandingPage from "@pages/LandingPage";
 import PortfolioPage from "@pages/PortfolioPage";
 import { AboutPage } from "@pages/AboutPage";
+import { MarketPage } from "@pages/MarketPage";
 
 function App() {
   return (
@@ -9,6 +10,7 @@ function App() {
       <Routes>
         <Route path="/" element={<LandingPage />} />
         <Route path="/portfolio" element={<PortfolioPage />} />
+        <Route path="/market" element={<MarketPage />} />
         <Route path="/about" element={<AboutPage />} />
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>

@@ -1,5 +1,5 @@
 import React from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, NavLink } from "react-router-dom";
 
 type PortfolioHeaderProps = {
   totalValue?: string | number | null;
@@ -15,11 +15,11 @@ export default function PortfolioHeader({
   const formattedValue =
     totalValue != null && !isNaN(Number(totalValue))
       ? new Intl.NumberFormat("en-US", {
-          style: "currency",
-          currency: "USD",
-          maximumFractionDigits: 0,
-        }).format(Number(totalValue))
-      : "—";
+        style: "currency",
+        currency: "USD",
+        maximumFractionDigits: 0,
+      }).format(Number(totalValue))
+      : null;
 
   const relativeTime = lastUpdatedAt
     ? `${Math.floor((Date.now() - lastUpdatedAt) / 1000)}s ago`
@@ -29,7 +29,6 @@ export default function PortfolioHeader({
 
   const scrollToTop = (e: React.MouseEvent) => {
     e.preventDefault();
-    // Navigate to the root path (landing page)
     navigate('/');
   };
 
@@ -39,9 +38,9 @@ export default function PortfolioHeader({
       className={`bg-gradient-to-r from-teal-500 to-indigo-600 text-white shadow-md rounded-b-lg mb-6 ${className}`}
     >
       <div className="w-full max-w-7xl mx-auto px-6 py-4 flex items-center justify-between flex-wrap gap-4">
-        <div className="flex items-center space-x-4">
-          <a 
-            href="#" 
+        <div className="flex items-center gap-8">
+          <a
+            href="#"
             onClick={scrollToTop}
             className="flex items-center space-x-2 group hover:opacity-90 transition-opacity"
           >
@@ -56,19 +55,45 @@ export default function PortfolioHeader({
               Crypture
             </span>
           </a>
-          <span className="hidden md:inline-block text-sm text-white/80 font-medium">
-            Track your crypto clearly
-          </span>
+
+          <nav className="hidden md:flex items-center space-x-1">
+            <NavLink
+              to="/portfolio"
+              className={({ isActive }) =>
+                `px-3 py-2 rounded-md text-sm font-medium transition-colors ${isActive
+                  ? "bg-white/20 text-white"
+                  : "text-white/80 hover:bg-white/10 hover:text-white"
+                }`
+              }
+            >
+              Portfolio
+            </NavLink>
+            <NavLink
+              to="/market"
+              className={({ isActive }) =>
+                `px-3 py-2 rounded-md text-sm font-medium transition-colors ${isActive
+                  ? "bg-white/20 text-white"
+                  : "text-white/80 hover:bg-white/10 hover:text-white"
+                }`
+              }
+            >
+              Market
+            </NavLink>
+          </nav>
         </div>
 
         <div className="text-right">
-          <div
-            className="text-xl font-brand text-white flex items-center gap-2"
-            data-testid="total-value"
-            aria-live="polite"
-          >
-            💰 <span>Total Portfolio Value: {formattedValue}</span>
-          </div>
+          {formattedValue ? (
+            <div
+              className="text-xl font-brand text-white flex items-center gap-2"
+              data-testid="total-value"
+              aria-live="polite"
+            >
+              💰 <span>Total Portfolio Value: {formattedValue}</span>
+            </div>
+          ) : (
+            <div className="h-7"></div> // Spacer
+          )}
 
           {relativeTime && (
             <p

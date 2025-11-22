@@ -216,16 +216,7 @@ Responsible for creating user interface wireframes, mockups, and visual componen
 - **Documentation**: Markdown-based docs for all phases.
 
 ## 6. **System Architecture**
-
-### Before Refactor
-
-```
-/src
-└── pages/
-    └── Portfolio.tsx (monolithic)
-```
-
-### After Refactor
+r
 
 ```
 /src
