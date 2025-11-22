@@ -30,13 +30,33 @@ Stories are grouped by feature category and prioritized based on their importanc
 | 12 | Add Charting for Price History | Low | Extended Features | ✅ Done | [REQ-007-charting](requirements/REQ-007-charting.md) |
 | 13 | Enable User Authentication | Low | Extended Features | 🔄 Pending | [REQ-008-auth](requirements/REQ-008-auth.md) |
 | 16 | Edit Asset Quantity | High | Core Portfolio Management | ✅ Done | [REQ-001-core-portfolio](requirements/REQ-001-core-portfolio.md) |
-| 17 | Improve Asset Addition Feedback & Visibility | Medium | UI and Usability | 🔄 Pending | [REQ-009-feedback](requirements/REQ-009-feedback.md) |
+| 17 | Improve Asset Addition Feedback & Visibility | Medium | UI and Usability | ✅ Done | [REQ-009-feedback](requirements/REQ-009-feedback.md) |
 | 14 | Add Landing Page with Navigation to Portfolio | High | UI and Usability | ✅ Done | [REQ-003-ui-usability](requirements/REQ-003-ui-usability.md) |
-| 15 | Refactor Sprint 1 Code to Follow SOLID Principles | Medium | Technical Debt | 🔄 Pending | [REQ-010-tech-debt](requirements/REQ-010-tech-debt.md) |
+| 15 | Refactor Sprint 1 Code to Follow SOLID Principles | Medium | Technical Debt | ✅ Done | [REQ-010-tech-debt](requirements/REQ-010-tech-debt.md) |
 | TD-02 | UI Visibility Refactor and Design Token Integration | Medium | Technical Debt | ✅ Done | [REQ-010-tech-debt](requirements/REQ-010-tech-debt.md) |
 | TD-03 | Windsurf-Aided Review of UI/UX Design Docs | Medium | Technical Debt | ✅ Done | [REQ-010-tech-debt](requirements/REQ-010-tech-debt.md) |
 | TD-04 | Visual/UX Refactor of `ui-mockups.md` for Design System Alignment | Medium | Technical Debt | ✅ Done | [REQ-010-tech-debt](requirements/REQ-010-tech-debt.md) |
 | 999 | Demo Feature for Process Validation | Low | Demo | 🔄 Pending | [REQ-999-demo-feature](requirements/REQ-999-demo-feature.md) |
+
+---
+
+## 🚀 Post-MVP Features
+
+| ID | Title | Priority | Feature Category | Status | Related Requirement |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| 18 | Market Overview Dashboard | High | Market Intelligence | 🔄 Pending | [REQ-011-market-intel](requirements/REQ-011-market-intel.md) |
+| 19 | Trending & Discovery Feed | High | Market Intelligence | 🔄 Pending | [REQ-011-market-intel](requirements/REQ-011-market-intel.md) |
+| 20 | Category-Based Exploration | Medium | Market Intelligence | 🔄 Pending | [REQ-011-market-intel](requirements/REQ-011-market-intel.md) |
+| 21 | Portfolio Composition Visualizations | High | Advanced Analytics | 🔄 Pending | [REQ-012-analytics](requirements/REQ-012-analytics.md) |
+| 22 | Portfolio Performance Tracking | High | Advanced Analytics | 🔄 Pending | [REQ-012-analytics](requirements/REQ-012-analytics.md) |
+| 23 | Asset-Level Insights & Metrics | Medium | Advanced Analytics | 🔄 Pending | [REQ-012-analytics](requirements/REQ-012-analytics.md) |
+| 24 | Price Alerts & Notifications | High | User Engagement | 🔄 Pending | [REQ-013-notifications](requirements/REQ-013-notifications.md) |
+| 25 | Daily Portfolio Summary & Insights | Medium | User Engagement | 🔄 Pending | [REQ-013-notifications](requirements/REQ-013-notifications.md) |
+| 26 | Coin Deep Dive Pages | Medium | Investment Research | 🔄 Pending | [REQ-014-research](requirements/REQ-014-research.md) |
+| 27 | Compare Coins Side-by-Side | Low | Investment Research | 🔄 Pending | [REQ-014-research](requirements/REQ-014-research.md) |
+| 28 | Educational Tooltips & Contextual Help | Medium | Investment Research | 🔄 Pending | [REQ-014-research](requirements/REQ-014-research.md) |
+
+> **Note:** For detailed strategic context and phasing recommendations, see [`post-mvp-strategy.md`](../post-mvp-strategy.md) in the artifacts directory.
 
 ---
 
