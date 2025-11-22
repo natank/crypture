@@ -1,6 +1,8 @@
 import React from 'react';
 import { useGlobalMarketData } from '../../hooks/useGlobalMarketData';
 import { MarketMetricsGrid } from './MarketMetricsGrid';
+import { TrendingSection } from './TrendingSection';
+import { TopMoversSection } from './TopMoversSection';
 import { formatDateTime } from '../../utils/formatters';
 
 export const MarketOverview: React.FC = () => {
@@ -39,8 +41,8 @@ export const MarketOverview: React.FC = () => {
                 <button
                     onClick={() => refresh()}
                     className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-all ${isLoading
-                            ? 'bg-purple-400 cursor-not-allowed'
-                            : 'bg-brand-primary hover:bg-purple-700'
+                        ? 'bg-purple-400 cursor-not-allowed'
+                        : 'bg-brand-primary hover:bg-purple-700'
                         } text-white`}
                     aria-label="Refresh market data"
                     disabled={isLoading}
@@ -59,6 +61,8 @@ export const MarketOverview: React.FC = () => {
                     <MarketMetricsGrid data={data} isLoading={false} />
                 </div>
             )}
+            <TrendingSection />
+            <TopMoversSection />
         </div>
     );
 };
