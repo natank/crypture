@@ -73,3 +73,60 @@ export async function fetchAssetHistory(
     throw new Error("Unable to fetch asset history");
   }
 }
+
+// Cache for global market data
+import { GlobalMarketData, GlobalMarketApiResponse } from "../types/market";
+
+const CACHE_DURATION = 10 * 60 * 1000; // 10 minutes
+let globalMarketCache: { data: GlobalMarketData; timestamp: number } | null = null;
+
+export const clearGlobalMarketCache = () => {
+  globalMarketCache = null;
+};
+
+export async function fetchGlobalMarketData(): Promise<GlobalMarketData> {
+  // Check cache first
+  if (globalMarketCache && (Date.now() - globalMarketCache.timestamp) < CACHE_DURATION) {
+    return globalMarketCache.data;
+  }
+
+  const GLOBAL_URL = `https://api.coingecko.com/api/v3/global?x_cg_demo_api_key=${API_KEY}`;
+
+  try {
+    const response = await fetch(GLOBAL_URL);
+
+    if (!response.ok) {
+      throw new Error(`CoinGecko API error: ${response.status}`);
+    }
+
+    const json: GlobalMarketApiResponse = await response.json();
+    const { data } = json;
+
+    const marketData: GlobalMarketData = {
+      totalMarketCap: data.total_market_cap.usd,
+      totalVolume24h: data.total_volume.usd,
+      btcDominance: data.market_cap_percentage.btc,
+      ethDominance: data.market_cap_percentage.eth,
+      marketCapChange24h: data.market_cap_change_percentage_24h_usd,
+      activeCryptocurrencies: data.active_cryptocurrencies,
+      markets: data.markets,
+      updatedAt: data.updated_at,
+    };
+
+    // Update cache
+    globalMarketCache = {
+      data: marketData,
+      timestamp: Date.now(),
+    };
+
+    return marketData;
+  } catch (error: unknown) {
+    if (
+      error instanceof Error &&
+      error.message.startsWith("CoinGecko API error")
+    ) {
+      throw error;
+    }
+    throw new Error("Unable to fetch global market data");
+  }
+}
