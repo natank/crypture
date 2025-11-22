@@ -75,7 +75,7 @@ export async function fetchAssetHistory(
 }
 
 // Cache for global market data
-import { GlobalMarketData, GlobalMarketApiResponse } from "../types/market";
+import { GlobalMarketData, GlobalMarketApiResponse, TrendingCoin, TrendingApiResponse, MarketMover } from "../types/market";
 
 const CACHE_DURATION = 10 * 60 * 1000; // 10 minutes
 let globalMarketCache: { data: GlobalMarketData; timestamp: number } | null = null;
@@ -128,5 +128,58 @@ export async function fetchGlobalMarketData(): Promise<GlobalMarketData> {
       throw error;
     }
     throw new Error("Unable to fetch global market data");
+  }
+}
+
+export async function fetchTrendingCoins(): Promise<TrendingCoin[]> {
+  const TRENDING_URL = `https://api.coingecko.com/api/v3/search/trending?x_cg_demo_api_key=${API_KEY}`;
+
+  try {
+    const response = await fetch(TRENDING_URL);
+
+    if (!response.ok) {
+      throw new Error(`CoinGecko API error: ${response.status}`);
+    }
+
+    const json: TrendingApiResponse = await response.json();
+    return json.coins.map((coin) => coin.item);
+  } catch (error: unknown) {
+    if (
+      error instanceof Error &&
+      error.message.startsWith("CoinGecko API error")
+    ) {
+      throw error;
+    }
+    throw new Error("Unable to fetch trending coins");
+  }
+}
+
+export async function fetchTopMovers(): Promise<{ gainers: MarketMover[]; losers: MarketMover[] }> {
+  const BASE_URL = `https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&per_page=5&page=1&x_cg_demo_api_key=${API_KEY}`;
+  const GAINERS_URL = `${BASE_URL}&order=price_change_percentage_24h_desc`;
+  const LOSERS_URL = `${BASE_URL}&order=price_change_percentage_24h_asc`;
+
+  try {
+    const [gainersRes, losersRes] = await Promise.all([
+      fetch(GAINERS_URL),
+      fetch(LOSERS_URL)
+    ]);
+
+    if (!gainersRes.ok || !losersRes.ok) {
+      throw new Error(`CoinGecko API error`);
+    }
+
+    const gainers: MarketMover[] = await gainersRes.json();
+    const losers: MarketMover[] = await losersRes.json();
+
+    return { gainers, losers };
+  } catch (error: unknown) {
+    if (
+      error instanceof Error &&
+      error.message.startsWith("CoinGecko API error")
+    ) {
+      throw error;
+    }
+    throw new Error("Unable to fetch top movers");
   }
 }

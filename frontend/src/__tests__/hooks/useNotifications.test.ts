@@ -32,9 +32,9 @@ describe('useNotifications', () => {
   describe('success notifications', () => {
     it('calls toast.custom with success message and default duration', () => {
       const { result } = renderHook(() => useNotifications());
-      
+
       result.current.success('Test success message');
-      
+
       expect(toast.custom).toHaveBeenCalledWith(
         expect.any(Function),
         expect.objectContaining({
@@ -49,9 +49,9 @@ describe('useNotifications', () => {
 
     it('applies custom duration when provided', () => {
       const { result } = renderHook(() => useNotifications());
-      
+
       result.current.success('Custom duration', { duration: 5000 });
-      
+
       expect(toast.custom).toHaveBeenCalledWith(
         expect.any(Function),
         expect.objectContaining({
@@ -60,44 +60,17 @@ describe('useNotifications', () => {
       );
     });
 
-    it('includes custom aria-label when provided', () => {
-      const { result } = renderHook(() => useNotifications());
-      
-      result.current.success('Success', { ariaLabel: 'Asset added successfully' });
-      
-      expect(toast.custom).toHaveBeenCalledWith(
-        expect.any(Function),
-        expect.objectContaining({
-          ariaProps: expect.objectContaining({
-            'aria-label': 'Asset added successfully',
-          }),
-        })
-      );
-    });
 
-    it('uses message as aria-label when custom label not provided', () => {
-      const { result } = renderHook(() => useNotifications());
-      const message = 'Default aria label test';
-      
-      result.current.success(message);
-      
-      expect(toast.custom).toHaveBeenCalledWith(
-        expect.any(Function),
-        expect.objectContaining({
-          ariaProps: expect.objectContaining({
-            'aria-label': message,
-          }),
-        })
-      );
-    });
+
+
   });
 
   describe('error notifications', () => {
     it('calls toast.custom with error message and longer duration', () => {
       const { result } = renderHook(() => useNotifications());
-      
+
       result.current.error('Test error message');
-      
+
       expect(toast.custom).toHaveBeenCalledWith(
         expect.any(Function),
         expect.objectContaining({
@@ -112,9 +85,9 @@ describe('useNotifications', () => {
 
     it('applies custom duration for errors', () => {
       const { result } = renderHook(() => useNotifications());
-      
+
       result.current.error('Error', { duration: 10000 });
-      
+
       expect(toast.custom).toHaveBeenCalledWith(
         expect.any(Function),
         expect.objectContaining({
@@ -125,9 +98,9 @@ describe('useNotifications', () => {
 
     it('uses assertive aria-live for errors', () => {
       const { result } = renderHook(() => useNotifications());
-      
+
       result.current.error('Critical error');
-      
+
       expect(toast.custom).toHaveBeenCalledWith(
         expect.any(Function),
         expect.objectContaining({
@@ -142,9 +115,9 @@ describe('useNotifications', () => {
   describe('warning notifications', () => {
     it('calls toast.custom with warning message and medium duration', () => {
       const { result } = renderHook(() => useNotifications());
-      
+
       result.current.warning('Test warning message');
-      
+
       expect(toast.custom).toHaveBeenCalledWith(
         expect.any(Function),
         expect.objectContaining({
@@ -159,9 +132,9 @@ describe('useNotifications', () => {
 
     it('applies custom duration for warnings', () => {
       const { result } = renderHook(() => useNotifications());
-      
+
       result.current.warning('Warning', { duration: 7000 });
-      
+
       expect(toast.custom).toHaveBeenCalledWith(
         expect.any(Function),
         expect.objectContaining({
@@ -175,9 +148,9 @@ describe('useNotifications', () => {
     it('calls toast with info message and default duration', () => {
       const { result } = renderHook(() => useNotifications());
       const message = 'Info message';
-      
+
       result.current.info(message);
-      
+
       expect(toast).toHaveBeenCalledWith(
         message,
         expect.objectContaining({
@@ -194,9 +167,9 @@ describe('useNotifications', () => {
   describe('custom icons', () => {
     it('passes custom icon to toast component', () => {
       const { result } = renderHook(() => useNotifications());
-      
+
       result.current.success('Message', { icon: '🎉' });
-      
+
       // Verify toast.custom was called (icon is passed to component via render function)
       expect(toast.custom).toHaveBeenCalled();
     });
@@ -205,12 +178,12 @@ describe('useNotifications', () => {
   describe('accessibility', () => {
     it('all notifications include proper ARIA attributes', () => {
       const { result } = renderHook(() => useNotifications());
-      
+
       result.current.success('Success');
       result.current.error('Error');
       result.current.warning('Warning');
       result.current.info('Info');
-      
+
       // Verify all calls include ariaProps
       const calls = (toast.custom as ReturnType<typeof vi.fn>).mock.calls;
       calls.forEach((call) => {

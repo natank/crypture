@@ -9,6 +9,15 @@ export const formatLargeNumber = (num: number): string => {
     return `${sign}$${absNum.toFixed(2)}`;
 };
 
+export const formatCurrency = (value: number): string => {
+    return new Intl.NumberFormat('en-US', {
+        style: 'currency',
+        currency: 'USD',
+        minimumFractionDigits: 2,
+        maximumFractionDigits: value < 1 ? 6 : 2,
+    }).format(value);
+};
+
 export const formatPercentage = (num: number): string => {
     return `${num.toFixed(2)}%`;
 };

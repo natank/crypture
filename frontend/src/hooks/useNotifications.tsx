@@ -37,7 +37,6 @@ export function useNotifications() {
       ariaProps: {
         role: 'status',
         'aria-live': 'polite',
-        'aria-label': options.ariaLabel ?? message,
       },
     };
 
@@ -53,7 +52,6 @@ export function useNotifications() {
       ariaProps: {
         role: 'alert',
         'aria-live': 'assertive',
-        'aria-label': options.ariaLabel ?? message,
       },
     };
 
@@ -69,7 +67,6 @@ export function useNotifications() {
       ariaProps: {
         role: 'status',
         'aria-live': 'polite',
-        'aria-label': options.ariaLabel ?? message,
       },
     };
 
@@ -85,7 +82,6 @@ export function useNotifications() {
       ariaProps: {
         role: 'status',
         'aria-live': 'polite',
-        'aria-label': options.ariaLabel ?? message,
       },
     };
 

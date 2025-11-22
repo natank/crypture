@@ -625,8 +625,6 @@ useEffect(() => {
 - Market sentiment indicators
 - Dominance chart visualization
 
----
-
 ## Pull Request Description
 
 ### Summary
