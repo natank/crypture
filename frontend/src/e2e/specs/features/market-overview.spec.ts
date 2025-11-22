@@ -20,7 +20,8 @@ test.describe("Market Overview Dashboard", () => {
         marketPage = new MarketPage(page);
 
         // Mock the API response
-        await page.route("**/api/v3/global", async (route) => {
+        // Use wildcard at the end to match query parameters (api key)
+        await page.route("**/api/v3/global*", async (route) => {
             await route.fulfill({
                 status: 200,
                 contentType: "application/json",
@@ -48,7 +49,7 @@ test.describe("Market Overview Dashboard", () => {
             // These assertions depend on the exact formatting logic which we'll implement
             // For now, we check they contain the expected numbers/units
             const marketCap = await marketPage.getMetricValue(marketPage.totalMarketCap);
-            expect(marketCap).toContain("2.50T"); // $2.5T
+            expect(marketCap).toContain("$2.50T"); // $2.5T
 
             const btcDom = await marketPage.getMetricValue(marketPage.btcDominance);
             expect(btcDom).toContain("45.23%");
@@ -67,7 +68,7 @@ test.describe("Market Overview Dashboard", () => {
             },
         };
 
-        await page.route("**/api/v3/global", async (route) => {
+        await page.route("**/api/v3/global*", async (route) => {
             await route.fulfill({
                 status: 200,
                 contentType: "application/json",
@@ -83,13 +84,13 @@ test.describe("Market Overview Dashboard", () => {
         });
 
         await test.step("Verify data is updated", async () => {
-            await expect(marketPage.totalMarketCap).toContainText("2.60T");
+            await expect(marketPage.totalMarketCap).toContainText("$2.60T");
         });
     });
 
     test("T1.5: Error state and retry functionality", async ({ page }) => {
         // Mock error response initially
-        await page.route("**/api/v3/global", async (route) => {
+        await page.route("**/api/v3/global*", async (route) => {
             await route.fulfill({ status: 500 });
         });
 
@@ -101,7 +102,7 @@ test.describe("Market Overview Dashboard", () => {
         });
 
         // Mock success response for retry
-        await page.route("**/api/v3/global", async (route) => {
+        await page.route("**/api/v3/global*", async (route) => {
             await route.fulfill({
                 status: 200,
                 contentType: "application/json",
@@ -120,6 +121,9 @@ test.describe("Market Overview Dashboard", () => {
         await marketPage.goto();
 
         await test.step("Verify desktop layout", async () => {
+            // Wait for metrics to be visible first
+            await expect(marketPage.totalMarketCap).toBeVisible();
+
             // Check grid layout (metrics side by side)
             // This is hard to test strictly with just visibility, 
             // but we can check that all are visible on desktop
