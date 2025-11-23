@@ -3,6 +3,7 @@
 ## Overview
 
 This document outlines the **Requirements Analysis phase**. The goal is to take a high-level Backlog Item and break it down into clear, approved User Stories with Acceptance Criteria.
+Design and implementation are not part of this phase. Avoid any design or implementation details in the User Stories.
 **Output:** A set of approved User Story documents committed to the repository via a documentation branch.
 
 ---
