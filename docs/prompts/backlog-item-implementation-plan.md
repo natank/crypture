@@ -112,6 +112,27 @@ Create a preliminary design that addresses:
 
 ---
 
+7. Pull Request Preparation
+Objective: Document changes for code review and merge process.
+Actions
+
+Prepare a comprehensive pull request description
+Include the following in the PR description:
+
+Summary of changes
+Reference to the story document
+Key implementation decisions
+Testing approach and coverage
+Any breaking changes or migration notes
+
+
+Add the PR description to a Pull Request section in the story document
+
+Review Gate
+Ask for approval before committing the pull request.
+
+---
+
 ## Notes
 
 - Each phase includes a review gate to ensure quality and alignment
