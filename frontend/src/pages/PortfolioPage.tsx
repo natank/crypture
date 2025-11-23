@@ -11,6 +11,7 @@ import FilterSortControls from "@components/FilterSortControls";
 import LoadingSpinner from "@components/LoadingSpinner";
 import PortfolioHeader from "@components/PortfolioHeader";
 import { HelpBanner } from "@components/HelpBanner";
+import PortfolioCompositionDashboard from "@components/portfolio/PortfolioCompositionDashboard";
 
 import { usePortfolioState } from "@hooks/usePortfolioState";
 import { useCoinList } from "@hooks/useCoinList";
@@ -22,6 +23,7 @@ import { useNotifications } from "@hooks/useNotifications";
 import AppFooter from "@components/AppFooter";
 import { CoinInfo } from "@services/coinService";
 import { usePortfolioImportExport } from "@hooks/usePortfolioImportExport";
+import { CoinMetadata } from "@services/portfolioAnalyticsService";
 
 export default function PortfolioPage() {
   const { coins: allCoins, loading, error, lastUpdatedAt, refreshing, retry } = useCoinList();
@@ -32,6 +34,34 @@ export default function PortfolioPage() {
     const map: Record<string, CoinInfo> = {};
     for (const coin of allCoins) {
       map[coin.symbol.toLowerCase()] = coin;
+    }
+    return map;
+  }, [allCoins]);
+
+  // Create coin metadata map for composition analysis
+  const coinMetadata = useMemo(() => {
+    const metadata: Record<string, CoinMetadata> = {};
+    for (const coin of allCoins) {
+      metadata[coin.id] = {
+        id: coin.id,
+        symbol: coin.symbol,
+        name: coin.name,
+        market_cap_rank: 1, // Default - would need enhanced API call
+        price_change_percentage_24h: 0, // Default - would need enhanced API call
+        price_change_percentage_7d: 0, // Default - would need enhanced API call
+        categories: ['Other'] // Default - would need enhanced API call
+      };
+    }
+    return metadata;
+  }, [allCoins]);
+
+  // Create price map by coin ID for composition dashboard
+  const priceMapById = useMemo(() => {
+    const map: Record<string, number> = {};
+    for (const coin of allCoins) {
+      if (coin.id && typeof coin.current_price === 'number' && !isNaN(coin.current_price)) {
+        map[coin.id] = coin.current_price;
+      }
     }
     return map;
   }, [allCoins]);
@@ -109,7 +139,7 @@ export default function PortfolioPage() {
         notifications.warning("⚠️ Your portfolio is empty. Add assets before exporting.");
         return;
       }
-      
+
       const result = exportPortfolio(format);
       notifications.success(
         `✓ Exported ${result.count} asset${result.count !== 1 ? 's' : ''} to ${result.filename}`
@@ -127,12 +157,12 @@ export default function PortfolioPage() {
   const handleApplyMerge = useCallback(() => {
     try {
       const result = applyMerge();
-      
+
       // Trigger highlights for all imported/updated assets
       portfolio.forEach(asset => {
         triggerHighlight(asset.coinInfo.id);
       });
-      
+
       if (result.skipped > 0) {
         notifications.warning(
           `⚠️ Imported ${result.added} new, updated ${result.updated} existing. Skipped ${result.skipped} unknown asset${result.skipped !== 1 ? 's' : ''}.`
@@ -151,12 +181,12 @@ export default function PortfolioPage() {
   const handleApplyReplace = useCallback(() => {
     try {
       const result = applyReplace();
-      
+
       // Trigger highlights for all replaced assets
       portfolio.forEach(asset => {
         triggerHighlight(asset.coinInfo.id);
       });
-      
+
       if (result.skipped > 0) {
         notifications.warning(
           `⚠️ Replaced portfolio with ${result.added} asset${result.added !== 1 ? 's' : ''}. Skipped ${result.skipped} unknown asset${result.skipped !== 1 ? 's' : ''}.`
@@ -201,7 +231,7 @@ export default function PortfolioPage() {
       />
 
       {/* Help Banner (Phase 7) */}
-      <HelpBanner 
+      <HelpBanner
         message="Tip: You can add multiple purchases of the same asset. Your quantities will be summed automatically, making it easy to track assets bought at different times or prices."
       />
 
@@ -219,20 +249,21 @@ export default function PortfolioPage() {
         />
       )}
 
-      {/* Filter/Sort Controls */}
-      <FilterSortControls
-        filter={filterText}
-        onFilterChange={setFilterText}
-        sort={sortOption}
-        onSortChange={setSortOption}
-        disabled={!!(loading || refreshing)}
-      />
+      {/* Portfolio Composition Dashboard */}
+      <div className="w-full max-w-4xl mx-auto px-6 md:px-10 mb-6">
+        <PortfolioCompositionDashboard
+          portfolio={portfolio}
+          priceMap={priceMapById}
+          coinMetadata={coinMetadata}
+        />
+      </div>
+
 
       {/* Lightweight updating indicator during background refreshes */}
       {refreshing && (
         <div className="w-full max-w-4xl mx-auto px-6 md:px-10 -mt-2 mb-2" aria-live="polite">
-        <LoadingSpinner label=" Updating prices…" />
-      </div>
+          <LoadingSpinner label=" Updating prices…" />
+        </div>
       )}
 
       {/* Test-only control to trigger deterministic refresh in E2E */}
@@ -290,9 +321,9 @@ export default function PortfolioPage() {
           />
 
           {/* Footer Action Buttons */}
-          <ExportImportControls 
-            onExport={handleExport} 
-            onImport={handleImport} 
+          <ExportImportControls
+            onExport={handleExport}
+            onImport={handleImport}
             portfolioCount={portfolio.length}
           />
         </section>

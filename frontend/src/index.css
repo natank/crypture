@@ -238,6 +238,12 @@
   .bg-surface {
     background: var(--color-surface);
   }
+  .bg-surface-soft {
+    background: #f1f5f9; /* slate-100 */
+  }
+  .bg-surface-medium {
+    background: #e2e8f0; /* slate-200 */
+  }
   .bg-error {
     background: var(--color-error);
   }
