@@ -34,12 +34,43 @@ Create a preliminary design that addresses:
 
 **Objective:** Execute development following test-driven development (TDD) practices.
 
-### Approach
-- Create a branch for the story 
-- Follow a **TDD approach**, starting with end-to-end (E2E) tests
-- For unit testing: write tests **before** implementing each function/component
-- **Run tests frequently** during implementation to verify progress
-- Continuously verify implementation against requirements and design
+### Testing Framework
+
+- **E2E Tests**: Use **Playwright** (located in `frontend/src/e2e/specs/`)
+  - Use existing fixtures from `@e2e/fixtures` for consistent test patterns
+  - Run individual tests during debugging: `npx playwright test <file> -g "test name"`
+- **Unit Tests**: Use **Vitest** (located in `frontend/src/__tests__/`)
+  - Follow existing test patterns and naming conventions
+
+### TDD Approach
+
+**Critical: Write tests BEFORE implementation**
+
+1. **E2E Tests First**
+   - Write E2E tests for the feature based on acceptance criteria
+   - Tests will fail initially (red phase)
+   - Use these tests to guide implementation
+
+2. **Unit Tests Before Each Component/Function**
+   - For each service method: Write unit tests → Implement method → Verify tests pass
+   - For each component: Write component tests → Implement component → Verify tests pass
+   - **Do not implement without tests first**
+
+3. **Iterative Development**
+   - Write test for one small piece of functionality
+   - Implement just enough code to make that test pass
+   - Refactor if needed
+   - Repeat for next piece
+
+4. **Continuous Verification**
+   - Run tests frequently during implementation
+   - Debug failing tests individually rather than running entire suite
+   - Fix issues as they arise before moving forward
+
+### Branch Management
+
+- Create a feature branch for the story (e.g., `feature/STORY-XXX-description`)
+- Commit frequently with clear, descriptive messages
 - **Do not proceed to Step 3 until all tests are passing**
 
 ---
