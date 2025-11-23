@@ -1,140 +1,81 @@
-# Agentic Development Workflow
+# Backlog Item Analysis & Breakdown Workflow
 
 ## Overview
 
-This document outlines the step-by-step workflow for implementing backlog items using an agentic development approach with built-in review gates.
+This document outlines the **Requirements Analysis phase**. The goal is to take a high-level Backlog Item and break it down into clear, approved User Stories with Acceptance Criteria.
+**Output:** A set of approved User Story documents committed to the repository via a documentation branch.
 
 ---
 
 ## 1. Grooming
 
-**Objective:** Select and prioritize the next backlog item for development.
+**Objective:** Select and prioritize the next backlog item for analysis.
 
 ### Actions
 
 1. Review the backlog items list
 2. Present candidate items for the sprint
 3. Discuss priority, dependencies, and readiness
-4. Select the next item to move into development
+4. Select the next item to move into the **Analysis** phase
 
 ### Review Gate
 
-**Ask for approval before proceeding to requirements review.**
+**Ask for approval before proceeding to requirements analysis.**
 
 ---
 
-## 2. Requirements Review
+## 2. Requirements Analysis & Story Definition
 
-**Objective:** Establish clear requirements and acceptance criteria before beginning development.
+**Objective:** Translate the backlog item into specific, testable User Stories and update documentation.
 
 ### Actions
 
-1. Create a new branch for this item from the latest `main` branch
-2. Prepare a user story and acceptance criteria for this item
-3. Save the story in a `.md` file located in the `docs/stories` folder. Use docs/stories/STORY-999-demo-feature.md as template
-
-4. Present the story for review and approval
+1. Create a new **documentation branch** (e.g., `requirements/ITEM-ID-name`) from the latest `main` branch.
+2. Break down the requirement into user stories (one or more as needed).
+3. Prepare the user stories with acceptance criteria (Use `docs/stories/STORY-999-demo-feature.md` as template).
+4. Save each story in a `.md` file located in the `docs/stories` folder.
+5. Ensure traceability:
+   - Backlog Item -> Requirement
+   - Requirement -> User Stories
+6. Present the stories for review.
 
 ### Review Gate
 
-**Ask for approval before committing.**
+**Ask for approval before committing the documentation changes.**
 
 ---
 
-## 3. Preliminary Design Review
+## 3. Requirements Acceptance
 
-**Objective:** Validate architectural and UX decisions before implementation.
+**Objective:** Validate that the defined stories accurately reflect the requirement and are ready for implementation.
 
 ### Actions
 
-Create a preliminary design that addresses:
-
-- Architectural changes and validations
-- UX changes, adhering to the current style guide and UX approach
-  - Information hierarchy
-  - Navigation patterns
-  - Other relevant UX concerns
-- Any other technical or design considerations
-
-### Documentation
-
-- Include design details in a separate **Preliminary Design** section within the story document
-- Keep the story document clear and well-structured
-- Avoid duplication of information
+- Present the generated User Stories and Requirement documents for review.
+- Confirm that all acceptance criteria are clear and testable.
+- **Note:** This is acceptance of the *plan/requirements*, not the code.
 
 ### Review Gate
 
-**Ask for approval before committing.**
+**Ask for approval to mark the Requirements Phase as complete.**
 
 ---
 
-## 4. Implementation Plan
+## 4. Plan Finalization (Merge)
 
-**Objective:** Execute development following test-driven development (TDD) practices.
-
-### Approach
-
-- Follow a **TDD approach**, starting with end-to-end (E2E) tests
-- For unit testing: write tests **before** implementing each function/component
-- Continuously verify implementation against requirements and design
-
----
-
-## 5. Validation
-
-**Objective:** Ensure code quality and completeness before merging.
-
-### Verification Checklist
-
-- [ ] All regression tests are passing
-- [ ] All unit tests are passing
-- [ ] No lint errors exist in the branch
-
-### Review Gate
-
-**Ask for approval before committing.**
-
----
-
-## 6. Acceptance
-
-**Objective:** Confirm completion and update tracking systems.
+**Objective:** Commit the agreed-upon plan to the repository to baseline the scope.
 
 ### Actions
 
-- Present the completed work for final acceptance review
-- Upon approval, update the story status
-- Update the backlog item status
+1. Prepare a Pull Request containing **ONLY** the new/updated documentation (stories, requirements).
+2. PR Description should include:
+   - Summary of the breakdown
+   - Links to the new User Stories
+   - Reference to the parent Backlog Item
+3. Merge the PR into `main` (or the appropriate planning branch).
 
 ### Review Gate
 
-**Ask for approval before updating story status and backlog item status.**
+**Ask for approval before creating/merging the PR.**
 
 ---
-
-7. Pull Request Preparation
-Objective: Document changes for code review and merge process.
-Actions
-
-Prepare a comprehensive pull request description
-Include the following in the PR description:
-
-Summary of changes
-Reference to the story document
-Key implementation decisions
-Testing approach and coverage
-Any breaking changes or migration notes
-
-
-Add the PR description to a Pull Request section in the story document
-
-Review Gate
-Ask for approval before committing the pull request.
-
----
-
-## Notes
-
-- Each phase includes a review gate to ensure quality and alignment
-- The workflow emphasizes incremental validation and stakeholder approval
-- Test-driven development is central to the implementation approach
