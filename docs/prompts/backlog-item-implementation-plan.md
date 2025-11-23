@@ -4,6 +4,8 @@
 
 This document outlines the **Requirements Analysis phase**. The goal is to take a high-level Backlog Item and break it down into clear, approved User Stories with Acceptance Criteria.
 Design and implementation are not part of this phase. Avoid any design or implementation details in the User Stories.
+Note: Design and implementation processes are addressed by the docs/prompts/story-implementation.md document. 
+
 **Output:** A set of approved User Story documents committed to the repository via a documentation branch.
 
 ---
@@ -32,13 +34,14 @@ Design and implementation are not part of this phase. Avoid any design or implem
 ### Actions
 
 1. Create a new **documentation branch** (e.g., `requirements/ITEM-ID-name`) from the latest `main` branch.
-2. Break down the requirement into user stories (one or more as needed).
-3. Prepare the user stories with acceptance criteria (Use `docs/stories/STORY-999-demo-feature.md` as template).
-4. Save each story in a `.md` file located in the `docs/stories` folder.
-5. Ensure traceability:
+2. Create a new **requirement document** (e.g., `docs/requirements/ITEM-ID-name.md`) from the latest `main` branch.
+3. Break down the requirement into user stories (one or more as needed).
+4. Prepare the user stories with acceptance criteria (Use `docs/stories/STORY-999-demo-feature.md` as template).
+5. Save each story in a `.md` file located in the `docs/stories` folder.
+6. Ensure traceability:
    - Backlog Item -> Requirement
    - Requirement -> User Stories
-6. Present the stories for review.
+7. Present the stories for review.
 
 ### Review Gate
 
@@ -52,9 +55,9 @@ Design and implementation are not part of this phase. Avoid any design or implem
 
 ### Actions
 
-- Present the generated User Stories and Requirement documents for review.
-- Confirm that all acceptance criteria are clear and testable.
-- **Note:** This is acceptance of the *plan/requirements*, not the code.
+1. Present the generated User Stories and Requirement documents for review.
+2. Confirm that all acceptance criteria are clear and testable.
+3. **Note:** This is acceptance of the *plan/requirements*, not the code.
 
 ### Review Gate
 
