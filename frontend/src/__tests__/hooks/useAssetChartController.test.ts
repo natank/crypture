@@ -11,7 +11,7 @@ describe('useAssetChartController', () => {
 
   beforeEach(() => {
     vi.resetAllMocks();
-    (useAssetHistory as vi.Mock).mockReturnValue({
+    vi.mocked(useAssetHistory).mockReturnValue({
       history: null,
       isLoading: false,
       error: null,
@@ -49,11 +49,11 @@ describe('useAssetChartController', () => {
 
   it('should not fetch history again if already fetched', async () => {
     // Pretend history is already loaded
-    (useAssetHistory as vi.Mock).mockReturnValue({
-        history: [[1, 2]], // some mock data
-        isLoading: false,
-        error: null,
-        getAssetHistory: mockGetAssetHistory,
+    vi.mocked(useAssetHistory).mockReturnValue({
+      history: [[1, 2]], // some mock data
+      isLoading: false,
+      error: null,
+      getAssetHistory: mockGetAssetHistory,
     });
 
     const { result } = renderHook(() => useAssetChartController(assetId));

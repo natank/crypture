@@ -1,6 +1,7 @@
 import { renderHook, act } from '@testing-library/react';
 import { useAssetHistory } from '@hooks/useAssetHistory';
 import * as coinService from '@services/coinService';
+import { PriceHistoryPoint } from '@services/coinService';
 
 // Mock the coinService
 vi.mock('@services/coinService');
@@ -8,7 +9,7 @@ vi.mock('@services/coinService');
 describe('useAssetHistory', () => {
   const assetId = 'bitcoin';
   const days = 30;
-  const mockHistoryData = [
+  const mockHistoryData: PriceHistoryPoint[] = [
     [1672531200000, 16500],
     [1672617600000, 16600],
   ];
@@ -23,7 +24,7 @@ describe('useAssetHistory', () => {
     const { result } = renderHook(() => useAssetHistory());
 
     // Start the async operation
-    let promise;
+    let promise: Promise<void>;
     act(() => {
       promise = result.current.getAssetHistory(assetId, days);
     });
@@ -56,7 +57,7 @@ describe('useAssetHistory', () => {
 
     // Need to wait for the final state update after the promise resolves
     await new Promise(resolve => setTimeout(resolve, 0));
-    act(() => {});
+    act(() => { });
 
     expect(mockedFetch).toHaveBeenCalledWith(assetId, days);
     expect(result.current.history).toBeNull();
@@ -68,7 +69,7 @@ describe('useAssetHistory', () => {
     const mockedFetch = vi.spyOn(coinService, 'fetchAssetHistory').mockResolvedValue(mockHistoryData);
     const { result } = renderHook(() => useAssetHistory());
 
-    let promise;
+    let promise: Promise<void>;
     act(() => {
       promise = result.current.getAssetHistory(assetId, days);
     });

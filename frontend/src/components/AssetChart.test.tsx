@@ -1,8 +1,9 @@
 import { render, screen, fireEvent } from '@testing-library/react';
 import AssetChart, { AssetChartProps } from './AssetChart';
+import { PriceHistoryPoint } from '@services/coinService';
 import '@testing-library/jest-dom';
 
-const mockData = [
+const mockData: PriceHistoryPoint[] = [
   [1672531200000, 16500],
   [1672617600000, 16600],
   [1672704000000, 16700],
@@ -18,18 +19,18 @@ const defaultProps: AssetChartProps = {
 
 // Mock Recharts components to avoid rendering the actual chart in tests
 vi.mock('recharts', async () => {
-    const OriginalModule = await vi.importActual('recharts');
-    return {
-        ...OriginalModule,
-        ResponsiveContainer: ({ children }: { children: React.ReactNode }) => <div data-testid="responsive-container">{children}</div>,
-        LineChart: ({ children }: { children: React.ReactNode }) => <div data-testid="line-chart">{children}</div>,
-        CartesianGrid: () => <div data-testid="cartesian-grid" />,
-        XAxis: () => <div data-testid="x-axis" />,
-        YAxis: () => <div data-testid="y-axis" />,
-        Tooltip: () => <div data-testid="tooltip" />,
-        Legend: () => <div data-testid="legend" />,
-        Line: () => <div data-testid="line" />,
-    };
+  const OriginalModule = await vi.importActual('recharts');
+  return {
+    ...OriginalModule,
+    ResponsiveContainer: ({ children }: { children: React.ReactNode }) => <div data-testid="responsive-container">{children}</div>,
+    LineChart: ({ children }: { children: React.ReactNode }) => <div data-testid="line-chart">{children}</div>,
+    CartesianGrid: () => <div data-testid="cartesian-grid" />,
+    XAxis: () => <div data-testid="x-axis" />,
+    YAxis: () => <div data-testid="y-axis" />,
+    Tooltip: () => <div data-testid="tooltip" />,
+    Legend: () => <div data-testid="legend" />,
+    Line: () => <div data-testid="line" />,
+  };
 });
 
 describe('AssetChart', () => {

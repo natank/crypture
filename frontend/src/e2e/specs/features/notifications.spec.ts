@@ -58,9 +58,9 @@ test.describe("Add Asset Notifications", () => {
 
     // Wait for modal to close (modal closing means asset was added successfully)
     await expect(page.getByRole("dialog")).not.toBeVisible({ timeout: 3000 });
-    
+
     // Verify first asset appears in portfolio
-    await expect(page.getByText(/Bitcoin/)).toBeVisible();
+    await expect(page.getByTestId('asset-row-BTC')).toBeVisible();
     await expect(page.getByText(/Qty: 1/)).toBeVisible();
 
     // Add second BTC purchase (to existing asset)
@@ -76,7 +76,7 @@ test.describe("Add Asset Notifications", () => {
       hasText: /Added 0.5 BTC.*Total.*1.5 BTC/i,
     });
     await expect(toast).toBeVisible({ timeout: 3000 });
-    
+
     // Verify the asset quantity was updated in the portfolio
     await expect(page.getByText(/Qty: 1.5/)).toBeVisible();
   });
@@ -240,7 +240,7 @@ test.describe("Delete Asset Notifications", () => {
     await expect(page.getByRole("dialog")).not.toBeVisible({ timeout: 3000 });
 
     // Verify asset is in portfolio
-    await expect(page.getByText(/Bitcoin/)).toBeVisible();
+    await expect(page.getByTestId('asset-row-BTC')).toBeVisible();
 
     // Click delete button (use last() to avoid strict mode violation with asset row)
     await page.getByRole("button", { name: /Delete BTC/i }).last().click();
@@ -249,7 +249,7 @@ test.describe("Delete Asset Notifications", () => {
     const deleteModal = page.getByRole("dialog");
     await expect(deleteModal).toBeVisible();
     await expect(deleteModal.getByText(/Remove Bitcoin/i)).toBeVisible();
-    
+
     await deleteModal.getByRole("button", { name: /Confirm Delete/i }).click();
 
     // Wait for modal to close
@@ -281,7 +281,7 @@ test.describe("Delete Asset Notifications", () => {
     await expect(page.getByRole("dialog")).not.toBeVisible({ timeout: 3000 });
 
     // Verify asset exists
-    await expect(page.getByText(/Ethereum/)).toBeVisible();
+    await expect(page.getByTestId('asset-row-ETH')).toBeVisible();
     await expect(page.getByText(/Qty: 5/)).toBeVisible();
 
     // Click delete button (use last() to avoid strict mode violation with asset row)
@@ -297,7 +297,7 @@ test.describe("Delete Asset Notifications", () => {
 
     // Modal should close and asset should still be there
     await expect(deleteModal).not.toBeVisible({ timeout: 3000 });
-    await expect(page.getByText(/Ethereum/)).toBeVisible();
+    await expect(page.getByTestId('asset-row-ETH')).toBeVisible();
 
     // Try deleting again
     await page.getByRole("button", { name: /Delete ETH/i }).last().click();
@@ -368,7 +368,7 @@ test.describe("Delete Asset Notifications", () => {
     // Note: The highlight will fade after 3 seconds, so we check immediately
     const rowElement = assetRow.locator("div").first();
     const className = await rowElement.getAttribute("class");
-    
+
     // Verify the highlight class is present or was present (may have transitioned)
     // We just verify the row exists and is visible - the visual highlight is a UX enhancement
     await expect(assetRow).toBeVisible();
@@ -440,7 +440,7 @@ test.describe("Unusual Input Warnings (Phase 6)", () => {
     // Edit to large quantity
     const assetRow = page.getByTestId("asset-row-BTC");
     await assetRow.getByRole("button", { name: /edit/i }).click();
-    
+
     const input = assetRow.getByRole("spinbutton");
     await input.fill("5000000");
     await assetRow.getByRole("button", { name: /save/i }).click();
