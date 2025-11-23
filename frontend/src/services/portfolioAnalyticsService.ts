@@ -4,6 +4,14 @@
  * Provides allocation calculation functions for portfolio composition analysis.
  */
 
+import { fetchAssetHistory, PriceHistoryPoint } from './coinService';
+
+export interface PortfolioHistoryPoint {
+    timestamp: number;
+    value: number;
+}
+
+
 export interface AllocationItem {
     id: string;
     name: string;
@@ -264,4 +272,94 @@ function getColorForIndex(index: number): string {
     ];
 
     return colors[index % colors.length];
+}
+
+/**
+ * Calculate portfolio value history
+ */
+export async function getPortfolioHistory(
+    portfolio: PortfolioAsset[],
+    days: number
+): Promise<PortfolioHistoryPoint[]> {
+    if (portfolio.length === 0) return [];
+
+    // 1. Fetch history for all assets in parallel
+    const historyPromises = portfolio.map(asset =>
+        fetchAssetHistory(asset.coinInfo.id, days)
+            .then(prices => ({ assetId: asset.coinInfo.id, prices }))
+            .catch(err => {
+                console.error(`Failed to fetch history for ${asset.coinInfo.id}`, err);
+                return { assetId: asset.coinInfo.id, prices: [] as PriceHistoryPoint[] };
+            })
+    );
+
+    const results = await Promise.all(historyPromises);
+
+    // Map asset ID to its price history
+    const assetHistoryMap: Record<string, PriceHistoryPoint[]> = {};
+    results.forEach(res => {
+        assetHistoryMap[res.assetId] = res.prices;
+    });
+
+    // 2. Collect all unique timestamps
+    const allTimestamps = new Set<number>();
+    results.forEach(res => {
+        res.prices.forEach(([timestamp]) => allTimestamps.add(timestamp));
+    });
+
+    const sortedTimestamps = Array.from(allTimestamps).sort((a, b) => a - b);
+
+    // 3. Calculate total value at each timestamp
+    const portfolioHistory: PortfolioHistoryPoint[] = [];
+
+    // Keep track of the last known price for each asset to forward-fill
+    const lastKnownPrices: Record<string, number> = {};
+
+    // Initialize last known prices (optional, could start from 0 or wait for first data point)
+    // We'll start iterating. If an asset has no price yet, it contributes 0 (or we could look for current price, but history is better)
+
+    for (const timestamp of sortedTimestamps) {
+        let totalValue = 0;
+
+        portfolio.forEach(asset => {
+            const assetId = asset.coinInfo.id;
+            const history = assetHistoryMap[assetId];
+
+            // Find price at this exact timestamp
+            // Optimization: Since timestamps are sorted, we could maintain indices, but for N < 10 assets and M < 1000 points, simple lookup is okay-ish, 
+            // but finding exact match in array is O(N). 
+            // Better: Since we are iterating sorted timestamps, we can just check if the current history point matches.
+            // Actually, the "forward fill" logic implies we should process events.
+
+            // Let's stick to a simpler approach for MVP:
+            // For this timestamp, find the price in history that is <= timestamp.
+            // Since history is sorted, we can use binary search or just remember the last index.
+
+            // Optimization: Use a map for O(1) lookup if exact match, but we need "closest previous".
+            // Let's use the "lastKnownPrices" map and update it when we encounter a new price point for an asset.
+
+            // Wait, iterating timestamps and finding "closest previous" for every asset is O(T * A * log P).
+            // Better: Merge sort style.
+            // But simpler for now:
+            // Just iterate all timestamps. For each asset, update its "current price" if there is a data point at this timestamp.
+
+            const pricePoint = history.find(p => p[0] === timestamp);
+            if (pricePoint) {
+                lastKnownPrices[assetId] = pricePoint[1];
+            }
+
+            const price = lastKnownPrices[assetId] || 0;
+            totalValue += asset.quantity * price;
+        });
+
+        // Only add point if we have some value (or if it's genuinely 0)
+        // Also, to avoid noise at the start where some assets might not have data yet, 
+        // we might want to filter, but showing 0 or partial value is technically correct "if we held this portfolio back then".
+        portfolioHistory.push({
+            timestamp,
+            value: totalValue
+        });
+    }
+
+    return portfolioHistory;
 }

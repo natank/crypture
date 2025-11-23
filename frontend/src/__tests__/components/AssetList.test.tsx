@@ -47,7 +47,8 @@ describe("AssetList", () => {
     render(
       <AssetList
         assets={[]}
-        onDelete={() => {}}
+        onDelete={() => { }}
+        onUpdateQuantity={vi.fn()}
         onAddAsset={vi.fn()}
         addButtonRef={React.createRef<HTMLButtonElement>()}
         priceMap={{}}
@@ -62,7 +63,8 @@ describe("AssetList", () => {
     render(
       <AssetList
         assets={mockAssets}
-        onDelete={() => {}}
+        onDelete={() => { }}
+        onUpdateQuantity={vi.fn()}
         onAddAsset={vi.fn()}
         addButtonRef={React.createRef<HTMLButtonElement>()}
         priceMap={mockPriceMap}
@@ -79,6 +81,7 @@ describe("AssetList", () => {
       <AssetList
         assets={mockAssets}
         onDelete={handleDelete}
+        onUpdateQuantity={vi.fn()}
         onAddAsset={vi.fn()}
         addButtonRef={React.createRef<HTMLButtonElement>()}
         priceMap={mockPriceMap}
@@ -92,7 +95,8 @@ describe("AssetList", () => {
     render(
       <AssetList
         assets={mockAssets}
-        onDelete={() => {}}
+        onDelete={() => { }}
+        onUpdateQuantity={vi.fn()}
         onAddAsset={vi.fn()}
         addButtonRef={React.createRef<HTMLButtonElement>()}
         priceMap={mockPriceMap}
@@ -113,6 +117,7 @@ describe("AssetList", () => {
       <AssetList
         assets={mockAssets}
         onDelete={vi.fn()}
+        onUpdateQuantity={vi.fn()}
         onAddAsset={vi.fn()}
         addButtonRef={React.createRef<HTMLButtonElement>()}
         priceMap={{}} // 👈 No prices

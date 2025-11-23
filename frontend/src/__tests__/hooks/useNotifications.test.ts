@@ -1,12 +1,12 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { renderHook } from '@testing-library/react';
-import { useNotifications } from '@hooks/useNotifications.tsx';
+import { useNotifications } from '@hooks/useNotifications';
 import toast from 'react-hot-toast';
 
 // Mock react-hot-toast
 vi.mock('react-hot-toast', () => {
   const mockCustom = vi.fn();
-  const mockToast = vi.fn();
+  const mockToast: any = vi.fn();
   mockToast.custom = mockCustom;
   return {
     default: mockToast,

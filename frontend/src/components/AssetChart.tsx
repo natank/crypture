@@ -11,7 +11,7 @@ import {
 } from 'recharts';
 import { PriceHistoryPoint } from '@services/coinService';
 
-interface AssetChartProps {
+export interface AssetChartProps {
   data: PriceHistoryPoint[] | null;
   isLoading: boolean;
   error: string | null;
@@ -27,12 +27,12 @@ const currencyFormatter = new Intl.NumberFormat('en-US', {
   minimumFractionDigits: 2,
 });
 
-const AssetChart: React.FC<AssetChartProps> = ({ 
-  data, 
-  isLoading, 
-  error, 
-  onTimeRangeChange, 
-  selectedTimeRange 
+const AssetChart: React.FC<AssetChartProps> = ({
+  data,
+  isLoading,
+  error,
+  onTimeRangeChange,
+  selectedTimeRange
 }) => {
   if (isLoading) {
     return <div className="text-center p-4">Loading chart data...</div>;
@@ -61,11 +61,10 @@ const AssetChart: React.FC<AssetChartProps> = ({
               key={days}
               onClick={() => onTimeRangeChange(days)}
               data-testid={`time-range-button-${days}`}
-              className={`px-3 py-1 text-sm rounded-md transition-colors ${
-                selectedTimeRange === days
+              className={`px-3 py-1 text-sm rounded-md transition-colors ${selectedTimeRange === days
                   ? 'bg-brand-primary text-white'
                   : 'bg-surface-soft hover:bg-surface-medium'
-              }`}>
+                }`}>
               {days === 365 ? '1Y' : `${days}D`}
             </button>
           ))}
@@ -78,18 +77,18 @@ const AssetChart: React.FC<AssetChartProps> = ({
         >
           <CartesianGrid strokeDasharray="3 3" />
           <XAxis dataKey="date" fontSize={12} />
-          <YAxis 
-            fontSize={12} 
-            tickFormatter={(value) => currencyFormatter.format(value)} 
+          <YAxis
+            fontSize={12}
+            tickFormatter={(value) => currencyFormatter.format(value)}
           />
           <Tooltip formatter={(value: number) => [currencyFormatter.format(value), 'Price']} />
           <Legend />
-          <Line 
-            type="monotone" 
-            dataKey="price" 
-            stroke="#8884d8" 
+          <Line
+            type="monotone"
+            dataKey="price"
+            stroke="#8884d8"
             strokeWidth={2}
-            activeDot={{ r: 8 }} 
+            activeDot={{ r: 8 }}
             dot={false}
           />
         </LineChart>

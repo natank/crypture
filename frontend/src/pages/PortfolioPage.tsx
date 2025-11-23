@@ -12,6 +12,7 @@ import LoadingSpinner from "@components/LoadingSpinner";
 import PortfolioHeader from "@components/PortfolioHeader";
 import { HelpBanner } from "@components/HelpBanner";
 import PortfolioCompositionDashboard from "@components/portfolio/PortfolioCompositionDashboard";
+import { PortfolioPerformanceChart } from "@components/PortfolioPerformanceChart";
 
 import { usePortfolioState } from "@hooks/usePortfolioState";
 import { useCoinList } from "@hooks/useCoinList";
@@ -248,6 +249,11 @@ export default function PortfolioPage() {
           message={importError}
         />
       )}
+
+      {/* Portfolio Performance Chart */}
+      <div className="w-full max-w-4xl mx-auto px-6 md:px-10 mb-6">
+        <PortfolioPerformanceChart portfolio={portfolio} />
+      </div>
 
       {/* Portfolio Composition Dashboard */}
       <div className="w-full max-w-4xl mx-auto px-6 md:px-10 mb-6">

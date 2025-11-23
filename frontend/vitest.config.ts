@@ -40,6 +40,7 @@ export default defineConfig({
       "@utils": path.resolve(__dirname, "src/utils"),
       "@e2e": path.resolve(__dirname, "src/e2e"),
       "@test-setup": path.resolve(__dirname, "src/e2e/test-setup.ts"),
+      "@types": path.resolve(__dirname, "src/types"),
     },
   },
 });

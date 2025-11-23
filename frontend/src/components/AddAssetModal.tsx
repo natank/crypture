@@ -153,6 +153,7 @@ export function AddAssetModal({
               className="bg-brand-primary text-white font-button px-4 py-2 rounded-md hover:bg-purple-700 flex items-center justify-center min-w-[140px]"
               aria-label="Add asset"
               disabled={loading}
+              data-testid="confirm-add-asset"
             >
               {loading ? (
                 <span
@@ -172,7 +173,7 @@ export function AddAssetModal({
 
       {/* Large Quantity Confirmation Dialog (Phase 6) */}
       {showLargeQuantityWarning && (
-        <div 
+        <div
           className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-[60]"
           role="dialog"
           aria-modal="true"
