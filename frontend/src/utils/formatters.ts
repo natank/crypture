@@ -18,7 +18,8 @@ export const formatCurrency = (value: number): string => {
     }).format(value);
 };
 
-export const formatPercentage = (num: number): string => {
+export const formatPercentage = (num: number | null | undefined): string => {
+    if (num === null || num === undefined) return '0.00%';
     return `${num.toFixed(2)}%`;
 };
 

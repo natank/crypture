@@ -75,7 +75,7 @@ export async function fetchAssetHistory(
 }
 
 // Cache for global market data
-import { GlobalMarketData, GlobalMarketApiResponse, TrendingCoin, TrendingApiResponse, MarketMover } from "../types/market";
+import { GlobalMarketData, GlobalMarketApiResponse, TrendingCoin, TrendingApiResponse, MarketMover, Category, MarketCoin } from "../types/market";
 
 const CACHE_DURATION = 10 * 60 * 1000; // 10 minutes
 let globalMarketCache: { data: GlobalMarketData; timestamp: number } | null = null;
@@ -181,5 +181,55 @@ export async function fetchTopMovers(): Promise<{ gainers: MarketMover[]; losers
       throw error;
     }
     throw new Error("Unable to fetch top movers");
+  }
+}
+
+export async function fetchCategories(): Promise<Category[]> {
+  const CATEGORIES_URL = `https://api.coingecko.com/api/v3/coins/categories/list?x_cg_demo_api_key=${API_KEY}`;
+
+  try {
+    const response = await fetch(CATEGORIES_URL);
+
+    if (!response.ok) {
+      throw new Error(`CoinGecko API error: ${response.status}`);
+    }
+
+    const data: Category[] = await response.json();
+    return data;
+  } catch (error: unknown) {
+    if (
+      error instanceof Error &&
+      error.message.startsWith("CoinGecko API error")
+    ) {
+      throw error;
+    }
+    throw new Error("Unable to fetch categories");
+  }
+}
+
+export async function fetchMarketCoins(category?: string): Promise<MarketCoin[]> {
+  let url = `https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=100&page=1&sparkline=false&x_cg_demo_api_key=${API_KEY}`;
+
+  if (category) {
+    url += `&category=${category}`;
+  }
+
+  try {
+    const response = await fetch(url);
+
+    if (!response.ok) {
+      throw new Error(`CoinGecko API error: ${response.status}`);
+    }
+
+    const data: MarketCoin[] = await response.json();
+    return data;
+  } catch (error: unknown) {
+    if (
+      error instanceof Error &&
+      error.message.startsWith("CoinGecko API error")
+    ) {
+      throw error;
+    }
+    throw new Error("Unable to fetch market coins");
   }
 }
