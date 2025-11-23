@@ -66,7 +66,7 @@ export const MarketCoinList: React.FC<MarketCoinListProps> = ({ coins, isLoading
                             <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 text-right">
                                 {formatCurrency(coin.current_price)}
                             </td>
-                            <td className={`px-6 py-4 whitespace-nowrap text-sm text-right font-medium ${coin.price_change_percentage_24h >= 0 ? 'text-green-600' : 'text-red-600'
+                            <td className={`px-6 py-4 whitespace-nowrap text-sm text-right font-medium ${(coin.price_change_percentage_24h || 0) >= 0 ? 'text-green-600' : 'text-red-600'
                                 }`}>
                                 {formatPercentage(coin.price_change_percentage_24h)}
                             </td>
