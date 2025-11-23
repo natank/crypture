@@ -1,21 +1,30 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useGlobalMarketData } from '../../hooks/useGlobalMarketData';
+import { useCategories } from '../../hooks/useCategories';
+import { useMarketCoins } from '../../hooks/useMarketCoins';
 import { MarketMetricsGrid } from './MarketMetricsGrid';
 import { TrendingSection } from './TrendingSection';
 import { TopMoversSection } from './TopMoversSection';
+import { CategoryFilter } from './CategoryFilter';
+import { MarketCoinList } from './MarketCoinList';
 import { formatDateTime } from '../../utils/formatters';
 
 export const MarketOverview: React.FC = () => {
     const { data, isLoading, error, refresh } = useGlobalMarketData();
+    const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
+    const { categories, isLoading: isCategoriesLoading } = useCategories();
+    const { coins, isLoading: isCoinsLoading, error: coinsError } = useMarketCoins(selectedCategory);
 
-    if (error) {
+    const displayError = error || coinsError;
+
+    if (displayError) {
         return (
             <div className="p-6 bg-red-50 border border-red-200 rounded-lg" role="alert">
                 <div className="flex flex-col items-center justify-center text-center">
                     <h3 className="text-lg font-medium text-red-800 mb-2">
                         Unable to load market data
                     </h3>
-                    <p className="text-red-600 mb-4">{error.message}</p>
+                    <p className="text-red-600 mb-4">{displayError.message}</p>
                     <button
                         onClick={() => refresh()}
                         className="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700 transition-colors"
@@ -28,7 +37,7 @@ export const MarketOverview: React.FC = () => {
     }
 
     return (
-        <div className="space-y-6">
+        <div className="space-y-8">
             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
                 <div>
                     <h1 className="text-2xl font-bold text-gray-900">Market Overview</h1>
@@ -61,8 +70,25 @@ export const MarketOverview: React.FC = () => {
                     <MarketMetricsGrid data={data} isLoading={false} />
                 </div>
             )}
-            <TrendingSection />
-            <TopMoversSection />
+
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <TrendingSection />
+                <TopMoversSection />
+            </div>
+
+            <div className="space-y-4">
+                <h2 className="text-xl font-bold text-gray-900">Explore by Category</h2>
+                <CategoryFilter
+                    categories={categories}
+                    selectedCategory={selectedCategory}
+                    onSelectCategory={setSelectedCategory}
+                    isLoading={isCategoriesLoading}
+                />
+                <MarketCoinList
+                    coins={coins}
+                    isLoading={isCoinsLoading}
+                />
+            </div>
         </div>
     );
 };

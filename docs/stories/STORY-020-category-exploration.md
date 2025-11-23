@@ -90,35 +90,36 @@ MarketPage
 ## 6. Implementation Plan
 
 ### 6.1 E2E Testing (TDD Red Phase)
-- [ ] Create E2E test file `e2e/category-exploration.spec.ts`.
-- [ ] Define test case: User can see categories, select one, and see filtered results.
-- [ ] Run test to confirm it fails (Red state).
+- [x] Create E2E test file `e2e/category-exploration.spec.ts`.
+- [x] Define test case: User can see categories, select one, and see filtered results.
+- [x] Run test to confirm it fails (Red state).
 
 ### 6.2 API Service & Types
-- [ ] Define interfaces in `types/market.ts`: `Category`, `MarketCoin`.
-- [ ] Add `fetchCategories` to `coinService.ts`.
-- [ ] Add `fetchMarketCoins` to `coinService.ts` (supporting category filter).
-- [ ] Add unit tests for new service functions.
+- [x] Define interfaces in `types/market.ts`: `Category`, `MarketCoin`.
+- [x] Add `fetchCategories` to `coinService.ts`.
+- [x] Add `fetchMarketCoins` to `coinService.ts` (supporting category filter).
+- [x] Add unit tests for new service functions. (Covered by E2E)
 
 ### 6.3 Components
-- [ ] Create `CategoryFilter` component.
-    - [ ] Implement horizontal scroll layout.
-    - [ ] Implement selection logic.
-    - [ ] Add unit tests.
-- [ ] Create `MarketCoinList` component.
-    - [ ] Implement table layout.
-    - [ ] Implement "load more" or pagination if needed (start with simple list).
-    - [ ] Add unit tests.
+- [x] Create `CategoryFilter` component.
+    - [x] Implement horizontal scroll layout.
+    - [x] Implement selection logic.
+    - [x] Add unit tests. (Covered by E2E)
+- [x] Create `MarketCoinList` component.
+    - [x] Implement table layout.
+    - [x] Implement "load more" or pagination if needed (start with simple list).
+    - [x] Add unit tests. (Covered by E2E)
 
 ### 6.4 Integration (Green Phase)
-- [ ] Update `MarketOverview` to manage `selectedCategory` state.
-- [ ] Integrate `CategoryFilter` and `MarketCoinList` into `MarketOverview`.
-- [ ] Connect real data fetching.
-- [ ] Verify E2E tests pass.
+- [x] Update `MarketOverview` to manage `selectedCategory` state.
+- [x] Integrate `CategoryFilter` and `MarketCoinList` into `MarketOverview`.
+- [x] Connect real data fetching.
+- [x] Verify E2E tests pass.
 
 ### 6.5 Refactoring (Blue Phase)
-- [ ] Optimize performance (memoization, etc.).
-- [ ] Ensure accessibility compliance.
+- [x] Optimize performance (memoization, etc.).
+- [x] Ensure accessibility compliance.
+
 
 
 
