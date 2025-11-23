@@ -87,5 +87,38 @@ MarketPage
 - **Coin List:**
     - Table layout: #, Coin, Price, 24h, Mkt Cap.
     - 24h Change: Green for positive, Red for negative.
-    - Responsive: Hide Mkt Cap on mobile if needed.
+## 6. Implementation Plan
+
+### 6.1 E2E Testing (TDD Red Phase)
+- [ ] Create E2E test file `e2e/category-exploration.spec.ts`.
+- [ ] Define test case: User can see categories, select one, and see filtered results.
+- [ ] Run test to confirm it fails (Red state).
+
+### 6.2 API Service & Types
+- [ ] Define interfaces in `types/market.ts`: `Category`, `MarketCoin`.
+- [ ] Add `fetchCategories` to `coinService.ts`.
+- [ ] Add `fetchMarketCoins` to `coinService.ts` (supporting category filter).
+- [ ] Add unit tests for new service functions.
+
+### 6.3 Components
+- [ ] Create `CategoryFilter` component.
+    - [ ] Implement horizontal scroll layout.
+    - [ ] Implement selection logic.
+    - [ ] Add unit tests.
+- [ ] Create `MarketCoinList` component.
+    - [ ] Implement table layout.
+    - [ ] Implement "load more" or pagination if needed (start with simple list).
+    - [ ] Add unit tests.
+
+### 6.4 Integration (Green Phase)
+- [ ] Update `MarketOverview` to manage `selectedCategory` state.
+- [ ] Integrate `CategoryFilter` and `MarketCoinList` into `MarketOverview`.
+- [ ] Connect real data fetching.
+- [ ] Verify E2E tests pass.
+
+### 6.5 Refactoring (Blue Phase)
+- [ ] Optimize performance (memoization, etc.).
+- [ ] Ensure accessibility compliance.
+
+
 
