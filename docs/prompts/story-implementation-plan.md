@@ -35,10 +35,12 @@ Create a preliminary design that addresses:
 **Objective:** Execute development following test-driven development (TDD) practices.
 
 ### Approach
-
+- Create a branch for the story 
 - Follow a **TDD approach**, starting with end-to-end (E2E) tests
 - For unit testing: write tests **before** implementing each function/component
+- **Run tests frequently** during implementation to verify progress
 - Continuously verify implementation against requirements and design
+- **Do not proceed to Step 3 until all tests are passing**
 
 ---
 
