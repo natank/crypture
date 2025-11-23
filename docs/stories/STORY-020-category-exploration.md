@@ -1,4 +1,5 @@
 # Story 20: Category-Based Exploration
+![Status](https://img.shields.io/badge/Status-Done-green)
 
 ## 1. Background
 **Related Requirement:** [REQ-011-market-intel](../requirements/REQ-011-market-intel.md)
