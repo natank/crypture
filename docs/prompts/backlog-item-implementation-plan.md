@@ -32,6 +32,7 @@ This document outlines the step-by-step workflow for implementing backlog items 
 1. Create a new branch for this item from the latest `main` branch
 2. Prepare a user story and acceptance criteria for this item
 3. Save the story in a `.md` file located in the `docs/stories` folder. Use docs/stories/STORY-999-demo-feature.md as template
+
 4. Present the story for review and approval
 
 ### Review Gate
