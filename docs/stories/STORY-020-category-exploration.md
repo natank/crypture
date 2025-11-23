@@ -121,6 +121,29 @@ MarketPage
 - [x] Optimize performance (memoization, etc.).
 - [x] Ensure accessibility compliance.
 
+## 7. Pull Request
+
+### 7.1 Description
+**Summary:**
+Implemented category-based exploration for crypto assets. Users can now filter the market list by categories like DeFi, Gaming, etc., allowing for more targeted market analysis.
+
+**Reference:**
+Story 20: Category-Based Exploration
+
+**Key Implementation Decisions:**
+- **Architecture:** Adopted a container-presenter pattern where `MarketOverview` manages state and data fetching, while `CategoryFilter` and `MarketCoinList` are presentational components.
+- **Data Fetching:** Introduced two new hooks: `useCategories` for fetching the category list and `useMarketCoins` for fetching filtered market data. This separates concerns and makes the code more testable.
+- **Robustness:** Added null checks for `price_change_percentage_24h` to prevent crashes when API data is incomplete (discovered during manual testing).
+- **Testing:** Followed TDD. Created `e2e/specs/features/category-exploration.spec.ts` before implementation. The test covers category loading, selection, and filtered list verification.
+
+**Testing Approach & Coverage:**
+- **E2E Tests:** `category-exploration.spec.ts` verifies the full user flow: viewing categories, selecting a category, and verifying the coin list updates.
+- **Manual Testing:** Verified UI responsiveness and error handling (e.g., network errors, empty categories).
+
+**Breaking Changes:**
+None. This feature adds new components and hooks without modifying existing core logic in a breaking way.
+
+
 
 
 
