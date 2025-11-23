@@ -44,9 +44,9 @@ Stories are grouped by feature category and prioritized based on their importanc
 
 | ID | Title | Priority | Feature Category | Status | Related Requirement |
 | :--- | :--- | :--- | :--- | :--- | :--- |
-| 18 | Market Overview Dashboard | High | Market Intelligence | ✅ Done | [REQ-011-market-intel](requirements/REQ-011-market-intel.md) |
-| 19 | Trending & Discovery Feed | High | Market Intelligence | ✅ Done | [REQ-011-market-intel](requirements/REQ-011-market-intel.md) |
-| 20 | Category-Based Exploration | Medium | Market Intelligence | ✅ Done | [REQ-011-market-intel](requirements/REQ-011-market-intel.md) |
+| 18 | Market Overview Dashboard | High | Market Intelligence | ✅ Done | [REQ-011-market-intel](requirements/REQ-011-market-intel.md) <br> [Story](stories/STORY-018-market-overview.md) |
+| 19 | Trending & Discovery Feed | High | Market Intelligence | ✅ Done | [REQ-011-market-intel](requirements/REQ-011-market-intel.md) <br> [Story](stories/STORY-019-trending-discovery.md) |
+| 20 | Category-Based Exploration | Medium | Market Intelligence | ✅ Done | [REQ-011-market-intel](requirements/REQ-011-market-intel.md) <br> [Story](stories/STORY-020-category-exploration.md) |
 | 21 | Portfolio Composition Visualizations | High | Advanced Analytics | 🔄 Pending | [REQ-012-analytics](requirements/REQ-012-analytics.md) |
 | 22 | Portfolio Performance Tracking | High | Advanced Analytics | 🔄 Pending | [REQ-012-analytics](requirements/REQ-012-analytics.md) |
 | 23 | Asset-Level Insights & Metrics | Medium | Advanced Analytics | 🔄 Pending | [REQ-012-analytics](requirements/REQ-012-analytics.md) |

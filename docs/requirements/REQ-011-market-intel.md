@@ -1,9 +1,9 @@
 # REQ-011: Market Intelligence
 
 ## Related Backlog Items
-- [18] Market Overview Dashboard
-- [19] Trending & Discovery Feed
-- [20] Category-Based Exploration
+- [18] Market Overview Dashboard - [Story](../stories/STORY-018-market-overview.md)
+- [19] Trending & Discovery Feed - [Story](../stories/STORY-019-trending-discovery.md)
+- [20] Category-Based Exploration - [Story](../stories/STORY-020-category-exploration.md)
 
 ## Description
 Provide users with comprehensive market intelligence through global metrics, trending coins, top movers, and category-based exploration to help them discover investment opportunities and understand market context.
