@@ -1,0 +1,49 @@
+# Story 20: Category-Based Exploration
+
+## 1. Background
+**Related Requirement:** [REQ-011-market-intel](../requirements/REQ-011-market-intel.md)
+
+As a crypto investor, I want to explore cryptocurrencies by specific categories (e.g., DeFi, Gaming, Layer 1) so that I can discover new projects within sectors I am interested in.
+
+## 2. Story
+**As a** crypto investor
+**I want to** browse and filter coins by category
+**So that** I can analyze performance and find opportunities in specific market sectors
+
+## 3. Acceptance Criteria
+
+### 3.1 Category List
+- [ ] The Market page displays a list of available crypto categories (e.g., "Layer 1", "DeFi", "Gaming", "Meme", etc.).
+- [ ] Categories are fetched from the CoinGecko API (`/coins/categories/list` or similar).
+- [ ] Users can select a category to view coins within that sector.
+
+### 3.2 Category Filtering
+- [ ] When a category is selected, the list of coins updates to show only coins in that category.
+- [ ] The filtered list displays key metrics for each coin (Price, 24h Change, Market Cap).
+- [ ] There is a way to clear the category filter and return to the global list.
+
+### 3.3 UI/UX
+- [ ] The category selection UI is intuitive (e.g., a horizontal scrollable list of chips or a dropdown).
+- [ ] Selected category is visually highlighted.
+- [ ] Loading states are shown while fetching category data or filtered coin lists.
+- [ ] Error states are handled gracefully (e.g., "Failed to load categories").
+
+## 4. Technical Notes
+
+### 4.1 API Integration
+- **List Categories:** GET `/coins/categories/list` (or `/coins/categories` for data with market cap, check API docs).
+  - *Note:* CoinGecko has `/coins/categories/list` for just IDs/names, and `/coins/categories` for market data per category. We might want `/coins/categories` to show "Top Categories" or just use the list to filter the `/coins/markets` endpoint.
+  - *Refinement:* To filter the market list, we usually use `/coins/markets` with the `category` parameter (e.g., `category=decentralized_finance_defi`).
+- **Filter Coins:** GET `/coins/markets` with `vs_currency=usd` and `category={category_id}`.
+
+### 4.2 Components
+- New `CategoryFilter` component (horizontal list of chips).
+- Update `MarketDashboard` or `CoinList` to accept a `selectedCategory` state.
+- Integration with `useMarketData` hook to support category parameter.
+
+### 4.3 State Management
+- Local state in `MarketPage` or `MarketDashboard` for `selectedCategory`.
+- Pass `selectedCategory` to the data fetching hook.
+
+## 5. Preliminary Design
+*(To be filled in during Preliminary Design Review)*
