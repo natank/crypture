@@ -46,4 +46,46 @@ As a crypto investor, I want to explore cryptocurrencies by specific categories 
 - Pass `selectedCategory` to the data fetching hook.
 
 ## 5. Preliminary Design
-*(To be filled in during Preliminary Design Review)*
+
+### 5.1 Architecture
+- **Service Layer (`coinService.ts`):**
+    - `fetchCategories()`: Fetches list of categories from `/coins/categories/list`.
+    - `fetchMarketCoins(category?: string)`: Fetches market data from `/coins/markets`. Supports optional `category` parameter.
+- **Component Layer:**
+    - `MarketOverview`: Main container. Manages `selectedCategory` state.
+    - `CategoryFilter`: New component. Displays horizontal list of category chips.
+    - `MarketCoinList`: New component. Displays the list of coins (table format).
+
+### 5.2 Component Structure
+```
+MarketPage
+└── MarketOverview
+    ├── MarketMetricsGrid (Existing)
+    ├── TrendingSection (Existing)
+    ├── TopMoversSection (Existing)
+    ├── CategoryFilter (New)
+    │   └── Chip (Button)
+    └── MarketCoinList (New)
+        └── CoinRow (Rank, Name, Price, 24h%, Mkt Cap)
+```
+
+### 5.3 Data Flow
+1. `MarketOverview` mounts.
+2. Fetches global metrics (existing).
+3. Fetches categories (new).
+4. Fetches initial coin list (category = 'all' or undefined).
+5. User clicks a category in `CategoryFilter`.
+6. `selectedCategory` state updates.
+7. `MarketCoinList` re-fetches data with new category.
+
+### 5.4 UX/UI Design
+- **Category Filter:**
+    - Horizontal scrollable container.
+    - "All" is the first option and default.
+    - Active category has primary color background.
+    - Inactive categories have gray background.
+- **Coin List:**
+    - Table layout: #, Coin, Price, 24h, Mkt Cap.
+    - 24h Change: Green for positive, Red for negative.
+    - Responsive: Hide Mkt Cap on mobile if needed.
+
