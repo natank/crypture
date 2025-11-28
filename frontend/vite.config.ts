@@ -16,8 +16,8 @@ export default defineConfig({
       "@utils": path.resolve(__dirname, "src/utils"),
       "@e2e": path.resolve(__dirname, "src/e2e"),
       "@test-setup": path.resolve(__dirname, "src/e2e/test-setup.ts"),
-      "@assets": path.resolve(__dirname, "public/assets"),
       "@types": path.resolve(__dirname, "src/types"),
+      "@assets": path.resolve(__dirname, "public/assets"),
     },
   },
   build: {

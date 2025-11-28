@@ -3,8 +3,10 @@ import InlineErrorBadge from "@components/InlineErrorBadge";
 import Icon from "@components/Icon";
 import { PortfolioAsset } from "@hooks/usePortfolioState";
 import AssetChart from "@components/AssetChart";
+import AssetMetricsPanel from "@components/AssetMetricsPanel";
 import { useAssetChartController } from "@hooks/useAssetChartController";
 import { useAssetHighlight } from "@hooks/useAssetHighlight";
+import { useAssetMetrics } from "@hooks/useAssetMetrics";
 import { validateQuantity } from "@utils/validateQuantity";
 import toast from "react-hot-toast";
 
@@ -28,6 +30,12 @@ const AssetRow = memo(function AssetRow({
   const { isChartVisible, chartProps, handleToggleChart } = useAssetChartController(asset.coinInfo.id);
   const isHighlighted = useAssetHighlight(asset.coinInfo.id, highlightTrigger);
   const hasPrice = typeof price === "number";
+  
+  // Fetch asset metrics only when the row is expanded
+  const { data: metricsData, isLoading: metricsLoading, error: metricsError } = useAssetMetrics(
+    asset.coinInfo.id,
+    isChartVisible
+  );
   
   // Edit state
   const [isEditing, setIsEditing] = useState(false);
@@ -295,8 +303,20 @@ const AssetRow = memo(function AssetRow({
       </div>
 
       {isChartVisible && (
-        <div className="p-4 bg-surface-soft" data-testid={`asset-chart-container-${asset.coinInfo.symbol}`}>
-          <AssetChart {...chartProps} />
+        <div className="p-4 bg-surface-soft" data-testid={`asset-expanded-container-${asset.coinInfo.symbol}`}>
+          {/* Asset Metrics Panel (REQ-023) */}
+          <div className="mb-4" data-testid={`asset-metrics-container-${asset.coinInfo.symbol}`}>
+            <AssetMetricsPanel
+              metrics={metricsData}
+              isLoading={metricsLoading}
+              error={metricsError}
+            />
+          </div>
+          
+          {/* Price History Chart */}
+          <div data-testid={`asset-chart-container-${asset.coinInfo.symbol}`}>
+            <AssetChart {...chartProps} />
+          </div>
         </div>
       )}
 

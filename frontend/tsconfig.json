@@ -16,6 +16,7 @@
       "@pages/*": ["pages/*"],
       "@utils/*": ["utils/*"],
       "@services/*": ["services/*"],
+      "@types/*": ["types/*"],
       "@e2e/*": ["e2e/*"],
       "@test-setup": ["e2e/test-setup.ts"],
       "@assets/*": ["../public/assets/*"],
