@@ -38,9 +38,9 @@ export default defineConfig({
       "@services": path.resolve(__dirname, "src/services"),
       "@pages": path.resolve(__dirname, "src/pages"),
       "@utils": path.resolve(__dirname, "src/utils"),
+      "@types": path.resolve(__dirname, "src/types"),
       "@e2e": path.resolve(__dirname, "src/e2e"),
       "@test-setup": path.resolve(__dirname, "src/e2e/test-setup.ts"),
-      "@types": path.resolve(__dirname, "src/types"),
     },
   },
 });

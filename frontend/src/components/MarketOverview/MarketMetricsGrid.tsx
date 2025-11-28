@@ -1,7 +1,7 @@
 import React from 'react';
-import { GlobalMarketData } from '../../types/market';
+import { GlobalMarketData } from 'types/market';
 import { MarketMetricCard } from './MarketMetricCard';
-import { formatLargeNumber, formatPercentage } from '../../utils/formatters';
+import { formatLargeNumber, formatPercentage } from '@utils/formatters';
 
 interface MarketMetricsGridProps {
     data: GlobalMarketData | null;

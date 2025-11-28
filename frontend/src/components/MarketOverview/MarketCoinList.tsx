@@ -1,6 +1,6 @@
 import React from 'react';
-import { MarketCoin } from '../../types/market';
-import { formatCurrency, formatPercentage } from '../../utils/formatters';
+import { MarketCoin } from 'types/market';
+import { formatCurrency, formatPercentage } from '@utils/formatters';
 
 interface MarketCoinListProps {
     coins: MarketCoin[];

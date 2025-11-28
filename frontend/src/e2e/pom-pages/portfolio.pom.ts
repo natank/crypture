@@ -34,6 +34,11 @@ export class PortfolioPage {
   readonly chartLegendBySymbol: (symbol: string) => Locator;
   readonly chartLegendItemBySymbolAndLabel: (symbol: string, label: string) => Locator;
 
+  // Asset Metrics Panel
+  readonly expandedContainerBySymbol: (symbol: string) => Locator;
+  readonly metricsContainerBySymbol: (symbol: string) => Locator;
+  readonly metricsPanelBySymbol: (symbol: string) => Locator;
+
   constructor(page: Page) {
     this.page = page;
 
@@ -80,6 +85,15 @@ export class PortfolioPage {
       this.chartContainerBySymbol(symbol).locator("[data-testid='chart-legend']");
     this.chartLegendItemBySymbolAndLabel = (symbol: string, label: string) =>
       this.chartLegendBySymbol(symbol).locator(`text=${label}`);
+
+    // Asset Metrics Panel 
+    // Note: asset.coinInfo.symbol is uppercase (transformed by fetchTopCoins)
+    this.expandedContainerBySymbol = (symbol: string) =>
+      page.locator(`[data-testid='asset-expanded-container-${symbol.toUpperCase()}']`);
+    this.metricsContainerBySymbol = (symbol: string) =>
+      page.locator(`[data-testid='asset-metrics-container-${symbol.toUpperCase()}']`);
+    this.metricsPanelBySymbol = (symbol: string) =>
+      this.metricsContainerBySymbol(symbol).locator("[data-testid='asset-metrics-panel']");
   }
 
   // --------- Page Actions ---------
@@ -144,6 +158,14 @@ export class PortfolioPage {
 
   async isChartVisible(symbol: string): Promise<boolean> {
     return await this.chartContainerBySymbol(symbol).isVisible();
+  }
+
+  async isMetricsPanelVisible(symbol: string): Promise<boolean> {
+    return await this.metricsPanelBySymbol(symbol).isVisible();
+  }
+
+  async isExpandedContainerVisible(symbol: string): Promise<boolean> {
+    return await this.expandedContainerBySymbol(symbol).isVisible();
   }
 
   async selectTimeRange(symbol: string, days: 7 | 30 | 365) {

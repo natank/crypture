@@ -1,6 +1,14 @@
 // src/setupTests.ts
 import "@testing-library/jest-dom";
 
+// Mock ResizeObserver for recharts ResponsiveContainer
+class ResizeObserverMock {
+  observe() {}
+  unobserve() {}
+  disconnect() {}
+}
+global.ResizeObserver = ResizeObserverMock;
+
 // Mock matchMedia for react-hot-toast
 Object.defineProperty(window, "matchMedia", {
   writable: true,

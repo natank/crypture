@@ -1,5 +1,5 @@
 import React from 'react';
-import { Category } from '../../types/market';
+import { Category } from 'types/market';
 
 interface CategoryFilterProps {
     categories: Category[];

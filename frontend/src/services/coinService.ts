@@ -1,3 +1,5 @@
+import type { GlobalMarketData, GlobalMarketApiResponse, TrendingCoin, TrendingApiResponse, MarketMover, Category, MarketCoin } from "types/market";
+
 export type CoinInfo = {
   id: string;
   name: string;
@@ -75,7 +77,6 @@ export async function fetchAssetHistory(
 }
 
 // Cache for global market data
-import { GlobalMarketData, GlobalMarketApiResponse, TrendingCoin, TrendingApiResponse, MarketMover, Category, MarketCoin } from "../types/market";
 
 const CACHE_DURATION = 10 * 60 * 1000; // 10 minutes
 let globalMarketCache: { data: GlobalMarketData; timestamp: number } | null = null;
@@ -142,7 +143,7 @@ export async function fetchTrendingCoins(): Promise<TrendingCoin[]> {
     }
 
     const json: TrendingApiResponse = await response.json();
-    return json.coins.map((coin) => coin.item);
+    return json.coins.map((coin: { item: TrendingCoin }) => coin.item);
   } catch (error: unknown) {
     if (
       error instanceof Error &&
@@ -231,5 +232,51 @@ export async function fetchMarketCoins(category?: string): Promise<MarketCoin[]>
       throw error;
     }
     throw new Error("Unable to fetch market coins");
+  }
+}
+
+// Cache for asset metrics data
+const assetMetricsCache: Map<string, { data: MarketCoin; timestamp: number }> = new Map();
+const ASSET_METRICS_CACHE_DURATION = 5 * 60 * 1000; // 5 minutes
+
+export async function fetchAssetMetrics(coinId: string): Promise<MarketCoin | null> {
+  // Check cache first
+  const cached = assetMetricsCache.get(coinId);
+  if (cached && (Date.now() - cached.timestamp) < ASSET_METRICS_CACHE_DURATION) {
+    return cached.data;
+  }
+
+  const url = `https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&ids=${coinId}&x_cg_demo_api_key=${API_KEY}`;
+
+  try {
+    const response = await fetch(url);
+
+    if (!response.ok) {
+      throw new Error(`CoinGecko API error: ${response.status}`);
+    }
+
+    const data: MarketCoin[] = await response.json();
+    
+    if (data.length === 0) {
+      return null;
+    }
+
+    const coinData = data[0];
+    
+    // Update cache
+    assetMetricsCache.set(coinId, {
+      data: coinData,
+      timestamp: Date.now(),
+    });
+
+    return coinData;
+  } catch (error: unknown) {
+    if (
+      error instanceof Error &&
+      error.message.startsWith("CoinGecko API error")
+    ) {
+      throw error;
+    }
+    throw new Error("Unable to fetch asset metrics");
   }
 }

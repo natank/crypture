@@ -46,6 +46,7 @@ export default tseslint.config({ ignores: ["dist", "coverage"] }, {
     //       "@utils/",
     //       "@e2e/",
     //       "@services/",
+    //       "@wypes/",
     //     ],
     //   },
     // ],

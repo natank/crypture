@@ -1,7 +1,7 @@
 import React from 'react';
-import { useTopMovers } from '../../hooks/useTopMovers';
-import { formatCurrency, formatPercentage } from '../../utils/formatters';
-import { MarketMover } from '../../types/market';
+import { useTopMovers } from '@hooks/useTopMovers';
+import { formatCurrency, formatPercentage } from '@utils/formatters';
+import { MarketMover } from 'types/market';
 
 export const TopMoversSection: React.FC = () => {
     const { gainers, losers, isLoading, error } = useTopMovers();
