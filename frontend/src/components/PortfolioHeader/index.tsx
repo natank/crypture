@@ -1,16 +1,21 @@
 import React from "react";
 import { useNavigate, NavLink } from "react-router-dom";
+import AlertButton from "@components/AlertButton";
 
 type PortfolioHeaderProps = {
   totalValue?: string | number | null;
   lastUpdatedAt?: number | null;
   className?: string;
+  alertCount?: { active: number; triggered: number };
+  onAlertsClick?: () => void;
 };
 
 export default function PortfolioHeader({
   totalValue = null,
   lastUpdatedAt = null,
   className,
+  alertCount = { active: 0, triggered: 0 },
+  onAlertsClick,
 }: PortfolioHeaderProps) {
   const formattedValue =
     totalValue != null && !isNaN(Number(totalValue))
@@ -82,6 +87,16 @@ export default function PortfolioHeader({
           </nav>
         </div>
 
+        <div className="flex items-center gap-4">
+          {/* Alert Button */}
+          {onAlertsClick && (
+            <AlertButton
+              activeCount={alertCount.active}
+              triggeredCount={alertCount.triggered}
+              onClick={onAlertsClick}
+            />
+          )}
+
         <div className="text-right">
           {formattedValue ? (
             <div
@@ -103,6 +118,7 @@ export default function PortfolioHeader({
               Last updated: {relativeTime}
             </p>
           )}
+        </div>
         </div>
       </div>
     </header>
