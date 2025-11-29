@@ -363,3 +363,79 @@ export async function getPortfolioHistory(
 
     return portfolioHistory;
 }
+
+/**
+ * Asset performance data for daily summary
+ */
+export interface AssetPerformance {
+    coinId: string;
+    coinSymbol: string;
+    coinName: string;
+    change24hPercent: number;
+    currentValue: number;
+}
+
+/**
+ * Calculate 24h performance for each asset in portfolio
+ * Returns assets sorted by change percentage (descending)
+ */
+export function getAssetPerformance24h(
+    portfolio: PortfolioAsset[],
+    priceMap: Record<string, number>,
+    coinMetadata: Record<string, CoinMetadata>
+): AssetPerformance[] {
+    return portfolio
+        .map(asset => {
+            const meta = coinMetadata[asset.coinInfo.id];
+            const price = priceMap[asset.coinInfo.id] || 0;
+            const change24h = meta?.price_change_percentage_24h ?? 0;
+
+            return {
+                coinId: asset.coinInfo.id,
+                coinSymbol: asset.coinInfo.symbol.toUpperCase(),
+                coinName: asset.coinInfo.name,
+                change24hPercent: change24h,
+                currentValue: asset.quantity * price,
+            };
+        })
+        .sort((a, b) => b.change24hPercent - a.change24hPercent);
+}
+
+/**
+ * Get top N performers (biggest gains)
+ */
+export function getTopPerformers(
+    portfolio: PortfolioAsset[],
+    priceMap: Record<string, number>,
+    coinMetadata: Record<string, CoinMetadata>,
+    limit: number = 3
+): AssetPerformance[] {
+    const all = getAssetPerformance24h(portfolio, priceMap, coinMetadata);
+    return all.filter(a => a.change24hPercent > 0).slice(0, limit);
+}
+
+/**
+ * Get bottom N performers (biggest losses)
+ */
+export function getWorstPerformers(
+    portfolio: PortfolioAsset[],
+    priceMap: Record<string, number>,
+    coinMetadata: Record<string, CoinMetadata>,
+    limit: number = 3
+): AssetPerformance[] {
+    const all = getAssetPerformance24h(portfolio, priceMap, coinMetadata);
+    return all.filter(a => a.change24hPercent < 0).slice(-limit).reverse();
+}
+
+/**
+ * Detect significant price moves (>10% change in 24h)
+ */
+export function getSignificantMoves(
+    portfolio: PortfolioAsset[],
+    priceMap: Record<string, number>,
+    coinMetadata: Record<string, CoinMetadata>,
+    threshold: number = 10
+): AssetPerformance[] {
+    const all = getAssetPerformance24h(portfolio, priceMap, coinMetadata);
+    return all.filter(a => Math.abs(a.change24hPercent) >= threshold);
+}

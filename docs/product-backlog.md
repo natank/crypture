@@ -51,7 +51,7 @@ Stories are grouped by feature category and prioritized based on their importanc
 | 22 | Portfolio Performance Tracking | High | Advanced Analytics | ✅ Done | [REQ-022-portfolio-performance](requirements/REQ-022-portfolio-performance.md) <br> [Story](stories/STORY-022-portfolio-performance.md) |
 | 23 | Asset-Level Insights & Metrics | Medium | Advanced Analytics | ✅ Done | [REQ-023-asset-insights](requirements/REQ-023-asset-insights.md) <br> [Story](stories/STORY-023-asset-insights.md) |
 | 24 | Price Alerts & Notifications | High | User Engagement | ✅ Done  | [REQ-013-notifications](requirements/REQ-013-notifications.md) |
-| 25 | Daily Portfolio Summary & Insights | Medium | User Engagement | 🚧 In Progress | [REQ-013-notifications](requirements/REQ-013-notifications.md) |
+| 25 | Daily Portfolio Summary & Insights | Medium | User Engagement | ✅ Done | [REQ-013-notifications](requirements/REQ-013-notifications.md) |
 | 26 | Coin Deep Dive Pages | Medium | Investment Research | 🔄 Pending | [REQ-014-research](requirements/REQ-014-research.md) |
 | 27 | Compare Coins Side-by-Side | Low | Investment Research | 🔄 Pending | [REQ-014-research](requirements/REQ-014-research.md) |
 | 28 | Educational Tooltips & Contextual Help | Medium | Investment Research | 🔄 Pending | [REQ-014-research](requirements/REQ-014-research.md) |

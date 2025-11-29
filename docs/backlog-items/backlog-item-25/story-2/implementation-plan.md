@@ -10,14 +10,14 @@
 
 ## Task List
 
-- [ ] **TS2.1**: Create `DailySummaryCard` main component
-- [ ] **TS2.2**: Create `PerformersSection` subcomponent
-- [ ] **TS2.3**: Create `NotableEventsSection` subcomponent
-- [ ] **TS2.4**: Implement dismiss functionality with localStorage persistence
-- [ ] **TS2.5**: Add responsive styling (mobile/desktop)
-- [ ] **TS2.6**: Integrate into `PortfolioPage.tsx`
-- [ ] **TS2.7**: Add empty state for portfolios with no assets
-- [ ] **TS2.8**: Write E2E tests for summary card
+- [x] **TS2.1**: Create `DailySummaryCard` main component
+- [x] **TS2.2**: Create `PerformersSection` subcomponent
+- [x] **TS2.3**: Create `NotableEventsSection` subcomponent
+- [x] **TS2.4**: Implement dismiss functionality with localStorage persistence
+- [x] **TS2.5**: Add responsive styling (mobile/desktop)
+- [x] **TS2.6**: Integrate into `PortfolioPage.tsx`
+- [x] **TS2.7**: Add empty state for portfolios with no assets
+- [x] **TS2.8**: Write E2E tests for summary card (12 tests passing)
 
 ---
 

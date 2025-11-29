@@ -13,6 +13,7 @@ import PortfolioHeader from "@components/PortfolioHeader";
 import { HelpBanner } from "@components/HelpBanner";
 import PortfolioCompositionDashboard from "@components/portfolio/PortfolioCompositionDashboard";
 import { PortfolioPerformanceChart } from "@components/PortfolioPerformanceChart";
+import DailySummaryCard from "@components/DailySummaryCard";
 
 import { usePortfolioState } from "@hooks/usePortfolioState";
 import { useCoinList } from "@hooks/useCoinList";
@@ -21,6 +22,7 @@ import { useCoinSearch } from "@hooks/useCoinSearch";
 import { useUIState } from "@hooks/useUIState";
 import { useFilterSort } from "@hooks/useFilterSort";
 import { useNotifications } from "@hooks/useNotifications";
+import { useDailySummary } from "@hooks/useDailySummary";
 import AppFooter from "@components/AppFooter";
 import { CoinInfo } from "@services/coinService";
 import { usePortfolioImportExport } from "@hooks/usePortfolioImportExport";
@@ -133,6 +135,14 @@ export default function PortfolioPage() {
   } = useFilterSort(portfolio);
 
   const notifications = useNotifications();
+
+  // Daily Summary hook
+  const dailySummary = useDailySummary({
+    portfolio,
+    priceMap: priceMapById,
+    coinMetadata,
+    totalValue: Number(totalValue),
+  });
 
   // Alert polling - check price alerts periodically
   const alertPriceMap = useMemo(() => {
@@ -357,6 +367,11 @@ export default function PortfolioPage() {
           message={importError}
         />
       )}
+
+      {/* Daily Summary Card */}
+      <div className="w-full max-w-4xl mx-auto px-6 md:px-10 mb-6">
+        <DailySummaryCard summary={dailySummary} />
+      </div>
 
       {/* Portfolio Performance Chart */}
       <div className="w-full max-w-4xl mx-auto px-6 md:px-10 mb-6">

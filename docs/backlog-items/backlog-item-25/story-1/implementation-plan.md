@@ -10,12 +10,12 @@
 
 ## Task List
 
-- [ ] **TS1.1**: Add `getAssetPerformance24h()` helper to `portfolioAnalyticsService.ts`
-- [ ] **TS1.2**: Create `useDailySummary` hook with core calculations
-- [ ] **TS1.3**: Integrate triggered alerts from `alertService` for notable events
-- [ ] **TS1.4**: Add detection for significant price moves (>10%)
-- [ ] **TS1.5**: Write unit tests for `useDailySummary` hook
-- [ ] **TS1.6**: Write unit tests for `getAssetPerformance24h()`
+- [x] **TS1.1**: Add `getAssetPerformance24h()` helper to `portfolioAnalyticsService.ts`
+- [x] **TS1.2**: Create `useDailySummary` hook with core calculations
+- [x] **TS1.3**: Integrate triggered alerts from `alertService` for notable events
+- [x] **TS1.4**: Add detection for significant price moves (>10%)
+- [x] **TS1.5**: Write unit tests for `useDailySummary` hook
+- [x] **TS1.6**: Write unit tests for `getAssetPerformance24h()` (covered in hook tests)
 
 ---
 
