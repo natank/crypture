@@ -205,3 +205,23 @@ Implemented detailed asset metrics panel that displays comprehensive market data
 - `frontend/src/e2e/specs/features/view-asset-metrics.spec.ts` - E2E tests
 
 ---
+
+
+## Retrospectvie
+we completed the sprint implementing item 23 of the product backlog. now we do retrospective. I am the developer working with the AI tool.
+I was working with Windsurf Cascade and Caude sonnet 4.5 initially. 
+I had to take a one week break and when I got back to work I found it difficult to continue working with the AI tool. I tried to follow the softare development plan doc but I found many roles that were not clear to me. I think we should revise a new software development plan which is more focused on the development role. Defining a structured process for the AI tool to work with the developer. the process should be based on a traditional software development methodology. 
+Starting from backlog Item -> Requirement -> Stories breakdown -> Preliminary Design -> Detailed Design -> Implementation Plan -> Implementation -> Testing -> Deployment -> Maintenance
+The process should be tailored by the AI tool based on the complexity of the backlog item. Use ALARP (As Low As Reasonably Practicable) as a guide for the process.
+1. Backlog Item - should be taken from the product-backlog.md doc - defined by the product owner
+2. Should be traced down from the backlog item to the requirement doc - defined by the product owner
+3. Stories breakdown - every requirement should be broken down to one or more stories, depending on the complexity of the requirement. Tracebility links should be added to the requiement pointing to the stories.
+4. Preliminary Design and Detailed Design - should be developed by the developer for the backlog item. documented in separate docs.
+5. Implementation Plan - should be developed by the developer for every story and include the :
+    Task list
+6. tailoring the process - the AI tool should tailor the process, deliverables and tasks based on the complexity of the backlog item - ALARP (As Low As Reasonably Practicable) guide
+7. A proposed documentation tree is provided in the docs/backlog-items folder. the folder should have separate folders for every backlog item as a subfolder.
+
+The legacy backlog items should be left as they are, the process should be applied to the new backlog items.
+I think we should WRITE A NEW SOFTWARE DEVELOPMENT PLAN DOC BASED ON THE ABOVE GUIDELINES
+   
