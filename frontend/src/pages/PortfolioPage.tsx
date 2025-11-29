@@ -25,9 +25,19 @@ import AppFooter from "@components/AppFooter";
 import { CoinInfo } from "@services/coinService";
 import { usePortfolioImportExport } from "@hooks/usePortfolioImportExport";
 import { CoinMetadata } from "@services/portfolioAnalyticsService";
+import { useAlerts } from "@hooks/useAlerts";
+import { useAlertPolling } from "@hooks/useAlertPolling";
+import AlertsPanel from "@components/AlertsPanel";
+import NotificationBanner from "@components/NotificationBanner";
+import NotificationPermission from "@components/NotificationPermission";
+import * as notificationService from "@services/notificationService";
+import type { MarketCoin } from "types/market";
 
 export default function PortfolioPage() {
   const { coins: allCoins, loading, error, lastUpdatedAt, refreshing, retry } = useCoinList();
+  const { alertCount, refreshAlerts } = useAlerts();
+  const [isAlertsPanelOpen, setIsAlertsPanelOpen] = useState(false);
+  const [showPermissionDialog, setShowPermissionDialog] = useState(false);
   const priceMap = usePriceMap(allCoins);
   const { search, setSearch, filteredCoins } = useCoinSearch(allCoins);
 
@@ -37,6 +47,32 @@ export default function PortfolioPage() {
       map[coin.symbol.toLowerCase()] = coin;
     }
     return map;
+  }, [allCoins]);
+
+  // Convert CoinInfo[] to MarketCoin[] for AlertsPanel
+  const marketCoins: MarketCoin[] = useMemo(() => {
+    return allCoins.map((coin) => ({
+      id: coin.id,
+      symbol: coin.symbol,
+      name: coin.name,
+      image: '', // CoinInfo doesn't have image, will be fetched if needed
+      current_price: coin.current_price,
+      market_cap: 0,
+      market_cap_rank: 0,
+      price_change_percentage_24h: 0,
+      total_volume: 0,
+      high_24h: 0,
+      low_24h: 0,
+      ath: 0,
+      ath_date: '',
+      ath_change_percentage: 0,
+      atl: 0,
+      atl_date: '',
+      atl_change_percentage: 0,
+      circulating_supply: 0,
+      total_supply: null,
+      max_supply: null,
+    }));
   }, [allCoins]);
 
   // Create coin metadata map for composition analysis
@@ -69,6 +105,14 @@ export default function PortfolioPage() {
 
   const { portfolio, addAsset, removeAsset, updateAssetQuantity, getAssetById, totalValue, resetPortfolio } =
     usePortfolioState(priceMap, coinMap, loading);
+
+  // Portfolio coins for alert suggestions
+  const portfolioMarketCoins = useMemo(() => {
+    return portfolio
+      .map((asset) => marketCoins.find((c) => c.id === asset.coinInfo.id))
+      .filter((c): c is MarketCoin => c !== undefined);
+  }, [portfolio, marketCoins]);
+
   const {
     shouldShowAddAssetModal,
     shouldShowDeleteConfirmationModal,
@@ -89,6 +133,42 @@ export default function PortfolioPage() {
   } = useFilterSort(portfolio);
 
   const notifications = useNotifications();
+
+  // Alert polling - check price alerts periodically
+  const alertPriceMap = useMemo(() => {
+    const map: Record<string, number> = {};
+    for (const coin of allCoins) {
+      map[coin.id] = coin.current_price;
+    }
+    return map;
+  }, [allCoins]);
+
+  // Memoize the callback to prevent useAlertPolling from re-running on every render
+  const handleAlertTriggered = useCallback((triggered: { alert: { coinSymbol: string; condition: string; targetPrice: number } }) => {
+    refreshAlerts();
+    notifications.success(
+      `🔔 Alert: ${triggered.alert.coinSymbol} is now ${triggered.alert.condition} $${triggered.alert.targetPrice.toLocaleString()}`
+    );
+  }, [refreshAlerts, notifications]);
+
+  const {
+    triggeredAlerts,
+    dismissTriggeredAlert,
+    clearAllTriggered,
+  } = useAlertPolling(alertPriceMap, {
+    intervalMs: 5 * 60 * 1000, // 5 minutes
+    enabled: !loading,
+    onAlertTriggered: handleAlertTriggered,
+  });
+
+  // Check if we should prompt for notification permission
+  const handleOpenAlertsPanel = useCallback(() => {
+    const permission = notificationService.getPermissionStatus();
+    if (permission === 'default' && alertCount.total === 0) {
+      // First time creating an alert - will prompt after they create one
+    }
+    setIsAlertsPanelOpen(true);
+  }, [alertCount.total]);
 
   // Track highlight triggers for visual feedback (Phase 5)
   const [highlightTriggers, setHighlightTriggers] = useState<Record<string, number>>({});
@@ -225,10 +305,38 @@ export default function PortfolioPage() {
   return (
     <>
       <Toaster position="top-right" />
+
+      {/* Notification Banner for triggered alerts */}
+      <NotificationBanner
+        triggeredAlerts={triggeredAlerts}
+        onDismiss={dismissTriggeredAlert}
+        onDismissAll={clearAllTriggered}
+        onViewAlerts={handleOpenAlertsPanel}
+      />
+
+      {/* Notification Permission Dialog */}
+      <NotificationPermission
+        isOpen={showPermissionDialog}
+        onClose={() => setShowPermissionDialog(false)}
+        onPermissionGranted={() => {
+          notifications.success('🔔 Notifications enabled!');
+        }}
+      />
+
       <PortfolioHeader
         totalValue={totalValue.toString()}
         lastUpdatedAt={lastUpdatedAt}
         className="flex items-center justify-between mb-4"
+        alertCount={alertCount}
+        onAlertsClick={handleOpenAlertsPanel}
+      />
+
+      {/* Alerts Panel */}
+      <AlertsPanel
+        isOpen={isAlertsPanelOpen}
+        onClose={() => setIsAlertsPanelOpen(false)}
+        availableCoins={marketCoins}
+        portfolioCoins={portfolioMarketCoins}
       />
 
       {/* Help Banner (Phase 7) */}

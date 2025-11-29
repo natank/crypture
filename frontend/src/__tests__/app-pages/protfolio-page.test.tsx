@@ -90,6 +90,42 @@ vi.mock("@hooks/useCoinSearch", () => ({
   }),
 }));
 
+vi.mock("@hooks/useAlerts", () => ({
+  useAlerts: () => ({
+    alerts: [],
+    activeAlerts: [],
+    triggeredAlerts: [],
+    alertCount: { active: 0, triggered: 0, total: 0 },
+    isLoading: false,
+    error: null,
+    createAlert: vi.fn(),
+    updateAlert: vi.fn(),
+    deleteAlert: vi.fn(),
+    muteAlert: vi.fn(),
+    reactivateAlert: vi.fn(),
+    refreshAlerts: vi.fn(),
+  }),
+}));
+
+vi.mock("@hooks/useAlertPolling", () => ({
+  useAlertPolling: () => ({
+    triggeredAlerts: [],
+    isPolling: false,
+    lastChecked: null,
+    checkNow: vi.fn(),
+    dismissTriggeredAlert: vi.fn(),
+    clearAllTriggered: vi.fn(),
+  }),
+}));
+
+vi.mock("@services/notificationService", () => ({
+  isNotificationSupported: () => true,
+  getPermissionStatus: () => 'default',
+  requestPermission: vi.fn().mockResolvedValue('granted'),
+  sendNotification: vi.fn().mockReturnValue(true),
+  sendAlertNotification: vi.fn().mockReturnValue(true),
+}));
+
 describe("PortfolioPage", () => {
   beforeEach(() => {
     vi.mock("@hooks/useCoinList", () => ({
