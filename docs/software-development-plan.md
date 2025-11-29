@@ -39,7 +39,9 @@ Backlog Item → Requirement → Stories → Design → Implementation → Testi
 
 1. Select a pending backlog item
 2. Note the ID, title, priority, and related requirement
-3. Create folder: `docs/backlog-items/backlog-item-{ID}/`
+3. **Update status** in `product-backlog.md` to "In Progress"
+4. **Create feature branch**: `git checkout -b backlog-item-{ID}` (from latest `main`)
+5. Create folder: `docs/backlog-items/backlog-item-{ID}/`
 
 ### Phase 2: Requirement Analysis
 
@@ -199,6 +201,8 @@ Use this checklist when starting a new backlog item:
 ### Setup
 - [ ] Read backlog item in `product-backlog.md`
 - [ ] Read linked requirement doc
+- [ ] Update backlog item status to "In Progress" in `product-backlog.md`
+- [ ] Create feature branch: `git checkout -b backlog-item-{ID}` (from latest `main`)
 - [ ] Create folder `docs/backlog-items/backlog-item-{ID}/`
 
 ### Planning
@@ -217,30 +221,22 @@ Use this checklist when starting a new backlog item:
 
 ### Completion
 - [ ] All tests passing
-- [ ] PR created and merged
-- [ ] Update `product-backlog.md` status to Done
+- [ ] Push feature branch and create PR
+- [ ] PR reviewed and merged to `main`
+- [ ] Update `product-backlog.md` status to "Done"
 ```
 
 ---
 
 ## Working with AI
 
-### Starting a Session
-
-Provide context:
-```
-I'm working on Backlog Item {ID}: {Title}.
-Current phase: {Phase}
-Last completed: {What was done}
-Next step: {What needs to happen}
-```
 
 ### Resuming After a Break
 
 Ask AI to review:
 ```
-Review the current state of Backlog Item {ID}.
-Check: process-tailoring.md, implementation plans, and any in-progress code.
+Review the software development plan (docs/software-development-plan.md) to understand the project workflow.
+Then check the current state of Backlog Item {ID} in docs/backlog-items/backlog-item-{ID}/.
 Summarize where we left off and what's next.
 ```
 
