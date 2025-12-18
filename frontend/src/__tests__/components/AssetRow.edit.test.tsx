@@ -1,9 +1,14 @@
 import { describe, it, expect, vi } from 'vitest';
 import { render, screen, waitFor } from '@testing-library/react';
+import { MemoryRouter } from 'react-router-dom';
 import userEvent from '@testing-library/user-event';
 import AssetRow from '@components/AssetRow';
 import { PortfolioAsset } from '@hooks/usePortfolioState';
 import toast from 'react-hot-toast';
+
+const renderWithRouter = (ui: React.ReactElement) => {
+  return render(<MemoryRouter>{ui}</MemoryRouter>);
+};
 
 // Mock toast
 vi.mock('react-hot-toast', () => ({
@@ -52,7 +57,7 @@ describe('AssetRow - Edit Functionality', () => {
 
   describe('Rendering states', () => {
     it('renders default state with quantity displayed', () => {
-      render(<AssetRow {...defaultProps} />);
+      renderWithRouter(<AssetRow {...defaultProps} />);
       
       expect(screen.getByText(/Qty: 1.5/i)).toBeInTheDocument();
       expect(screen.getByLabelText(/Edit BTC quantity/i)).toBeInTheDocument();
@@ -60,7 +65,7 @@ describe('AssetRow - Edit Functionality', () => {
 
     it('enters edit mode when edit button is clicked', async () => {
       const user = userEvent.setup();
-      render(<AssetRow {...defaultProps} />);
+      renderWithRouter(<AssetRow {...defaultProps} />);
       
       const editButton = screen.getByLabelText(/Edit BTC quantity/i);
       await user.click(editButton);
@@ -80,7 +85,7 @@ describe('AssetRow - Edit Functionality', () => {
 
     it('focuses and selects input text when entering edit mode', async () => {
       const user = userEvent.setup();
-      render(<AssetRow {...defaultProps} />);
+      renderWithRouter(<AssetRow {...defaultProps} />);
       
       const editButton = screen.getByLabelText(/Edit BTC quantity/i);
       await user.click(editButton);
@@ -91,7 +96,7 @@ describe('AssetRow - Edit Functionality', () => {
 
     it('disables delete button during edit mode', async () => {
       const user = userEvent.setup();
-      render(<AssetRow {...defaultProps} />);
+      renderWithRouter(<AssetRow {...defaultProps} />);
       
       const editButton = screen.getByLabelText(/Edit BTC quantity/i);
       await user.click(editButton);
@@ -105,7 +110,7 @@ describe('AssetRow - Edit Functionality', () => {
     it('saves valid quantity change and exits edit mode', async () => {
       const user = userEvent.setup();
       const onUpdateQuantity = vi.fn();
-      render(<AssetRow {...defaultProps} onUpdateQuantity={onUpdateQuantity} />);
+      renderWithRouter(<AssetRow {...defaultProps} onUpdateQuantity={onUpdateQuantity} />);
       
       // Enter edit mode
       await user.click(screen.getByLabelText(/Edit BTC quantity/i));
@@ -133,7 +138,7 @@ describe('AssetRow - Edit Functionality', () => {
     it('saves when Enter key is pressed', async () => {
       const user = userEvent.setup();
       const onUpdateQuantity = vi.fn();
-      render(<AssetRow {...defaultProps} onUpdateQuantity={onUpdateQuantity} />);
+      renderWithRouter(<AssetRow {...defaultProps} onUpdateQuantity={onUpdateQuantity} />);
       
       await user.click(screen.getByLabelText(/Edit BTC quantity/i));
       
@@ -148,7 +153,7 @@ describe('AssetRow - Edit Functionality', () => {
     it('does not save when quantity is unchanged', async () => {
       const user = userEvent.setup();
       const onUpdateQuantity = vi.fn();
-      render(<AssetRow {...defaultProps} onUpdateQuantity={onUpdateQuantity} />);
+      renderWithRouter(<AssetRow {...defaultProps} onUpdateQuantity={onUpdateQuantity} />);
       
       await user.click(screen.getByLabelText(/Edit BTC quantity/i));
       
@@ -168,7 +173,7 @@ describe('AssetRow - Edit Functionality', () => {
   describe('Cancel functionality', () => {
     it('cancels edit and restores original value', async () => {
       const user = userEvent.setup();
-      render(<AssetRow {...defaultProps} />);
+      renderWithRouter(<AssetRow {...defaultProps} />);
       
       await user.click(screen.getByLabelText(/Edit BTC quantity/i));
       
@@ -192,7 +197,7 @@ describe('AssetRow - Edit Functionality', () => {
     it('cancels when Escape key is pressed', async () => {
       const user = userEvent.setup();
       const onUpdateQuantity = vi.fn();
-      render(<AssetRow {...defaultProps} onUpdateQuantity={onUpdateQuantity} />);
+      renderWithRouter(<AssetRow {...defaultProps} onUpdateQuantity={onUpdateQuantity} />);
       
       await user.click(screen.getByLabelText(/Edit BTC quantity/i));
       
@@ -214,7 +219,7 @@ describe('AssetRow - Edit Functionality', () => {
   describe('Validation', () => {
     it('displays error for negative numbers', async () => {
       const user = userEvent.setup();
-      render(<AssetRow {...defaultProps} />);
+      renderWithRouter(<AssetRow {...defaultProps} />);
       
       await user.click(screen.getByLabelText(/Edit BTC quantity/i));
       
@@ -234,7 +239,7 @@ describe('AssetRow - Edit Functionality', () => {
 
     it('displays error for zero', async () => {
       const user = userEvent.setup();
-      render(<AssetRow {...defaultProps} />);
+      renderWithRouter(<AssetRow {...defaultProps} />);
       
       await user.click(screen.getByLabelText(/Edit BTC quantity/i));
       
@@ -249,7 +254,7 @@ describe('AssetRow - Edit Functionality', () => {
 
     it('displays error for empty input', async () => {
       const user = userEvent.setup();
-      render(<AssetRow {...defaultProps} />);
+      renderWithRouter(<AssetRow {...defaultProps} />);
       
       await user.click(screen.getByLabelText(/Edit BTC quantity/i));
       
@@ -263,7 +268,7 @@ describe('AssetRow - Edit Functionality', () => {
 
     it('displays error for too many decimal places', async () => {
       const user = userEvent.setup();
-      render(<AssetRow {...defaultProps} />);
+      renderWithRouter(<AssetRow {...defaultProps} />);
       
       await user.click(screen.getByLabelText(/Edit BTC quantity/i));
       
@@ -278,7 +283,7 @@ describe('AssetRow - Edit Functionality', () => {
 
     it('disables save button when validation error exists', async () => {
       const user = userEvent.setup();
-      render(<AssetRow {...defaultProps} />);
+      renderWithRouter(<AssetRow {...defaultProps} />);
       
       await user.click(screen.getByLabelText(/Edit BTC quantity/i));
       
@@ -294,7 +299,7 @@ describe('AssetRow - Edit Functionality', () => {
 
     it('clears validation error when input changes', async () => {
       const user = userEvent.setup();
-      render(<AssetRow {...defaultProps} />);
+      renderWithRouter(<AssetRow {...defaultProps} />);
       
       await user.click(screen.getByLabelText(/Edit BTC quantity/i));
       
@@ -322,7 +327,7 @@ describe('AssetRow - Edit Functionality', () => {
         throw new Error('Network error');
       });
       
-      render(<AssetRow {...defaultProps} onUpdateQuantity={onUpdateQuantity} />);
+      renderWithRouter(<AssetRow {...defaultProps} onUpdateQuantity={onUpdateQuantity} />);
       
       await user.click(screen.getByLabelText(/Edit BTC quantity/i));
       
@@ -338,7 +343,7 @@ describe('AssetRow - Edit Functionality', () => {
 
   describe('Accessibility', () => {
     it('has proper ARIA labels for all interactive elements', () => {
-      render(<AssetRow {...defaultProps} />);
+      renderWithRouter(<AssetRow {...defaultProps} />);
       
       expect(screen.getByLabelText(/Edit BTC quantity/i)).toBeInTheDocument();
       expect(screen.getByLabelText(/Delete BTC/i)).toBeInTheDocument();
@@ -346,7 +351,7 @@ describe('AssetRow - Edit Functionality', () => {
 
     it('associates error message with input via aria-describedby', async () => {
       const user = userEvent.setup();
-      render(<AssetRow {...defaultProps} />);
+      renderWithRouter(<AssetRow {...defaultProps} />);
       
       await user.click(screen.getByLabelText(/Edit BTC quantity/i));
       
@@ -364,7 +369,7 @@ describe('AssetRow - Edit Functionality', () => {
 
     it('has proper focus management', async () => {
       const user = userEvent.setup();
-      render(<AssetRow {...defaultProps} />);
+      renderWithRouter(<AssetRow {...defaultProps} />);
       
       // Click edit button
       const editButton = screen.getByLabelText(/Edit BTC quantity/i);

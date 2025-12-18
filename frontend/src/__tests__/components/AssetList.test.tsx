@@ -1,8 +1,13 @@
 import React from "react";
 import { render, screen } from "@testing-library/react";
+import { MemoryRouter } from "react-router-dom";
 import AssetList from "@components/AssetList";
 import { PortfolioAsset } from "@hooks/usePortfolioState";
 import { vi } from "vitest";
+
+const renderWithRouter = (ui: React.ReactElement) => {
+  return render(<MemoryRouter>{ui}</MemoryRouter>);
+};
 
 function findTokenLabel(symbol: string, name: string): HTMLElement {
   return screen.getByText((_, el) => {
@@ -44,7 +49,7 @@ const mockPriceMap = {
 
 describe("AssetList", () => {
   it("renders empty state when no assets", () => {
-    render(
+    renderWithRouter(
       <AssetList
         assets={[]}
         onDelete={() => { }}
@@ -60,7 +65,7 @@ describe("AssetList", () => {
   });
 
   it("renders list of assets", () => {
-    render(
+    renderWithRouter(
       <AssetList
         assets={mockAssets}
         onDelete={() => { }}
@@ -77,7 +82,7 @@ describe("AssetList", () => {
 
   it("calls delete handler when row button is clicked", () => {
     const handleDelete = vi.fn();
-    render(
+    renderWithRouter(
       <AssetList
         assets={mockAssets}
         onDelete={handleDelete}
@@ -92,7 +97,7 @@ describe("AssetList", () => {
   });
 
   it("renders correct price and total value for each asset", () => {
-    render(
+    renderWithRouter(
       <AssetList
         assets={mockAssets}
         onDelete={() => { }}
@@ -113,7 +118,7 @@ describe("AssetList", () => {
   });
 
   it("renders fallback UI when price is missing", () => {
-    render(
+    renderWithRouter(
       <AssetList
         assets={mockAssets}
         onDelete={vi.fn()}
