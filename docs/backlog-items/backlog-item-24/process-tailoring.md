@@ -59,8 +59,9 @@ This is a **Medium** complexity item because:
 
 ### Phase: Testing
 - [x] Unit tests for alertService (22 tests) and notificationService (13 tests)
-- [ ] Unit tests for AlertForm and AlertList components
-- [ ] E2E tests for creating and triggering alerts
+- [x] Unit tests for AlertForm (15 tests) and AlertList (20 tests) components
+- [x] Unit tests for useAlertPolling hook (18 tests)
+- [x] E2E tests for creating and triggering alerts (18 tests)
 - [ ] Manual testing of browser notification permissions
 
 ## Notes
