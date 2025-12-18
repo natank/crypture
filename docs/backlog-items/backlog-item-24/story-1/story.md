@@ -41,8 +41,8 @@ As a portfolio user, I want to create, view, edit, and delete price alerts for m
 5. [x] Create `AlertsPanel` container component (slide-out or modal)
 6. [x] Add alert button to header toolbar
 7. [x] Write unit tests for alertService (22 tests)
-8. [ ] Write unit tests for AlertForm and AlertList
-9. [ ] Write E2E test for alert CRUD operations
+8. [x] Write unit tests for AlertForm (15 tests) and AlertList (20 tests)
+9. [x] Write E2E test for alert CRUD operations (18 tests in price-alerts.spec.ts)
 
 ---
 

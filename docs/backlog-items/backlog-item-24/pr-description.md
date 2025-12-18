@@ -26,7 +26,12 @@ This PR implements the complete Price Alerts & Notifications feature, allowing u
   - `src/services/alertService.ts`: Implemented localStorage persistence for alerts.
 
 - **Tests**
-  - `src/e2e/specs/features/price-alerts.spec.ts`: New E2E test suite covering:
+  - `src/__tests__/components/AlertForm.test.tsx`: 15 unit tests for alert form component
+  - `src/__tests__/components/AlertList.test.tsx`: 20 unit tests for alert list component
+  - `src/__tests__/hooks/useAlertPolling.test.ts`: 18 unit tests for polling hook
+  - `src/__tests__/services/alertService.test.ts`: 22 unit tests for alert service
+  - `src/__tests__/services/notificationService.test.ts`: 13 unit tests for notification service
+  - `src/e2e/specs/features/price-alerts.spec.ts`: 18 E2E tests covering:
     - Panel management (open/close/empty state)
     - Alert creation (above/below conditions, validation)
     - Alert management (edit, delete, mute, reactivate)
@@ -71,8 +76,9 @@ Expected outcome: All tests pass (currently 108 passing, 3 skipped).
 ## Checklist
 
 - [x] Lint/Typecheck pass locally
-- [x] Unit/Integration tests added or updated (353 unit tests passing)
-- [x] E2E tests added/updated (18 new tests, 108 total passing)
+- [x] Unit/Integration tests added or updated (406 unit tests passing)
+- [x] E2E tests added/updated (18 new tests)
+- [x] Manual smoke test completed (browser notification permissions verified)
 - [x] A11y & Mobile checklist completed
   - [x] Alerts panel is keyboard accessible (Esc to close)
   - [x] Controls have proper aria-labels

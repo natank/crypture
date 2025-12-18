@@ -44,8 +44,8 @@ As a portfolio user, I want to receive notifications when my price alerts are tr
 6. [x] Add notification badge to header alerts button (Story 1)
 7. [x] Implement mute/unmute functionality (Story 1)
 8. [x] Write unit tests for notificationService (13 tests)
-9. [ ] Write unit tests for useAlertPolling hook
-10. [ ] Write E2E test for alert triggering flow
+9. [x] Write unit tests for useAlertPolling hook (18 tests)
+10. [x] Write E2E test for alert triggering flow (covered in price-alerts.spec.ts)
 
 ---
 
