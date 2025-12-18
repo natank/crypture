@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { MarketCoin } from 'types/market';
 import { formatCurrency, formatPercentage } from '@utils/formatters';
 
@@ -55,13 +56,13 @@ export const MarketCoinList: React.FC<MarketCoinListProps> = ({ coins, isLoading
                                 {coin.market_cap_rank}
                             </td>
                             <td className="px-6 py-4 whitespace-nowrap">
-                                <div className="flex items-center">
+                                <Link to={`/coin/${coin.id}`} className="flex items-center hover:opacity-80 transition-opacity">
                                     <img className="h-8 w-8 rounded-full" src={coin.image} alt={coin.name} />
                                     <div className="ml-4">
-                                        <div className="text-sm font-medium text-gray-900">{coin.name}</div>
+                                        <div className="text-sm font-medium text-gray-900 hover:text-brand-primary">{coin.name}</div>
                                         <div className="text-sm text-gray-500 uppercase">{coin.symbol}</div>
                                     </div>
-                                </div>
+                                </Link>
                             </td>
                             <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 text-right">
                                 {formatCurrency(coin.current_price)}

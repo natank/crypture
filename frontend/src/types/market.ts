@@ -81,3 +81,49 @@ export interface MarketCoin {
     total_supply: number | null;
     max_supply: number | null;
 }
+
+// Detailed coin information from /coins/{id} endpoint (REQ-014)
+export interface CoinDetails {
+    id: string;
+    symbol: string;
+    name: string;
+    image: {
+        large: string;
+        small: string;
+        thumb: string;
+    };
+    description: {
+        en: string;
+    };
+    links: {
+        homepage: string[];
+        whitepaper: string;
+        blockchain_site: string[];
+        twitter_screen_name: string;
+        subreddit_url: string;
+        repos_url: {
+            github: string[];
+        };
+    };
+    categories: string[];
+    market_cap_rank: number;
+    market_data: {
+        current_price: { usd: number };
+        market_cap: { usd: number };
+        total_volume: { usd: number };
+        high_24h: { usd: number };
+        low_24h: { usd: number };
+        price_change_percentage_24h: number;
+        price_change_percentage_7d: number;
+        price_change_percentage_30d: number;
+        ath: { usd: number };
+        ath_date: { usd: string };
+        ath_change_percentage: { usd: number };
+        atl: { usd: number };
+        atl_date: { usd: string };
+        atl_change_percentage: { usd: number };
+        circulating_supply: number;
+        total_supply: number | null;
+        max_supply: number | null;
+    };
+}

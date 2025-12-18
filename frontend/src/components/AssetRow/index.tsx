@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect, memo } from "react";
+import { Link } from "react-router-dom";
 import InlineErrorBadge from "@components/InlineErrorBadge";
 import Icon from "@components/Icon";
 import { PortfolioAsset } from "@hooks/usePortfolioState";
@@ -281,14 +282,25 @@ const AssetRow = memo(function AssetRow({
         {/* Action Buttons */}
         <div className="flex items-center gap-2">
           {!isEditing && (
-            <button
-              className="p-2 rounded-full hover:bg-blue-100 text-brand-primary transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary tap-44"
-              aria-label={`Edit ${asset.coinInfo.symbol.toUpperCase()} quantity`}
-              title={`Edit ${asset.coinInfo.symbol.toUpperCase()} quantity`}
-              onClick={handleEditClick}
-            >
-              <Icon glyph="✏️" />
-            </button>
+            <>
+              <Link
+                to={`/coin/${asset.coinInfo.id}`}
+                className="p-2 rounded-full hover:bg-gray-100 text-text-secondary hover:text-brand-primary transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary tap-44"
+                aria-label={`View ${asset.coinInfo.name} details`}
+                title={`View ${asset.coinInfo.name} details`}
+                onClick={(e) => e.stopPropagation()}
+              >
+                <Icon glyph="🔍" />
+              </Link>
+              <button
+                className="p-2 rounded-full hover:bg-blue-100 text-brand-primary transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary tap-44"
+                aria-label={`Edit ${asset.coinInfo.symbol.toUpperCase()} quantity`}
+                title={`Edit ${asset.coinInfo.symbol.toUpperCase()} quantity`}
+                onClick={handleEditClick}
+              >
+                <Icon glyph="✏️" />
+              </button>
+            </>
           )}
           <button
             className="p-2 rounded-full hover:bg-gray-100 text-error transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-error tap-44"

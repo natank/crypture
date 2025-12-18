@@ -1,4 +1,4 @@
-import type { GlobalMarketData, GlobalMarketApiResponse, TrendingCoin, TrendingApiResponse, MarketMover, Category, MarketCoin } from "types/market";
+import type { GlobalMarketData, GlobalMarketApiResponse, TrendingCoin, TrendingApiResponse, MarketMover, Category, MarketCoin, CoinDetails } from "types/market";
 
 export type CoinInfo = {
   id: string;
@@ -278,5 +278,48 @@ export async function fetchAssetMetrics(coinId: string): Promise<MarketCoin | nu
       throw error;
     }
     throw new Error("Unable to fetch asset metrics");
+  }
+}
+
+// Cache for coin details data (REQ-014)
+const coinDetailsCache: Map<string, { data: CoinDetails; timestamp: number }> = new Map();
+const COIN_DETAILS_CACHE_DURATION = 10 * 60 * 1000; // 10 minutes
+
+export async function fetchCoinDetails(coinId: string): Promise<CoinDetails> {
+  // Check cache first
+  const cached = coinDetailsCache.get(coinId);
+  if (cached && (Date.now() - cached.timestamp) < COIN_DETAILS_CACHE_DURATION) {
+    return cached.data;
+  }
+
+  const url = `https://api.coingecko.com/api/v3/coins/${coinId}?localization=false&tickers=false&market_data=true&community_data=false&developer_data=false&sparkline=false&x_cg_demo_api_key=${API_KEY}`;
+
+  try {
+    const response = await fetch(url);
+
+    if (!response.ok) {
+      if (response.status === 404) {
+        throw new Error("Coin not found");
+      }
+      throw new Error(`CoinGecko API error: ${response.status}`);
+    }
+
+    const data: CoinDetails = await response.json();
+    
+    // Update cache
+    coinDetailsCache.set(coinId, {
+      data,
+      timestamp: Date.now(),
+    });
+
+    return data;
+  } catch (error: unknown) {
+    if (
+      error instanceof Error &&
+      (error.message.startsWith("CoinGecko API error") || error.message === "Coin not found")
+    ) {
+      throw error;
+    }
+    throw new Error("Unable to fetch coin details");
   }
 }
