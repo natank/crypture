@@ -162,6 +162,13 @@ function CoinDetailPage() {
             >
               {isPriceUp ? "▲" : "▼"} {formatPercentage(Math.abs(priceChange))} (24h)
             </div>
+            <button
+              onClick={() => navigate(`/compare?coin=${coinId}`)}
+              className="mt-2 px-4 py-2 text-sm bg-primary text-white rounded-lg hover:bg-primary/90 focus-ring tap-44"
+              data-testid="coin-detail-compare"
+            >
+              Compare
+            </button>
           </div>
         </header>
 

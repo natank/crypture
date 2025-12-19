@@ -240,6 +240,10 @@ Then check the current state of Backlog Item {ID} in docs/backlog-items/backlog-
 Summarize where we left off and what's next.
 ```
 
+```
+Review the software development plan (docs/software-development-plan.md) to understand the project workflow.
+Then check the current state of Backlog Items in docs/product-backlog.md and and what's next. if all set, proceed with the next backlog item according to the sdp doc.
+
 ### AI Responsibilities
 
 1. **Assess complexity** and tailor process (ALARP)
