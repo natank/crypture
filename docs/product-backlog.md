@@ -53,7 +53,7 @@ Stories are grouped by feature category and prioritized based on their importanc
 | 24 | Price Alerts & Notifications | High | User Engagement | ✅ Done  | [REQ-013-notifications](requirements/REQ-013-notifications.md) |
 | 25 | Daily Portfolio Summary & Insights | Medium | User Engagement | ✅ Done | [REQ-013-notifications](requirements/REQ-013-notifications.md) |
 | 26 | Coin Deep Dive Pages | Medium | Investment Research | ✅ Done | [REQ-014-research](requirements/REQ-014-research.md) |
-| 27 | Compare Coins Side-by-Side | Low | Investment Research | 🚧 In Progress | [REQ-014-research](requirements/REQ-014-research.md) |
+| 27 | Compare Coins Side-by-Side | Low | Investment Research | ✅ Done | [REQ-014-research](requirements/REQ-014-research.md) |
 | 28 | Educational Tooltips & Contextual Help | Medium | Investment Research | 🔄 Pending | [REQ-014-research](requirements/REQ-014-research.md) |
 
 > **Note:** For detailed strategic context and phasing recommendations, see [`post-mvp-strategy.md`](../post-mvp-strategy.md) in the artifacts directory.
