@@ -5,6 +5,7 @@
 Implements the "Educational Tooltips & Contextual Help" feature (Backlog Item 28) from REQ-014 Investment Research. Users can now access beginner-friendly explanations for crypto metrics and technical terms throughout the application via hover/focus tooltips with consistent help icons.
 
 **Related Documentation:**
+
 - Requirements Analysis: [`docs/backlog-items/backlog-item-28/requirements-analysis.md`](requirements-analysis.md)
 - Process Tailoring: [`docs/backlog-items/backlog-item-28/process-tailoring.md`](process-tailoring.md)
 - Preliminary Design: [`docs/backlog-items/backlog-item-28/Preliminary Design/preliminary-design-report.md`](Preliminary%20Design/preliminary-design-report.md)
@@ -16,17 +17,20 @@ Implements the "Educational Tooltips & Contextual Help" feature (Backlog Item 28
 ### New Features
 
 #### 1. Educational Tooltip System
+
 - **Reusable Tooltip Component**: `EducationalTooltip` with auto-positioning, keyboard support, and mobile-friendly tap-to-toggle
 - **Help Icon Component**: Consistent ⓘ icon wrapper (`HelpIcon`) for standardized tooltip triggers
 - **Content Store**: Type-safe content store with 22 educational terms covering all crypto metrics
 
 #### 2. Tooltip Integration Across Pages
+
 - **Coin Detail Page**: Tooltips for all 8 metrics in `CoinMetrics` component
 - **Comparison Page**: Tooltips for all 9 comparison metrics in `ComparisonTable`
 - **Portfolio Page**: Tooltips for 7 metrics in `AssetMetricsPanel` (expanded asset rows)
 - **Market Overview**: Tooltips for Market Cap and Volume in `MarketMetricCard`
 
 #### 3. Educational Content
+
 - **22 Tooltip Entries**: Comprehensive explanations for:
   - Market metrics (Market Cap, Volume, Liquidity, Market Cap Rank)
   - Supply metrics (Circulating, Total, Max Supply)
@@ -68,6 +72,7 @@ frontend/src/
 ### Technical Approach
 
 **Tooltip Component:**
+
 - React state management for visibility (`useState`)
 - Auto-positioning logic to keep tooltips in viewport (prefers bottom, then top, then right, then left)
 - Event handlers for hover, focus, blur, and click (mobile tap-to-toggle)
@@ -75,11 +80,13 @@ frontend/src/
 - Click-outside detection for mobile
 
 **Content Store:**
+
 - Type-safe `TooltipKey` union type
 - Centralized `TOOLTIP_CONTENT` object with all educational content
 - Helper functions: `getTooltipContent()`, `hasTooltipContent()` (type guard)
 
 **Positioning Algorithm:**
+
 ```typescript
 // Auto-position based on available viewport space
 if (spaceBelow >= tooltipHeight) → position: 'bottom'
@@ -89,12 +96,14 @@ else → position: 'left'
 ```
 
 **Accessibility:**
+
 - ARIA attributes: `role="tooltip"`, `aria-describedby`, `aria-label`
 - Keyboard navigation: Tab to focus, Enter/Space to show, ESC to dismiss
 - Screen reader support with proper announcements
 - Focus management (doesn't trap focus)
 
 **Mobile Support:**
+
 - Tap-to-toggle behavior (click handler)
 - Touch-friendly targets (44x44px via `tap-44` class)
 - Responsive positioning adapts to screen size
@@ -106,12 +115,14 @@ else → position: 'left'
 ### Unit Tests (28 new tests)
 
 **TooltipContent (8 tests):**
+
 - All required tooltip keys have content
 - Content structure validation (title, description, optional example)
 - Helper function returns correct content
 - Type guard functionality
 
 **EducationalTooltip (12 tests):**
+
 - Tooltip shows/hides on hover
 - Tooltip shows/hides on focus
 - ESC key dismisses tooltip
@@ -121,6 +132,7 @@ else → position: 'left'
 - Keyboard accessibility
 
 **HelpIcon (8 tests):**
+
 - HelpIcon renders correctly
 - HelpIcon triggers tooltip
 - Custom aria label support
@@ -130,6 +142,7 @@ else → position: 'left'
 ### E2E Tests (11 new tests)
 
 **Feature Coverage:**
+
 - Coin Detail Page tooltips (hover, focus, ESC key)
 - Comparison Page tooltips
 - Portfolio Page tooltips (AssetMetricsPanel)
@@ -137,6 +150,7 @@ else → position: 'left'
 - Keyboard navigation across pages
 
 **Test Results:**
+
 - ✅ All 28 unit tests passing (all new)
 - ✅ All 11 E2E tests passing (all new)
 - ✅ All existing tests still passing
@@ -146,6 +160,7 @@ else → position: 'left'
 ## Accessibility
 
 Following existing a11y patterns:
+
 - ✅ Semantic HTML (`role="tooltip"`, `role="button"`)
 - ✅ ARIA attributes (`aria-describedby`, `aria-label`, `aria-hidden`)
 - ✅ Keyboard navigation (Tab, Enter/Space, ESC)
@@ -161,6 +176,7 @@ Following existing a11y patterns:
 ### Created Documentation
 
 1. **Requirements Analysis** ([`requirements-analysis.md`](requirements-analysis.md))
+
    - Functional requirements (FR-1 to FR-4)
    - Non-functional requirements (performance, a11y, UX)
    - Dependencies and constraints
@@ -168,11 +184,13 @@ Following existing a11y patterns:
    - Traceability matrix
 
 2. **Process Tailoring** ([`process-tailoring.md`](process-tailoring.md))
+
    - Complexity assessment: **Medium**
    - Justification and criteria
    - Tailored deliverables (preliminary design, 2 stories)
 
 3. **Preliminary Design Report** ([`Preliminary Design/preliminary-design-report.md`](Preliminary%20Design/preliminary-design-report.md))
+
    - UX/UI design and user flow
    - Component architecture
    - Integration points
@@ -189,6 +207,7 @@ Following existing a11y patterns:
 ## Screenshots
 
 ### Coin Detail Page - CoinMetrics
+
 ```
 ┌─────────────────────────────────────────────────────────────┐
 │ Key Metrics                                                  │
@@ -203,6 +222,7 @@ Following existing a11y patterns:
 ```
 
 ### Tooltip Example (on hover/focus)
+
 ```
 Market Cap ⓘ
      ↓
@@ -222,6 +242,7 @@ Market Cap ⓘ
 ```
 
 ### Comparison Table
+
 ```
 ┌─────────────────────────────────────────────────────────────┐
 │ Comparison Table                                             │
@@ -245,6 +266,7 @@ None. This is a new feature with no impact on existing functionality. All toolti
 ## Migration Guide
 
 No migration needed. The feature is automatically available on:
+
 1. Coin Detail Pages (`/coin/{id}`) - All metrics have tooltips
 2. Comparison Page (`/compare`) - All comparison metrics have tooltips
 3. Portfolio Page (`/portfolio`) - Metrics in expanded asset rows have tooltips
@@ -291,21 +313,25 @@ No migration needed. The feature is automatically available on:
 ### Key Areas to Review
 
 1. **Tooltip Positioning Logic** (`EducationalTooltip.tsx:42-70`)
+
    - Verify auto-positioning algorithm handles edge cases
    - Check viewport boundary detection
    - Test on different screen sizes
 
 2. **Content Quality** (`TooltipContent.ts`)
+
    - Review educational content for accuracy
    - Verify beginner-friendly language
    - Check examples are helpful
 
 3. **Accessibility** (all components)
+
    - Test keyboard navigation (Tab, Enter, ESC)
    - Verify ARIA attributes with screen reader
    - Check focus management
 
 4. **Mobile Experience** (all components)
+
    - Test tap-to-toggle behavior
    - Verify touch target sizes (44x44px)
    - Check tooltip positioning on small screens
@@ -353,10 +379,10 @@ npm run dev
 ## Future Enhancements
 
 Potential improvements for future backlog items:
+
 - Interactive tutorials or guided tours
 - Video content or external links in tooltips
 - User-customizable tooltip preferences
 - Analytics tracking for tooltip usage
 - Additional educational content for advanced metrics
 - Tooltip content localization (i18n)
-
