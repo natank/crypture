@@ -35,11 +35,13 @@ export const MarketMetricsGrid: React.FC<MarketMetricsGridProps> = ({
                 value={formatLargeNumber(data.totalMarketCap)}
                 change={data.marketCapChange24h}
                 testId="metric-total-market-cap"
+                tooltipKey="market_cap"
             />
             <MarketMetricCard
                 label="24h Volume"
                 value={formatLargeNumber(data.totalVolume24h)}
                 testId="metric-total-volume"
+                tooltipKey="volume"
             />
             <MarketMetricCard
                 label="BTC Dominance"

@@ -5,6 +5,7 @@
 This document defines a structured software development process for **Developer + AI collaboration**. It follows a traditional SDLC methodology, tailored using **ALARP** (As Low As Reasonably Practicable) based on backlog item complexity.
 
 **Roles:**
+
 - **Product Owner**: Defines backlog items and requirements
 - **Developer**: Designs, implements, tests, and documents with AI assistance
 - **AI Tool**: Assists in all phases, tailors process complexity, maintains traceability
@@ -14,20 +15,21 @@ This document defines a structured software development process for **Developer 
 ## Process Phases
 
 ```
-Backlog Item → Requirement → Stories → Design → Implementation → Testing → Done
+Backlog Item → Requirement → Stories → Design → Implementation → Testing → PR Description → Done
 ```
 
-| Phase | Owner | Output |
-|-------|-------|--------|
-| 1. Backlog Item | Product Owner | Entry in `product-backlog.md` |
-| 2. Requirement | Product Owner | `docs/requirements/REQ-XXX-*.md` |
-| 3. Stories | Developer + AI | Story breakdown with traceability |
-| 4. Process Tailoring | AI | `process-tailoring.md` |
-| 5. Preliminary Design | Developer + AI | `preliminary-design-report.md` |
-| 6. Detailed Design | Developer + AI | `detail-design-report.md` |
-| 7. Implementation | Developer + AI | Code + tests |
-| 8. Testing | Developer + AI | Unit + E2E tests passing |
-| 9. Done | Developer | PR merged |
+| Phase                       | Owner          | Output                            |
+| --------------------------- | -------------- | --------------------------------- |
+| 1. Backlog Item             | Product Owner  | Entry in `product-backlog.md`     |
+| 2. Requirement              | Product Owner  | `docs/requirements/REQ-XXX-*.md`  |
+| 3. Stories                  | Developer + AI | Story breakdown with traceability |
+| 4. Process Tailoring        | AI             | `process-tailoring.md`            |
+| 5. Preliminary Design       | Developer + AI | `preliminary-design-report.md`    |
+| 6. Detailed Design          | Developer + AI | `detail-design-report.md`         |
+| 7. Implementation           | Developer + AI | Code + tests                      |
+| 8. Testing                  | Developer + AI | Unit + E2E tests passing          |
+| 9. Pull Request Description | Developer + AI | `pull-request-description.md`     |
+| 10. Done                    | Developer      | PR merged                         |
 
 ---
 
@@ -60,6 +62,7 @@ Backlog Item → Requirement → Stories → Design → Implementation → Testi
 
 1. Break the requirement into atomic stories
 2. Each story should be:
+
    - **Independent**: Can be completed on its own
    - **Testable**: Has clear acceptance criteria
    - **Small**: Fits in a single development session
@@ -74,13 +77,14 @@ Backlog Item → Requirement → Stories → Design → Implementation → Testi
 
 The AI evaluates complexity and tailors the process using ALARP:
 
-| Complexity | Criteria | Tailored Process |
-|------------|----------|------------------|
-| **Simple** | Single component, no new patterns, <50 lines | Skip design docs, implement directly |
-| **Medium** | Multiple components, known patterns, 50-200 lines | Brief preliminary design, skip detailed design |
-| **Complex** | New architecture, external integrations, >200 lines | Full design documents |
+| Complexity  | Criteria                                            | Tailored Process                               |
+| ----------- | --------------------------------------------------- | ---------------------------------------------- |
+| **Simple**  | Single component, no new patterns, <50 lines        | Skip design docs, implement directly           |
+| **Medium**  | Multiple components, known patterns, 50-200 lines   | Brief preliminary design, skip detailed design |
+| **Complex** | New architecture, external integrations, >200 lines | Full design documents                          |
 
 **Tailoring Template:**
+
 ```markdown
 ## Process Tailoring
 
@@ -88,15 +92,18 @@ The AI evaluates complexity and tailors the process using ALARP:
 **Assessed Complexity**: Simple / Medium / Complex
 
 ### Justification
+
 {Why this complexity level was chosen}
 
 ### Tailored Deliverables
+
 - [ ] Requirements Analysis: Yes / Skip
 - [ ] Preliminary Design: Yes / Skip
 - [ ] Detailed Design: Yes / Skip
 - [ ] Stories: {Number of stories}
 
 ### Tailored Tasks
+
 {List of tasks based on complexity}
 ```
 
@@ -107,6 +114,7 @@ The AI evaluates complexity and tailors the process using ALARP:
 **When**: Medium or Complex items
 
 **Contents:**
+
 1. **UX/UI Design**: Wireframes, user flow, layout
 2. **Technical Approach**: High-level architecture, data flow
 3. **Component Overview**: New/modified components
@@ -120,6 +128,7 @@ The AI evaluates complexity and tailors the process using ALARP:
 **When**: Complex items only
 
 **Contents:**
+
 1. **Component Specifications**: Props, state, behavior
 2. **Data Models**: Types, interfaces, schemas
 3. **Integration Points**: How components interact
@@ -133,6 +142,7 @@ The AI evaluates complexity and tailors the process using ALARP:
 For each story:
 
 1. Create `story-{N}/implementation-plan.md`:
+
    ```markdown
    ## Implementation Plan
 
@@ -140,11 +150,13 @@ For each story:
    **Estimated Effort**: {Hours}
 
    ### Task List
+
    - [ ] Task 1: {Description}
    - [ ] Task 2: {Description}
-   ...
+         ...
 
    ### Files to Create/Modify
+
    - `path/to/file.tsx` - {Purpose}
    ```
 
@@ -155,22 +167,55 @@ For each story:
 ### Phase 8: Testing
 
 **Checklist:**
+
 - [ ] Unit tests for new components/functions
 - [ ] E2E tests for user-facing features
 - [ ] All existing tests passing
 - [ ] Manual smoke test in browser
 
-### Phase 9: Done
+### Phase 9: Pull Request Description
+
+**Output**: `pull-request-description.md`
+
+**When**: After all stories are complete and tested
+
+**Contents:**
+
+1. **Overview**: Brief summary of the feature
+2. **What Changed**: New features and modifications
+3. **New Components**: List of new files/components
+4. **Modified Components**: List of changed files
+5. **Implementation Details**: Technical approach, key algorithms
+6. **Testing**: Test coverage summary (unit + E2E)
+7. **Accessibility**: A11y features and compliance
+8. **Documentation**: Links to created docs
+9. **Screenshots**: Visual examples (text-based or images)
+10. **Breaking Changes**: Any breaking changes (if applicable)
+11. **Migration Guide**: How to migrate (if needed)
+12. **Checklist**: Completion checklist
+13. **Related Issues**: Links to backlog items and requirements
+14. **Commits**: Summary of commit messages
+15. **Reviewer Notes**: Key areas to review, testing instructions
+16. **Performance Impact**: Bundle size, runtime impact
+17. **Future Enhancements**: Deferred improvements
+
+**Template Reference**: See `docs/backlog-items/backlog-item-{ID}/pull-request-description.md` for examples
+
+### Phase 10: Done
 
 **Checklist:**
+
 - [ ] All acceptance criteria met
 - [ ] Tests passing (unit + E2E)
-- [ ] Story doc updated with implementation notes
+- [ ] Story docs updated with implementation notes
+- [ ] Pull request description created
 - [ ] PR created with:
   - Summary of changes
   - Files changed
   - Testing performed
   - Screenshots (if UI changes)
+- [ ] PR reviewed and merged to `main`
+- [ ] Update `product-backlog.md` status to "Done"
 
 ---
 
@@ -185,6 +230,7 @@ docs/backlog-items/
     │   └── preliminary-design-report.md
     ├── Detailed Design/
     │   └── detail-design-report.md
+    ├── pull-request-description.md
     └── story-{N}/
         └── implementation-plan.md
 ```
@@ -199,6 +245,7 @@ Use this checklist when starting a new backlog item:
 ## Backlog Item {ID}: {Title}
 
 ### Setup
+
 - [ ] Read backlog item in `product-backlog.md`
 - [ ] Read linked requirement doc
 - [ ] Update backlog item status to "In Progress" in `product-backlog.md`
@@ -206,21 +253,26 @@ Use this checklist when starting a new backlog item:
 - [ ] Create folder `docs/backlog-items/backlog-item-{ID}/`
 
 ### Planning
+
 - [ ] Create `requirements-analysis.md`
 - [ ] AI: Assess complexity and create `process-tailoring.md`
 - [ ] Break into stories (if needed)
 
 ### Design (based on tailoring)
+
 - [ ] Preliminary Design (if Medium/Complex)
 - [ ] Detailed Design (if Complex)
 
 ### Implementation
+
 - [ ] Create implementation plan for each story
 - [ ] Implement and test
 - [ ] Update docs with implementation notes
 
 ### Completion
+
 - [ ] All tests passing
+- [ ] Create pull request description (`pull-request-description.md`)
 - [ ] Push feature branch and create PR
 - [ ] PR reviewed and merged to `main`
 - [ ] Update `product-backlog.md` status to "Done"
@@ -230,10 +282,10 @@ Use this checklist when starting a new backlog item:
 
 ## Working with AI
 
-
 ### Resuming After a Break
 
 Ask AI to review:
+
 ```
 Review the software development plan (docs/software-development-plan.md) to understand the project workflow.
 Then check the current state of Backlog Item {ID} in docs/backlog-items/backlog-item-{ID}/.
@@ -258,3 +310,4 @@ Then check the current state of Backlog Items in docs/product-backlog.md and and
 ## Legacy Items
 
 Backlog items completed before this process was adopted (ID ≤ 23) retain their original documentation structure. This process applies to **new backlog items only**.
+```

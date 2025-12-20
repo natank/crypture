@@ -1,6 +1,7 @@
 import { memo } from "react";
 import { MarketCoin } from "types/market";
 import { formatCurrency, formatLargeNumber, formatPercentage } from "@utils/formatters";
+import { HelpIcon } from "@components/EducationalTooltip";
 
 export interface AssetMetricsPanelProps {
   metrics: MarketCoin | null;
@@ -124,7 +125,10 @@ const AssetMetricsPanel = memo(function AssetMetricsPanel({
         {/* ATH */}
         <div className={`p-2 rounded ${nearATH ? "bg-green-50 border border-green-200" : ""}`}>
           <div className="flex items-center gap-1">
-            <span className="text-xs text-text-muted">ATH:</span>
+            <span className="text-xs text-text-muted flex items-center gap-1">
+              ATH:
+              <HelpIcon contentKey="ath" />
+            </span>
             {nearATH && (
               <span className="text-xs bg-green-100 text-green-700 px-1.5 py-0.5 rounded-full font-medium">
                 Near ATH
@@ -145,7 +149,10 @@ const AssetMetricsPanel = memo(function AssetMetricsPanel({
         {/* ATL */}
         <div className={`p-2 rounded ${nearATL ? "bg-red-50 border border-red-200" : ""}`}>
           <div className="flex items-center gap-1">
-            <span className="text-xs text-text-muted">ATL:</span>
+            <span className="text-xs text-text-muted flex items-center gap-1">
+              ATL:
+              <HelpIcon contentKey="atl" />
+            </span>
             {nearATL && (
               <span className="text-xs bg-red-100 text-red-700 px-1.5 py-0.5 rounded-full font-medium">
                 Near ATL
@@ -172,21 +179,30 @@ const AssetMetricsPanel = memo(function AssetMetricsPanel({
         
         <div className="space-y-2">
           <div className="flex justify-between items-center">
-            <span className="text-xs text-text-muted">Rank</span>
+            <span className="text-xs text-text-muted flex items-center gap-1">
+              Rank
+              <HelpIcon contentKey="market_cap_rank" />
+            </span>
             <span className="text-sm font-medium text-text">
               #{metrics.market_cap_rank || "N/A"}
             </span>
           </div>
           
           <div className="flex justify-between items-center">
-            <span className="text-xs text-text-muted">Market Cap</span>
+            <span className="text-xs text-text-muted flex items-center gap-1">
+              Market Cap
+              <HelpIcon contentKey="market_cap" />
+            </span>
             <span className="text-sm font-medium text-text">
               {formatLargeNumber(metrics.market_cap)}
             </span>
           </div>
           
           <div className="flex justify-between items-center">
-            <span className="text-xs text-text-muted">24h Volume</span>
+            <span className="text-xs text-text-muted flex items-center gap-1">
+              24h Volume
+              <HelpIcon contentKey="volume" />
+            </span>
             <span className="text-sm font-medium text-text">
               {formatLargeNumber(metrics.total_volume)}
             </span>
@@ -216,21 +232,30 @@ const AssetMetricsPanel = memo(function AssetMetricsPanel({
         
         <div className="space-y-2">
           <div className="flex justify-between items-center">
-            <span className="text-xs text-text-muted">Circulating</span>
+            <span className="text-xs text-text-muted flex items-center gap-1">
+              Circulating
+              <HelpIcon contentKey="circulating_supply" />
+            </span>
             <span className="text-sm font-medium text-text">
               {formatSupply(metrics.circulating_supply)}
             </span>
           </div>
           
           <div className="flex justify-between items-center">
-            <span className="text-xs text-text-muted">Total Supply</span>
+            <span className="text-xs text-text-muted flex items-center gap-1">
+              Total Supply
+              <HelpIcon contentKey="total_supply" />
+            </span>
             <span className="text-sm font-medium text-text">
               {formatSupply(metrics.total_supply)}
             </span>
           </div>
           
           <div className="flex justify-between items-center">
-            <span className="text-xs text-text-muted">Max Supply</span>
+            <span className="text-xs text-text-muted flex items-center gap-1">
+              Max Supply
+              <HelpIcon contentKey="max_supply" />
+            </span>
             <span className="text-sm font-medium text-text">
               {metrics.max_supply === null ? "Unlimited" : formatSupply(metrics.max_supply)}
             </span>
