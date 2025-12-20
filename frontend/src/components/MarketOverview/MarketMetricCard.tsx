@@ -1,5 +1,7 @@
 import React from 'react';
 import { formatPercentage } from '../../utils/formatters';
+import { HelpIcon } from '@components/EducationalTooltip';
+import type { TooltipKey } from '@components/EducationalTooltip';
 
 interface MarketMetricCardProps {
     label: string;
@@ -7,6 +9,7 @@ interface MarketMetricCardProps {
     change?: number;
     isLoading?: boolean;
     testId?: string;
+    tooltipKey?: TooltipKey;
 }
 
 export const MarketMetricCard: React.FC<MarketMetricCardProps> = ({
@@ -15,6 +18,7 @@ export const MarketMetricCard: React.FC<MarketMetricCardProps> = ({
     change,
     isLoading = false,
     testId,
+    tooltipKey,
 }) => {
     if (isLoading) {
         return (
@@ -44,7 +48,10 @@ export const MarketMetricCard: React.FC<MarketMetricCardProps> = ({
             className="bg-white rounded-lg shadow-md p-6 flex flex-col"
             data-testid={testId}
         >
-            <h3 className="text-gray-500 text-sm font-medium mb-1">{label}</h3>
+            <h3 className="text-gray-500 text-sm font-medium mb-1 flex items-center gap-1">
+                {label}
+                {tooltipKey && <HelpIcon contentKey={tooltipKey} />}
+            </h3>
             <div className="flex items-baseline gap-2">
                 <span className="text-2xl font-bold text-gray-900" data-testid="metric-value">
                     {value}

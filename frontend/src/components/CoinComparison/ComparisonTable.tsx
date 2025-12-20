@@ -5,6 +5,8 @@ import {
   formatLargeNumber,
   formatPercentage,
 } from "@utils/formatters";
+import { HelpIcon } from "@components/EducationalTooltip";
+import type { TooltipKey } from "@components/EducationalTooltip";
 
 interface ComparisonTableProps {
   coins: CoinDetails[];
@@ -18,6 +20,7 @@ interface MetricConfig {
   formatter: (value: number | null) => string;
   higherIsBetter: boolean;
   isPercentage?: boolean;
+  tooltipKey?: TooltipKey;
 }
 
 function formatSupply(value: number | null | undefined): string {
@@ -45,6 +48,7 @@ const metricsConfig: MetricConfig[] = [
     accessor: (c) => c.market_data.market_cap.usd,
     formatter: (v) => (v !== null ? formatLargeNumber(v) : "N/A"),
     higherIsBetter: true,
+    tooltipKey: "market_cap",
   },
   {
     key: "volume",
@@ -52,6 +56,7 @@ const metricsConfig: MetricConfig[] = [
     accessor: (c) => c.market_data.total_volume.usd,
     formatter: (v) => (v !== null ? formatLargeNumber(v) : "N/A"),
     higherIsBetter: true,
+    tooltipKey: "volume",
   },
   {
     key: "change_24h",
@@ -60,6 +65,7 @@ const metricsConfig: MetricConfig[] = [
     formatter: (v) => (v !== null ? formatPercentage(v) : "N/A"),
     higherIsBetter: true,
     isPercentage: true,
+    tooltipKey: "price_change_24h",
   },
   {
     key: "change_7d",
@@ -68,6 +74,7 @@ const metricsConfig: MetricConfig[] = [
     formatter: (v) => (v !== null ? formatPercentage(v) : "N/A"),
     higherIsBetter: true,
     isPercentage: true,
+    tooltipKey: "price_change_7d",
   },
   {
     key: "change_30d",
@@ -76,6 +83,7 @@ const metricsConfig: MetricConfig[] = [
     formatter: (v) => (v !== null ? formatPercentage(v) : "N/A"),
     higherIsBetter: true,
     isPercentage: true,
+    tooltipKey: "price_change_30d",
   },
   {
     key: "ath",
@@ -83,6 +91,7 @@ const metricsConfig: MetricConfig[] = [
     accessor: (c) => c.market_data.ath.usd,
     formatter: (v) => (v !== null ? formatCurrency(v) : "N/A"),
     higherIsBetter: true,
+    tooltipKey: "ath",
   },
   {
     key: "atl",
@@ -90,6 +99,7 @@ const metricsConfig: MetricConfig[] = [
     accessor: (c) => c.market_data.atl.usd,
     formatter: (v) => (v !== null ? formatCurrency(v) : "N/A"),
     higherIsBetter: false,
+    tooltipKey: "atl",
   },
   {
     key: "circulating_supply",
@@ -97,6 +107,7 @@ const metricsConfig: MetricConfig[] = [
     accessor: (c) => c.market_data.circulating_supply,
     formatter: formatSupply,
     higherIsBetter: false,
+    tooltipKey: "circulating_supply",
   },
   {
     key: "total_supply",
@@ -104,6 +115,7 @@ const metricsConfig: MetricConfig[] = [
     accessor: (c) => c.market_data.total_supply,
     formatter: formatSupply,
     higherIsBetter: false,
+    tooltipKey: "total_supply",
   },
   {
     key: "max_supply",
@@ -111,6 +123,7 @@ const metricsConfig: MetricConfig[] = [
     accessor: (c) => c.market_data.max_supply,
     formatter: formatSupply,
     higherIsBetter: false,
+    tooltipKey: "max_supply",
   },
 ];
 
@@ -208,7 +221,12 @@ export const ComparisonTable = memo(function ComparisonTable({
                   className="border-b border-border last:border-b-0"
                 >
                   <td className="px-6 py-3 text-sm text-text-secondary">
-                    {metric.label}
+                    <div className="flex items-center gap-1">
+                      {metric.label}
+                      {metric.tooltipKey && (
+                        <HelpIcon contentKey={metric.tooltipKey} />
+                      )}
+                    </div>
                   </td>
                   {coins.map((coin, index) => {
                     const value = metric.accessor(coin);
