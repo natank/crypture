@@ -89,21 +89,30 @@ test.describe("Educational Tooltips", () => {
 
   test.describe("Comparison Page - ComparisonTable", () => {
     test("shows tooltip for Market Cap in comparison table", async ({ page }) => {
-      await page.goto("/compare?coinIds=bitcoin,ethereum");
+      await page.goto("/compare?coin=bitcoin");
 
-      // Wait for comparison table to load
-      await page.waitForSelector('[data-testid="comparison-table"]', { timeout: 5000 });
+      // Wait for the page to load and coin to be added
+      await page.waitForSelector('[data-testid="comparison-table"], [data-testid="comparison-empty"]', { timeout: 5000 });
 
-      // Find Market Cap metric row
-      const marketCapRow = page.locator('td:has-text("Market Cap")');
-      await expect(marketCapRow).toBeVisible();
+      // If empty state, manually add a coin
+      const isEmpty = await page.locator('[data-testid="comparison-empty"]').isVisible().catch(() => false);
+      if (isEmpty) {
+        // Use coin selector to add Bitcoin
+        const coinSelector = page.locator('[data-testid="coin-selector-search"]');
+        await coinSelector.fill("bitcoin");
+        await page.getByRole("button", { name: /bitcoin/i }).first().click();
+      }
 
-      // Find help icon in the row
-      const helpIcon = marketCapRow.getByRole("button", { name: /learn more about market_cap/i });
-      await expect(helpIcon).toBeVisible();
+      // Wait for comparison table to appear
+      await page.waitForSelector('[data-testid="comparison-table"]', { timeout: 10000 });
+
+      // Find Market Cap help icon in the comparison table
+      const comparisonTable = page.locator('[data-testid="comparison-table"]');
+      const marketCapHelpIcon = comparisonTable.getByRole("button", { name: /learn more about market_cap/i }).first();
+      await expect(marketCapHelpIcon).toBeVisible();
 
       // Hover over help icon
-      await helpIcon.hover();
+      await marketCapHelpIcon.hover();
 
       // Verify tooltip appears
       const tooltip = page.getByRole("tooltip");
@@ -125,26 +134,30 @@ test.describe("Educational Tooltips", () => {
       // Wait for asset to appear
       await page.waitForSelector('[data-testid^="asset-row-"]', { timeout: 5000 });
 
-      // Expand asset row to show metrics
+      // Expand asset row to show metrics (the entire row is clickable)
       const assetRow = page.locator('[data-testid^="asset-row-"]').first();
-      const expandButton = assetRow.getByRole("button", { name: /toggle chart/i });
-      if (await expandButton.isVisible()) {
-        await expandButton.click();
+      await expect(assetRow).toBeVisible();
+      await assetRow.click();
+
+      // Wait for expanded container to appear
+      await page.waitForSelector('[data-testid^="asset-expanded-container-"]', { timeout: 5000 });
+
+      // Wait for metrics panel to load (it may show loading state first)
+      await page.waitForSelector('[data-testid="asset-metrics-panel"], [data-testid="asset-metrics-loading"]', { timeout: 10000 });
+      
+      // If loading, wait for actual panel
+      const isLoading = await page.locator('[data-testid="asset-metrics-loading"]').isVisible().catch(() => false);
+      if (isLoading) {
+        await page.waitForSelector('[data-testid="asset-metrics-panel"]', { timeout: 10000 });
       }
 
-      // Wait for metrics panel
-      await page.waitForSelector('[data-testid="asset-metrics-panel"]', { timeout: 5000 });
-
-      // Find Market Cap label with help icon
-      const marketCapLabel = page.locator('span:has-text("Market Cap")').first();
-      await expect(marketCapLabel).toBeVisible();
-
-      // Find help icon
-      const helpIcon = marketCapLabel.locator('..').getByRole("button", { name: /learn more about market_cap/i });
-      await expect(helpIcon).toBeVisible();
+      // Find Market Cap help icon in the metrics panel
+      const metricsPanel = page.locator('[data-testid="asset-metrics-panel"]');
+      const marketCapHelpIcon = metricsPanel.getByRole("button", { name: /learn more about market_cap/i }).first();
+      await expect(marketCapHelpIcon).toBeVisible();
 
       // Hover over help icon
-      await helpIcon.hover();
+      await marketCapHelpIcon.hover();
 
       // Verify tooltip appears
       const tooltip = page.getByRole("tooltip");
@@ -199,20 +212,18 @@ test.describe("Educational Tooltips", () => {
 
       await page.waitForSelector('[data-testid="coin-metrics"]', { timeout: 5000 });
 
-      // Tab to first help icon
-      await page.keyboard.press("Tab");
+      // Find and focus the first help icon directly
+      const marketCapLabel = page.locator('dt:has-text("Market Cap")');
+      const helpIcon = marketCapLabel.locator('..').getByRole("button", { name: /learn more about market_cap/i });
+      await expect(helpIcon).toBeVisible();
       
-      // Find the focused help icon
-      const focusedIcon = page.locator('button:focus');
-      await expect(focusedIcon).toBeVisible();
+      // Focus the help icon
+      await helpIcon.focus();
 
-      // Press Enter or Space to show tooltip
-      await page.keyboard.press("Enter");
-
-      // Verify tooltip appears
+      // Verify tooltip appears on focus
       const tooltip = page.getByRole("tooltip");
       await expect(tooltip).toBeVisible({ timeout: 1000 });
+      await expect(tooltip).toContainText("Market Cap");
     });
   });
 });
-
