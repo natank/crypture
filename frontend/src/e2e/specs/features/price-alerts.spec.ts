@@ -260,7 +260,7 @@ test.describe("Price Alerts - Managing Alerts", () => {
     await expect(alertsPanel.getByText(/\$1,800/)).toBeVisible();
   });
 
-  test("deletes an alert", async ({ page }) => {
+  test("shows delete confirmation modal when deleting alert (KI-02)", async ({ page }) => {
     // Seed alerts with correct format
     await page.goto("/portfolio");
     await page.evaluate(() => {
@@ -286,6 +286,168 @@ test.describe("Price Alerts - Managing Alerts", () => {
 
     // Click delete in the dropdown
     await page.getByRole("button", { name: /delete/i }).click();
+
+    // Verify confirmation modal appears
+    const confirmModal = page.locator('[role="dialog"][aria-labelledby="delete-alert-modal-title"]');
+    await expect(confirmModal).toBeVisible();
+    
+    // Verify modal shows alert details
+    await expect(confirmModal.getByText(/delete price alert/i)).toBeVisible();
+    await expect(confirmModal.getByText(/Bitcoin/i)).toBeVisible();
+    await expect(confirmModal.getByText(/BTC/i)).toBeVisible();
+    await expect(confirmModal.getByText(/\$35,000/)).toBeVisible();
+  });
+
+  test("cancels alert deletion from confirmation modal (KI-02)", async ({ page }) => {
+    // Seed alert with correct format
+    await page.goto("/portfolio");
+    await page.evaluate(() => {
+      const data = {
+        alerts: [
+          { id: "1", coinId: "bitcoin", coinSymbol: "BTC", coinName: "Bitcoin", condition: "above", targetPrice: 35000, status: "active", createdAt: Date.now() },
+        ],
+        notificationsEnabled: true,
+        lastChecked: Date.now(),
+      };
+      localStorage.setItem("crypture_alerts", JSON.stringify(data));
+    });
+    await page.reload();
+
+    // Open alerts panel
+    await page.getByRole("button", { name: /alerts/i }).click();
+    const alertsPanel = page.locator('[role="dialog"][aria-label="Price Alerts"]');
+
+    // Open actions menu and click delete
+    const btcAlert = alertsPanel.locator('[data-testid="alert-item"]').first();
+    await btcAlert.locator('button').last().click();
+    await page.getByRole("button", { name: /delete/i }).click();
+
+    // Verify confirmation modal appears
+    const confirmModal = page.locator('[role="dialog"][aria-labelledby="delete-alert-modal-title"]');
+    await expect(confirmModal).toBeVisible();
+
+    // Click Cancel button
+    await confirmModal.getByRole("button", { name: /cancel/i }).click();
+
+    // Verify modal closes
+    await expect(confirmModal).not.toBeVisible();
+
+    // Verify alert still exists in panel
+    await expect(alertsPanel.locator('[data-testid="alert-item"]').filter({ hasText: /BTC/ })).toBeVisible();
+  });
+
+  test("cancels alert deletion by clicking backdrop (KI-02)", async ({ page }) => {
+    // Seed alert with correct format
+    await page.goto("/portfolio");
+    await page.evaluate(() => {
+      const data = {
+        alerts: [
+          { id: "1", coinId: "bitcoin", coinSymbol: "BTC", coinName: "Bitcoin", condition: "above", targetPrice: 35000, status: "active", createdAt: Date.now() },
+        ],
+        notificationsEnabled: true,
+        lastChecked: Date.now(),
+      };
+      localStorage.setItem("crypture_alerts", JSON.stringify(data));
+    });
+    await page.reload();
+
+    // Open alerts panel
+    await page.getByRole("button", { name: /alerts/i }).click();
+    const alertsPanel = page.locator('[role="dialog"][aria-label="Price Alerts"]');
+
+    // Open actions menu and click delete
+    const btcAlert = alertsPanel.locator('[data-testid="alert-item"]').first();
+    await btcAlert.locator('button').last().click();
+    await page.getByRole("button", { name: /delete/i }).click();
+
+    // Verify confirmation modal appears
+    const confirmModal = page.locator('[role="dialog"][aria-labelledby="delete-alert-modal-title"]');
+    await expect(confirmModal).toBeVisible();
+
+    // Click backdrop (outside modal content)
+    await page.locator('.modal').click({ position: { x: 5, y: 5 } });
+
+    // Verify modal closes
+    await expect(confirmModal).not.toBeVisible();
+
+    // Verify alert still exists
+    await expect(alertsPanel.locator('[data-testid="alert-item"]').filter({ hasText: /BTC/ })).toBeVisible();
+  });
+
+  test("cancels alert deletion with Escape key (KI-02)", async ({ page }) => {
+    // Seed alert with correct format
+    await page.goto("/portfolio");
+    await page.evaluate(() => {
+      const data = {
+        alerts: [
+          { id: "1", coinId: "bitcoin", coinSymbol: "BTC", coinName: "Bitcoin", condition: "above", targetPrice: 35000, status: "active", createdAt: Date.now() },
+        ],
+        notificationsEnabled: true,
+        lastChecked: Date.now(),
+      };
+      localStorage.setItem("crypture_alerts", JSON.stringify(data));
+    });
+    await page.reload();
+
+    // Open alerts panel
+    await page.getByRole("button", { name: /alerts/i }).click();
+    const alertsPanel = page.locator('[role="dialog"][aria-label="Price Alerts"]');
+
+    // Open actions menu and click delete
+    const btcAlert = alertsPanel.locator('[data-testid="alert-item"]').first();
+    await btcAlert.locator('button').last().click();
+    await page.getByRole("button", { name: /delete/i }).click();
+
+    // Verify confirmation modal appears
+    const confirmModal = page.locator('[role="dialog"][aria-labelledby="delete-alert-modal-title"]');
+    await expect(confirmModal).toBeVisible();
+
+    // Press Escape key
+    await page.keyboard.press('Escape');
+
+    // Verify modal closes
+    await expect(confirmModal).not.toBeVisible();
+
+    // Verify alert still exists
+    await expect(alertsPanel.locator('[data-testid="alert-item"]').filter({ hasText: /BTC/ })).toBeVisible();
+  });
+
+  test("confirms and deletes alert from confirmation modal (KI-02)", async ({ page }) => {
+    // Seed alerts with correct format
+    await page.goto("/portfolio");
+    await page.evaluate(() => {
+      const data = {
+        alerts: [
+          { id: "1", coinId: "bitcoin", coinSymbol: "BTC", coinName: "Bitcoin", condition: "above", targetPrice: 35000, status: "active", createdAt: Date.now() },
+          { id: "2", coinId: "ethereum", coinSymbol: "ETH", coinName: "Ethereum", condition: "below", targetPrice: 1800, status: "active", createdAt: Date.now() },
+        ],
+        notificationsEnabled: true,
+        lastChecked: Date.now(),
+      };
+      localStorage.setItem("crypture_alerts", JSON.stringify(data));
+    });
+    await page.reload();
+
+    // Open alerts panel
+    await page.getByRole("button", { name: /alerts/i }).click();
+    const alertsPanel = page.locator('[role="dialog"][aria-label="Price Alerts"]');
+
+    // Find BTC alert item and open its actions menu
+    const btcAlert = alertsPanel.locator('[data-testid="alert-item"]').filter({ hasText: /BTC/ }).first();
+    await btcAlert.locator('button').last().click();
+
+    // Click delete in the dropdown
+    await page.getByRole("button", { name: /delete/i }).click();
+
+    // Verify confirmation modal appears
+    const confirmModal = page.locator('[role="dialog"][aria-labelledby="delete-alert-modal-title"]');
+    await expect(confirmModal).toBeVisible();
+
+    // Click Confirm Delete button
+    await confirmModal.getByRole("button", { name: /confirm delete/i }).click();
+
+    // Verify modal closes
+    await expect(confirmModal).not.toBeVisible();
 
     // Verify BTC alert is removed
     await expect(alertsPanel.locator('[data-testid="alert-item"]').filter({ hasText: /BTC/ })).not.toBeVisible({ timeout: 3000 });
@@ -484,6 +646,11 @@ test.describe("Price Alerts - Badge Count", () => {
     await btcAlert.locator('button').last().click();
     await page.getByRole("button", { name: /delete/i }).click();
 
+    // Confirm deletion in modal (KI-02)
+    const confirmModal = page.locator('[role="dialog"][aria-labelledby="delete-alert-modal-title"]');
+    await expect(confirmModal).toBeVisible();
+    await confirmModal.getByRole("button", { name: /confirm delete/i }).click();
+
     // Verify BTC alert is removed from the panel
     await expect(alertsPanel.locator('[data-testid="alert-item"]').filter({ hasText: /BTC/ })).not.toBeVisible();
     
@@ -567,6 +734,10 @@ test.describe("Price Alerts - Badge Count", () => {
     await btcAlert.locator('button').last().click();
     await page.getByRole("button", { name: /delete/i }).click();
 
+    // Confirm deletion in modal (KI-02)
+    const confirmModal = page.locator('[role="dialog"][aria-labelledby="delete-alert-modal-title"]');
+    await confirmModal.getByRole("button", { name: /confirm delete/i }).click();
+
     // Verify badge updates immediately to "1" WITHOUT closing panel or reloading
     await expect(badge).toContainText("1", { timeout: 1000 });
 
@@ -574,6 +745,9 @@ test.describe("Price Alerts - Badge Count", () => {
     const ethAlert = alertsPanel.locator('[data-testid="alert-item"]').filter({ hasText: /ETH/ }).first();
     await ethAlert.locator('button').last().click();
     await page.getByRole("button", { name: /delete/i }).click();
+
+    // Confirm second deletion
+    await confirmModal.getByRole("button", { name: /confirm delete/i }).click();
 
     // Verify badge disappears immediately when no alerts remain
     await expect(badge).not.toBeVisible({ timeout: 1000 });

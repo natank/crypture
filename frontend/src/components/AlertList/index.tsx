@@ -4,6 +4,7 @@
  */
 
 import React, { useState } from 'react';
+import AlertDeleteConfirmationModal from '@components/AlertDeleteConfirmationModal';
 import type { PriceAlert } from 'types/alert';
 
 interface AlertListProps {
@@ -75,6 +76,7 @@ function AlertItem({
   onReactivate,
 }: AlertItemProps) {
   const [showActions, setShowActions] = useState(false);
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
 
   const formatPrice = (price: number) => {
     return new Intl.NumberFormat('en-US', {
@@ -167,7 +169,7 @@ function AlertItem({
         <div className="relative">
           <button
             onClick={() => setShowActions(!showActions)}
-            className="p-1 text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 rounded"
+            className="p-2 text-gray-500 hover:text-gray-700 hover:bg-gray-100 dark:text-gray-400 dark:hover:text-gray-200 dark:hover:bg-gray-700 rounded-lg transition-colors"
             aria-label="Alert actions"
           >
             ⋮
@@ -215,7 +217,7 @@ function AlertItem({
                 {onDelete && (
                   <button
                     onClick={() => {
-                      onDelete(alert.id);
+                      setShowDeleteConfirm(true);
                       setShowActions(false);
                     }}
                     className="w-full px-3 py-2 text-left text-sm text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20"
@@ -228,6 +230,21 @@ function AlertItem({
           )}
         </div>
       </div>
+
+      <AlertDeleteConfirmationModal
+        isOpen={showDeleteConfirm}
+        onConfirm={() => {
+          onDelete?.(alert.id);
+          setShowDeleteConfirm(false);
+        }}
+        onCancel={() => setShowDeleteConfirm(false)}
+        alert={{
+          coinName: alert.coinName,
+          coinSymbol: alert.coinSymbol,
+          condition: alert.condition,
+          targetPrice: alert.targetPrice,
+        }}
+      />
     </div>
   );
 }
