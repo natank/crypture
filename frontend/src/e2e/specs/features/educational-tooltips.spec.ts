@@ -1,5 +1,5 @@
 import { test, expect } from "@e2e/test-setup";
-import { mockCoinGeckoMarkets, mockCoinGeckoChartData } from "@e2e/mocks/mockCoinGecko";
+import { mockCoinGeckoMarkets, mockCoinGeckoChartData, mockCoinGeckoCoinDetails, mockCoinGeckoTrending, mockCoinGeckoGlobal, mockCoinGeckoCategories } from "@e2e/mocks/mockCoinGecko";
 
 /**
  * E2E Tests for Backlog Item 28 - Educational Tooltips & Contextual Help
@@ -16,6 +16,10 @@ test.describe("Educational Tooltips", () => {
   test.beforeEach(async ({ page }) => {
     mockCoinGeckoMarkets(page);
     mockCoinGeckoChartData(page);
+    mockCoinGeckoCoinDetails(page);
+    mockCoinGeckoTrending(page);
+    mockCoinGeckoGlobal(page);
+    mockCoinGeckoCategories(page);
   });
 
   test.describe("Coin Detail Page - CoinMetrics", () => {

@@ -13,6 +13,7 @@ export const test = baseTest.extend({
         /.*\/assets\//,
         /.*\.woff2?$/, // fonts
         /.*\/_next\//, // optional for Next.js/static assets
+        /^https:\/\/assets\.coingecko\.com\//, // CoinGecko images
       ];
 
       if (allowlist.some((pattern) => pattern.test(url))) {
