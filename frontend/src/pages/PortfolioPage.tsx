@@ -37,7 +37,20 @@ import type { MarketCoin } from "types/market";
 
 export default function PortfolioPage() {
   const { coins: allCoins, loading, error, lastUpdatedAt, refreshing, retry } = useCoinList();
-  const { alertCount, refreshAlerts } = useAlerts();
+  const {
+    alertCount,
+    activeAlerts: alertsActive,
+    triggeredAlerts: alertsTriggered,
+    mutedAlerts: alertsMuted,
+    isLoading: alertsLoading,
+    error: alertsError,
+    createAlert,
+    updateAlert,
+    deleteAlert,
+    muteAlert,
+    reactivateAlert,
+    refreshAlerts,
+  } = useAlerts();
   const [isAlertsPanelOpen, setIsAlertsPanelOpen] = useState(false);
   const [showPermissionDialog, setShowPermissionDialog] = useState(false);
   const priceMap = usePriceMap(allCoins);
@@ -347,6 +360,16 @@ export default function PortfolioPage() {
         onClose={() => setIsAlertsPanelOpen(false)}
         availableCoins={marketCoins}
         portfolioCoins={portfolioMarketCoins}
+        activeAlerts={alertsActive}
+        triggeredAlerts={alertsTriggered}
+        mutedAlerts={alertsMuted}
+        isLoading={alertsLoading}
+        error={alertsError}
+        createAlert={createAlert}
+        updateAlert={updateAlert}
+        deleteAlert={deleteAlert}
+        muteAlert={muteAlert}
+        reactivateAlert={reactivateAlert}
       />
 
       {/* Help Banner (Phase 7) */}

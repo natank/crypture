@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
-import { useGlobalMarketData } from '../../hooks/useGlobalMarketData';
-import { useCategories } from '../../hooks/useCategories';
-import { useMarketCoins } from '../../hooks/useMarketCoins';
+import { useGlobalMarketData } from '@hooks/useGlobalMarketData';
+import { useCategories } from '@hooks/useCategories';
+import { useMarketCoins } from '@hooks/useMarketCoins';
 import { MarketMetricsGrid } from './MarketMetricsGrid';
 import { TrendingSection } from './TrendingSection';
 import { TopMoversSection } from './TopMoversSection';
 import { CategoryFilter } from './CategoryFilter';
 import { MarketCoinList } from './MarketCoinList';
-import { formatDateTime } from '../../utils/formatters';
+import { formatDateTime } from '@utils/formatters';
 
 export const MarketOverview: React.FC = () => {
     const { data, isLoading, error, refresh } = useGlobalMarketData();
