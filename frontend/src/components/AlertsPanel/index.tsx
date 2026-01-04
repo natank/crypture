@@ -7,8 +7,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import AlertForm from '@components/AlertForm';
 import AlertList from '@components/AlertList';
-import { useAlerts } from '@hooks/useAlerts';
-import type { PriceAlert, CreateAlertInput } from 'types/alert';
+import type { PriceAlert, CreateAlertInput, UpdateAlertInput } from 'types/alert';
 import type { MarketCoin } from 'types/market';
 
 interface AlertsPanelProps {
@@ -16,6 +15,16 @@ interface AlertsPanelProps {
   onClose: () => void;
   availableCoins: MarketCoin[];
   portfolioCoins?: MarketCoin[];
+  activeAlerts: PriceAlert[];
+  triggeredAlerts: PriceAlert[];
+  mutedAlerts: PriceAlert[];
+  isLoading: boolean;
+  error: string | null;
+  createAlert: (input: CreateAlertInput) => PriceAlert | null;
+  updateAlert: (id: string, updates: UpdateAlertInput) => PriceAlert | null;
+  deleteAlert: (id: string) => boolean;
+  muteAlert: (id: string) => PriceAlert | null;
+  reactivateAlert: (id: string) => PriceAlert | null;
 }
 
 export default function AlertsPanel({
@@ -23,19 +32,17 @@ export default function AlertsPanel({
   onClose,
   availableCoins,
   portfolioCoins = [],
+  activeAlerts,
+  triggeredAlerts,
+  mutedAlerts,
+  isLoading,
+  error,
+  createAlert,
+  updateAlert,
+  deleteAlert,
+  muteAlert,
+  reactivateAlert,
 }: AlertsPanelProps) {
-  const {
-    activeAlerts,
-    triggeredAlerts,
-    mutedAlerts,
-    isLoading,
-    error,
-    createAlert,
-    updateAlert,
-    deleteAlert,
-    muteAlert,
-    reactivateAlert,
-  } = useAlerts();
 
   const [showForm, setShowForm] = useState(false);
   const [editingAlert, setEditingAlert] = useState<PriceAlert | null>(null);
@@ -89,8 +96,6 @@ export default function AlertsPanel({
     setShowForm(false);
     setEditingAlert(null);
   };
-
-  // mutedAlerts is now from useAlerts hook
 
   return (
     <AnimatePresence>

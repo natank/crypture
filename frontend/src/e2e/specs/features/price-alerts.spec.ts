@@ -497,6 +497,87 @@ test.describe("Price Alerts - Badge Count", () => {
     // Verify badge now shows "1" after reload
     await expect(badge).toContainText("1");
   });
+
+  test("updates badge immediately when alert is created (KI-01)", async ({ page }) => {
+    // Clear alerts to start fresh
+    await page.goto("/portfolio");
+    await page.evaluate(() => localStorage.removeItem("crypture_alerts"));
+    await page.reload();
+
+    // Verify badge is not visible initially (no alerts)
+    const badge = page.locator('[data-testid="alert-badge"]');
+    await expect(badge).not.toBeVisible();
+
+    // Open alerts panel
+    await page.getByRole("button", { name: /alerts/i }).click();
+    const alertsPanel = page.locator('[role="dialog"][aria-label="Price Alerts"]');
+    await expect(alertsPanel).toBeVisible();
+
+    // Create an alert
+    await alertsPanel.getByRole("button", { name: /create alert/i }).click();
+    const searchInput = alertsPanel.getByPlaceholder(/search or select/i);
+    await searchInput.click();
+    await searchInput.fill("bitcoin");
+    await alertsPanel.getByRole("button", { name: /bitcoin/i }).first().click();
+    const priceInput = alertsPanel.getByPlaceholder("0.00");
+    await priceInput.fill("35000");
+    await alertsPanel.getByRole("button", { name: /create alert/i }).last().click();
+
+    // Verify badge updates immediately WITHOUT closing panel or reloading
+    await expect(badge).toBeVisible({ timeout: 1000 });
+    await expect(badge).toContainText("1");
+
+    // Create a second alert
+    await alertsPanel.getByRole("button", { name: /create alert/i }).click();
+    await searchInput.click();
+    await searchInput.fill("ethereum");
+    await alertsPanel.getByRole("button", { name: /ethereum/i }).first().click();
+    await priceInput.fill("2000");
+    await alertsPanel.getByRole("button", { name: /create alert/i }).last().click();
+
+    // Verify badge updates to "2" immediately
+    await expect(badge).toContainText("2", { timeout: 1000 });
+  });
+
+  test("updates badge immediately when alert is deleted (KI-01)", async ({ page }) => {
+    // Seed 2 alerts
+    await page.goto("/portfolio");
+    await page.evaluate(() => {
+      const data = {
+        alerts: [
+          { id: "1", coinId: "bitcoin", coinSymbol: "BTC", coinName: "Bitcoin", condition: "above", targetPrice: 35000, status: "active", createdAt: Date.now() },
+          { id: "2", coinId: "ethereum", coinSymbol: "ETH", coinName: "Ethereum", condition: "below", targetPrice: 1800, status: "active", createdAt: Date.now() },
+        ],
+        notificationsEnabled: true,
+        lastChecked: Date.now(),
+      };
+      localStorage.setItem("crypture_alerts", JSON.stringify(data));
+    });
+    await page.reload();
+
+    // Verify initial badge shows "2"
+    const badge = page.locator('[data-testid="alert-badge"]');
+    await expect(badge).toContainText("2");
+
+    // Open panel and delete one alert
+    await page.getByRole("button", { name: /alerts/i }).click();
+    const alertsPanel = page.locator('[role="dialog"][aria-label="Price Alerts"]');
+    
+    const btcAlert = alertsPanel.locator('[data-testid="alert-item"]').filter({ hasText: /BTC/ }).first();
+    await btcAlert.locator('button').last().click();
+    await page.getByRole("button", { name: /delete/i }).click();
+
+    // Verify badge updates immediately to "1" WITHOUT closing panel or reloading
+    await expect(badge).toContainText("1", { timeout: 1000 });
+
+    // Delete the second alert
+    const ethAlert = alertsPanel.locator('[data-testid="alert-item"]').filter({ hasText: /ETH/ }).first();
+    await ethAlert.locator('button').last().click();
+    await page.getByRole("button", { name: /delete/i }).click();
+
+    // Verify badge disappears immediately when no alerts remain
+    await expect(badge).not.toBeVisible({ timeout: 1000 });
+  });
 });
 
 test.describe("Price Alerts - Persistence", () => {
