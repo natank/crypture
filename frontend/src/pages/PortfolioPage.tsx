@@ -20,7 +20,7 @@ import { useCoinList } from "@hooks/useCoinList";
 import { usePriceMap } from "@hooks/usePriceMap";
 import { useCoinSearch } from "@hooks/useCoinSearch";
 import { useUIState } from "@hooks/useUIState";
-import { useFilterSort } from "@hooks/useFilterSort";
+import { usePersistedFilterSort } from "@hooks/usePersistedFilterSort";
 import { useNotifications } from "@hooks/useNotifications";
 import { useDailySummary } from "@hooks/useDailySummary";
 import AppFooter from "@components/AppFooter";
@@ -145,7 +145,7 @@ export default function PortfolioPage() {
     setFilterText,
     filterText,
     sortOption,
-  } = useFilterSort(portfolio);
+  } = usePersistedFilterSort(portfolio);
 
   const notifications = useNotifications();
 
