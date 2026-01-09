@@ -21,6 +21,7 @@ import { usePriceMap } from "@hooks/usePriceMap";
 import { useCoinSearch } from "@hooks/useCoinSearch";
 import { useUIState } from "@hooks/useUIState";
 import { usePersistedFilterSort } from "@hooks/usePersistedFilterSort";
+import { usePersistedExpansionState } from "@hooks/usePersistedExpansionState";
 import { useNotifications } from "@hooks/useNotifications";
 import { useDailySummary } from "@hooks/useDailySummary";
 import AppFooter from "@components/AppFooter";
@@ -146,6 +147,9 @@ export default function PortfolioPage() {
     filterText,
     sortOption,
   } = usePersistedFilterSort(portfolio);
+
+  const validAssetIds = useMemo(() => portfolio.map(a => a.coinInfo.id), [portfolio]);
+  const expansionState = usePersistedExpansionState(validAssetIds);
 
   const notifications = useNotifications();
 
@@ -470,6 +474,7 @@ export default function PortfolioPage() {
             priceMap={priceMap}
             disabled={!!(loading || refreshing)}
             highlightTriggers={highlightTriggers}
+            expansionState={expansionState}
           />
 
           {/* Footer Action Buttons */}
