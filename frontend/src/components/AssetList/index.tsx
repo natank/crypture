@@ -11,6 +11,10 @@ type AssetListProps = {
   priceMap: Record<string, number>;
   disabled?: boolean;
   highlightTriggers?: Record<string, number>;
+  expansionState?: {
+    expandedAssets: string[];
+    toggleExpansion: (assetId: string) => void;
+  };
 };
 
 export default function AssetList({
@@ -22,6 +26,7 @@ export default function AssetList({
   priceMap,
   disabled = false,
   highlightTriggers = {},
+  expansionState,
 }: AssetListProps) {
   // Memoize enriched assets with price and value calculations
   // Only recalculates when assets, priceMap, or highlightTriggers change
@@ -84,6 +89,7 @@ export default function AssetList({
               onDelete={onDelete}
               onUpdateQuantity={onUpdateQuantity}
               highlightTrigger={highlightTrigger}
+              expansionState={expansionState}
             />
           ))}
         </div>

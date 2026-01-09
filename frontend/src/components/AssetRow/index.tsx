@@ -18,6 +18,10 @@ type AssetRowProps = {
   onDelete: (id: string) => void;
   onUpdateQuantity: (id: string, newQuantity: number) => void;
   highlightTrigger?: number;
+  expansionState?: {
+    expandedAssets: string[];
+    toggleExpansion: (assetId: string) => void;
+  };
 };
 
 const AssetRow = memo(function AssetRow({
@@ -27,8 +31,15 @@ const AssetRow = memo(function AssetRow({
   onDelete,
   onUpdateQuantity,
   highlightTrigger = 0,
+  expansionState,
 }: AssetRowProps) {
-  const { isChartVisible, chartProps, handleToggleChart } = useAssetChartController(asset.coinInfo.id);
+  const { isChartVisible, chartProps, handleToggleChart } = useAssetChartController(
+    asset.coinInfo.id,
+    expansionState ? {
+      isExpanded: expansionState.expandedAssets.includes(asset.coinInfo.id),
+      onToggle: () => expansionState.toggleExpansion(asset.coinInfo.id),
+    } : undefined
+  );
   const isHighlighted = useAssetHighlight(asset.coinInfo.id, highlightTrigger);
   const hasPrice = typeof price === "number";
   
@@ -373,6 +384,13 @@ const AssetRow = memo(function AssetRow({
   // Custom comparison function for fine-grained control
   // Return true if props are equal (skip re-render)
   // Return false if props changed (do re-render)
+  
+  // Check if THIS asset's expansion state changed (not the entire array reference)
+  const assetId = prevProps.asset.coinInfo.id;
+  const wasExpanded = prevProps.expansionState?.expandedAssets.includes(assetId) ?? false;
+  const isExpanded = nextProps.expansionState?.expandedAssets.includes(assetId) ?? false;
+  
+  if (wasExpanded !== isExpanded) return false; // Re-render only if THIS asset's state changed
   
   return (
     prevProps.asset.coinInfo.id === nextProps.asset.coinInfo.id &&

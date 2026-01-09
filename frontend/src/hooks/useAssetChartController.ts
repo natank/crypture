@@ -1,10 +1,20 @@
 import { useState, useCallback } from 'react';
 import { useAssetHistory } from './useAssetHistory';
 
-export function useAssetChartController(assetId: string) {
-  const [isChartVisible, setIsChartVisible] = useState(false);
+export interface ExternalExpansionState {
+  isExpanded: boolean;
+  onToggle: () => void;
+}
+
+export function useAssetChartController(
+  assetId: string,
+  externalExpansionState?: ExternalExpansionState
+) {
+  const [localIsChartVisible, setLocalIsChartVisible] = useState(false);
   const [selectedTimeRange, setSelectedTimeRange] = useState(30);
   const { history, isLoading, error, getAssetHistory } = useAssetHistory();
+
+  const isChartVisible = externalExpansionState?.isExpanded ?? localIsChartVisible;
 
   const handleTimeRangeChange = useCallback((days: number) => {
     setSelectedTimeRange(days);
@@ -12,13 +22,20 @@ export function useAssetChartController(assetId: string) {
   }, [assetId, getAssetHistory]);
 
   const handleToggleChart = useCallback(() => {
-    const newVisibility = !isChartVisible;
-    setIsChartVisible(newVisibility);
-
-    if (newVisibility && !history) {
-      getAssetHistory(assetId, selectedTimeRange);
+    if (externalExpansionState) {
+      const willBeExpanded = !externalExpansionState.isExpanded;
+      externalExpansionState.onToggle();
+      if (willBeExpanded && !history) {
+        getAssetHistory(assetId, selectedTimeRange);
+      }
+    } else {
+      const newVisibility = !localIsChartVisible;
+      setLocalIsChartVisible(newVisibility);
+      if (newVisibility && !history) {
+        getAssetHistory(assetId, selectedTimeRange);
+      }
     }
-  }, [isChartVisible, history, assetId, selectedTimeRange, getAssetHistory]);
+  }, [externalExpansionState, localIsChartVisible, history, assetId, selectedTimeRange, getAssetHistory]);
 
   return {
     isChartVisible,
