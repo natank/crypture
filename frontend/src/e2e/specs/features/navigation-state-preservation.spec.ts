@@ -1,5 +1,6 @@
 import { test, expect } from "@playwright/test";
 import { PortfolioPage } from "@e2e/pom-pages/portfolio.pom";
+import { mockCoinGeckoMarkets, mockCoinGeckoList } from "@e2e/mocks/mockCoinGecko";
 
 /**
  * E2E tests for KI-04: Navigation State Preservation
@@ -10,6 +11,10 @@ test.describe("Navigation State Preservation (KI-04)", () => {
   let portfolioPage: PortfolioPage;
 
   test.beforeEach(async ({ page }) => {
+    // Mock CoinGecko API to avoid rate limiting
+    await mockCoinGeckoMarkets(page);
+    await mockCoinGeckoList(page);
+    
     // Forward browser console logs to terminal for debugging
     page.on('console', msg => {
       console.log(`[BROWSER ${msg.type()}]: ${msg.text()}`);
