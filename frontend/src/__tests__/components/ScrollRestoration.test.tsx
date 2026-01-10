@@ -61,34 +61,83 @@ describe('ScrollRestoration', () => {
   };
 
   describe('Scroll Position Restoration', () => {
-    it('restores saved scroll position on mount', () => {
+    it('restores saved scroll position on popstate (back/forward navigation)', () => {
       mockSessionStorage.setItem('scroll_/portfolio', '500');
+
+      // Mock window.location.pathname before rendering
+      Object.defineProperty(window, 'location', {
+        value: { pathname: '/portfolio' },
+        writable: true,
+      });
 
       renderWithRouter('/portfolio');
 
-      // Run the setTimeout
+      // Simulate browser back/forward navigation
+      window.dispatchEvent(new PopStateEvent('popstate', { state: null }));
+
+      // Wait for the setTimeout in popstate handler
+      vi.advanceTimersByTime(10);
+
+      // Run the restore retries
       vi.runAllTimers();
 
       expect(mockScrollTo).toHaveBeenCalledWith(0, 500);
     });
 
-    it('scrolls to top when no saved position exists', () => {
+    it('scrolls to top when no saved position exists on popstate', () => {
+      // Mock window.location.pathname before rendering
+      Object.defineProperty(window, 'location', {
+        value: { pathname: '/portfolio' },
+        writable: true,
+      });
+
       renderWithRouter('/portfolio');
 
-      // Run the setTimeout
+      // Simulate browser back/forward navigation
+      window.dispatchEvent(new PopStateEvent('popstate', { state: null }));
+
+      // Wait for the setTimeout in popstate handler
+      vi.advanceTimersByTime(10);
+
+      // Run the restore retries
       vi.runAllTimers();
 
       expect(mockScrollTo).toHaveBeenCalledWith(0, 0);
     });
 
-    it('uses route-specific storage keys', () => {
+    it('uses route-specific storage keys on popstate', () => {
       mockSessionStorage.setItem('scroll_/coin/bitcoin', '300');
 
       renderWithRouter('/coin/bitcoin');
 
+      // Mock window.location.pathname
+      Object.defineProperty(window, 'location', {
+        value: { pathname: '/coin/bitcoin' },
+        writable: true,
+      });
+
+      // Simulate browser back/forward navigation
+      window.dispatchEvent(new PopStateEvent('popstate', { state: null }));
+
+      // Wait for the setTimeout in popstate handler
+      vi.advanceTimersByTime(10);
+
+      // Run the restore retries
       vi.runAllTimers();
 
       expect(mockScrollTo).toHaveBeenCalledWith(0, 300);
+    });
+
+    it('does not restore scroll on initial mount', () => {
+      mockSessionStorage.setItem('scroll_/portfolio', '500');
+
+      renderWithRouter('/portfolio');
+
+      // Run any timers
+      vi.runAllTimers();
+
+      // Should not restore on mount, only on popstate
+      expect(mockScrollTo).not.toHaveBeenCalled();
     });
   });
 
@@ -135,13 +184,44 @@ describe('ScrollRestoration', () => {
       );
     });
 
-    it('saves final scroll position on unmount', () => {
+    it('does not save scroll position when navigating', () => {
       const { unmount } = renderWithRouter('/portfolio');
 
-      mockScrollY = 1000;
-      unmount();
+      // Simulate navigation start (click on link)
+      const link = document.createElement('a');
+      link.href = '/coin/bitcoin';
+      document.body.appendChild(link);
+      
+      // Simulate click event
+      link.dispatchEvent(new MouseEvent('click', { bubbles: true }));
 
-      expect(mockSessionStorage.setItem).toHaveBeenCalledWith(
+      // Now scroll - should not save because navigating
+      mockScrollY = 1000;
+      window.dispatchEvent(new Event('scroll'));
+      vi.advanceTimersByTime(100);
+
+      expect(mockSessionStorage.setItem).not.toHaveBeenCalledWith(
+        'scroll_/portfolio',
+        '1000'
+      );
+
+      document.body.removeChild(link);
+    });
+
+    it('does not save when restoring scroll', () => {
+      renderWithRouter('/portfolio');
+
+      // Start popstate restoration
+      window.dispatchEvent(new PopStateEvent('popstate', { state: null }));
+      vi.advanceTimersByTime(10);
+
+      // Try to scroll during restoration - should not save
+      mockScrollY = 1000;
+      window.dispatchEvent(new Event('scroll'));
+      vi.advanceTimersByTime(100);
+
+      // Should not save because isRestoringRef is true
+      expect(mockSessionStorage.setItem).not.toHaveBeenCalledWith(
         'scroll_/portfolio',
         '1000'
       );

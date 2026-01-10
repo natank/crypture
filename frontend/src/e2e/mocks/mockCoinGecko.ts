@@ -1,5 +1,46 @@
 import { Page } from "@playwright/test";
 
+export async function mockCoinGeckoList(page: Page) {
+  await page.route(
+    "**/api.coingecko.com/api/v3/coins/list**",
+    async (route) => {
+      const body = [
+        {
+          id: "bitcoin",
+          symbol: "btc",
+          name: "Bitcoin",
+        },
+        {
+          id: "ethereum",
+          symbol: "eth",
+          name: "Ethereum",
+        },
+        {
+          id: "cardano",
+          symbol: "ada",
+          name: "Cardano",
+        },
+        {
+          id: "ripple",
+          symbol: "xrp",
+          name: "XRP",
+        },
+        {
+          id: "solana",
+          symbol: "sol",
+          name: "Solana",
+        },
+      ];
+
+      route.fulfill({
+        status: 200,
+        contentType: "application/json",
+        body: JSON.stringify(body),
+      });
+    }
+  );
+}
+
 export async function mockCoinGeckoMarkets(
   page: Page,
   overrides: Partial<Record<string, number>> = {}

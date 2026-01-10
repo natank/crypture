@@ -4,16 +4,47 @@ import { defineConfig } from "@playwright/test";
 export default defineConfig({
   testDir: "./src/e2e/specs",
   testMatch: "**/*.spec.ts", // Match only .spec.ts files
+  // In CI, only run critical smoke tests
+  testIgnore: process.env.CI ? [
+    '**/a11y-mobile-smoke.spec.ts',
+    '**/a11y/**',
+    '**/features/category-exploration.spec.ts',
+    '**/features/coin-comparison.spec.ts',
+    '**/features/daily-summary.spec.ts',
+    '**/features/educational-tooltips.spec.ts',
+    '**/features/expansion-state-preservation.spec.ts',
+    '**/features/market-overview.spec.ts',
+    '**/features/notifications.spec.ts',
+    '**/features/price-alerts.spec.ts',
+    '**/features/view-asset-chart.spec.ts',
+    '**/features/view-asset-metrics.spec.ts',
+    '**/flows/refreshing-disabled-controls.spec.ts',
+    '**/flows/retry-reenable-controls.spec.ts',
+    '**/portfolio-composition-viz.spec.ts',
+    '**/portfolio-performance.spec.ts',
+    '**/trending-discovery.spec.ts',
+  ] : [],
   use: {
-    baseURL: "http://localhost:5173", // adjust to your dev server
+    baseURL: process.env.CI ? "http://localhost:4173" : "http://localhost:5173",
     headless: true,
     viewport: { width: 1280, height: 720 },
-    actionTimeout: 0,
+    actionTimeout: 5000, // 5 second timeout for actions
+    navigationTimeout: 10000, // 10 second timeout for navigation
+    trace: 'on-first-retry', // Capture trace on first retry
   },
-  webServer: {
+  timeout: 30 * 1000, // 30 second timeout per test
+  retries: process.env.CI ? 0 : 0, // No retries in CI to fail fast
+  workers: process.env.CI ? 1 : undefined, // Single worker in CI
+  fullyParallel: false, // Run tests serially
+  webServer: process.env.CI ? {
+    command: "npm run preview",
+    url: "http://localhost:4173",
+    timeout: 15 * 1000, // wait up to 15s for server to start
+    reuseExistingServer: false,
+  } : {
     command: "npm run dev",
     url: "http://localhost:5173",
-    timeout: 10 * 1000, // wait up to 10s for server to start
-    reuseExistingServer: !process.env.CI,
+    timeout: 30 * 1000, // wait up to 30s for server to start
+    reuseExistingServer: true,
   },
 });

@@ -1,5 +1,6 @@
 import { test, expect } from "@playwright/test";
 import { PortfolioPage } from "@e2e/pom-pages/portfolio.pom";
+import { mockCoinGeckoMarkets, mockCoinGeckoList, mockCoinGeckoChartData, mockCoinGeckoCoinDetails } from "@e2e/mocks/mockCoinGecko";
 
 /**
  * E2E tests for KI-04: Navigation State Preservation
@@ -10,6 +11,12 @@ test.describe("Navigation State Preservation (KI-04)", () => {
   let portfolioPage: PortfolioPage;
 
   test.beforeEach(async ({ page }) => {
+    // Mock CoinGecko API to avoid rate limiting
+    await mockCoinGeckoMarkets(page);
+    await mockCoinGeckoList(page);
+    await mockCoinGeckoChartData(page);
+    await mockCoinGeckoCoinDetails(page);
+    
     // Forward browser console logs to terminal for debugging
     page.on('console', msg => {
       console.log(`[BROWSER ${msg.type()}]: ${msg.text()}`);
@@ -124,12 +131,10 @@ test.describe("Navigation State Preservation (KI-04)", () => {
       
       // Verify scroll position is stable at ~300
       const scrollBefore = await page.evaluate(() => window.scrollY);
-      console.log("Scroll position before navigation:", scrollBefore);
       
       // Manually save the scroll position to ensure it's captured
       await page.evaluate(() => {
         sessionStorage.setItem('scroll_/portfolio', window.scrollY.toString());
-        console.log('[TEST] Manually saved scroll:', window.scrollY);
       });
 
       // Navigate to coin detail
@@ -140,9 +145,7 @@ test.describe("Navigation State Preservation (KI-04)", () => {
       const savedBeforeClick = await page.evaluate(() => 
         sessionStorage.getItem("scroll_/portfolio")
       );
-      console.log("Saved scroll right before click:", savedBeforeClick);
       
-      await page.evaluate(() => console.log('[TEST] About to click coin link, scroll=' + window.scrollY));
       // Use force:true to prevent Playwright from scrolling element into view
       await coinLink.click({ force: true });
       await page.waitForLoadState("networkidle");
@@ -154,16 +157,13 @@ test.describe("Navigation State Preservation (KI-04)", () => {
       const savedAfter = await page.evaluate(() => 
         sessionStorage.getItem("scroll_/portfolio")
       );
-      console.log("Saved scroll after navigation to coin:", savedAfter);
 
       // Navigate back
-      await page.evaluate(() => console.log('[TEST] About to go back'));
       await page.goBack();
       await page.waitForLoadState("networkidle");
       
       // Wait for scroll restoration
       await page.waitForTimeout(1000);
-      await page.evaluate(() => console.log('[TEST] Back on portfolio, scroll=' + window.scrollY));
 
       // Verify we're back on portfolio
       expect(page.url()).toContain("/portfolio");
@@ -171,7 +171,6 @@ test.describe("Navigation State Preservation (KI-04)", () => {
       // Check final scroll position
       const scrollAfter = await page.evaluate(() => window.scrollY);
       const savedFinal = await page.evaluate(() => sessionStorage.getItem("scroll_/portfolio"));
-      console.log("Final scroll:", scrollAfter, "Saved:", savedFinal);
 
       // The scroll should be restored to approximately where we were
       // Allow tolerance because page might have different content
