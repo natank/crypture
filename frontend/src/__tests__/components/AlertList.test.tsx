@@ -215,7 +215,7 @@ describe("AlertList", () => {
     expect(mockOnMute).toHaveBeenCalledWith("alert-1");
   });
 
-  it("calls onDelete when delete action is clicked", () => {
+  it("calls onDelete when delete action is clicked", async () => {
     render(
       <AlertList
         alerts={[mockActiveAlert]}
@@ -229,6 +229,10 @@ describe("AlertList", () => {
 
     const deleteButton = screen.getByText(/delete/i);
     fireEvent.click(deleteButton);
+
+    // Wait for modal to appear and click confirm
+    const confirmButton = await screen.findByText(/confirm/i);
+    fireEvent.click(confirmButton);
 
     expect(mockOnDelete).toHaveBeenCalledWith("alert-1");
   });
