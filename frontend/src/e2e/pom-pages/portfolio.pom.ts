@@ -118,6 +118,15 @@ export class PortfolioPage {
   async addAsset(symbol: string, quantity: number) {
     await this.openAddAssetModal();
 
+    // Wait for the select to be ready and have options loaded
+    await this.modalAssetSelect.waitFor({ state: 'visible', timeout: 10000 });
+    
+    // Wait for at least one option to be present (besides the placeholder)
+    await this.page.waitForFunction(() => {
+      const select = document.querySelector('[data-testid="asset-select"]') as HTMLSelectElement;
+      return select && select.options.length > 1;
+    }, { timeout: 15000 });
+
     // First try selecting by option value which is CoinGecko coin.id
     const idMap: Record<string, string> = { BTC: "bitcoin", ETH: "ethereum" };
     const labelMap: Record<string, string> = {
@@ -139,7 +148,8 @@ export class PortfolioPage {
         const option = this.modalAssetSelect
           .locator("option")
           .filter({ hasText: regex });
-        const valueAttr = await option.first().getAttribute("value");
+        // Increase timeout for CI - options may take time to load
+        const valueAttr = await option.first().getAttribute("value", { timeout: 15000 });
         if (!valueAttr) throw new Error(`No option found for symbol ${symbol}`);
         await this.modalAssetSelect.selectOption(valueAttr);
       }
