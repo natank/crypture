@@ -52,6 +52,7 @@ jobs:
   e2e-tests:
     name: E2E Tests (Playwright)
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     
     defaults:
       run:
@@ -75,11 +76,10 @@ jobs:
         run: npx playwright install --with-deps
       
       - name: Run E2E tests
-        run: npm run test:e2e
+        run: npm run test:e2e:ci
         env:
-          CI: true
-          # Use environment variable from package.json script
-          VITE_POLL_INTERVAL: 2000
+          # Set a reasonable timeout for CI
+          PLAYWRIGHT_TIMEOUT: 60000
       
       - name: Upload Playwright report
         if: failure()
