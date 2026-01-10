@@ -5,7 +5,7 @@ export default defineConfig({
   testDir: "./src/e2e/specs",
   testMatch: "**/*.spec.ts", // Match only .spec.ts files
   use: {
-    baseURL: "http://localhost:4173", // Use preview server port
+    baseURL: process.env.CI ? "http://localhost:4173" : "http://localhost:5173",
     headless: true,
     viewport: { width: 1280, height: 720 },
     actionTimeout: 5000, // 5 second timeout for actions
@@ -24,5 +24,4 @@ export default defineConfig({
     timeout: 30 * 1000, // wait up to 30s for server to start
     reuseExistingServer: true,
   },
-  globalSetup: process.env.CI ? require.resolve('./playwright.global-setup.ts') : undefined,
 });
