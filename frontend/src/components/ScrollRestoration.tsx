@@ -95,7 +95,7 @@ export function ScrollRestoration() {
       if (isRestoringRef.current || isNavigatingRef.current) return;
       try {
         sessionStorage.setItem(storageKey, window.scrollY.toString());
-      } catch (error) {
+      } catch {
         // Fail silently - storage might be full or unavailable
       }
     };

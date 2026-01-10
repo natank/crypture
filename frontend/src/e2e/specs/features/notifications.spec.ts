@@ -431,7 +431,7 @@ test.describe("Unusual Input Warnings (Phase 6)", () => {
 
     // Add asset with normal quantity first
     await page.getByRole("button", { name: /add asset/i }).click();
-    let modal = page.getByRole("dialog");
+    const modal = page.getByRole("dialog");
     await modal.locator("select#asset-select").selectOption({ label: "Bitcoin (BTC)" });
     await modal.getByLabel(/quantity/i).fill("1.0");
     await modal.getByRole("button", { name: /add asset/i }).click();

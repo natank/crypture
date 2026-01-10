@@ -25,8 +25,13 @@ export default tseslint.config({ ignores: ["dist", "coverage"] }, {
   rules: {
     ...reactHooks.configs.recommended.rules,
 
-    // ✅ Allow aliases like @services
-    "import/no-unresolved": "error",
+    // ✅ Allow aliases like @services, ignore node_modules
+    "import/no-unresolved": [
+      "error",
+      {
+        ignore: ["^[^./]"], // Ignore all non-relative imports (node_modules)
+      },
+    ],
     "no-relative-import-paths/no-relative-import-paths": [
       "error",
       {
@@ -58,7 +63,11 @@ export default tseslint.config({ ignores: ["dist", "coverage"] }, {
   settings: {
     "import/resolver": {
       typescript: {
-        project: "./tsconfig.json", // use aliases from here
+        project: "./tsconfig.json",
+        alwaysTryTypes: true,
+      },
+      node: {
+        extensions: [".js", ".jsx", ".ts", ".tsx"],
       },
     },
   },
