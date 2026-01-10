@@ -5,18 +5,24 @@ export default defineConfig({
   testDir: "./src/e2e/specs",
   testMatch: "**/*.spec.ts", // Match only .spec.ts files
   use: {
-    baseURL: "http://localhost:5173", // adjust to your dev server
+    baseURL: "http://localhost:4173", // Use preview server port
     headless: true,
     viewport: { width: 1280, height: 720 },
-    actionTimeout: 10 * 1000, // 10 second timeout for actions
+    actionTimeout: 5000, // 5 second timeout for actions
     trace: 'on-first-retry', // Capture trace on first retry
   },
-  timeout: 60 * 1000, // 60 second timeout per test
-  retries: process.env.CI ? 1 : 0, // Retry once in CI
-  webServer: {
+  timeout: 30 * 1000, // 30 second timeout per test
+  retries: process.env.CI ? 0 : 0, // No retries in CI to fail fast
+  webServer: process.env.CI ? {
+    command: "npm run preview",
+    url: "http://localhost:4173",
+    timeout: 15 * 1000, // wait up to 15s for server to start
+    reuseExistingServer: false,
+  } : {
     command: "npm run dev",
     url: "http://localhost:5173",
     timeout: 30 * 1000, // wait up to 30s for server to start
-    reuseExistingServer: !process.env.CI,
+    reuseExistingServer: true,
   },
+  globalSetup: process.env.CI ? require.resolve('./playwright.global-setup.ts') : undefined,
 });

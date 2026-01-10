@@ -52,7 +52,7 @@ jobs:
   e2e-tests:
     name: E2E Tests (Playwright)
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 5
     
     defaults:
       run:
@@ -75,11 +75,13 @@ jobs:
       - name: Install Playwright browsers
         run: npx playwright install --with-deps
       
+      - name: Build project
+        run: npm run build
+      
       - name: Run E2E tests
         run: npm run test:e2e:ci
         env:
-          # Set a reasonable timeout for CI
-          PLAYWRIGHT_TIMEOUT: 60000
+          CI: true
       
       - name: Upload Playwright report
         if: failure()
