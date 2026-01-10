@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
-import { fetchTrendingCoins } from '../services/coinService';
-import { TrendingCoin } from '../types/market';
+import { fetchTrendingCoins } from '@services/coinService';
+import { TrendingCoin } from 'types/market';
 
 export function useTrendingCoins() {
     const [data, setData] = useState<TrendingCoin[]>([]);

@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
-import { MarketCoin } from '../types/market';
-import { fetchMarketCoins } from '../services/coinService';
+import { MarketCoin } from 'types/market';
+import { fetchMarketCoins } from '@services/coinService';
 
 export const useMarketCoins = (selectedCategory: string | null) => {
     const [coins, setCoins] = useState<MarketCoin[]>([]);

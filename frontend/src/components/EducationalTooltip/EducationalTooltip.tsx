@@ -50,7 +50,6 @@ export function EducationalTooltip({
         const spaceBelow = viewportHeight - triggerRect.bottom;
         const spaceAbove = triggerRect.top;
         const spaceRight = viewportWidth - triggerRect.right;
-        const spaceLeft = triggerRect.left;
 
         if (spaceBelow >= tooltipRect.height + 8) {
           setCalculatedPosition('bottom');

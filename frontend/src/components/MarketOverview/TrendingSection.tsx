@@ -1,5 +1,5 @@
 import React from 'react';
-import { useTrendingCoins } from '../../hooks/useTrendingCoins';
+import { useTrendingCoins } from '@hooks/useTrendingCoins';
 
 export const TrendingSection: React.FC = () => {
     const { data, isLoading, error } = useTrendingCoins();

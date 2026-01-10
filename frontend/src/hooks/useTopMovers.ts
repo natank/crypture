@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
-import { fetchTopMovers } from '../services/coinService';
-import { MarketMover } from '../types/market';
+import { fetchTopMovers } from '@services/coinService';
+import { MarketMover } from 'types/market';
 
 export function useTopMovers() {
     const [gainers, setGainers] = useState<MarketMover[]>([]);

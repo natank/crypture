@@ -1,6 +1,6 @@
 import React from 'react';
-import { MarketOverview } from '../components/MarketOverview';
-import PortfolioHeader from '../components/PortfolioHeader';
+import { MarketOverview } from '@components/MarketOverview';
+import PortfolioHeader from '@components/PortfolioHeader';
 
 export const MarketPage: React.FC = () => {
     return (

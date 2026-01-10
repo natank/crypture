@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
-import { fetchGlobalMarketData } from '../services/coinService';
-import { GlobalMarketData } from '../types/market';
+import { fetchGlobalMarketData } from '@services/coinService';
+import { GlobalMarketData } from 'types/market';
 
 export function useGlobalMarketData() {
     const [data, setData] = useState<GlobalMarketData | null>(null);

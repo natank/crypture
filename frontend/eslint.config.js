@@ -58,7 +58,11 @@ export default tseslint.config({ ignores: ["dist", "coverage"] }, {
   settings: {
     "import/resolver": {
       typescript: {
-        project: "./tsconfig.json", // use aliases from here
+        project: "./tsconfig.json",
+        alwaysTryTypes: true,
+      },
+      node: {
+        extensions: [".js", ".jsx", ".ts", ".tsx"],
       },
     },
   },

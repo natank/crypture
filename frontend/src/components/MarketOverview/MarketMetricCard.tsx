@@ -1,5 +1,5 @@
 import React from 'react';
-import { formatPercentage } from '../../utils/formatters';
+import { formatPercentage } from '@utils/formatters';
 import { HelpIcon } from '@components/EducationalTooltip';
 import type { TooltipKey } from '@components/EducationalTooltip';
 

@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
-import { Category } from '../types/market';
-import { fetchCategories } from '../services/coinService';
+import { Category } from 'types/market';
+import { fetchCategories } from '@services/coinService';
 
 export const useCategories = () => {
     const [categories, setCategories] = useState<Category[]>([]);
