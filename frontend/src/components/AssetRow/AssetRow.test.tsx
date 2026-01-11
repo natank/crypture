@@ -34,7 +34,7 @@ describe("AssetRow", () => {
   it("fires delete handler on click", () => {
     const handleDelete = vi.fn();
     renderWithRouter(<AssetRow asset={mockAsset} onUpdateQuantity={() => {}} onDelete={handleDelete} />);
-    fireEvent.click(screen.getByRole("button", { name: /delete btc/i }));
+    fireEvent.click(screen.getByRole("button", { name: /delete bitcoin/i }));
     expect(handleDelete).toHaveBeenCalledWith("btc");
   });
 

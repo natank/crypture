@@ -60,18 +60,18 @@ describe('AssetRow - Edit Functionality', () => {
       renderWithRouter(<AssetRow {...defaultProps} />);
       
       expect(screen.getByText(/Qty: 1.5/i)).toBeInTheDocument();
-      expect(screen.getByLabelText(/Edit BTC quantity/i)).toBeInTheDocument();
+      expect(screen.getByLabelText(/Edit Bitcoin quantity/i)).toBeInTheDocument();
     });
 
     it('enters edit mode when edit button is clicked', async () => {
       const user = userEvent.setup();
       renderWithRouter(<AssetRow {...defaultProps} />);
       
-      const editButton = screen.getByLabelText(/Edit BTC quantity/i);
+      const editButton = screen.getByLabelText(/Edit Bitcoin quantity/i);
       await user.click(editButton);
       
       // Edit button should disappear
-      expect(screen.queryByLabelText(/Edit BTC quantity/i)).not.toBeInTheDocument();
+      expect(screen.queryByLabelText(/Edit Bitcoin quantity/i)).not.toBeInTheDocument();
       
       // Input should appear with current value
       const input = screen.getByLabelText(/Edit quantity for Bitcoin/i);
@@ -87,7 +87,7 @@ describe('AssetRow - Edit Functionality', () => {
       const user = userEvent.setup();
       renderWithRouter(<AssetRow {...defaultProps} />);
       
-      const editButton = screen.getByLabelText(/Edit BTC quantity/i);
+      const editButton = screen.getByLabelText(/Edit Bitcoin quantity/i);
       await user.click(editButton);
       
       const input = screen.getByLabelText(/Edit quantity for Bitcoin/i) as HTMLInputElement;
@@ -98,10 +98,10 @@ describe('AssetRow - Edit Functionality', () => {
       const user = userEvent.setup();
       renderWithRouter(<AssetRow {...defaultProps} />);
       
-      const editButton = screen.getByLabelText(/Edit BTC quantity/i);
+      const editButton = screen.getByLabelText(/Edit Bitcoin quantity/i);
       await user.click(editButton);
       
-      const deleteButton = screen.getByLabelText(/Delete BTC/i);
+      const deleteButton = screen.getByLabelText(/Delete Bitcoin/i);
       expect(deleteButton).toBeDisabled();
     });
   });
@@ -113,7 +113,7 @@ describe('AssetRow - Edit Functionality', () => {
       renderWithRouter(<AssetRow {...defaultProps} onUpdateQuantity={onUpdateQuantity} />);
       
       // Enter edit mode
-      await user.click(screen.getByLabelText(/Edit BTC quantity/i));
+      await user.click(screen.getByLabelText(/Edit Bitcoin quantity/i));
       
       // Change quantity
       const input = screen.getByLabelText(/Edit quantity for Bitcoin/i);
@@ -140,7 +140,7 @@ describe('AssetRow - Edit Functionality', () => {
       const onUpdateQuantity = vi.fn();
       renderWithRouter(<AssetRow {...defaultProps} onUpdateQuantity={onUpdateQuantity} />);
       
-      await user.click(screen.getByLabelText(/Edit BTC quantity/i));
+      await user.click(screen.getByLabelText(/Edit Bitcoin quantity/i));
       
       const input = screen.getByLabelText(/Edit quantity for Bitcoin/i);
       await user.clear(input);
@@ -155,7 +155,7 @@ describe('AssetRow - Edit Functionality', () => {
       const onUpdateQuantity = vi.fn();
       renderWithRouter(<AssetRow {...defaultProps} onUpdateQuantity={onUpdateQuantity} />);
       
-      await user.click(screen.getByLabelText(/Edit BTC quantity/i));
+      await user.click(screen.getByLabelText(/Edit Bitcoin quantity/i));
       
       // Don't change the value, just save
       await user.click(screen.getByLabelText(/Save changes/i));
@@ -175,7 +175,7 @@ describe('AssetRow - Edit Functionality', () => {
       const user = userEvent.setup();
       renderWithRouter(<AssetRow {...defaultProps} />);
       
-      await user.click(screen.getByLabelText(/Edit BTC quantity/i));
+      await user.click(screen.getByLabelText(/Edit Bitcoin quantity/i));
       
       // Change value
       const input = screen.getByLabelText(/Edit quantity for Bitcoin/i);
@@ -199,7 +199,7 @@ describe('AssetRow - Edit Functionality', () => {
       const onUpdateQuantity = vi.fn();
       renderWithRouter(<AssetRow {...defaultProps} onUpdateQuantity={onUpdateQuantity} />);
       
-      await user.click(screen.getByLabelText(/Edit BTC quantity/i));
+      await user.click(screen.getByLabelText(/Edit Bitcoin quantity/i));
       
       const input = screen.getByLabelText(/Edit quantity for Bitcoin/i);
       await user.clear(input);
@@ -221,7 +221,7 @@ describe('AssetRow - Edit Functionality', () => {
       const user = userEvent.setup();
       renderWithRouter(<AssetRow {...defaultProps} />);
       
-      await user.click(screen.getByLabelText(/Edit BTC quantity/i));
+      await user.click(screen.getByLabelText(/Edit Bitcoin quantity/i));
       
       const input = screen.getByLabelText(/Edit quantity for Bitcoin/i);
       await user.clear(input);
@@ -241,7 +241,7 @@ describe('AssetRow - Edit Functionality', () => {
       const user = userEvent.setup();
       renderWithRouter(<AssetRow {...defaultProps} />);
       
-      await user.click(screen.getByLabelText(/Edit BTC quantity/i));
+      await user.click(screen.getByLabelText(/Edit Bitcoin quantity/i));
       
       const input = screen.getByLabelText(/Edit quantity for Bitcoin/i);
       await user.clear(input);
@@ -256,7 +256,7 @@ describe('AssetRow - Edit Functionality', () => {
       const user = userEvent.setup();
       renderWithRouter(<AssetRow {...defaultProps} />);
       
-      await user.click(screen.getByLabelText(/Edit BTC quantity/i));
+      await user.click(screen.getByLabelText(/Edit Bitcoin quantity/i));
       
       const input = screen.getByLabelText(/Edit quantity for Bitcoin/i);
       await user.clear(input);
@@ -270,7 +270,7 @@ describe('AssetRow - Edit Functionality', () => {
       const user = userEvent.setup();
       renderWithRouter(<AssetRow {...defaultProps} />);
       
-      await user.click(screen.getByLabelText(/Edit BTC quantity/i));
+      await user.click(screen.getByLabelText(/Edit Bitcoin quantity/i));
       
       const input = screen.getByLabelText(/Edit quantity for Bitcoin/i);
       await user.clear(input);
@@ -285,7 +285,7 @@ describe('AssetRow - Edit Functionality', () => {
       const user = userEvent.setup();
       renderWithRouter(<AssetRow {...defaultProps} />);
       
-      await user.click(screen.getByLabelText(/Edit BTC quantity/i));
+      await user.click(screen.getByLabelText(/Edit Bitcoin quantity/i));
       
       const input = screen.getByLabelText(/Edit quantity for Bitcoin/i);
       await user.clear(input);
@@ -301,7 +301,7 @@ describe('AssetRow - Edit Functionality', () => {
       const user = userEvent.setup();
       renderWithRouter(<AssetRow {...defaultProps} />);
       
-      await user.click(screen.getByLabelText(/Edit BTC quantity/i));
+      await user.click(screen.getByLabelText(/Edit Bitcoin quantity/i));
       
       const input = screen.getByLabelText(/Edit quantity for Bitcoin/i);
       await user.clear(input);
@@ -329,7 +329,7 @@ describe('AssetRow - Edit Functionality', () => {
       
       renderWithRouter(<AssetRow {...defaultProps} onUpdateQuantity={onUpdateQuantity} />);
       
-      await user.click(screen.getByLabelText(/Edit BTC quantity/i));
+      await user.click(screen.getByLabelText(/Edit Bitcoin quantity/i));
       
       const input = screen.getByLabelText(/Edit quantity for Bitcoin/i);
       await user.clear(input);
@@ -345,15 +345,15 @@ describe('AssetRow - Edit Functionality', () => {
     it('has proper ARIA labels for all interactive elements', () => {
       renderWithRouter(<AssetRow {...defaultProps} />);
       
-      expect(screen.getByLabelText(/Edit BTC quantity/i)).toBeInTheDocument();
-      expect(screen.getByLabelText(/Delete BTC/i)).toBeInTheDocument();
+      expect(screen.getByLabelText(/Edit Bitcoin quantity/i)).toBeInTheDocument();
+      expect(screen.getByLabelText(/Delete Bitcoin/i)).toBeInTheDocument();
     });
 
     it('associates error message with input via aria-describedby', async () => {
       const user = userEvent.setup();
       renderWithRouter(<AssetRow {...defaultProps} />);
       
-      await user.click(screen.getByLabelText(/Edit BTC quantity/i));
+      await user.click(screen.getByLabelText(/Edit Bitcoin quantity/i));
       
       const input = screen.getByLabelText(/Edit quantity for Bitcoin/i);
       await user.clear(input);
@@ -372,7 +372,7 @@ describe('AssetRow - Edit Functionality', () => {
       renderWithRouter(<AssetRow {...defaultProps} />);
       
       // Click edit button
-      const editButton = screen.getByLabelText(/Edit BTC quantity/i);
+      const editButton = screen.getByLabelText(/Edit Bitcoin quantity/i);
       await user.click(editButton);
       
       // Input should be focused
