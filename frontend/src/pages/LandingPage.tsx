@@ -68,7 +68,7 @@ export default function LandingPage() {
   return (
     <LandingLayout>
       {/* Hero Section */}
-      <section className="relative bg-gradient-to-br from-indigo-50 to-blue-50 overflow-hidden">
+      <section className="relative bg-gradient-to-br from-[#f0f4ff] to-[#e6f9f6] overflow-hidden">
         {/* Background pattern (fallback) */}
         <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTUiIGhlaWdodD0iMTUiIHZpZXdCb3g9IjAgMCAxNSAxNSIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cGF0aCBkPSJNMTQuNSAxNC41TDAuNSAwLjVNNy41IDcuNUwxNC41IDAuNU03LjUgNy41TDAuNSAwLjVNMTQuNSAwLjVMMC41IDE0LjVNMTQuNSAwLjVMMTQuNSAxNC41TDAuNSAxNC41IiBzdHJva2U9IiNlM2U2ZTkiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPjwvc3ZnPg==')] opacity-10"></div>
         
@@ -113,7 +113,7 @@ export default function LandingPage() {
                   to="/portfolio"
                   className="px-8 py-3 border border-transparent text-base font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 md:py-4 md:text-lg md:px-10 transition-colors"
                 >
-                  Get Started
+                  Track Your Crypto
                 </Link>
                 <Link
                   to="#features"
@@ -246,8 +246,8 @@ export default function LandingPage() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-12">
             <HowItWorksStep
               number={1}
-              title="Create Your Account"
-              description="Sign up in seconds with just your email. No credit card required to get started."
+              title="Add Your Assets"
+              description="Start by adding your crypto holdings to build your portfolio."
               icon={
                 <svg className="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
@@ -257,8 +257,8 @@ export default function LandingPage() {
             
             <HowItWorksStep
               number={2}
-              title="Connect Your Wallets"
-              description="Securely connect your crypto wallets or manually add your holdings."
+              title="Track in Real-Time"
+              description="Monitor your portfolio value and get live market updates as prices change."
               icon={
                 <svg className="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
@@ -269,8 +269,8 @@ export default function LandingPage() {
             
             <HowItWorksStep
               number={3}
-              title="Track & Analyze"
-              description="Monitor your portfolio performance and get insights to make informed decisions."
+              title="Analyze & Optimize"
+              description="Get insights on your performance and make informed decisions to grow your portfolio."
               icon={
                 <svg className="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
@@ -296,7 +296,7 @@ export default function LandingPage() {
                   <path fillRule="evenodd" d="M10.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L12.586 11H5a1 1 0 110-2h7.586l-2.293-2.293a1 1 0 010-1.414z" clipRule="evenodd" />
                 </svg>
               </Link>
-              <p className="mt-3 text-sm text-gray-500">No credit card required • Cancel anytime</p>
+              <p className="mt-3 text-sm text-gray-500">Start tracking instantly • No setup required</p>
             </motion.div>
           </div>
         </div>
