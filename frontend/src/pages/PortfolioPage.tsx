@@ -384,7 +384,7 @@ export default function PortfolioPage() {
       {/* Error banner if coin list fails */}
       {error && (
         <ErrorBanner
-          message={error}
+          message="Error loading prices. Please try again later."
           onRetry={retry}
         />
       )}
@@ -433,18 +433,6 @@ export default function PortfolioPage() {
           >
             Refresh now
           </button>
-        </div>
-      )}
-
-      {(error || importError) && (
-        <ErrorBanner
-          message=" Error loading prices. Please try again later."
-          onRetry={retry}
-        />
-      )}
-      {importError && (
-        <div className="max-w-4xl mx-auto px-6 md:px-10 mt-2">
-          <ErrorBanner message={` ${importError}`} />
         </div>
       )}
 

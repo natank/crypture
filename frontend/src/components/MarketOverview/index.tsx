@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { RefreshCw } from 'lucide-react';
 import { useGlobalMarketData } from '@hooks/useGlobalMarketData';
 import { useCategories } from '@hooks/useCategories';
 import { useMarketCoins } from '@hooks/useMarketCoins';
@@ -56,7 +57,7 @@ export const MarketOverview: React.FC = () => {
                     aria-label="Refresh market data"
                     disabled={isLoading}
                 >
-                    <span className={isLoading ? 'animate-spin inline-block' : ''}>🔄</span>
+                    <RefreshCw className={`w-4 h-4 ${isLoading ? 'animate-spin' : ''}`} />
                     {isLoading ? 'Refreshing...' : 'Refresh'}
                 </button>
             </div>
