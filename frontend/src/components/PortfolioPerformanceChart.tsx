@@ -142,7 +142,7 @@ export const PortfolioPerformanceChart: React.FC<PortfolioPerformanceChartProps>
                         <p className="text-red-500 mb-2">{error}</p>
                         <button
                             onClick={() => setRange(range)} // Trigger re-fetch
-                            className="px-4 py-2 bg-blue-600 text-white rounded-md text-sm hover:bg-blue-700"
+                            className="px-4 py-2 bg-blue-600 text-white rounded-md text-sm hover:bg-blue-700 focus-ring"
                         >
                             Retry
                         </button>

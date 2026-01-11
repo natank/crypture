@@ -92,7 +92,7 @@ export default function NotificationPermission({
                 <button
                   onClick={handleEnable}
                   disabled={isRequesting}
-                  className="flex-1 py-2 px-4 bg-indigo-600 hover:bg-indigo-700 disabled:bg-indigo-400 text-white rounded-lg font-medium transition-colors"
+                  className="flex-1 py-2 px-4 bg-indigo-600 hover:bg-indigo-700 disabled:bg-indigo-400 text-white rounded-lg font-medium transition-colors focus-ring"
                 >
                   {isRequesting ? 'Requesting...' : 'Enable'}
                 </button>
