@@ -155,7 +155,7 @@ export default function AlertsPanel({
                   {/* Create Alert Button */}
                   <button
                     onClick={() => setShowForm(true)}
-                    className="w-full py-3 px-4 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg font-medium flex items-center justify-center gap-2 transition-colors mb-4"
+                    className="w-full py-3 px-4 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg font-medium flex items-center justify-center gap-2 transition-colors mb-4 focus-ring"
                   >
                     <span className="text-lg">+</span>
                     Create Alert

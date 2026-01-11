@@ -151,7 +151,7 @@ export function AddAssetModal({
             </button>
             <button
               onClick={handleSubmit}
-              className="bg-brand-primary text-white font-button px-4 py-2 rounded-md hover:bg-purple-700 flex items-center justify-center min-w-[140px]"
+              className="bg-brand-primary text-white font-button px-4 py-2 rounded-md hover:bg-purple-700 flex items-center justify-center min-w-[140px] focus-ring"
               aria-label="Add asset"
               disabled={loading}
               data-testid="confirm-add-asset"

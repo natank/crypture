@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { RefreshCw } from 'lucide-react';
 import { useGlobalMarketData } from '@hooks/useGlobalMarketData';
 import { useCategories } from '@hooks/useCategories';
 import { useMarketCoins } from '@hooks/useMarketCoins';
@@ -8,12 +9,26 @@ import { TopMoversSection } from './TopMoversSection';
 import { CategoryFilter } from './CategoryFilter';
 import { MarketCoinList } from './MarketCoinList';
 import { formatDateTime } from '@utils/formatters';
+import toast from 'react-hot-toast';
 
 export const MarketOverview: React.FC = () => {
-    const { data, isLoading, error, refresh } = useGlobalMarketData();
+    const { data, isLoading, error, refresh, isFromCache } = useGlobalMarketData();
     const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
     const { categories, isLoading: isCategoriesLoading } = useCategories();
     const { coins, isLoading: isCoinsLoading, error: coinsError } = useMarketCoins(selectedCategory);
+    const [isManualRefresh, setIsManualRefresh] = useState(false);
+
+    const handleRefresh = async () => {
+        setIsManualRefresh(true);
+        try {
+            await refresh(true); // Force refresh
+            toast.success('🔄 Market data refreshed successfully!');
+        } catch  {
+            toast.error('❌ Failed to refresh market data');
+        } finally {
+            setIsManualRefresh(false);
+        }
+    };
 
     const displayError = error || coinsError;
 
@@ -27,7 +42,7 @@ export const MarketOverview: React.FC = () => {
                     <p className="text-red-600 mb-4">{displayError.message}</p>
                     <button
                         onClick={() => refresh()}
-                        className="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700 transition-colors"
+                        className="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700 transition-colors focus-ring"
                     >
                         Retry
                     </button>
@@ -48,16 +63,24 @@ export const MarketOverview: React.FC = () => {
                     )}
                 </div>
                 <button
-                    onClick={() => refresh()}
-                    className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-all ${isLoading
-                        ? 'bg-purple-400 cursor-not-allowed'
-                        : 'bg-brand-primary hover:bg-purple-700'
-                        } text-white`}
+                    onClick={handleRefresh}
+                    className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-all ${
+                        isLoading
+                            ? 'bg-purple-400 cursor-not-allowed'
+                            : 'bg-brand-primary hover:bg-purple-700'
+                    } text-white ${
+                        isManualRefresh && !isFromCache ? 'animate-pulse ring-2 ring-blue-300' : ''
+                    } ${
+                        isLoading && isFromCache && !isManualRefresh ? 'opacity-75' : ''
+                    }`}
                     aria-label="Refresh market data"
                     disabled={isLoading}
                 >
-                    <span className={isLoading ? 'animate-spin inline-block' : ''}>🔄</span>
-                    {isLoading ? 'Refreshing...' : 'Refresh'}
+                    <RefreshCw className={`w-4 h-4 ${isLoading ? 'animate-spin' : ''}`} />
+                    {isLoading && isManualRefresh ? 'Fetching...' : isLoading ? 'Loading...' : 'Refresh'}
+                    {isLoading && isFromCache && !isManualRefresh && (
+                        <span className="text-xs opacity-75 ml-1">Cached</span>
+                    )}
                 </button>
             </div>
 

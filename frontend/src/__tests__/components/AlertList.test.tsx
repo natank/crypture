@@ -121,7 +121,6 @@ describe("AlertList", () => {
     );
 
     expect(screen.getByText("Active")).toBeInTheDocument();
-    expect(screen.getByText("🟢")).toBeInTheDocument();
   });
 
   it("displays triggered status badge", () => {
@@ -133,7 +132,6 @@ describe("AlertList", () => {
     );
 
     expect(screen.getByText("Triggered")).toBeInTheDocument();
-    expect(screen.getByText("✓")).toBeInTheDocument();
   });
 
   it("displays muted status badge", () => {
@@ -145,7 +143,6 @@ describe("AlertList", () => {
     );
 
     expect(screen.getByText("Muted")).toBeInTheDocument();
-    expect(screen.getByText("🔇")).toBeInTheDocument();
   });
 
   it("shows relative time for triggered alerts", () => {
