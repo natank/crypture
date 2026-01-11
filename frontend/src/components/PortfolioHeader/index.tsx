@@ -40,7 +40,7 @@ export default function PortfolioHeader({
   return (
     <header
       role="banner"
-      className={`bg-gradient-to-r from-teal-500 to-indigo-600 text-white shadow-md rounded-b-lg mb-6 ${className}`}
+      className={`bg-gradient-to-r from-[#00bfa5] to-[#5a31f4] text-white shadow-md rounded-b-lg mb-6 ${className}`}
     >
       <div className="w-full max-w-7xl mx-auto px-6 py-4 flex items-center justify-between flex-wrap gap-4">
         <div className="flex items-center gap-8">
