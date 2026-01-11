@@ -3,7 +3,8 @@
  * REQ-013-notifications / Backlog Item 24
  */
 
-import React, { useState, useRef, useEffect } from 'react';
+import React from 'react';
+import Tooltip from '@components/Tooltip';
 
 interface AlertButtonProps {
   activeCount: number;
@@ -18,41 +19,8 @@ export default function AlertButton({
   onClick,
   className = '',
 }: AlertButtonProps) {
-  const [showTooltip, setShowTooltip] = useState(false);
-  const [tooltipPosition, setTooltipPosition] = useState<'top' | 'bottom'>('bottom');
-  const buttonRef = useRef<HTMLButtonElement>(null);
-  const tooltipId = 'alert-button-tooltip';
-
   const totalBadgeCount = activeCount + triggeredCount;
   const hasTriggered = triggeredCount > 0;
-
-  // Calculate tooltip position to stay in viewport
-  useEffect(() => {
-    if (!showTooltip || !buttonRef.current) return;
-
-    const buttonRect = buttonRef.current.getBoundingClientRect();
-    const viewportHeight = window.innerHeight;
-    const spaceBelow = viewportHeight - buttonRect.bottom;
-    const tooltipHeight = 60; // Approximate tooltip height
-
-    // Show above if not enough space below
-    setTooltipPosition(spaceBelow < tooltipHeight + 8 ? 'top' : 'bottom');
-  }, [showTooltip]);
-
-  // Handle ESC key to dismiss tooltip
-  useEffect(() => {
-    if (!showTooltip) return;
-
-    const handleEscape = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') {
-        setShowTooltip(false);
-        buttonRef.current?.focus();
-      }
-    };
-
-    document.addEventListener('keydown', handleEscape);
-    return () => document.removeEventListener('keydown', handleEscape);
-  }, [showTooltip]);
 
   // Generate tooltip text based on counts
   const getTooltipText = () => {
@@ -71,46 +39,16 @@ export default function AlertButton({
     return `Price Alerts: ${parts.join(', ')}`;
   };
 
-  const handleMouseEnter = () => {
-    setShowTooltip(true);
-  };
-
-  const handleMouseLeave = () => {
-    setShowTooltip(false);
-  };
-
-  const handleFocus = () => {
-    setShowTooltip(true);
-  };
-
-  const handleBlur = () => {
-    setShowTooltip(false);
-  };
-
-  const getPositionClasses = () => {
-    return tooltipPosition === 'top'
-      ? 'bottom-full left-1/2 -translate-x-1/2 mb-2'
-      : 'top-full left-1/2 -translate-x-1/2 mt-2';
-  };
-
-  const getArrowClasses = () => {
-    return tooltipPosition === 'top'
-      ? 'top-full left-1/2 -translate-x-1/2 border-t-surface border-l-transparent border-r-transparent border-b-transparent'
-      : 'bottom-full left-1/2 -translate-x-1/2 border-b-surface border-l-transparent border-r-transparent border-t-transparent';
-  };
-
   return (
-    <div className="relative inline-flex">
+    <Tooltip
+      content={getTooltipText()}
+      position="bottom"
+      className={className}
+    >
       <button
-        ref={buttonRef}
         onClick={onClick}
-        onMouseEnter={handleMouseEnter}
-        onMouseLeave={handleMouseLeave}
-        onFocus={handleFocus}
-        onBlur={handleBlur}
-        className={`relative p-2 rounded-lg hover:bg-white/10 transition-colors focus:outline-none focus:ring-2 focus:ring-white/50 focus-ring ${className}`}
+        className={`relative p-2 rounded-lg hover:bg-white/10 transition-colors focus:outline-none focus:ring-2 focus:ring-white/50 focus-ring`}
         aria-label={`Price alerts: ${activeCount} active${triggeredCount > 0 ? `, ${triggeredCount} triggered` : ''}`}
-        aria-describedby={showTooltip ? tooltipId : undefined}
       >
         {/* Bell Icon */}
         <svg
@@ -144,26 +82,6 @@ export default function AlertButton({
           </span>
         )}
       </button>
-
-      {/* Tooltip */}
-      {showTooltip && (
-        <div
-          id={tooltipId}
-          role="tooltip"
-          className={`absolute z-50 px-3 py-2 bg-surface border border-border rounded-lg shadow-lg text-sm text-text whitespace-nowrap transition ${getPositionClasses()}`}
-          onMouseEnter={handleMouseEnter}
-          onMouseLeave={handleMouseLeave}
-        >
-          {/* Arrow */}
-          <div
-            className={`absolute w-0 h-0 border-4 ${getArrowClasses()}`}
-            aria-hidden="true"
-          />
-          
-          {/* Tooltip content */}
-          {getTooltipText()}
-        </div>
-      )}
-    </div>
+    </Tooltip>
   );
 }

@@ -2,6 +2,7 @@ import { useState, useRef, useEffect, memo } from "react";
 import { Link } from "react-router-dom";
 import InlineErrorBadge from "@components/InlineErrorBadge";
 import Icon from "@components/Icon";
+import Tooltip from "@components/Tooltip";
 import { PortfolioAsset } from "@hooks/usePortfolioState";
 import AssetChart from "@components/AssetChart";
 import AssetMetricsPanel from "@components/AssetMetricsPanel";
@@ -294,34 +295,46 @@ const AssetRow = memo(function AssetRow({
         <div className="flex items-center gap-2">
           {!isEditing && (
             <>
-              <Link
-                to={`/coin/${asset.coinInfo.id}`}
-                className="p-2 rounded-full hover:bg-gray-100 text-text-secondary hover:text-brand-primary transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary tap-44"
-                aria-label={`View ${asset.coinInfo.name} details`}
-                title={`View ${asset.coinInfo.name} details`}
-                onClick={(e) => e.stopPropagation()}
+              <Tooltip
+                content={`View ${asset.coinInfo.name} details`}
+                position="top"
               >
-                <Icon glyph="🔍" />
-              </Link>
-              <button
-                className="p-2 rounded-full hover:bg-blue-100 text-brand-primary transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary tap-44"
-                aria-label={`Edit ${asset.coinInfo.symbol.toUpperCase()} quantity`}
-                title={`Edit ${asset.coinInfo.symbol.toUpperCase()} quantity`}
-                onClick={handleEditClick}
+                <Link
+                  to={`/coin/${asset.coinInfo.id}`}
+                  className="p-2 rounded-full hover:bg-gray-100 text-text-secondary hover:text-brand-primary transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary tap-44"
+                  aria-label={`View ${asset.coinInfo.name} details`}
+                  onClick={(e) => e.stopPropagation()}
+                >
+                  <Icon glyph="🔍" />
+                </Link>
+              </Tooltip>
+              <Tooltip
+                content={`Edit ${asset.coinInfo.name} quantity`}
+                position="top"
               >
-                <Icon glyph="✏️" />
-              </button>
+                <button
+                  className="p-2 rounded-full hover:bg-blue-100 text-brand-primary transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary tap-44"
+                  aria-label={`Edit ${asset.coinInfo.name} quantity`}
+                  onClick={handleEditClick}
+                >
+                  <Icon glyph="✏️" />
+                </button>
+              </Tooltip>
             </>
           )}
-          <button
-            className="p-2 rounded-full hover:bg-gray-100 text-error transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-error tap-44"
-            aria-label={`Delete ${asset.coinInfo.symbol.toUpperCase()}`}
-            title={`Delete ${asset.coinInfo.symbol.toUpperCase()}`}
-            onClick={handleDeleteClick}
-            disabled={isEditing}
+          <Tooltip
+            content={`Delete ${asset.coinInfo.name}`}
+            position="top"
           >
-            <Icon glyph="🗑️" />
-          </button>
+            <button
+              className="p-2 rounded-full hover:bg-gray-100 text-error transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-error tap-44"
+              aria-label={`Delete ${asset.coinInfo.name}`}
+              onClick={handleDeleteClick}
+              disabled={isEditing}
+            >
+              <Icon glyph="🗑️" />
+            </button>
+          </Tooltip>
         </div>
       </div>
 
