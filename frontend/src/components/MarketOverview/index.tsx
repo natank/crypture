@@ -23,7 +23,7 @@ export const MarketOverview: React.FC = () => {
         try {
             await refresh(true); // Force refresh
             toast.success('🔄 Market data refreshed successfully!');
-        } catch (error) {
+        } catch  {
             toast.error('❌ Failed to refresh market data');
         } finally {
             setIsManualRefresh(false);
