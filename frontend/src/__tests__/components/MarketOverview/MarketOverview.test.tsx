@@ -30,6 +30,7 @@ describe('MarketOverview', () => {
             isLoading: false,
             error: null,
             refresh: vi.fn(),
+            isFromCache: false,
         });
 
         render(<MarketOverview />);
@@ -45,6 +46,7 @@ describe('MarketOverview', () => {
             isLoading: true,
             error: null,
             refresh: vi.fn(),
+            isFromCache: false,
         });
 
         render(<MarketOverview />);
@@ -59,6 +61,7 @@ describe('MarketOverview', () => {
             isLoading: false,
             error: new Error('Failed to fetch'),
             refresh: refreshMock,
+            isFromCache: false,
         });
 
         render(<MarketOverview />);
@@ -79,6 +82,7 @@ describe('MarketOverview', () => {
             isLoading: false,
             error: null,
             refresh: refreshMock,
+            isFromCache: false,
         });
 
         render(<MarketOverview />);
