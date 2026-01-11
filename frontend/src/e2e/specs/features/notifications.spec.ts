@@ -243,7 +243,7 @@ test.describe("Delete Asset Notifications", () => {
     await expect(page.getByTestId('asset-row-BTC')).toBeVisible();
 
     // Click delete button (use last() to avoid strict mode violation with asset row)
-    await page.getByRole("button", { name: /Delete BTC/i }).last().click();
+    await page.getByRole("button", { name: /Delete Bitcoin/i }).last().click();
 
     // Confirm deletion in modal
     const deleteModal = page.getByRole("dialog");
@@ -334,7 +334,7 @@ test.describe("Delete Asset Notifications", () => {
     await expect(page.getByRole("dialog")).not.toBeVisible({ timeout: 3000 });
 
     // Delete the only asset (use last() to avoid strict mode violation with asset row)
-    await page.getByRole("button", { name: /Delete BTC/i }).last().click();
+    await page.getByRole("button", { name: /Delete Bitcoin/i }).last().click();
     const deleteModal = page.getByRole("dialog");
     await deleteModal.getByRole("button", { name: /Confirm Delete/i }).click();
 
