@@ -4,7 +4,7 @@ import { FocusTrap } from "focus-trap-react";
 import { useAddAssetForm } from "@hooks/useAddAssetForm";
 import { PortfolioAsset, PortfolioState } from "@hooks/usePortfolioState";
 import { CoinInfo } from "@services/coinService";
-import { PlusIcon } from "lucide-react";
+import { PlusIcon, XIcon } from "lucide-react";
 
 type Props = {
   onClose: () => void;
@@ -80,7 +80,7 @@ export function AddAssetModal({
             id="add-asset-title"
             className="text-xl font-brand text-brand-primary"
           >
-            <span aria-hidden="true">➕</span> Add Crypto Asset
+            <PlusIcon className="w-5 h-5 inline mr-2" aria-hidden="true" />Add Crypto Asset
           </h2>
 
           {/* 🔍 Asset Selector */}
@@ -88,6 +88,9 @@ export function AddAssetModal({
             <label htmlFor="asset-select" className="label" id="asset-select-label">
               Asset
             </label>
+            <p id="asset-select-help" className="text-xs text-gray-500">
+              Choose a crypto asset from the list. Use the filter below to narrow results.
+            </p>
             <AssetSelector
               id="asset-select"
               coins={coins}
@@ -99,9 +102,6 @@ export function AddAssetModal({
               describedById="asset-select-help"
               portfolio={portfolio}
             />
-            <p id="asset-select-help" className="text-xs text-gray-500">
-              Choose a crypto asset from the list. Use the filter below to narrow results.
-            </p>
           </div>
 
           {/* 🔢 Quantity Input */}
@@ -142,11 +142,12 @@ export function AddAssetModal({
           <div className="flex justify-end gap-4 pt-4">
             <button
               onClick={onClose}
-              className="bg-gray-100 text-gray-900 font-button px-4 py-2 rounded-md hover:bg-gray-200"
+              className="bg-gray-100 text-gray-900 font-button px-4 py-2 rounded-md hover:bg-gray-200 flex items-center"
               aria-label="Cancel adding asset"
               disabled={loading}
             >
-              <span aria-hidden="true">❌</span> Cancel
+              <XIcon className="w-4 h-4 mr-2" aria-hidden="true" />
+              Cancel
             </button>
             <button
               onClick={handleSubmit}
