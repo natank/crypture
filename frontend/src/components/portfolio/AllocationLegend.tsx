@@ -10,11 +10,11 @@ export default function AllocationLegend({ data }: AllocationLegendProps) {
     return (
         <div
             data-testid="allocation-legend"
-            className="flex flex-col gap-3"
+            className="flex flex-col gap-3 h-full"
             aria-label="Allocation breakdown"
         >
             <h3 className="text-lg font-semibold text-text mb-2">Breakdown</h3>
-            <div className="flex flex-col gap-2">
+            <div className="flex flex-col gap-2 overflow-y-auto max-h-64 md:max-h-80 lg:max-h-96">
                 {data.map(item => (
                     <div
                         key={item.id}

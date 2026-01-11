@@ -235,7 +235,7 @@ test.describe('Portfolio Composition Visualizations', () => {
             const container = compositionSection.locator('.composition-content');
 
             // Check that layout is horizontal on larger screens
-            await expect(container).toHaveClass(/md:flex-row/);
+            await expect(container).toHaveClass(/lg:flex-row/);
         });
     });
 
