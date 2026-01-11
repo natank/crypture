@@ -54,7 +54,7 @@ export default function PortfolioCompositionDashboard({
             aria-labelledby="composition-heading"
         >
             <div className="flex flex-col gap-4">
-                <div className="flex items-center justify-between">
+                <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
                     <h2 id="composition-heading" className="text-2xl font-bold text-text">
                         Portfolio Composition
                     </h2>
@@ -97,14 +97,14 @@ export default function PortfolioCompositionDashboard({
                         </p>
                     </div>
                 ) : (
-                    <div className="composition-content flex flex-col md:flex-row gap-6">
-                        <div className="flex-1">
+                    <div className="composition-content flex flex-col lg:flex-row gap-6">
+                        <div className="flex-1 min-w-0">
                             <AllocationPieChart
                                 data={allocationData}
                                 viewType={selectedView}
                             />
                         </div>
-                        <div className="md:w-80">
+                        <div className="lg:w-80 w-full">
                             <AllocationLegend data={allocationData} />
                         </div>
                     </div>

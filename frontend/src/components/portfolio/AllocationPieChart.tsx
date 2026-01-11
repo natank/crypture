@@ -60,7 +60,7 @@ export default function AllocationPieChart({ data, viewType }: AllocationPieChar
             aria-label={`Portfolio allocation ${viewLabels[viewType]}`}
             id="allocation-chart-panel"
         >
-            <ResponsiveContainer width="100%" height={400} className="md:h-96">
+            <ResponsiveContainer width="100%" height={300} className="h-64 md:h-80 lg:h-96">
                 <PieChart>
                     <Pie
                         data={data}
@@ -72,8 +72,8 @@ export default function AllocationPieChart({ data, viewType }: AllocationPieChar
                             if (percentage < 5) return '';
                             return `${name} (${percentage.toFixed(1)}%)`;
                         }}
-                        outerRadius={120}
-                        innerRadius={60}
+                        outerRadius={80}
+                        innerRadius={40}
                         fill="#8884d8"
                         dataKey="value"
                         paddingAngle={2}
