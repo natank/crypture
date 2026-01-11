@@ -20,7 +20,7 @@ test.describe("Edit Asset Quantity", () => {
 
     await expect(page.getByText(/Qty: 1.5/)).toBeVisible();
 
-    await page.getByRole("button", { name: /Edit BTC quantity/i }).last().click();
+    await page.getByRole("button", { name: /Edit Bitcoin quantity/i }).last().click();
 
     const input = page.getByLabel(/Edit quantity for Bitcoin/i);
     await expect(input).toBeVisible();
@@ -47,7 +47,7 @@ test.describe("Edit Asset Quantity", () => {
 
     await expect(page.getByText(/Qty: 5/)).toBeVisible();
 
-    await page.getByRole("button", { name: /Edit ETH quantity/i }).last().click();
+    await page.getByRole("button", { name: /Edit Ethereum quantity/i }).last().click();
 
     const input = page.getByLabel(/Edit quantity for Ethereum/i);
     await input.clear();
@@ -69,7 +69,7 @@ test.describe("Edit Asset Quantity", () => {
 
     await expect(page.getByText(/Qty: 3/)).toBeVisible();
 
-    await page.getByRole("button", { name: /Edit BTC quantity/i }).last().click();
+    await page.getByRole("button", { name: /Edit Bitcoin quantity/i }).last().click();
     const input = page.getByLabel(/Edit quantity for Bitcoin/i);
     await input.clear();
     await input.fill("4.5");
@@ -89,7 +89,7 @@ test.describe("Edit Asset Quantity", () => {
 
     await expect(page.getByText(/Qty: 2/)).toBeVisible();
 
-    await page.getByRole("button", { name: /Edit BTC quantity/i }).last().click();
+    await page.getByRole("button", { name: /Edit Bitcoin quantity/i }).last().click();
     const input = page.getByLabel(/Edit quantity for Bitcoin/i);
     await input.clear();
     await input.fill("999");
@@ -109,7 +109,7 @@ test.describe("Edit Asset Quantity", () => {
 
     await expect(page.getByText(/Qty: 1/)).toBeVisible();
 
-    await page.getByRole("button", { name: /Edit BTC quantity/i }).last().click();
+    await page.getByRole("button", { name: /Edit Bitcoin quantity/i }).last().click();
     const input = page.getByLabel(/Edit quantity for Bitcoin/i);
     await input.clear();
     await input.fill("-5");
@@ -132,7 +132,7 @@ test.describe("Edit Asset Quantity", () => {
 
     await expect(page.getByText(/Qty: 1/)).toBeVisible();
 
-    await page.getByRole("button", { name: /Edit ETH quantity/i }).last().click();
+    await page.getByRole("button", { name: /Edit Ethereum quantity/i }).last().click();
     const input = page.getByLabel(/Edit quantity for Ethereum/i);
     await input.clear();
     await input.fill("0");
@@ -152,7 +152,7 @@ test.describe("Edit Asset Quantity", () => {
 
     await expect(page.getByText(/Qty: 1/)).toBeVisible();
 
-    await page.getByRole("button", { name: /Edit BTC quantity/i }).last().click();
+    await page.getByRole("button", { name: /Edit Bitcoin quantity/i }).last().click();
     const input = page.getByLabel(/Edit quantity for Bitcoin/i);
     await input.clear();
     await input.fill("1.123456789");
@@ -172,7 +172,7 @@ test.describe("Edit Asset Quantity", () => {
 
     await expect(page.getByText(/Qty: 1/)).toBeVisible();
 
-    await page.getByRole("button", { name: /Edit BTC quantity/i }).last().click();
+    await page.getByRole("button", { name: /Edit Bitcoin quantity/i }).last().click();
     const input = page.getByLabel(/Edit quantity for Bitcoin/i);
     await input.clear();
     await input.fill("7.5");
@@ -196,7 +196,7 @@ test.describe("Edit Asset Quantity", () => {
 
     await expect(page.getByText(/Qty: 1/)).toBeVisible();
 
-    const editButton = page.getByRole("button", { name: /Edit BTC quantity/i }).last();
+    const editButton = page.getByRole("button", { name: /Edit Bitcoin quantity/i }).last();
     await editButton.click();
 
     const input = page.getByLabel(/Edit quantity for Bitcoin/i);
@@ -225,9 +225,9 @@ test.describe("Edit Asset Quantity", () => {
 
     await expect(page.getByText(/Qty: 1/)).toBeVisible();
 
-    await page.getByRole("button", { name: /Edit BTC quantity/i }).last().click();
+    await page.getByRole("button", { name: /Edit Bitcoin quantity/i }).last().click();
 
-    const deleteButton = page.getByRole("button", { name: /Delete BTC/i }).last();
+    const deleteButton = page.getByRole("button", { name: /Delete Bitcoin/i }).last();
     await expect(deleteButton).toBeDisabled();
   });
 });
@@ -251,7 +251,7 @@ test.describe("Edit Asset Quantity - Mobile", () => {
 
     await expect(page.getByText(/Qty: 1/)).toBeVisible();
 
-    const editButton = page.getByRole("button", { name: /Edit BTC quantity/i }).last();
+    const editButton = page.getByRole("button", { name: /Edit Bitcoin quantity/i }).last();
     const box = await editButton.boundingBox();
     expect(box).not.toBeNull();
     expect(box!.width).toBeGreaterThanOrEqual(44);

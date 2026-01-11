@@ -183,7 +183,14 @@ export class PortfolioPage {
   }
 
   async openDeleteModalFor(symbol: string) {
-    const deleteButton = this.page.getByLabel(`Delete ${symbol}`);
+    // Map symbols to full names for consistent tooltip naming
+    const nameMap: Record<string, string> = {
+      BTC: "Bitcoin",
+      ETH: "Ethereum",
+    };
+    
+    const fullName = nameMap[symbol] || symbol;
+    const deleteButton = this.page.getByLabel(`Delete ${fullName}`);
     await deleteButton.click();
   }
 
