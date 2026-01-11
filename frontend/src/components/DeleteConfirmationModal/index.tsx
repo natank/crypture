@@ -1,4 +1,5 @@
 import React from "react";
+import { Trash2, X, Check } from "lucide-react";
 
 type DeleteConfirmationModalProps = {
   assetName: string;
@@ -25,9 +26,10 @@ export default function DeleteConfirmationModal({
       <div className="modal-content card flex flex-col gap-8 sm:gap-6 p-6 sm:p-8" >
         <h2
           id="delete-modal-title"
-          className="text-2xl sm:text-3xl font-bold text-error text-balance mb-2"
+          className="text-2xl sm:text-3xl font-bold text-error text-balance mb-2 flex items-center gap-2"
         >
-          <span aria-hidden="true">🗑️</span> Remove {assetName}?
+          <Trash2 className="w-6 h-6 sm:w-8 sm:h-8" aria-hidden="true" />
+          Remove {assetName}?
         </h2>
         <p className="text-base text-text-muted text-balance">
           This action will permanently delete this asset from your portfolio.<br />
@@ -36,15 +38,17 @@ export default function DeleteConfirmationModal({
         <div className="flex justify-end gap-4 pt-4">
           <button
             onClick={onCancel}
-            className="btn btn-outline"
+            className="btn btn-outline flex items-center gap-2"
           >
-            <span aria-hidden="true">❌</span> Cancel
+            <X className="w-4 h-4" aria-hidden="true" />
+            Cancel
           </button>
           <button
             onClick={onConfirm}
-            className="btn bg-error hover:bg-error/90 focus-visible:ring-error"
+            className="btn bg-error hover:bg-error/90 focus-visible:ring-error flex items-center gap-2"
           >
-            <span aria-hidden="true">✅</span> Confirm Delete
+            <Check className="w-4 h-4" aria-hidden="true" />
+            Confirm Delete
           </button>
         </div>
       </div>

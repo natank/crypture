@@ -4,6 +4,7 @@
  */
 
 import React, { useState } from 'react';
+import { Bell, VolumeX, Trash2, Edit, Circle, Check } from 'lucide-react';
 import AlertDeleteConfirmationModal from '@components/AlertDeleteConfirmationModal';
 import type { PriceAlert } from 'types/alert';
 
@@ -101,19 +102,19 @@ function AlertItem({
 
   const statusConfig = {
     active: {
-      badge: '🟢',
+      badge: <Circle className="w-3 h-3 text-green-500 fill-green-500" aria-hidden="true" />,
       label: 'Active',
       bgColor: 'bg-green-50 dark:bg-green-900/20',
       borderColor: 'border-green-200 dark:border-green-800',
     },
     triggered: {
-      badge: '✓',
+      badge: <Check className="w-3 h-3 text-amber-500" aria-hidden="true" />,
       label: 'Triggered',
       bgColor: 'bg-amber-50 dark:bg-amber-900/20',
       borderColor: 'border-amber-200 dark:border-amber-800',
     },
     muted: {
-      badge: '🔇',
+      badge: <VolumeX className="w-3 h-3 text-gray-500" aria-hidden="true" />,
       label: 'Muted',
       bgColor: 'bg-gray-50 dark:bg-gray-800',
       borderColor: 'border-gray-200 dark:border-gray-700',
@@ -187,9 +188,10 @@ function AlertItem({
                       onEdit(alert);
                       setShowActions(false);
                     }}
-                    className="w-full px-3 py-2 text-left text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700"
+                    className="w-full px-3 py-2 text-left text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 flex items-center gap-2"
                   >
-                    ✏️ Edit
+                    <Edit className="w-4 h-4" aria-hidden="true" />
+                    Edit
                   </button>
                 )}
                 {alert.status === 'active' && onMute && (
@@ -198,9 +200,10 @@ function AlertItem({
                       onMute(alert.id);
                       setShowActions(false);
                     }}
-                    className="w-full px-3 py-2 text-left text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700"
+                    className="w-full px-3 py-2 text-left text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 flex items-center gap-2"
                   >
-                    🔇 Mute
+                    <VolumeX className="w-4 h-4" aria-hidden="true" />
+                    Mute
                   </button>
                 )}
                 {(alert.status === 'muted' || alert.status === 'triggered') && onReactivate && (
@@ -209,9 +212,10 @@ function AlertItem({
                       onReactivate(alert.id);
                       setShowActions(false);
                     }}
-                    className="w-full px-3 py-2 text-left text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700"
+                    className="w-full px-3 py-2 text-left text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 flex items-center gap-2"
                   >
-                    🔔 Reactivate
+                    <Bell className="w-4 h-4" aria-hidden="true" />
+                    Reactivate
                   </button>
                 )}
                 {onDelete && (
@@ -220,9 +224,10 @@ function AlertItem({
                       setShowDeleteConfirm(true);
                       setShowActions(false);
                     }}
-                    className="w-full px-3 py-2 text-left text-sm text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20"
+                    className="w-full px-3 py-2 text-left text-sm text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 flex items-center gap-2"
                   >
-                    🗑️ Delete
+                    <Trash2 className="w-4 h-4" aria-hidden="true" />
+                    Delete
                   </button>
                 )}
               </div>

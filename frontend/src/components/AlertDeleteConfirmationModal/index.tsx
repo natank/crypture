@@ -5,6 +5,7 @@
  */
 
 import React from "react";
+import { Trash2, X, Check } from "lucide-react";
 
 interface AlertDeleteConfirmationModalProps {
   isOpen: boolean;
@@ -65,9 +66,10 @@ export default function AlertDeleteConfirmationModal({
       >
         <h2
           id="delete-alert-modal-title"
-          className="text-2xl sm:text-3xl font-bold text-error text-balance mb-2"
+          className="text-2xl sm:text-3xl font-bold text-error text-balance mb-2 flex items-center gap-2"
         >
-          <span aria-hidden="true">🗑️</span> Delete Price Alert?
+          <Trash2 className="w-6 h-6 sm:w-8 sm:h-8" aria-hidden="true" />
+          Delete Price Alert?
         </h2>
         
         <div className="space-y-4">
@@ -101,15 +103,17 @@ export default function AlertDeleteConfirmationModal({
         <div className="flex justify-end gap-4 pt-4">
           <button
             onClick={onCancel}
-            className="btn btn-outline"
+            className="btn btn-outline flex items-center gap-2"
           >
-            <span aria-hidden="true">❌</span> Cancel
+            <X className="w-4 h-4" aria-hidden="true" />
+            Cancel
           </button>
           <button
             onClick={onConfirm}
-            className="btn bg-error hover:bg-error/90 focus-visible:ring-error"
+            className="btn bg-error hover:bg-error/90 focus-visible:ring-error flex items-center gap-2"
           >
-            <span aria-hidden="true">✅</span> Confirm Delete
+            <Check className="w-4 h-4" aria-hidden="true" />
+            Confirm Delete
           </button>
         </div>
       </div>
