@@ -92,7 +92,7 @@ describe("AssetList", () => {
         priceMap={mockPriceMap}
       />
     );
-    screen.getByRole("button", { name: /delete btc/i }).click();
+    screen.getByRole("button", { name: /delete bitcoin/i }).click();
     expect(handleDelete).toHaveBeenCalledWith("btc");
   });
 

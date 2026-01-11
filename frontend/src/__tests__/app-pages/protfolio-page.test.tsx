@@ -255,7 +255,7 @@ describe("PortfolioPage", () => {
     );
 
     // Simulate delete click
-    const deleteButton = getByLabelText("Delete BTC");
+    const deleteButton = getByLabelText("Delete Bitcoin");
     fireEvent.click(deleteButton);
 
     // Assert modal appears
@@ -269,7 +269,7 @@ describe("PortfolioPage", () => {
     );
 
     // Trigger deletion of Bitcoin (BTC)
-    fireEvent.click(getByLabelText("Delete BTC"));
+    fireEvent.click(getByLabelText("Delete Bitcoin"));
 
     // Assert modal contains Bitcoin's name
     expect(getByTestId("mock-delete-modal")).toHaveTextContent(
