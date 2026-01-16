@@ -1,0 +1,21 @@
+{
+  "run": {
+    "command": "nx build crypture-nx",
+    "startTime": "2026-01-16T15:26:46.033Z",
+    "endTime": "2026-01-16T15:26:47.312Z",
+    "inner": false
+  },
+  "tasks": [
+    {
+      "taskId": "@crypture-nx/crypture-nx:build",
+      "target": "build",
+      "projectName": "@crypture-nx/crypture-nx",
+      "hash": "6026895489571509309",
+      "startTime": "2026-01-16T15:26:46.112Z",
+      "endTime": "2026-01-16T15:26:47.306Z",
+      "params": "",
+      "cacheStatus": "cache-miss",
+      "status": 0
+    }
+  ]
+}

@@ -1,8 +1,45 @@
 {
+  "name": "crypture",
+  "version": "0.0.0",
+  "license": "MIT",
+  "scripts": {
+    "build": "nx build",
+    "serve": "nx serve",
+    "test": "nx test",
+    "lint": "nx lint",
+    "graph": "nx graph"
+  },
+  "private": true,
   "dependencies": {
-    "lucide-react": "^0.525.0"
+    "lucide-react": "^0.525.0",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "react-router-dom": "6.29.0"
   },
   "devDependencies": {
-    "sharp": "^0.34.3"
+    "@eslint/js": "^9.8.0",
+    "@nx/eslint": "22.3.3",
+    "@nx/eslint-plugin": "^22.3.3",
+    "@nx/jest": "22.3.3",
+    "@nx/js": "22.3.3",
+    "@nx/node": "22.3.3",
+    "@nx/react": "22.3.3",
+    "@nx/vite": "22.3.3",
+    "@nx/web": "22.3.3",
+    "@nx/webpack": "22.3.3",
+    "@nx/workspace": "22.3.3",
+    "@swc-node/register": "~1.9.1",
+    "@swc/cli": "~0.6.0",
+    "@swc/core": "~1.5.7",
+    "@swc/helpers": "~0.5.11",
+    "@types/node": "^20.0.0",
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
+    "eslint": "^9.8.0",
+    "eslint-config-prettier": "^10.0.0",
+    "prettier": "^3.0.0",
+    "sharp": "^0.34.3",
+    "typescript": "^5.8.3",
+    "vite": "^7.3.1"
   }
 }
