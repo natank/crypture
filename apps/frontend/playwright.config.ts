@@ -25,7 +25,7 @@ export default defineConfig({
     '**/trending-discovery.spec.ts',
   ] : [],
   use: {
-    baseURL: process.env.CI ? "http://localhost:4173" : "http://localhost:5173",
+    baseURL: process.env.CI ? "http://localhost:4173" : "http://localhost:4200",
     headless: true,
     viewport: { width: 1280, height: 720 },
     actionTimeout: 5000, // 5 second timeout for actions
@@ -42,8 +42,8 @@ export default defineConfig({
     timeout: 15 * 1000, // wait up to 15s for server to start
     reuseExistingServer: false,
   } : {
-    command: "npm run dev",
-    url: "http://localhost:5173",
+    command: "npx nx serve frontend",
+    url: "http://localhost:4200",
     timeout: 30 * 1000, // wait up to 30s for server to start
     reuseExistingServer: true,
   },
