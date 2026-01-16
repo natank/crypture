@@ -1,6 +1,5 @@
 // vitest.config.ts
 import { defineConfig } from "vitest/config";
-import path from "path";
 
 export default defineConfig({
   test: {
@@ -32,15 +31,15 @@ export default defineConfig({
   },
   resolve: {
     alias: {
-      "@hooks": path.resolve(__dirname, "src/hooks"),
-      "@components": path.resolve(__dirname, "src/components"),
-      "@context": path.resolve(__dirname, "src/context"),
-      "@services": path.resolve(__dirname, "src/services"),
-      "@pages": path.resolve(__dirname, "src/pages"),
-      "@utils": path.resolve(__dirname, "src/utils"),
-      "@types": path.resolve(__dirname, "src/types"),
-      "@e2e": path.resolve(__dirname, "src/e2e"),
-      "@test-setup": path.resolve(__dirname, "src/e2e/test-setup.ts"),
+      "@hooks": "/src/hooks",
+      "@components": "/src/components",
+      "@context": "/src/context",
+      "@services": "/src/services",
+      "@pages": "/src/pages",
+      "@utils": "/src/utils",
+      "@types": "/src/types",
+      "@e2e": "/src/e2e",
+      "@test-setup": "/src/e2e/test-setup.ts",
     },
   },
 });
