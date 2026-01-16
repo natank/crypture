@@ -8,6 +8,12 @@ coverage/
 # docs/
 test-results
 
+# NX
+.nx/cache/
+.nx/workspace-data/
+static/
+dependency-graph.html
+
 *.temp/*
 # Logs
 logs
