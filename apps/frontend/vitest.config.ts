@@ -1,0 +1,45 @@
+// vitest.config.ts
+import { defineConfig } from "vitest/config";
+
+export default defineConfig({
+  test: {
+    globals: true,
+    environment: "jsdom",
+    setupFiles: ["./src/setupTests.ts"],
+    include: ["**/*.{test,test.*}.?(c|m)[jt]s?(x)"],
+    coverage: {
+      provider: "v8", // or 'c8'
+      reporter: ["text", "html", "json-summary"],
+      all: true,
+      exclude: [
+        "**/node_modules/**",
+        "**/dist/**",
+        "**/__tests__/**",
+        "**/*.test.*",
+        "**/*.spec.*",
+        "**/mocks/**",
+        "**/stories/**",
+        "**/.vite/**",
+      ],
+      thresholds: {
+        lines: 60,
+        functions: 80,
+        statements: 60,
+        branches: 70,
+      },
+    },
+  },
+  resolve: {
+    alias: {
+      "@hooks": "/src/hooks",
+      "@components": "/src/components",
+      "@context": "/src/context",
+      "@services": "/src/services",
+      "@pages": "/src/pages",
+      "@utils": "/src/utils",
+      "@types": "/src/types",
+      "@e2e": "/src/e2e",
+      "@test-setup": "/src/e2e/test-setup.ts",
+    },
+  },
+});

@@ -1,0 +1,30 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "composite": false,
+    "declarationMap": false,
+    "emitDeclarationOnly": false,
+    "outDir": "./dist",
+    "rootDir": "./src",
+    "declaration": false,
+    "noEmit": false,
+    "lib": ["dom", "dom.iterable", "esnext"],
+    "types": ["node", "playwright", "vitest", "vitest/globals", "framer-motion"],
+    "moduleResolution": "bundler",
+    "esModuleInterop": true,
+    "baseUrl": "./src",
+    "paths": {
+      "@types/*": ["types/*"],
+      "@components/*": ["components/*"],
+      "@services/*": ["services/*"],
+      "@hooks/*": ["hooks/*"],
+      "@utils/*": ["utils/*"],
+      "@pages/*": ["pages/*"],
+      "@context/*": ["context/*"],
+      "@e2e/*": ["e2e/*"],
+      "@test-setup": ["e2e/test-setup.ts"],
+      "@assets/*": ["../public/assets/*"]
+    }
+  },
+  "include": ["src"]
+}

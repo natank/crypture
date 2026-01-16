@@ -1,0 +1,35 @@
+{
+  "compilerOptions": {
+    "composite": true,
+    "declarationMap": true,
+    "emitDeclarationOnly": true,
+    "importHelpers": true,
+    "isolatedModules": true,
+    "lib": ["es2022"],
+    "module": "esnext",
+    "moduleResolution": "bundler",
+    "noEmitOnError": true,
+    "noFallthroughCasesInSwitch": true,
+    "noImplicitOverride": true,
+    "noImplicitReturns": true,
+    "noUnusedLocals": true,
+    "skipLibCheck": true,
+    "strict": true,
+    "target": "es2022",
+    "customConditions": ["@crypture-nx/source"],
+    "jsx": "react-jsx",
+    "baseUrl": ".",
+    "paths": {
+      "@components/*": ["frontend/src/components/*"],
+      "@context/*": ["frontend/src/context/*"],
+      "@hooks/*": ["frontend/src/hooks/*"],
+      "@pages/*": ["frontend/src/pages/*"],
+      "@utils/*": ["frontend/src/utils/*"],
+      "@services/*": ["frontend/src/services/*"],
+      "@types/*": ["frontend/src/types/*"],
+      "@e2e/*": ["frontend/src/e2e/*"],
+      "@test-setup": ["frontend/src/e2e/test-setup.ts"],
+      "@assets/*": ["frontend/public/assets/*"]
+    }
+  }
+}
