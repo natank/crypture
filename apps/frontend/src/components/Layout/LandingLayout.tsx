@@ -8,13 +8,14 @@ interface LandingLayoutProps {
   className?: string;
 }
 
-export function LandingLayout({ children, className = '' }: LandingLayoutProps) {
+export function LandingLayout({
+  children,
+  className = '',
+}: LandingLayoutProps) {
   return (
     <div className={`min-h-screen flex flex-col ${className}`}>
       <Header />
-      <main className="flex-grow">
-        {children}
-      </main>
+      <main className="flex-grow">{children}</main>
       <Footer />
       <Toaster position="top-center" />
     </div>

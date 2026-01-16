@@ -3,7 +3,11 @@
  * REQ-013-notifications / Backlog Item 24 / Story 2
  */
 
-export type NotificationPermissionStatus = 'granted' | 'denied' | 'default' | 'unsupported';
+export type NotificationPermissionStatus =
+  | 'granted'
+  | 'denied'
+  | 'default'
+  | 'unsupported';
 
 export interface AlertNotification {
   title: string;
@@ -66,7 +70,9 @@ export function sendNotification(notification: AlertNotification): boolean {
   try {
     const options: NotificationOptions = {
       body: notification.body,
-      icon: notification.icon || '/logo/svg/crypture-logo-negative-space-monochrome.svg',
+      icon:
+        notification.icon ||
+        '/logo/svg/crypture-logo-negative-space-monochrome.svg',
       tag: notification.tag || `alert-${Date.now()}`,
       requireInteraction: false,
       silent: false,

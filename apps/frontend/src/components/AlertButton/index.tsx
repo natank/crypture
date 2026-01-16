@@ -27,7 +27,7 @@ export default function AlertButton({
     if (totalBadgeCount === 0) {
       return 'Price Alerts';
     }
-    
+
     const parts = [];
     if (activeCount > 0) {
       parts.push(`${activeCount} active`);
@@ -35,16 +35,12 @@ export default function AlertButton({
     if (triggeredCount > 0) {
       parts.push(`${triggeredCount} triggered`);
     }
-    
+
     return `Price Alerts: ${parts.join(', ')}`;
   };
 
   return (
-    <Tooltip
-      content={getTooltipText()}
-      position="bottom"
-      className={className}
-    >
+    <Tooltip content={getTooltipText()} position="bottom" className={className}>
       <button
         onClick={onClick}
         className={`relative p-2 rounded-lg hover:bg-white/10 transition-colors focus:outline-none focus:ring-2 focus:ring-white/50 focus-ring`}

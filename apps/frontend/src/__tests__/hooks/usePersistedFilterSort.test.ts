@@ -153,7 +153,9 @@ describe('usePersistedFilterSort', () => {
       });
 
       expect(result.current.sortedFilteredAssets).toHaveLength(1);
-      expect(result.current.sortedFilteredAssets[0].coinInfo.name).toBe('Bitcoin');
+      expect(result.current.sortedFilteredAssets[0].coinInfo.name).toBe(
+        'Bitcoin'
+      );
     });
 
     it('sorts assets by name ascending', () => {
@@ -163,9 +165,15 @@ describe('usePersistedFilterSort', () => {
         result.current.setSortOption('name-asc');
       });
 
-      expect(result.current.sortedFilteredAssets[0].coinInfo.name).toBe('Bitcoin');
-      expect(result.current.sortedFilteredAssets[1].coinInfo.name).toBe('Cardano');
-      expect(result.current.sortedFilteredAssets[2].coinInfo.name).toBe('Ethereum');
+      expect(result.current.sortedFilteredAssets[0].coinInfo.name).toBe(
+        'Bitcoin'
+      );
+      expect(result.current.sortedFilteredAssets[1].coinInfo.name).toBe(
+        'Cardano'
+      );
+      expect(result.current.sortedFilteredAssets[2].coinInfo.name).toBe(
+        'Ethereum'
+      );
     });
 
     it('sorts assets by name descending', () => {
@@ -175,9 +183,15 @@ describe('usePersistedFilterSort', () => {
         result.current.setSortOption('name-desc');
       });
 
-      expect(result.current.sortedFilteredAssets[0].coinInfo.name).toBe('Ethereum');
-      expect(result.current.sortedFilteredAssets[1].coinInfo.name).toBe('Cardano');
-      expect(result.current.sortedFilteredAssets[2].coinInfo.name).toBe('Bitcoin');
+      expect(result.current.sortedFilteredAssets[0].coinInfo.name).toBe(
+        'Ethereum'
+      );
+      expect(result.current.sortedFilteredAssets[1].coinInfo.name).toBe(
+        'Cardano'
+      );
+      expect(result.current.sortedFilteredAssets[2].coinInfo.name).toBe(
+        'Bitcoin'
+      );
     });
 
     it('sorts assets by value descending', () => {
@@ -190,9 +204,15 @@ describe('usePersistedFilterSort', () => {
       // Bitcoin: 1 * 50000 = 50000
       // Ethereum: 10 * 3000 = 30000
       // Cardano: 1000 * 0.5 = 500
-      expect(result.current.sortedFilteredAssets[0].coinInfo.name).toBe('Bitcoin');
-      expect(result.current.sortedFilteredAssets[1].coinInfo.name).toBe('Ethereum');
-      expect(result.current.sortedFilteredAssets[2].coinInfo.name).toBe('Cardano');
+      expect(result.current.sortedFilteredAssets[0].coinInfo.name).toBe(
+        'Bitcoin'
+      );
+      expect(result.current.sortedFilteredAssets[1].coinInfo.name).toBe(
+        'Ethereum'
+      );
+      expect(result.current.sortedFilteredAssets[2].coinInfo.name).toBe(
+        'Cardano'
+      );
     });
 
     it('sorts assets by value ascending', () => {
@@ -202,9 +222,15 @@ describe('usePersistedFilterSort', () => {
         result.current.setSortOption('value-asc');
       });
 
-      expect(result.current.sortedFilteredAssets[0].coinInfo.name).toBe('Cardano');
-      expect(result.current.sortedFilteredAssets[1].coinInfo.name).toBe('Ethereum');
-      expect(result.current.sortedFilteredAssets[2].coinInfo.name).toBe('Bitcoin');
+      expect(result.current.sortedFilteredAssets[0].coinInfo.name).toBe(
+        'Cardano'
+      );
+      expect(result.current.sortedFilteredAssets[1].coinInfo.name).toBe(
+        'Ethereum'
+      );
+      expect(result.current.sortedFilteredAssets[2].coinInfo.name).toBe(
+        'Bitcoin'
+      );
     });
   });
 

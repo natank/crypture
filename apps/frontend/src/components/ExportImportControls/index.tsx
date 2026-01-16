@@ -1,8 +1,8 @@
-import React, { useRef, useState } from "react";
-import Icon from "@components/Icon";
+import React, { useRef, useState } from 'react';
+import Icon from '@components/Icon';
 
 type ExportImportControlsProps = {
-  onExport: (format: "csv" | "json") => void;
+  onExport: (format: 'csv' | 'json') => void;
   onImport?: (file: File) => void;
   portfolioCount?: number;
 };
@@ -12,7 +12,7 @@ export default function ExportImportControls({
   onImport,
   portfolioCount = 0,
 }: ExportImportControlsProps) {
-  const [format, setFormat] = useState<"csv" | "json">("csv");
+  const [format, setFormat] = useState<'csv' | 'json'>('csv');
   const [isExporting, setIsExporting] = useState(false);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
 
@@ -37,7 +37,7 @@ export default function ExportImportControls({
     if (file) {
       onImport(file);
       // reset value to allow re-selecting the same file
-      e.currentTarget.value = "";
+      e.currentTarget.value = '';
     }
   };
 
@@ -55,14 +55,14 @@ export default function ExportImportControls({
           id="export-format"
           aria-label="Select file format for export"
           value={format}
-          onChange={(e) => setFormat(e.target.value as "csv" | "json")}
+          onChange={(e) => setFormat(e.target.value as 'csv' | 'json')}
           className="text-base rounded-md border border-gray-200 px-3 py-2 focus:ring-2 focus:ring-brand-primary focus:outline-none"
         >
           <option value="csv">CSV (.csv)</option>
           <option value="json">JSON (.json)</option>
         </select>
         <Icon
-          glyph={"ⓘ"}
+          glyph={'ⓘ'}
           title="Choose a format for download."
           className="text-gray-400 text-sm cursor-default select-none"
         />
@@ -104,7 +104,7 @@ export default function ExportImportControls({
             </>
           ) : (
             <>
-              <Icon glyph={"📤"} /> Export Portfolio
+              <Icon glyph={'📤'} /> Export Portfolio
             </>
           )}
         </button>
@@ -118,7 +118,7 @@ export default function ExportImportControls({
             data-testid="import-button"
             title="Select a JSON/CSV file to import"
           >
-            <Icon glyph={"📥"} /> Import Portfolio
+            <Icon glyph={'📥'} /> Import Portfolio
           </button>
         )}
       </div>

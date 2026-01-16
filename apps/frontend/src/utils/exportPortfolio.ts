@@ -1,6 +1,6 @@
 // utils/exportPortfolio.ts
 
-export type ExportFormat = "csv" | "json";
+export type ExportFormat = 'csv' | 'json';
 
 export interface PortfolioItem {
   asset: string; // asset symbol (e.g., BTC)
@@ -23,34 +23,34 @@ export function exportPortfolio(
       asset,
       quantity,
       value: Number.isFinite(value)
-        ? Number(value).toLocaleString("en-US", {
+        ? Number(value).toLocaleString('en-US', {
             minimumFractionDigits: 2,
             maximumFractionDigits: 2,
           })
-        : "0.00",
+        : '0.00',
     };
   });
 
-  if (format === "json") {
+  if (format === 'json') {
     return JSON.stringify(
       rows.map((r) => ({
         ...r,
-        value: Number(r.value.replace(/,/g, "")),
+        value: Number(r.value.replace(/,/g, '')),
       })),
       null,
       2
     );
   }
 
-  if (format === "csv") {
-    const header = ["Asset", "Quantity", "Value (USD)"];
+  if (format === 'csv') {
+    const header = ['Asset', 'Quantity', 'Value (USD)'];
     const lines = rows.map(({ asset, quantity, value }) => {
       const escaped = [asset, quantity.toString(), value].map((cell) =>
-        cell.includes(",") ? `"${cell}"` : cell
+        cell.includes(',') ? `"${cell}"` : cell
       );
-      return escaped.join(",");
+      return escaped.join(',');
     });
-    return [header.join(","), ...lines].join("\n");
+    return [header.join(','), ...lines].join('\n');
   }
 
   throw new Error(`Unsupported export format: ${format}`);

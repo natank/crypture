@@ -1,10 +1,10 @@
-import { useState, useMemo } from "react";
-import { PortfolioAsset } from "@hooks/usePortfolioState";
+import { useState, useMemo } from 'react';
+import { PortfolioAsset } from '@hooks/usePortfolioState';
 
 export function useFilterSort(
   assets: PortfolioAsset[],
-  initialSort: string = "name-asc",
-  initialFilter: string = ""
+  initialSort: string = 'name-asc',
+  initialFilter: string = ''
 ) {
   const [sortOption, setSortOption] = useState(initialSort);
   const [filterText, setFilterText] = useState(initialFilter);
@@ -19,23 +19,23 @@ export function useFilterSort(
     }
 
     switch (sortOption) {
-      case "value-desc":
+      case 'value-desc':
         return filtered.sort(
           (a, b) =>
             b.quantity * (b.coinInfo.current_price || 0) -
             a.quantity * (a.coinInfo.current_price || 0)
         );
-      case "value-asc":
+      case 'value-asc':
         return filtered.sort(
           (a, b) =>
             a.quantity * (a.coinInfo.current_price || 0) -
             b.quantity * (b.coinInfo.current_price || 0)
         );
-      case "name-desc":
+      case 'name-desc':
         return filtered.sort((a, b) =>
           b.coinInfo.name.localeCompare(a.coinInfo.name)
         );
-      case "name-asc":
+      case 'name-asc':
       default:
         return filtered.sort((a, b) =>
           a.coinInfo.name.localeCompare(b.coinInfo.name)

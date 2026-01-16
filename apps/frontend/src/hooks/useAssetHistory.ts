@@ -13,7 +13,9 @@ export function useAssetHistory() {
       const data = await fetchAssetHistory(assetId, days);
       setHistory(data);
     } catch (err: unknown) {
-      setError(err instanceof Error ? err.message : 'An unknown error occurred');
+      setError(
+        err instanceof Error ? err.message : 'An unknown error occurred'
+      );
       setHistory(null);
     } finally {
       setIsLoading(false);

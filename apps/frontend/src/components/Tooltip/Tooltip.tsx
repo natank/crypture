@@ -27,7 +27,8 @@ export function Tooltip({
   showOnFocus = true,
 }: TooltipProps) {
   const [isVisible, setIsVisible] = useState(false);
-  const [calculatedPosition, setCalculatedPosition] = useState<TooltipPosition>(position);
+  const [calculatedPosition, setCalculatedPosition] =
+    useState<TooltipPosition>(position);
   const triggerRef = useRef<HTMLDivElement>(null);
   const tooltipId = `tooltip-${Math.random().toString(36).substr(2, 9)}`;
 
@@ -46,7 +47,7 @@ export function Tooltip({
       if (position === 'top' || position === 'bottom') {
         const spaceBelow = viewportHeight - triggerRect.bottom;
         const spaceAbove = triggerRect.top;
-        
+
         if (position === 'top' && spaceAbove < tooltipHeight + 8) {
           setCalculatedPosition('bottom');
         } else if (position === 'bottom' && spaceBelow < tooltipHeight + 8) {
@@ -58,7 +59,7 @@ export function Tooltip({
         // For left/right positioning
         const spaceRight = viewportWidth - triggerRect.right;
         const spaceLeft = triggerRect.left;
-        
+
         if (position === 'left' && spaceLeft < tooltipWidth + 8) {
           setCalculatedPosition('right');
         } else if (position === 'right' && spaceRight < tooltipWidth + 8) {
@@ -81,7 +82,9 @@ export function Tooltip({
       if (e.key === 'Escape') {
         setIsVisible(false);
         // Return focus to trigger if it's focusable
-        const focusableElement = triggerRef.current?.querySelector('button, a, [tabindex]:not([tabindex="-1"])');
+        const focusableElement = triggerRef.current?.querySelector(
+          'button, a, [tabindex]:not([tabindex="-1"])'
+        );
         if (focusableElement && focusableElement instanceof HTMLElement) {
           focusableElement.focus();
         }
@@ -166,7 +169,7 @@ export function Tooltip({
             className={`absolute w-0 h-0 border-4 ${getArrowClasses(calculatedPosition)}`}
             aria-hidden="true"
           />
-          
+
           {/* Tooltip content */}
           {content}
         </div>

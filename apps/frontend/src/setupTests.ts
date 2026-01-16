@@ -1,5 +1,5 @@
 // src/setupTests.ts
-import "@testing-library/jest-dom";
+import '@testing-library/jest-dom';
 
 // Mock ResizeObserver for recharts ResponsiveContainer
 class ResizeObserverMock {
@@ -10,7 +10,7 @@ class ResizeObserverMock {
 global.ResizeObserver = ResizeObserverMock;
 
 // Mock matchMedia for react-hot-toast
-Object.defineProperty(window, "matchMedia", {
+Object.defineProperty(window, 'matchMedia', {
   writable: true,
   value: (query: string) => ({
     matches: false,
@@ -27,7 +27,7 @@ Object.defineProperty(window, "matchMedia", {
 // Mock localStorage for tests (Phase 7)
 // By default, dismiss help banners in tests to avoid interfering with existing tests
 const storage: Record<string, string> = {
-  help_banner_dismissed: "true", // Dismiss by default in tests
+  help_banner_dismissed: 'true', // Dismiss by default in tests
 };
 
 const localStorageMock = {
@@ -39,13 +39,13 @@ const localStorageMock = {
     delete storage[key];
   },
   clear: () => {
-    Object.keys(storage).forEach(key => delete storage[key]);
+    Object.keys(storage).forEach((key) => delete storage[key]);
   },
   length: 0,
   key: () => null,
 };
 
-Object.defineProperty(window, "localStorage", {
+Object.defineProperty(window, 'localStorage', {
   value: localStorageMock,
   writable: true,
 });

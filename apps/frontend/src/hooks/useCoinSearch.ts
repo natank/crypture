@@ -1,9 +1,9 @@
 // src/hooks/useCoinSearch.ts
-import { useState, useMemo } from "react";
-import { type CoinInfo } from "@services/coinService";
+import { useState, useMemo } from 'react';
+import { type CoinInfo } from '@services/coinService';
 
 export function useCoinSearch(coins: CoinInfo[]) {
-  const [search, setSearch] = useState("");
+  const [search, setSearch] = useState('');
 
   const filteredCoins = useMemo(() => {
     const term = search.toLowerCase();

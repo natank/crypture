@@ -1,10 +1,10 @@
-import { useState } from "react";
-import { CoinInfo } from "@services/coinService";
-import { validateAsset } from "@utils/validateAsset";
-import { validateQuantity } from "@utils/validateQuantity";
-import { type PortfolioAsset, type PortfolioState } from "./usePortfolioState";
-import { useNotifications } from "./useNotifications";
-import toast from "react-hot-toast";
+import { useState } from 'react';
+import { CoinInfo } from '@services/coinService';
+import { validateAsset } from '@utils/validateAsset';
+import { validateQuantity } from '@utils/validateQuantity';
+import { type PortfolioAsset, type PortfolioState } from './usePortfolioState';
+import { useNotifications } from './useNotifications';
+import toast from 'react-hot-toast';
 
 /**
  * Custom hook to manage Add Asset form logic.
@@ -19,10 +19,11 @@ export function useAddAssetForm(
   portfolio?: PortfolioState
 ) {
   const [selectedCoin, setSelectedCoin] = useState<CoinInfo | null>(null);
-  const [quantity, setQuantity] = useState("");
+  const [quantity, setQuantity] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [showLargeQuantityWarning, setShowLargeQuantityWarning] = useState(false);
+  const [showLargeQuantityWarning, setShowLargeQuantityWarning] =
+    useState(false);
   const notifications = useNotifications();
 
   const handleSubmit = async () => {
@@ -35,7 +36,7 @@ export function useAddAssetForm(
     });
 
     if (!result.valid) {
-      const errorMessage = result.errors.map((e) => e.message).join(" ");
+      const errorMessage = result.errors.map((e) => e.message).join(' ');
       setError(errorMessage);
       notifications.error(`✗ ${errorMessage}`);
       return;
@@ -62,7 +63,7 @@ export function useAddAssetForm(
 
   const performSubmit = async (parsedQuantity: number) => {
     if (!selectedCoin) {
-      setError("Please select an asset");
+      setError('Please select an asset');
       return;
     }
 
@@ -74,7 +75,7 @@ export function useAddAssetForm(
       );
 
       onSubmit({ coinInfo: selectedCoin, quantity: parsedQuantity });
-      
+
       // Show appropriate success message
       const symbol = selectedCoin!.symbol.toUpperCase();
       if (existingAsset) {
@@ -87,10 +88,13 @@ export function useAddAssetForm(
           `✓ Added ${parsedQuantity} ${symbol} to your portfolio`
         );
       }
-      
+
       onClose();
     } catch (err) {
-      const errorMessage = err instanceof Error ? err.message : "Failed to add asset. Please try again.";
+      const errorMessage =
+        err instanceof Error
+          ? err.message
+          : 'Failed to add asset. Please try again.';
       setError(errorMessage);
       notifications.error(`✗ ${errorMessage}`);
     } finally {

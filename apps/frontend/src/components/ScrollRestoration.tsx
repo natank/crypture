@@ -5,7 +5,7 @@ const SCROLL_STORAGE_KEY_PREFIX = 'scroll_';
 
 /**
  * ScrollRestoration component manages scroll position persistence per route.
- * 
+ *
  * Strategy:
  * 1. Disable browser's automatic scroll restoration
  * 2. Save scroll position on scroll events (debounced)
@@ -40,15 +40,15 @@ export function ScrollRestoration() {
         const storageKey = `${SCROLL_STORAGE_KEY_PREFIX}${newPath}`;
         const savedScrollY = sessionStorage.getItem(storageKey);
         const targetScrollY = savedScrollY ? parseInt(savedScrollY, 10) : 0;
-        
+
         isRestoringRef.current = true;
-        
+
         // Restore scroll with retries (page content may still be loading)
         let attempts = 0;
         const restore = () => {
           attempts++;
           window.scrollTo(0, targetScrollY);
-          
+
           if (Math.abs(window.scrollY - targetScrollY) < 20 || attempts >= 10) {
             setTimeout(() => {
               isRestoringRef.current = false;
@@ -60,7 +60,7 @@ export function ScrollRestoration() {
         restore();
       }, 10);
     };
-    
+
     window.addEventListener('popstate', handlePopState);
     return () => window.removeEventListener('popstate', handlePopState);
   }, []);
@@ -75,15 +75,16 @@ export function ScrollRestoration() {
         isNavigatingRef.current = true;
       }
     };
-    
+
     document.addEventListener('click', handleClick, { capture: true });
-    return () => document.removeEventListener('click', handleClick, { capture: true });
+    return () =>
+      document.removeEventListener('click', handleClick, { capture: true });
   }, []);
 
   // Save scroll position on scroll
   useEffect(() => {
     const storageKey = `${SCROLL_STORAGE_KEY_PREFIX}${location.pathname}`;
-    
+
     // Reset navigation flag when path changes (navigation complete)
     if (currentPathRef.current !== location.pathname) {
       isNavigatingRef.current = false;

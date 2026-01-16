@@ -1,11 +1,11 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 // e2e/test-fixtures.ts
 
-import { test as baseTest } from "@playwright/test";
+import { test as baseTest } from '@playwright/test';
 
 export const test = baseTest.extend({
   page: async ({ page }, use) => {
-    await page.route("**/*", async (route) => {
+    await page.route('**/*', async (route) => {
       const url = route.request().url();
 
       const allowlist = [
@@ -27,4 +27,4 @@ export const test = baseTest.extend({
   },
 });
 
-export { expect } from "@playwright/test";
+export { expect } from '@playwright/test';

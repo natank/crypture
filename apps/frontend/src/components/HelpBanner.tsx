@@ -1,7 +1,7 @@
-import { useState, useEffect } from "react";
-import { X } from "lucide-react";
+import { useState, useEffect } from 'react';
+import { X } from 'lucide-react';
 
-const HELP_BANNER_KEY = "help_banner_dismissed";
+const HELP_BANNER_KEY = 'help_banner_dismissed';
 
 type HelpBannerProps = {
   message: string;
@@ -12,20 +12,20 @@ type HelpBannerProps = {
  * Dismissible help banner that shows on first visit
  * Uses localStorage to persist dismissal preference
  */
-export function HelpBanner({ 
-  message, 
-  storageKey = HELP_BANNER_KEY 
+export function HelpBanner({
+  message,
+  storageKey = HELP_BANNER_KEY,
 }: HelpBannerProps) {
   const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
     // Check if banner was previously dismissed
-    const isDismissed = localStorage.getItem(storageKey) === "true";
+    const isDismissed = localStorage.getItem(storageKey) === 'true';
     setIsVisible(!isDismissed);
   }, [storageKey]);
 
   const handleDismiss = () => {
-    localStorage.setItem(storageKey, "true");
+    localStorage.setItem(storageKey, 'true');
     setIsVisible(false);
   };
 

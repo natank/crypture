@@ -14,12 +14,16 @@ export function useAssetChartController(
   const [selectedTimeRange, setSelectedTimeRange] = useState(30);
   const { history, isLoading, error, getAssetHistory } = useAssetHistory();
 
-  const isChartVisible = externalExpansionState?.isExpanded ?? localIsChartVisible;
+  const isChartVisible =
+    externalExpansionState?.isExpanded ?? localIsChartVisible;
 
-  const handleTimeRangeChange = useCallback((days: number) => {
-    setSelectedTimeRange(days);
-    getAssetHistory(assetId, days);
-  }, [assetId, getAssetHistory]);
+  const handleTimeRangeChange = useCallback(
+    (days: number) => {
+      setSelectedTimeRange(days);
+      getAssetHistory(assetId, days);
+    },
+    [assetId, getAssetHistory]
+  );
 
   const handleToggleChart = useCallback(() => {
     if (externalExpansionState) {
@@ -35,7 +39,14 @@ export function useAssetChartController(
         getAssetHistory(assetId, selectedTimeRange);
       }
     }
-  }, [externalExpansionState, localIsChartVisible, history, assetId, selectedTimeRange, getAssetHistory]);
+  }, [
+    externalExpansionState,
+    localIsChartVisible,
+    history,
+    assetId,
+    selectedTimeRange,
+    getAssetHistory,
+  ]);
 
   return {
     isChartVisible,

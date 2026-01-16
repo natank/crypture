@@ -102,7 +102,12 @@ function AlertItem({
 
   const statusConfig = {
     active: {
-      badge: <Circle className="w-3 h-3 text-green-500 fill-green-500" aria-hidden="true" />,
+      badge: (
+        <Circle
+          className="w-3 h-3 text-green-500 fill-green-500"
+          aria-hidden="true"
+        />
+      ),
       label: 'Active',
       bgColor: 'bg-green-50 dark:bg-green-900/20',
       borderColor: 'border-green-200 dark:border-green-800',
@@ -145,11 +150,13 @@ function AlertItem({
             <span className="font-medium text-gray-900 dark:text-white">
               {alert.coinSymbol}
             </span>
-            <span className={`text-sm ${
-              alert.condition === 'above'
-                ? 'text-green-600 dark:text-green-400'
-                : 'text-red-600 dark:text-red-400'
-            }`}>
+            <span
+              className={`text-sm ${
+                alert.condition === 'above'
+                  ? 'text-green-600 dark:text-green-400'
+                  : 'text-red-600 dark:text-red-400'
+              }`}
+            >
               {conditionSymbol} {formatPrice(alert.targetPrice)}
             </span>
           </div>
@@ -206,18 +213,19 @@ function AlertItem({
                     Mute
                   </button>
                 )}
-                {(alert.status === 'muted' || alert.status === 'triggered') && onReactivate && (
-                  <button
-                    onClick={() => {
-                      onReactivate(alert.id);
-                      setShowActions(false);
-                    }}
-                    className="w-full px-3 py-2 text-left text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 flex items-center gap-2"
-                  >
-                    <Bell className="w-4 h-4" aria-hidden="true" />
-                    Reactivate
-                  </button>
-                )}
+                {(alert.status === 'muted' || alert.status === 'triggered') &&
+                  onReactivate && (
+                    <button
+                      onClick={() => {
+                        onReactivate(alert.id);
+                        setShowActions(false);
+                      }}
+                      className="w-full px-3 py-2 text-left text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 flex items-center gap-2"
+                    >
+                      <Bell className="w-4 h-4" aria-hidden="true" />
+                      Reactivate
+                    </button>
+                  )}
                 {onDelete && (
                   <button
                     onClick={() => {

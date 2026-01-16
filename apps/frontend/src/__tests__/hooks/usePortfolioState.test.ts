@@ -1,14 +1,14 @@
-import { usePortfolioState } from "@hooks/usePortfolioState";
-import { renderHook, act } from "@testing-library/react";
-import { useState } from "react";
-import { describe, it, expect } from "vitest";
+import { usePortfolioState } from '@hooks/usePortfolioState';
+import { renderHook, act } from '@testing-library/react';
+import { useState } from 'react';
+import { describe, it, expect } from 'vitest';
 
-describe("usePortfolio", () => {
+describe('usePortfolio', () => {
   const btc = {
     coinInfo: {
-      id: "bitcoin",
-      name: "Bitcoin",
-      symbol: "BTC",
+      id: 'bitcoin',
+      name: 'Bitcoin',
+      symbol: 'BTC',
       current_price: 2000,
     },
     quantity: 1,
@@ -16,20 +16,20 @@ describe("usePortfolio", () => {
 
   const eth = {
     coinInfo: {
-      id: "ethereum",
-      name: "Ethereum",
-      symbol: "ETH",
+      id: 'ethereum',
+      name: 'Ethereum',
+      symbol: 'ETH',
       current_price: 3000,
     },
     quantity: 2,
   };
 
-  it("starts with an empty portfolio", () => {
+  it('starts with an empty portfolio', () => {
     const { result } = renderHook(() => usePortfolioState());
     expect(result.current.portfolio).toEqual([]);
   });
 
-  it("adds a new asset", () => {
+  it('adds a new asset', () => {
     const { result } = renderHook(() => usePortfolioState());
     act(() => {
       result.current.addAsset(btc);
@@ -37,7 +37,7 @@ describe("usePortfolio", () => {
     expect(result.current.portfolio).toEqual([btc]);
   });
 
-  it("merges quantity for duplicate asset", () => {
+  it('merges quantity for duplicate asset', () => {
     const { result } = renderHook(() => usePortfolioState());
 
     act(() => {
@@ -48,7 +48,7 @@ describe("usePortfolio", () => {
     expect(result.current.portfolio).toEqual([{ ...btc, quantity: 3 }]);
   });
 
-  it("adds multiple distinct assets", () => {
+  it('adds multiple distinct assets', () => {
     const { result } = renderHook(() => usePortfolioState());
 
     act(() => {
@@ -62,19 +62,19 @@ describe("usePortfolio", () => {
     );
   });
 
-  it("removes an asset by ID", () => {
+  it('removes an asset by ID', () => {
     const { result } = renderHook(() => usePortfolioState());
 
     act(() => {
       result.current.addAsset(btc);
       result.current.addAsset(eth);
-      result.current.removeAsset("bitcoin");
+      result.current.removeAsset('bitcoin');
     });
 
     expect(result.current.portfolio).toEqual([eth]);
   });
 
-  it("resets the portfolio", () => {
+  it('resets the portfolio', () => {
     const { result } = renderHook(() => usePortfolioState());
 
     act(() => {
@@ -86,18 +86,18 @@ describe("usePortfolio", () => {
     expect(result.current.portfolio).toEqual([]);
   });
 
-  it("updates asset quantity", () => {
+  it('updates asset quantity', () => {
     const { result } = renderHook(() => usePortfolioState());
 
     act(() => {
       result.current.addAsset(btc);
-      result.current.updateAssetQuantity("bitcoin", 5);
+      result.current.updateAssetQuantity('bitcoin', 5);
     });
 
     expect(result.current.portfolio).toEqual([{ ...btc, quantity: 5 }]);
   });
 
-  it("does not mutate state when updating quantity", () => {
+  it('does not mutate state when updating quantity', () => {
     const { result } = renderHook(() => usePortfolioState());
 
     act(() => {
@@ -108,7 +108,7 @@ describe("usePortfolio", () => {
     const portfolioBefore = result.current.portfolio;
 
     act(() => {
-      result.current.updateAssetQuantity("bitcoin", 3);
+      result.current.updateAssetQuantity('bitcoin', 3);
     });
 
     // Ensure immutability
@@ -117,16 +117,16 @@ describe("usePortfolio", () => {
     expect(result.current.portfolio[1]).toEqual(eth); // ETH unchanged
   });
 
-  it("updates total value when quantity is updated", () => {
+  it('updates total value when quantity is updated', () => {
     const prices = { btc: 30000 };
     const { result } = renderHook(() => usePortfolioState(prices));
 
     act(() => {
       result.current.addAsset({
         coinInfo: {
-          id: "bitcoin",
-          name: "Bitcoin",
-          symbol: "BTC",
+          id: 'bitcoin',
+          name: 'Bitcoin',
+          symbol: 'BTC',
           current_price: 30000,
         },
         quantity: 1,
@@ -136,18 +136,18 @@ describe("usePortfolio", () => {
     expect(result.current.totalValue).toBe(30000);
 
     act(() => {
-      result.current.updateAssetQuantity("bitcoin", 2);
+      result.current.updateAssetQuantity('bitcoin', 2);
     });
 
     expect(result.current.totalValue).toBe(60000);
   });
 
-  it("handles updating non-existent asset gracefully", () => {
+  it('handles updating non-existent asset gracefully', () => {
     const { result } = renderHook(() => usePortfolioState());
 
     act(() => {
       result.current.addAsset(btc);
-      result.current.updateAssetQuantity("nonexistent", 10);
+      result.current.updateAssetQuantity('nonexistent', 10);
     });
 
     // Portfolio should remain unchanged
@@ -155,75 +155,75 @@ describe("usePortfolio", () => {
   });
 });
 
-describe("getAssetById", () => {
-  it("returns the correct asset when given a valid ID", () => {
+describe('getAssetById', () => {
+  it('returns the correct asset when given a valid ID', () => {
     const { result } = renderHook(() => usePortfolioState());
 
     act(() => {
       result.current.addAsset({
         coinInfo: {
-          id: "btc",
-          symbol: "BTC",
-          name: "Bitcoin",
+          id: 'btc',
+          symbol: 'BTC',
+          name: 'Bitcoin',
           current_price: 2000,
         },
         quantity: 1,
       });
       result.current.addAsset({
         coinInfo: {
-          id: "eth",
-          symbol: "ETH",
-          name: "Ethereum",
+          id: 'eth',
+          symbol: 'ETH',
+          name: 'Ethereum',
           current_price: 2000,
         },
         quantity: 2,
       });
     });
 
-    const btc = result.current.getAssetById("btc");
-    const eth = result.current.getAssetById("eth");
+    const btc = result.current.getAssetById('btc');
+    const eth = result.current.getAssetById('eth');
 
-    expect(btc?.coinInfo.name).toBe("Bitcoin");
+    expect(btc?.coinInfo.name).toBe('Bitcoin');
     expect(eth?.quantity).toBe(2);
   });
 
-  it("returns undefined for an unknown asset ID", () => {
+  it('returns undefined for an unknown asset ID', () => {
     const { result } = renderHook(() => usePortfolioState());
 
-    const asset = result.current.getAssetById("nonexistent-id");
+    const asset = result.current.getAssetById('nonexistent-id');
 
     expect(asset).toBeUndefined();
   });
 
-  it("reacts to portfolio changes (asset removed)", () => {
+  it('reacts to portfolio changes (asset removed)', () => {
     const { result } = renderHook(() => usePortfolioState());
 
     act(() => {
       result.current.addAsset({
         coinInfo: {
-          id: "btc",
-          symbol: "BTC",
-          name: "Bitcoin",
+          id: 'btc',
+          symbol: 'BTC',
+          name: 'Bitcoin',
           current_price: 2000,
         },
         quantity: 1,
       });
     });
 
-    const btcBefore = result.current.getAssetById("btc");
+    const btcBefore = result.current.getAssetById('btc');
     expect(btcBefore).not.toBeUndefined();
 
     act(() => {
-      result.current.removeAsset("btc");
+      result.current.removeAsset('btc');
     });
 
-    const btcAfter = result.current.getAssetById("btc");
+    const btcAfter = result.current.getAssetById('btc');
     expect(btcAfter).toBeUndefined();
   });
 });
 
-describe("usePortfolioState – totalValue", () => {
-  test("calculates total value for a single asset with known price", () => {
+describe('usePortfolioState – totalValue', () => {
+  test('calculates total value for a single asset with known price', () => {
     const prices = { btc: 30000 }; // Price per BTC
 
     const { result } = renderHook(() => usePortfolioState(prices));
@@ -231,9 +231,9 @@ describe("usePortfolioState – totalValue", () => {
     act(() => {
       result.current.addAsset({
         coinInfo: {
-          id: "bitcoin",
-          symbol: "BTC",
-          name: "Bitcoin",
+          id: 'bitcoin',
+          symbol: 'BTC',
+          name: 'Bitcoin',
           current_price: 3000,
         },
         quantity: 0.5,
@@ -243,7 +243,7 @@ describe("usePortfolioState – totalValue", () => {
     expect(result.current.totalValue).toBe(15000);
   });
 
-  test("calculates total value for multiple assets with different prices", () => {
+  test('calculates total value for multiple assets with different prices', () => {
     const prices = {
       btc: 30000,
       eth: 2000,
@@ -255,27 +255,27 @@ describe("usePortfolioState – totalValue", () => {
     act(() => {
       result.current.addAsset({
         coinInfo: {
-          id: "bitcoin",
-          symbol: "BTC",
-          name: "Bitcoin",
+          id: 'bitcoin',
+          symbol: 'BTC',
+          name: 'Bitcoin',
           current_price: 3000,
         },
         quantity: 0.5,
       });
       result.current.addAsset({
         coinInfo: {
-          id: "ethereum",
-          symbol: "ETH",
-          name: "Ethereum",
+          id: 'ethereum',
+          symbol: 'ETH',
+          name: 'Ethereum',
           current_price: 3000,
         },
         quantity: 2,
       });
       result.current.addAsset({
         coinInfo: {
-          id: "solana",
-          symbol: "SOL",
-          name: "Solana",
+          id: 'solana',
+          symbol: 'SOL',
+          name: 'Solana',
           current_price: 3000,
         },
         quantity: 10,
@@ -286,7 +286,7 @@ describe("usePortfolioState – totalValue", () => {
     expect(result.current.totalValue).toBe(20000);
   });
 
-  test("ignores assets with missing price when computing total value", () => {
+  test('ignores assets with missing price when computing total value', () => {
     const mockPrices = {
       btc: 30000,
       eth: undefined, // missing price
@@ -298,27 +298,27 @@ describe("usePortfolioState – totalValue", () => {
     act(() => {
       result.current.addAsset({
         coinInfo: {
-          id: "bitcoin",
-          name: "Bitcoin",
-          symbol: "BTC",
+          id: 'bitcoin',
+          name: 'Bitcoin',
+          symbol: 'BTC',
           current_price: 3000,
         },
         quantity: 1,
       });
       result.current.addAsset({
         coinInfo: {
-          id: "ethereum",
-          name: "Ethereum",
-          symbol: "ETH",
+          id: 'ethereum',
+          name: 'Ethereum',
+          symbol: 'ETH',
           current_price: 3000,
         },
         quantity: 2,
       });
       result.current.addAsset({
         coinInfo: {
-          id: "cardano",
-          name: "Cardano",
-          symbol: "ADA",
+          id: 'cardano',
+          name: 'Cardano',
+          symbol: 'ADA',
           current_price: 3000,
         },
         quantity: 100,
@@ -328,31 +328,31 @@ describe("usePortfolioState – totalValue", () => {
     expect(result.current.totalValue).toBe(30000); // only bitcoin has a valid price
   });
 
-  test("returns zero when portfolio is empty", () => {
+  test('returns zero when portfolio is empty', () => {
     const { result } = renderHook(() => usePortfolioState());
 
     expect(result.current.portfolio).toEqual([]);
     expect(result.current.totalValue).toBe(0);
   });
 
-  test("returns zero when all assets have missing prices", () => {
+  test('returns zero when all assets have missing prices', () => {
     const { result } = renderHook(() => usePortfolioState({}));
 
     act(() => {
       result.current.addAsset({
         coinInfo: {
-          id: "bitcoin",
-          symbol: "BTC",
-          name: "Bitcoin",
+          id: 'bitcoin',
+          symbol: 'BTC',
+          name: 'Bitcoin',
           current_price: 3000,
         },
         quantity: 1,
       });
       result.current.addAsset({
         coinInfo: {
-          id: "ethereum",
-          symbol: "ETH",
-          name: "Ethereum",
+          id: 'ethereum',
+          symbol: 'ETH',
+          name: 'Ethereum',
           current_price: 3000,
         },
         quantity: 2,
@@ -362,7 +362,7 @@ describe("usePortfolioState – totalValue", () => {
     expect(result.current.totalValue).toBe(0);
   });
 
-  test("updates total value when asset quantity changes", () => {
+  test('updates total value when asset quantity changes', () => {
     const prices = { btc: 30000 };
 
     const { result } = renderHook(() => usePortfolioState(prices));
@@ -370,9 +370,9 @@ describe("usePortfolioState – totalValue", () => {
     act(() => {
       result.current.addAsset({
         coinInfo: {
-          id: "bitcoin",
-          name: "Bitcoin",
-          symbol: "BTC",
+          id: 'bitcoin',
+          name: 'Bitcoin',
+          symbol: 'BTC',
           current_price: 3000,
         },
         quantity: 0.5,
@@ -384,9 +384,9 @@ describe("usePortfolioState – totalValue", () => {
     act(() => {
       result.current.addAsset({
         coinInfo: {
-          id: "bitcoin",
-          name: "Bitcoin",
-          symbol: "BTC",
+          id: 'bitcoin',
+          name: 'Bitcoin',
+          symbol: 'BTC',
           current_price: 3000,
         },
         quantity: 0.25,
@@ -397,7 +397,7 @@ describe("usePortfolioState – totalValue", () => {
     expect(result.current.totalValue).toBe(22500);
   });
 
-  test("updates total value when price map changes", () => {
+  test('updates total value when price map changes', () => {
     // Wrapper to simulate reactivity to external price changes
     const useTestWrapper = () => {
       const [prices, setPrices] = useState<Record<string, number | undefined>>({
@@ -413,9 +413,9 @@ describe("usePortfolioState – totalValue", () => {
     act(() => {
       result.current.addAsset({
         coinInfo: {
-          id: "bitcoin",
-          symbol: "BTC",
-          name: "Bitcoin",
+          id: 'bitcoin',
+          symbol: 'BTC',
+          name: 'Bitcoin',
           current_price: 3000,
         },
         quantity: 1,

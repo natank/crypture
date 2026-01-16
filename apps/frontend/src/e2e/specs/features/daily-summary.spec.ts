@@ -19,7 +19,9 @@ test.describe('Daily Summary Card', () => {
   });
 
   test.describe('Empty Portfolio', () => {
-    test('should not display summary card when portfolio is empty', async ({ page }) => {
+    test('should not display summary card when portfolio is empty', async ({
+      page,
+    }) => {
       await page.goto('/portfolio?e2e=1');
       await page.waitForLoadState('networkidle');
 
@@ -38,7 +40,9 @@ test.describe('Daily Summary Card', () => {
       await portfolioPage.addAsset('BTC', 1);
     });
 
-    test('should display summary card with portfolio value', async ({ page }) => {
+    test('should display summary card with portfolio value', async ({
+      page,
+    }) => {
       const summaryCard = page.getByTestId('daily-summary-card');
       await expect(summaryCard).toBeVisible();
 
@@ -47,10 +51,12 @@ test.describe('Daily Summary Card', () => {
       await expect(portfolioValue).toContainText('$');
     });
 
-    test('should display 24h change with correct formatting', async ({ page }) => {
+    test('should display 24h change with correct formatting', async ({
+      page,
+    }) => {
       const changeDisplay = page.getByTestId('portfolio-change');
       await expect(changeDisplay).toBeVisible();
-      
+
       // Should contain a percentage
       await expect(changeDisplay).toContainText('%');
     });
@@ -64,7 +70,10 @@ test.describe('Daily Summary Card', () => {
     test('should have proper ARIA region role', async ({ page }) => {
       const summaryCard = page.getByTestId('daily-summary-card');
       await expect(summaryCard).toHaveAttribute('role', 'region');
-      await expect(summaryCard).toHaveAttribute('aria-labelledby', 'summary-heading');
+      await expect(summaryCard).toHaveAttribute(
+        'aria-labelledby',
+        'summary-heading'
+      );
     });
   });
 
@@ -75,13 +84,20 @@ test.describe('Daily Summary Card', () => {
       await portfolioPage.addAsset('BTC', 1);
     });
 
-    test('should have dismiss button with accessible label', async ({ page }) => {
+    test('should have dismiss button with accessible label', async ({
+      page,
+    }) => {
       const dismissButton = page.getByTestId('dismiss-summary');
       await expect(dismissButton).toBeVisible();
-      await expect(dismissButton).toHaveAttribute('aria-label', "Dismiss today's summary");
+      await expect(dismissButton).toHaveAttribute(
+        'aria-label',
+        "Dismiss today's summary"
+      );
     });
 
-    test('should hide card when dismiss button is clicked', async ({ page }) => {
+    test('should hide card when dismiss button is clicked', async ({
+      page,
+    }) => {
       const summaryCard = page.getByTestId('daily-summary-card');
       await expect(summaryCard).toBeVisible();
 
@@ -110,7 +126,10 @@ test.describe('Daily Summary Card', () => {
       await page.evaluate(() => {
         const yesterday = new Date();
         yesterday.setDate(yesterday.getDate() - 1);
-        localStorage.setItem('crypture_summary_dismissed', yesterday.toISOString());
+        localStorage.setItem(
+          'crypture_summary_dismissed',
+          yesterday.toISOString()
+        );
       });
 
       // Reload the page
@@ -132,7 +151,9 @@ test.describe('Daily Summary Card', () => {
       await portfolioPage.addAsset('ETH', 5);
     });
 
-    test('should display performers sections when data available', async ({ page }) => {
+    test('should display performers sections when data available', async ({
+      page,
+    }) => {
       // Note: Whether sections appear depends on actual 24h changes from API
       // This test verifies the structure when they do appear
       const summaryCard = page.getByTestId('daily-summary-card');
@@ -153,7 +174,7 @@ test.describe('Daily Summary Card', () => {
 
     test('dismiss button should be keyboard focusable', async ({ page }) => {
       const dismissButton = page.getByTestId('dismiss-summary');
-      
+
       // Tab to the dismiss button
       await dismissButton.focus();
       await expect(dismissButton).toBeFocused();

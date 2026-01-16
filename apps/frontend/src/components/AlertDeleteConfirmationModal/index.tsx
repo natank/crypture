@@ -4,8 +4,8 @@
  * REQ-024-tech-debt / KI-02
  */
 
-import React from "react";
-import { Trash2, X, Check } from "lucide-react";
+import React from 'react';
+import { Trash2, X, Check } from 'lucide-react';
 
 interface AlertDeleteConfirmationModalProps {
   isOpen: boolean;
@@ -60,7 +60,7 @@ export default function AlertDeleteConfirmationModal({
       aria-labelledby="delete-alert-modal-title"
       onClick={onCancel}
     >
-      <div 
+      <div
         className="modal-content card flex flex-col gap-8 sm:gap-6 p-6 sm:p-8"
         onClick={(e) => e.stopPropagation()}
       >
@@ -71,12 +71,12 @@ export default function AlertDeleteConfirmationModal({
           <Trash2 className="w-6 h-6 sm:w-8 sm:h-8" aria-hidden="true" />
           Delete Price Alert?
         </h2>
-        
+
         <div className="space-y-4">
           <p className="text-base text-text-muted text-balance">
             You are about to delete this alert:
           </p>
-          
+
           <div className="p-4 bg-gray-50 dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700">
             <div className="flex items-center gap-2 mb-2">
               <span className="font-semibold text-gray-900 dark:text-white">
@@ -86,20 +86,22 @@ export default function AlertDeleteConfirmationModal({
                 ({alert.coinSymbol})
               </span>
             </div>
-            <div className={`text-sm font-medium ${
-              alert.condition === 'above'
-                ? 'text-green-600 dark:text-green-400'
-                : 'text-red-600 dark:text-red-400'
-            }`}>
+            <div
+              className={`text-sm font-medium ${
+                alert.condition === 'above'
+                  ? 'text-green-600 dark:text-green-400'
+                  : 'text-red-600 dark:text-red-400'
+              }`}
+            >
               Condition: {conditionText}
             </div>
           </div>
-          
+
           <p className="text-base text-text-muted text-balance">
             This action cannot be undone.
           </p>
         </div>
-        
+
         <div className="flex justify-end gap-4 pt-4">
           <button
             onClick={onCancel}

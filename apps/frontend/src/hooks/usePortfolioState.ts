@@ -1,6 +1,6 @@
-import { useState, useCallback, useMemo, useEffect, useRef } from "react";
-import { CoinInfo } from "@services/coinService";
-import { loadPortfolio, savePortfolio } from "@services/localStorageService";
+import { useState, useCallback, useMemo, useEffect, useRef } from 'react';
+import { CoinInfo } from '@services/coinService';
+import { loadPortfolio, savePortfolio } from '@services/localStorageService';
 
 export type PortfolioAsset = {
   coinInfo: CoinInfo;
@@ -46,7 +46,7 @@ export function usePortfolioState(
   const totalValue = useMemo(() => {
     return portfolio.reduce((sum, asset) => {
       const price = prices[asset.coinInfo.symbol.toLowerCase()];
-      if (typeof price !== "number") return sum;
+      if (typeof price !== 'number') return sum;
       return sum + asset.quantity * price;
     }, 0);
   }, [portfolio, prices]);
@@ -79,15 +79,18 @@ export function usePortfolioState(
     );
   }, []);
 
-  const updateAssetQuantity = useCallback((assetId: string, newQuantity: number) => {
-    setPortfolio((prev) =>
-      prev.map((asset) =>
-        asset.coinInfo.id === assetId
-          ? { ...asset, quantity: newQuantity }
-          : asset
-      )
-    );
-  }, []);
+  const updateAssetQuantity = useCallback(
+    (assetId: string, newQuantity: number) => {
+      setPortfolio((prev) =>
+        prev.map((asset) =>
+          asset.coinInfo.id === assetId
+            ? { ...asset, quantity: newQuantity }
+            : asset
+        )
+      );
+    },
+    []
+  );
 
   const resetPortfolio = useCallback(() => {
     setPortfolio([]);

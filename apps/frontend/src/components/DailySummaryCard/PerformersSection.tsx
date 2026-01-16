@@ -23,7 +23,10 @@ export default function PerformersSection({
   }
 
   const colorClass = variant === 'positive' ? 'text-green-600' : 'text-red-600';
-  const bgClass = variant === 'positive' ? 'bg-green-50 dark:bg-green-900/20' : 'bg-red-50 dark:bg-red-900/20';
+  const bgClass =
+    variant === 'positive'
+      ? 'bg-green-50 dark:bg-green-900/20'
+      : 'bg-red-50 dark:bg-red-900/20';
 
   return (
     <div className="flex-1" data-testid={`performers-${variant}`}>

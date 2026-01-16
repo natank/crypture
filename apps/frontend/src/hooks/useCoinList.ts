@@ -1,8 +1,8 @@
 // src/hooks/useCoinList.ts
-import { useEffect, useState, useRef } from "react";
-import { fetchTopCoins, type CoinInfo } from "@services/coinService";
-import { deepEqual } from "@utils/index";
-import { usePolling } from "@hooks/usePolling";
+import { useEffect, useState, useRef } from 'react';
+import { fetchTopCoins, type CoinInfo } from '@services/coinService';
+import { deepEqual } from '@utils/index';
+import { usePolling } from '@hooks/usePolling';
 
 type UseCoinListOptions = {
   pollInterval?: number;
@@ -21,7 +21,11 @@ export function useCoinList({
   const [refreshing, setRefreshing] = useState(false);
 
   const fetchAndUpdate = async () => {
-    const isInitial = loading && !lastUpdatedAt && prevCoinsRef.current.length === 0 && coins.length === 0;
+    const isInitial =
+      loading &&
+      !lastUpdatedAt &&
+      prevCoinsRef.current.length === 0 &&
+      coins.length === 0;
     if (!isInitial) setRefreshing(true);
     try {
       const data = await fetchTopCoins();

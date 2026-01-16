@@ -1,8 +1,8 @@
-import { renderHook, act } from "@testing-library/react";
-import { useAssetHighlight } from "@hooks/useAssetHighlight";
-import { vi } from "vitest";
+import { renderHook, act } from '@testing-library/react';
+import { useAssetHighlight } from '@hooks/useAssetHighlight';
+import { vi } from 'vitest';
 
-describe("useAssetHighlight", () => {
+describe('useAssetHighlight', () => {
   beforeEach(() => {
     vi.useFakeTimers();
   });
@@ -11,14 +11,14 @@ describe("useAssetHighlight", () => {
     vi.restoreAllMocks();
   });
 
-  it("returns false initially when trigger is 0", () => {
-    const { result } = renderHook(() => useAssetHighlight("btc", 0));
+  it('returns false initially when trigger is 0', () => {
+    const { result } = renderHook(() => useAssetHighlight('btc', 0));
     expect(result.current).toBe(false);
   });
 
-  it("returns true when trigger increments from 0", () => {
+  it('returns true when trigger increments from 0', () => {
     const { result, rerender } = renderHook(
-      ({ trigger }) => useAssetHighlight("btc", trigger),
+      ({ trigger }) => useAssetHighlight('btc', trigger),
       { initialProps: { trigger: 0 } }
     );
 
@@ -29,9 +29,9 @@ describe("useAssetHighlight", () => {
     expect(result.current).toBe(true);
   });
 
-  it("returns false after 3 seconds", () => {
+  it('returns false after 3 seconds', () => {
     const { result, rerender } = renderHook(
-      ({ trigger }) => useAssetHighlight("btc", trigger),
+      ({ trigger }) => useAssetHighlight('btc', trigger),
       { initialProps: { trigger: 0 } }
     );
 
@@ -47,9 +47,9 @@ describe("useAssetHighlight", () => {
     expect(result.current).toBe(false);
   });
 
-  it("resets timer when trigger increments again", () => {
+  it('resets timer when trigger increments again', () => {
     const { result, rerender } = renderHook(
-      ({ trigger }) => useAssetHighlight("btc", trigger),
+      ({ trigger }) => useAssetHighlight('btc', trigger),
       { initialProps: { trigger: 0 } }
     );
 
@@ -80,14 +80,14 @@ describe("useAssetHighlight", () => {
     expect(result.current).toBe(false);
   });
 
-  it("cleans up timeout on unmount", () => {
+  it('cleans up timeout on unmount', () => {
     const { unmount, rerender } = renderHook(
-      ({ trigger }) => useAssetHighlight("btc", trigger),
+      ({ trigger }) => useAssetHighlight('btc', trigger),
       { initialProps: { trigger: 0 } }
     );
 
     rerender({ trigger: 1 });
-    
+
     // Unmount before timeout completes
     unmount();
 

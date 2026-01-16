@@ -1,10 +1,10 @@
-vi.mock("focus-trap-react", () => ({
+vi.mock('focus-trap-react', () => ({
   FocusTrap: ({ children }: { children: React.ReactNode }) => <>{children}</>,
 }));
 
-import { render, screen, fireEvent } from "@testing-library/react";
-import { describe, it, beforeEach, vi } from "vitest";
-import { AddAssetModal } from "@components/AddAssetModal";
+import { render, screen, fireEvent } from '@testing-library/react';
+import { describe, it, beforeEach, vi } from 'vitest';
+import { AddAssetModal } from '@components/AddAssetModal';
 
 // Mocks
 const mockSetSelectedCoin = vi.fn();
@@ -13,11 +13,11 @@ const mockHandleSubmit = vi.fn();
 const mockUseAddAssetForm = vi.fn();
 
 // Stub `useAddAssetForm` hook
-vi.mock("@hooks/useAddAssetForm", () => ({
+vi.mock('@hooks/useAddAssetForm', () => ({
   useAddAssetForm: () => mockUseAddAssetForm(),
 }));
 
-vi.mock("@components/AssetSelector", () => ({
+vi.mock('@components/AssetSelector', () => ({
   AssetSelector: ({
     onSelect,
     disabled,
@@ -33,9 +33,9 @@ vi.mock("@components/AssetSelector", () => ({
     <button
       onClick={() =>
         onSelect({
-          id: "btc",
-          name: "Bitcoin",
-          symbol: "BTC",
+          id: 'btc',
+          name: 'Bitcoin',
+          symbol: 'BTC',
           quantity: 1,
         })
       }
@@ -49,7 +49,7 @@ vi.mock("@components/AssetSelector", () => ({
 beforeEach(() => {
   mockUseAddAssetForm.mockReturnValue({
     setSelectedCoin: mockSetSelectedCoin,
-    quantity: "",
+    quantity: '',
     setQuantity: mockSetQuantity,
     loading: false,
     error: null,
@@ -57,14 +57,14 @@ beforeEach(() => {
   });
 });
 
-describe("AddAssetModal", () => {
-  it("renders modal with all fields and buttons", () => {
+describe('AddAssetModal', () => {
+  it('renders modal with all fields and buttons', () => {
     const mockOnClose = vi.fn();
     const mockAddAsset = vi.fn();
 
     mockUseAddAssetForm.mockReturnValue({
       setSelectedCoin: mockSetSelectedCoin,
-      quantity: "",
+      quantity: '',
       setQuantity: mockSetQuantity,
       loading: false,
       error: null,
@@ -82,31 +82,31 @@ describe("AddAssetModal", () => {
     );
     // Assert modal heading by role + accessible name
     expect(
-      screen.getByRole("heading", { name: /add crypto asset/i })
+      screen.getByRole('heading', { name: /add crypto asset/i })
     ).toBeInTheDocument();
 
     // Assert quantity input by label
     expect(screen.getByLabelText(/quantity/i)).toBeInTheDocument();
 
     // Assert asset selector label
-    expect(screen.getByText("Asset")).toBeInTheDocument();
+    expect(screen.getByText('Asset')).toBeInTheDocument();
 
     // Assert asset selector button (mock)
     expect(
-      screen.getByRole("button", { name: /mock asset selector/i })
+      screen.getByRole('button', { name: /mock asset selector/i })
     ).toBeInTheDocument();
 
     // Assert specific button text
     expect(
-      screen.getByRole("button", { name: /add asset/i })
+      screen.getByRole('button', { name: /add asset/i })
     ).toBeInTheDocument();
 
     expect(
-      screen.getByRole("button", { name: /cancel adding asset/i })
+      screen.getByRole('button', { name: /cancel adding asset/i })
     ).toBeInTheDocument();
   });
 
-  it("updates quantity input via typing", () => {
+  it('updates quantity input via typing', () => {
     const mockOnClose = vi.fn();
     const mockAddAsset = vi.fn();
 
@@ -114,7 +114,7 @@ describe("AddAssetModal", () => {
 
     mockUseAddAssetForm.mockReturnValue({
       setSelectedCoin: mockSetSelectedCoin,
-      quantity: "",
+      quantity: '',
       setQuantity: setQuantitySpy,
       loading: false,
       error: null,
@@ -131,12 +131,12 @@ describe("AddAssetModal", () => {
       />
     );
     const input = screen.getByLabelText(/quantity/i);
-    fireEvent.change(input, { target: { value: "1.23" } });
+    fireEvent.change(input, { target: { value: '1.23' } });
 
-    expect(setQuantitySpy).toHaveBeenCalledWith("1.23");
+    expect(setQuantitySpy).toHaveBeenCalledWith('1.23');
   });
 
-  it("calls handleSubmit when Add Asset button is clicked", () => {
+  it('calls handleSubmit when Add Asset button is clicked', () => {
     const mockOnClose = vi.fn();
     const mockAddAsset = vi.fn();
 
@@ -144,7 +144,7 @@ describe("AddAssetModal", () => {
 
     mockUseAddAssetForm.mockReturnValue({
       setSelectedCoin: mockSetSelectedCoin,
-      quantity: "1",
+      quantity: '1',
       setQuantity: mockSetQuantity,
       loading: false,
       error: null,
@@ -161,20 +161,20 @@ describe("AddAssetModal", () => {
       />
     );
 
-    const submitButton = screen.getByRole("button", { name: /add asset/i });
+    const submitButton = screen.getByRole('button', { name: /add asset/i });
 
     fireEvent.click(submitButton);
 
     expect(handleSubmitSpy).toHaveBeenCalledTimes(1);
   });
 
-  it("calls onClose when Cancel button is clicked", () => {
+  it('calls onClose when Cancel button is clicked', () => {
     const mockOnClose = vi.fn();
     const mockAddAsset = vi.fn();
 
     mockUseAddAssetForm.mockReturnValue({
       setSelectedCoin: mockSetSelectedCoin,
-      quantity: "",
+      quantity: '',
       setQuantity: mockSetQuantity,
       loading: false,
       error: null,
@@ -190,7 +190,7 @@ describe("AddAssetModal", () => {
         setSearch={vi.fn()}
       />
     );
-    const cancelButton = screen.getByRole("button", {
+    const cancelButton = screen.getByRole('button', {
       name: /cancel adding asset/i,
     });
     fireEvent.click(cancelButton);
@@ -198,13 +198,13 @@ describe("AddAssetModal", () => {
     expect(mockOnClose).toHaveBeenCalledTimes(1);
   });
 
-  it("disables form controls when loading is true", () => {
+  it('disables form controls when loading is true', () => {
     const mockOnClose = vi.fn();
     const mockAddAsset = vi.fn();
 
     mockUseAddAssetForm.mockReturnValue({
       setSelectedCoin: mockSetSelectedCoin,
-      quantity: "1.23",
+      quantity: '1.23',
       setQuantity: mockSetQuantity,
       loading: true,
       error: null,
@@ -221,13 +221,13 @@ describe("AddAssetModal", () => {
       />
     );
     const quantityInput = screen.getByLabelText(/quantity/i);
-    const cancelButton = screen.getByRole("button", { name: /cancel/i });
-    const assetSelector = screen.getByRole("button", {
+    const cancelButton = screen.getByRole('button', { name: /cancel/i });
+    const assetSelector = screen.getByRole('button', {
       name: /mock asset selector/i,
     });
 
     // fallback: use getAllByRole since add + cancel are both buttons
-    const buttons = screen.getAllByRole("button");
+    const buttons = screen.getAllByRole('button');
     const addButton = buttons.find((btn) => btn !== cancelButton);
 
     expect(quantityInput).toBeDisabled();
@@ -237,15 +237,15 @@ describe("AddAssetModal", () => {
     expect(assetSelector).toBeDisabled();
   });
 
-  it("shows error message when error is present", () => {
+  it('shows error message when error is present', () => {
     const mockOnClose = vi.fn();
     const mockAddAsset = vi.fn();
 
-    const testError = "Quantity must be a positive number.";
+    const testError = 'Quantity must be a positive number.';
 
     mockUseAddAssetForm.mockReturnValue({
       setSelectedCoin: mockSetSelectedCoin,
-      quantity: "0",
+      quantity: '0',
       setQuantity: mockSetQuantity,
       loading: false,
       error: testError,
@@ -262,19 +262,19 @@ describe("AddAssetModal", () => {
       />
     );
     // Error message should appear in the alert role
-    const alert = screen.getByRole("alert");
+    const alert = screen.getByRole('alert');
     expect(alert).toBeInTheDocument();
     expect(alert).toHaveTextContent(testError);
   });
 
-  it("triggers setSelectedCoin via AssetSelector", () => {
+  it('triggers setSelectedCoin via AssetSelector', () => {
     const mockOnClose = vi.fn();
     const mockAddAsset = vi.fn();
 
     const mockCoin = {
-      id: "btc",
-      name: "Bitcoin",
-      symbol: "BTC",
+      id: 'btc',
+      name: 'Bitcoin',
+      symbol: 'BTC',
       quantity: 1,
     };
 
@@ -282,7 +282,7 @@ describe("AddAssetModal", () => {
 
     mockUseAddAssetForm.mockReturnValue({
       setSelectedCoin,
-      quantity: "",
+      quantity: '',
       setQuantity: vi.fn(),
       loading: false,
       error: null,
@@ -299,7 +299,7 @@ describe("AddAssetModal", () => {
       />
     );
     // The mocked AssetSelector is just a button we can click
-    const selectorButton = screen.getByRole("button", {
+    const selectorButton = screen.getByRole('button', {
       name: /mock asset selector/i,
     });
     fireEvent.click(selectorButton);
@@ -307,14 +307,14 @@ describe("AddAssetModal", () => {
     expect(setSelectedCoin).toHaveBeenCalledWith(mockCoin);
   });
 
-  it("does not crash from FocusTrap’s initialFocus (mocked)", () => {
+  it('does not crash from FocusTrap’s initialFocus (mocked)', () => {
     const mockOnClose = vi.fn();
     const mockAddAsset = vi.fn();
 
     // Return minimal valid form state
     mockUseAddAssetForm.mockReturnValue({
       setSelectedCoin: mockSetSelectedCoin,
-      quantity: "",
+      quantity: '',
       setQuantity: mockSetQuantity,
       loading: false,
       error: null,
@@ -336,7 +336,7 @@ describe("AddAssetModal", () => {
 
     // Optional: confirm that heading still renders
     expect(
-      screen.getByRole("heading", { name: /add crypto asset/i })
+      screen.getByRole('heading', { name: /add crypto asset/i })
     ).toBeInTheDocument();
   });
 });

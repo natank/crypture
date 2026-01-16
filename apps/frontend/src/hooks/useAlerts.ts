@@ -4,7 +4,11 @@
  */
 
 import { useState, useCallback, useEffect } from 'react';
-import type { PriceAlert, CreateAlertInput, UpdateAlertInput } from 'types/alert';
+import type {
+  PriceAlert,
+  CreateAlertInput,
+  UpdateAlertInput,
+} from 'types/alert';
 import * as alertService from '@services/alertService';
 
 export interface UseAlertsReturn {
@@ -12,7 +16,12 @@ export interface UseAlertsReturn {
   activeAlerts: PriceAlert[];
   triggeredAlerts: PriceAlert[];
   mutedAlerts: PriceAlert[];
-  alertCount: { active: number; triggered: number; muted: number; total: number };
+  alertCount: {
+    active: number;
+    triggered: number;
+    muted: number;
+    total: number;
+  };
   isLoading: boolean;
   error: string | null;
   createAlert: (input: CreateAlertInput) => PriceAlert | null;
@@ -46,69 +55,85 @@ export function useAlerts(): UseAlertsReturn {
     refreshAlerts();
   }, [refreshAlerts]);
 
-  const createAlert = useCallback((input: CreateAlertInput): PriceAlert | null => {
-    try {
-      const newAlert = alertService.createAlert(input);
-      refreshAlerts();
-      return newAlert;
-    } catch (err) {
-      const message = err instanceof Error ? err.message : 'Failed to create alert';
-      setError(message);
-      return null;
-    }
-  }, [refreshAlerts]);
-
-  const updateAlert = useCallback((id: string, updates: UpdateAlertInput): PriceAlert | null => {
-    try {
-      const updated = alertService.updateAlert(id, updates);
-      if (updated) {
+  const createAlert = useCallback(
+    (input: CreateAlertInput): PriceAlert | null => {
+      try {
+        const newAlert = alertService.createAlert(input);
         refreshAlerts();
+        return newAlert;
+      } catch (err) {
+        const message =
+          err instanceof Error ? err.message : 'Failed to create alert';
+        setError(message);
+        return null;
       }
-      return updated;
-    } catch {
-      setError('Failed to update alert');
-      return null;
-    }
-  }, [refreshAlerts]);
+    },
+    [refreshAlerts]
+  );
 
-  const deleteAlert = useCallback((id: string): boolean => {
-    try {
-      const success = alertService.deleteAlert(id);
-      if (success) {
-        refreshAlerts();
+  const updateAlert = useCallback(
+    (id: string, updates: UpdateAlertInput): PriceAlert | null => {
+      try {
+        const updated = alertService.updateAlert(id, updates);
+        if (updated) {
+          refreshAlerts();
+        }
+        return updated;
+      } catch {
+        setError('Failed to update alert');
+        return null;
       }
-      return success;
-    } catch {
-      setError('Failed to delete alert');
-      return false;
-    }
-  }, [refreshAlerts]);
+    },
+    [refreshAlerts]
+  );
 
-  const muteAlert = useCallback((id: string): PriceAlert | null => {
-    try {
-      const muted = alertService.muteAlert(id);
-      if (muted) {
-        refreshAlerts();
+  const deleteAlert = useCallback(
+    (id: string): boolean => {
+      try {
+        const success = alertService.deleteAlert(id);
+        if (success) {
+          refreshAlerts();
+        }
+        return success;
+      } catch {
+        setError('Failed to delete alert');
+        return false;
       }
-      return muted;
-    } catch {
-      setError('Failed to mute alert');
-      return null;
-    }
-  }, [refreshAlerts]);
+    },
+    [refreshAlerts]
+  );
 
-  const reactivateAlert = useCallback((id: string): PriceAlert | null => {
-    try {
-      const reactivated = alertService.reactivateAlert(id);
-      if (reactivated) {
-        refreshAlerts();
+  const muteAlert = useCallback(
+    (id: string): PriceAlert | null => {
+      try {
+        const muted = alertService.muteAlert(id);
+        if (muted) {
+          refreshAlerts();
+        }
+        return muted;
+      } catch {
+        setError('Failed to mute alert');
+        return null;
       }
-      return reactivated;
-    } catch {
-      setError('Failed to reactivate alert');
-      return null;
-    }
-  }, [refreshAlerts]);
+    },
+    [refreshAlerts]
+  );
+
+  const reactivateAlert = useCallback(
+    (id: string): PriceAlert | null => {
+      try {
+        const reactivated = alertService.reactivateAlert(id);
+        if (reactivated) {
+          refreshAlerts();
+        }
+        return reactivated;
+      } catch {
+        setError('Failed to reactivate alert');
+        return null;
+      }
+    },
+    [refreshAlerts]
+  );
 
   const activeAlerts = alerts.filter((a) => a.status === 'active');
   const triggeredAlerts = alerts.filter((a) => a.status === 'triggered');

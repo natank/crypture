@@ -1,13 +1,13 @@
 // src/hooks/__tests__/usePriceMap.test.ts
-import { renderHook } from "@testing-library/react";
-import { usePriceMap } from "@hooks/usePriceMap";
-import { CoinInfo } from "@services/coinService";
+import { renderHook } from '@testing-library/react';
+import { usePriceMap } from '@hooks/usePriceMap';
+import { CoinInfo } from '@services/coinService';
 
-describe("usePriceMap", () => {
-  it("returns a symbol-to-price map from valid coins", () => {
+describe('usePriceMap', () => {
+  it('returns a symbol-to-price map from valid coins', () => {
     const coins = [
-      { id: "bitcoin", name: "Bitcoin", symbol: "BTC", current_price: 30000 },
-      { id: "ethereum", name: "Ethereum", symbol: "ETH", current_price: 2000 },
+      { id: 'bitcoin', name: 'Bitcoin', symbol: 'BTC', current_price: 30000 },
+      { id: 'ethereum', name: 'Ethereum', symbol: 'ETH', current_price: 2000 },
     ];
 
     const { result } = renderHook(() => usePriceMap(coins));
@@ -18,14 +18,14 @@ describe("usePriceMap", () => {
     });
   });
 
-  it("skips coins with missing or invalid prices", () => {
+  it('skips coins with missing or invalid prices', () => {
     const coins: CoinInfo[] = [
-      { id: "bitcoin", name: "Bitcoin", symbol: "BTC", current_price: 30000 },
-      { id: "dogecoin", name: "Dogecoin", symbol: "DOGE", current_price: NaN },
+      { id: 'bitcoin', name: 'Bitcoin', symbol: 'BTC', current_price: 30000 },
+      { id: 'dogecoin', name: 'Dogecoin', symbol: 'DOGE', current_price: NaN },
       {
-        id: "ripple",
-        name: "Ripple",
-        symbol: "XRP",
+        id: 'ripple',
+        name: 'Ripple',
+        symbol: 'XRP',
         current_price: undefined as unknown as number,
       },
     ] as unknown as CoinInfo[];
@@ -37,14 +37,14 @@ describe("usePriceMap", () => {
     });
   });
 
-  it("returns an empty object when given an empty list", () => {
+  it('returns an empty object when given an empty list', () => {
     const { result } = renderHook(() => usePriceMap([]));
     expect(result.current).toEqual({});
   });
 
-  it("memoizes output unless input list changes", () => {
+  it('memoizes output unless input list changes', () => {
     const coins = [
-      { symbol: "BTC", current_price: 30000 },
+      { symbol: 'BTC', current_price: 30000 },
     ] as unknown as CoinInfo[];
 
     const { result, rerender } = renderHook(({ coins }) => usePriceMap(coins), {
@@ -57,12 +57,12 @@ describe("usePriceMap", () => {
 
     expect(result.current).toBe(firstMap); // === identity check
   });
-  it("recomputes output if coins ref changes", () => {
+  it('recomputes output if coins ref changes', () => {
     const initialCoins = [
-      { symbol: "BTC", current_price: 30000 },
+      { symbol: 'BTC', current_price: 30000 },
     ] as unknown as CoinInfo[];
     const updatedCoins = [
-      { symbol: "BTC", current_price: 30000 },
+      { symbol: 'BTC', current_price: 30000 },
     ] as unknown as CoinInfo[]; // different object
 
     const { result, rerender } = renderHook(({ coins }) => usePriceMap(coins), {

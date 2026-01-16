@@ -1,10 +1,10 @@
-import { useEffect, useRef } from "react";
-import { AssetSelector } from "@components/AssetSelector";
-import { FocusTrap } from "focus-trap-react";
-import { useAddAssetForm } from "@hooks/useAddAssetForm";
-import { PortfolioAsset, PortfolioState } from "@hooks/usePortfolioState";
-import { CoinInfo } from "@services/coinService";
-import { PlusIcon, XIcon } from "lucide-react";
+import { useEffect, useRef } from 'react';
+import { AssetSelector } from '@components/AssetSelector';
+import { FocusTrap } from 'focus-trap-react';
+import { useAddAssetForm } from '@hooks/useAddAssetForm';
+import { PortfolioAsset, PortfolioState } from '@hooks/usePortfolioState';
+import { CoinInfo } from '@services/coinService';
+import { PlusIcon, XIcon } from 'lucide-react';
 
 type Props = {
   onClose: () => void;
@@ -42,16 +42,16 @@ export function AddAssetModal({
 
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
-      if (event.key === "Enter") {
+      if (event.key === 'Enter') {
         handleSubmit();
-      } else if (event.key === "Escape") {
+      } else if (event.key === 'Escape') {
         onClose();
       }
     };
 
-    document.addEventListener("keydown", handleKeyDown);
+    document.addEventListener('keydown', handleKeyDown);
     return () => {
-      document.removeEventListener("keydown", handleKeyDown);
+      document.removeEventListener('keydown', handleKeyDown);
     };
   }, [handleSubmit, onClose]);
 
@@ -68,11 +68,11 @@ export function AddAssetModal({
     >
       <FocusTrap
         active={
-          typeof document !== "undefined" && process.env.NODE_ENV !== "test"
+          typeof document !== 'undefined' && process.env.NODE_ENV !== 'test'
         }
         focusTrapOptions={{
           initialFocus: () =>
-            document.getElementById("asset-quantity") || document.body,
+            document.getElementById('asset-quantity') || document.body,
         }}
       >
         <div className="modal-content w-full max-w-md space-y-6">
@@ -80,16 +80,22 @@ export function AddAssetModal({
             id="add-asset-title"
             className="text-xl font-brand text-brand-primary"
           >
-            <PlusIcon className="w-5 h-5 inline mr-2" aria-hidden="true" />Add Crypto Asset
+            <PlusIcon className="w-5 h-5 inline mr-2" aria-hidden="true" />
+            Add Crypto Asset
           </h2>
 
           {/* 🔍 Asset Selector */}
           <div className="space-y-2">
-            <label htmlFor="asset-select" className="label" id="asset-select-label">
+            <label
+              htmlFor="asset-select"
+              className="label"
+              id="asset-select-label"
+            >
               Asset
             </label>
             <p id="asset-select-help" className="text-xs text-gray-500">
-              Choose a crypto asset from the list. Use the filter below to narrow results.
+              Choose a crypto asset from the list. Use the filter below to
+              narrow results.
             </p>
             <AssetSelector
               id="asset-select"
@@ -118,11 +124,16 @@ export function AddAssetModal({
               onChange={(e) => setQuantity(e.target.value)}
               disabled={loading}
               ref={initialFocusRef}
-              aria-describedby={formError ? "asset-form-error asset-quantity-help" : "asset-quantity-help"}
+              aria-describedby={
+                formError
+                  ? 'asset-form-error asset-quantity-help'
+                  : 'asset-quantity-help'
+              }
               inputMode="decimal"
             />
             <p id="asset-quantity-help" className="text-xs text-gray-500">
-              Enter how much of the selected asset you own. Decimals are allowed.
+              Enter how much of the selected asset you own. Decimals are
+              allowed.
             </p>
           </div>
 
@@ -181,14 +192,20 @@ export function AddAssetModal({
           aria-labelledby="large-quantity-warning-title"
         >
           <div className="bg-white rounded-lg shadow-xl p-6 max-w-md mx-4">
-            <h3 id="large-quantity-warning-title" className="text-lg font-bold text-gray-900 mb-4">
+            <h3
+              id="large-quantity-warning-title"
+              className="text-lg font-bold text-gray-900 mb-4"
+            >
               ⚠️ Confirm Large Quantity
             </h3>
             <p className="text-gray-700 mb-2">
-              You entered <strong>{parseFloat(quantity).toLocaleString()}</strong> {selectedCoin?.symbol.toUpperCase()}.
+              You entered{' '}
+              <strong>{parseFloat(quantity).toLocaleString()}</strong>{' '}
+              {selectedCoin?.symbol.toUpperCase()}.
             </p>
             <p className="text-gray-600 mb-6">
-              This is an unusually large quantity. Please verify this is correct before proceeding.
+              This is an unusually large quantity. Please verify this is correct
+              before proceeding.
             </p>
             <div className="flex gap-3 justify-end">
               <button

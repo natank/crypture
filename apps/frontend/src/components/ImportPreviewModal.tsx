@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 
 export type ImportItem = { asset: string; quantity: number };
 
@@ -9,7 +9,12 @@ type Props = {
   onMerge: () => void;
 };
 
-export default function ImportPreviewModal({ items, onCancel, onReplace, onMerge }: Props) {
+export default function ImportPreviewModal({
+  items,
+  onCancel,
+  onReplace,
+  onMerge,
+}: Props) {
   return (
     <div
       role="dialog"
@@ -34,7 +39,10 @@ export default function ImportPreviewModal({ items, onCancel, onReplace, onMerge
             <tbody>
               {items.length === 0 ? (
                 <tr>
-                  <td colSpan={2} className="px-3 py-4 text-center text-muted-foreground">
+                  <td
+                    colSpan={2}
+                    className="px-3 py-4 text-center text-muted-foreground"
+                  >
                     No items parsed
                   </td>
                 </tr>
@@ -53,8 +61,14 @@ export default function ImportPreviewModal({ items, onCancel, onReplace, onMerge
         <div className="mt-4 text-sm text-muted-foreground">
           Choose how to apply the import:
           <ul className="list-disc ml-5 mt-1">
-            <li><strong>Replace</strong>: Clears current portfolio, then imports these items.</li>
-            <li><strong>Merge</strong>: Adds quantities to existing items, creates new ones if needed.</li>
+            <li>
+              <strong>Replace</strong>: Clears current portfolio, then imports
+              these items.
+            </li>
+            <li>
+              <strong>Merge</strong>: Adds quantities to existing items, creates
+              new ones if needed.
+            </li>
           </ul>
         </div>
 

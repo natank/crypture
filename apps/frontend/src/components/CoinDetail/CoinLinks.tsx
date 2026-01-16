@@ -1,8 +1,8 @@
-import { memo } from "react";
-import type { CoinDetails } from "types/market";
+import { memo } from 'react';
+import type { CoinDetails } from 'types/market';
 
 interface CoinLinksProps {
-  links: CoinDetails["links"];
+  links: CoinDetails['links'];
 }
 
 interface LinkItem {
@@ -17,54 +17,54 @@ export const CoinLinks = memo(function CoinLinks({ links }: CoinLinksProps) {
   // Website
   if (links.homepage?.[0]) {
     linkItems.push({
-      label: "Website",
+      label: 'Website',
       url: links.homepage[0],
-      icon: "🌐",
+      icon: '🌐',
     });
   }
 
   // Whitepaper
   if (links.whitepaper) {
     linkItems.push({
-      label: "Whitepaper",
+      label: 'Whitepaper',
       url: links.whitepaper,
-      icon: "📄",
+      icon: '📄',
     });
   }
 
   // Twitter
   if (links.twitter_screen_name) {
     linkItems.push({
-      label: "Twitter",
+      label: 'Twitter',
       url: `https://twitter.com/${links.twitter_screen_name}`,
-      icon: "🐦",
+      icon: '🐦',
     });
   }
 
   // Reddit
   if (links.subreddit_url) {
     linkItems.push({
-      label: "Reddit",
+      label: 'Reddit',
       url: links.subreddit_url,
-      icon: "💬",
+      icon: '💬',
     });
   }
 
   // GitHub
   if (links.repos_url?.github?.[0]) {
     linkItems.push({
-      label: "GitHub",
+      label: 'GitHub',
       url: links.repos_url.github[0],
-      icon: "💻",
+      icon: '💻',
     });
   }
 
   // Blockchain Explorer
   if (links.blockchain_site?.[0]) {
     linkItems.push({
-      label: "Explorer",
+      label: 'Explorer',
       url: links.blockchain_site[0],
-      icon: "🔍",
+      icon: '🔍',
     });
   }
 

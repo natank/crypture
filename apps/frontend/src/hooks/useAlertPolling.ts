@@ -55,16 +55,16 @@ export function useAlertPolling(
   const [isPolling, setIsPolling] = useState(false);
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
   const isVisibleRef = useRef(true);
-  
+
   // Use refs to avoid recreating checkAlerts on every priceMap/callback change
   const priceMapRef = useRef(priceMap);
   const onAlertTriggeredRef = useRef(onAlertTriggered);
-  
+
   // Keep refs in sync
   useEffect(() => {
     priceMapRef.current = priceMap;
   }, [priceMap]);
-  
+
   useEffect(() => {
     onAlertTriggeredRef.current = onAlertTriggered;
   }, [onAlertTriggered]);
@@ -79,13 +79,13 @@ export function useAlertPolling(
 
     for (const alert of activeAlerts) {
       const currentPrice = currentPriceMap[alert.coinId];
-      
+
       if (currentPrice === undefined) {
         continue; // Skip if we don't have price data
       }
 
       const isTriggered = alertService.checkAlertCondition(alert, currentPrice);
-      
+
       if (isTriggered) {
         // Update alert status to triggered
         const updatedAlert = alertService.updateAlert(alert.id, {
@@ -124,7 +124,7 @@ export function useAlertPolling(
     }
 
     if (newlyTriggered.length > 0) {
-      setTriggeredAlerts(prev => [...newlyTriggered, ...prev]);
+      setTriggeredAlerts((prev) => [...newlyTriggered, ...prev]);
     }
 
     setLastChecked(Date.now());
@@ -136,7 +136,7 @@ export function useAlertPolling(
   useEffect(() => {
     const handleVisibilityChange = () => {
       isVisibleRef.current = document.visibilityState === 'visible';
-      
+
       // Check immediately when becoming visible again
       if (isVisibleRef.current && enabled) {
         checkAlerts();
@@ -178,7 +178,7 @@ export function useAlertPolling(
   }, [enabled, intervalMs, checkAlerts]);
 
   const dismissTriggeredAlert = useCallback((alertId: string) => {
-    setTriggeredAlerts(prev => prev.filter(t => t.alert.id !== alertId));
+    setTriggeredAlerts((prev) => prev.filter((t) => t.alert.id !== alertId));
   }, []);
 
   const clearAllTriggered = useCallback(() => {

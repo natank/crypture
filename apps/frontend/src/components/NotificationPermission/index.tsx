@@ -77,7 +77,8 @@ export default function NotificationPermission({
 
               {/* Description */}
               <p className="text-gray-600 dark:text-gray-300 text-center mb-6">
-                Get notified when your price alerts are triggered, even when you're not actively looking at the app.
+                Get notified when your price alerts are triggered, even when
+                you're not actively looking at the app.
               </p>
 
               {/* Actions */}

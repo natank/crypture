@@ -1,24 +1,28 @@
-import { memo } from "react";
-import type { CoinDetails } from "types/market";
-import { formatCurrency, formatLargeNumber, formatPercentage } from "@utils/formatters";
-import { HelpIcon } from "@components/EducationalTooltip";
-import type { TooltipKey } from "@components/EducationalTooltip";
+import { memo } from 'react';
+import type { CoinDetails } from 'types/market';
+import {
+  formatCurrency,
+  formatLargeNumber,
+  formatPercentage,
+} from '@utils/formatters';
+import { HelpIcon } from '@components/EducationalTooltip';
+import type { TooltipKey } from '@components/EducationalTooltip';
 
 interface CoinMetricsProps {
-  marketData: CoinDetails["market_data"];
+  marketData: CoinDetails['market_data'];
 }
 
 interface MetricItem {
   label: string;
   value: string;
   subValue?: string;
-  highlight?: "positive" | "negative";
+  highlight?: 'positive' | 'negative';
   tooltipKey?: TooltipKey;
 }
 
 function formatSupply(value: number | null | undefined): string {
   if (value === null || value === undefined) {
-    return "N/A";
+    return 'N/A';
   }
   if (value >= 1e12) return `${(value / 1e12).toFixed(2)}T`;
   if (value >= 1e9) return `${(value / 1e9).toFixed(2)}B`;
@@ -28,16 +32,16 @@ function formatSupply(value: number | null | undefined): string {
 }
 
 function formatDate(dateString: string | null | undefined): string {
-  if (!dateString) return "N/A";
+  if (!dateString) return 'N/A';
   try {
     const date = new Date(dateString);
-    return date.toLocaleDateString("en-US", {
-      month: "short",
-      day: "numeric",
-      year: "numeric",
+    return date.toLocaleDateString('en-US', {
+      month: 'short',
+      day: 'numeric',
+      year: 'numeric',
     });
   } catch {
-    return "N/A";
+    return 'N/A';
   }
 }
 
@@ -46,59 +50,63 @@ export const CoinMetrics = memo(function CoinMetrics({
 }: CoinMetricsProps) {
   const metrics: MetricItem[] = [
     {
-      label: "Market Cap",
+      label: 'Market Cap',
       value: formatLargeNumber(marketData.market_cap.usd),
-      tooltipKey: "market_cap",
+      tooltipKey: 'market_cap',
     },
     {
-      label: "24h Volume",
+      label: '24h Volume',
       value: formatLargeNumber(marketData.total_volume.usd),
-      tooltipKey: "volume",
+      tooltipKey: 'volume',
     },
     {
-      label: "24h High / Low",
+      label: '24h High / Low',
       value: `${formatCurrency(marketData.high_24h.usd)} / ${formatCurrency(marketData.low_24h.usd)}`,
     },
     {
-      label: "Circulating Supply",
+      label: 'Circulating Supply',
       value: formatSupply(marketData.circulating_supply),
-      tooltipKey: "circulating_supply",
+      tooltipKey: 'circulating_supply',
     },
     {
-      label: "Total Supply",
+      label: 'Total Supply',
       value: formatSupply(marketData.total_supply),
-      tooltipKey: "total_supply",
+      tooltipKey: 'total_supply',
     },
     {
-      label: "Max Supply",
+      label: 'Max Supply',
       value: formatSupply(marketData.max_supply),
-      tooltipKey: "max_supply",
+      tooltipKey: 'max_supply',
     },
     {
-      label: "All-Time High",
+      label: 'All-Time High',
       value: formatCurrency(marketData.ath.usd),
       subValue: formatDate(marketData.ath_date.usd),
-      highlight: marketData.ath_change_percentage.usd >= -10 ? "positive" : undefined,
-      tooltipKey: "ath",
+      highlight:
+        marketData.ath_change_percentage.usd >= -10 ? 'positive' : undefined,
+      tooltipKey: 'ath',
     },
     {
-      label: "All-Time Low",
+      label: 'All-Time Low',
       value: formatCurrency(marketData.atl.usd),
       subValue: formatDate(marketData.atl_date.usd),
-      highlight: marketData.atl_change_percentage.usd <= 20 ? "negative" : undefined,
-      tooltipKey: "atl",
+      highlight:
+        marketData.atl_change_percentage.usd <= 20 ? 'negative' : undefined,
+      tooltipKey: 'atl',
     },
     {
-      label: "7d Change",
+      label: '7d Change',
       value: formatPercentage(marketData.price_change_percentage_7d),
-      highlight: marketData.price_change_percentage_7d >= 0 ? "positive" : "negative",
-      tooltipKey: "price_change_7d",
+      highlight:
+        marketData.price_change_percentage_7d >= 0 ? 'positive' : 'negative',
+      tooltipKey: 'price_change_7d',
     },
     {
-      label: "30d Change",
+      label: '30d Change',
       value: formatPercentage(marketData.price_change_percentage_30d),
-      highlight: marketData.price_change_percentage_30d >= 0 ? "positive" : "negative",
-      tooltipKey: "price_change_30d",
+      highlight:
+        marketData.price_change_percentage_30d >= 0 ? 'positive' : 'negative',
+      tooltipKey: 'price_change_30d',
     },
   ];
 
@@ -115,17 +123,15 @@ export const CoinMetrics = memo(function CoinMetrics({
           <div key={metric.label} className="space-y-1">
             <dt className="text-xs text-text-secondary uppercase tracking-wide flex items-center gap-1">
               {metric.label}
-              {metric.tooltipKey && (
-                <HelpIcon contentKey={metric.tooltipKey} />
-              )}
+              {metric.tooltipKey && <HelpIcon contentKey={metric.tooltipKey} />}
             </dt>
             <dd
               className={`text-sm font-medium ${
-                metric.highlight === "positive"
-                  ? "text-success"
-                  : metric.highlight === "negative"
-                  ? "text-error"
-                  : "text-text-primary"
+                metric.highlight === 'positive'
+                  ? 'text-success'
+                  : metric.highlight === 'negative'
+                    ? 'text-error'
+                    : 'text-text-primary'
               }`}
             >
               {metric.value}

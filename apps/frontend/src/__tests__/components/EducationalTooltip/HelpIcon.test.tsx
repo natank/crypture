@@ -18,9 +18,17 @@ const mockGetBoundingClientRect = vi.fn(() => ({
 
 describe('HelpIcon', () => {
   beforeEach(() => {
-    vi.spyOn(Element.prototype, 'getBoundingClientRect').mockImplementation(mockGetBoundingClientRect);
-    Object.defineProperty(window, 'innerWidth', { value: 1024, writable: true });
-    Object.defineProperty(window, 'innerHeight', { value: 768, writable: true });
+    vi.spyOn(Element.prototype, 'getBoundingClientRect').mockImplementation(
+      mockGetBoundingClientRect
+    );
+    Object.defineProperty(window, 'innerWidth', {
+      value: 1024,
+      writable: true,
+    });
+    Object.defineProperty(window, 'innerHeight', {
+      value: 768,
+      writable: true,
+    });
   });
 
   afterEach(() => {
@@ -37,7 +45,9 @@ describe('HelpIcon', () => {
   it('shows tooltip on hover', async () => {
     render(<HelpIcon contentKey="market_cap" />);
 
-    const icon = screen.getByLabelText(/learn more about market_cap/i).closest('div');
+    const icon = screen
+      .getByLabelText(/learn more about market_cap/i)
+      .closest('div');
     fireEvent.mouseEnter(icon!);
 
     await waitFor(() => {
@@ -49,7 +59,9 @@ describe('HelpIcon', () => {
   it('shows tooltip on focus', async () => {
     render(<HelpIcon contentKey="volume" />);
 
-    const icon = screen.getByLabelText(/learn more about volume/i).closest('div');
+    const icon = screen
+      .getByLabelText(/learn more about volume/i)
+      .closest('div');
     fireEvent.focus(icon!);
 
     await waitFor(() => {
@@ -78,15 +90,19 @@ describe('HelpIcon', () => {
   it('is keyboard accessible', () => {
     render(<HelpIcon contentKey="market_cap" />);
 
-    const icon = screen.getByLabelText(/learn more about market_cap/i).closest('div');
+    const icon = screen
+      .getByLabelText(/learn more about market_cap/i)
+      .closest('div');
     expect(icon).toHaveAttribute('tabIndex', '0');
   });
 
   it('toggles tooltip on click (mobile)', async () => {
     render(<HelpIcon contentKey="market_cap" />);
 
-    const icon = screen.getByLabelText(/learn more about market_cap/i).closest('div');
-    
+    const icon = screen
+      .getByLabelText(/learn more about market_cap/i)
+      .closest('div');
+
     // First click shows tooltip
     fireEvent.click(icon!);
 
@@ -105,7 +121,9 @@ describe('HelpIcon', () => {
   it('passes position prop to EducationalTooltip', async () => {
     render(<HelpIcon contentKey="market_cap" position="top" />);
 
-    const icon = screen.getByLabelText(/learn more about market_cap/i).closest('div');
+    const icon = screen
+      .getByLabelText(/learn more about market_cap/i)
+      .closest('div');
     fireEvent.mouseEnter(icon!);
 
     await waitFor(() => {
@@ -114,4 +132,3 @@ describe('HelpIcon', () => {
     });
   });
 });
-

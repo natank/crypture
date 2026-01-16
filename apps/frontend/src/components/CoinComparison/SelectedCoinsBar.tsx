@@ -1,4 +1,4 @@
-import type { SelectedCoin } from "@pages/CoinComparisonPage";
+import type { SelectedCoin } from '@pages/CoinComparisonPage';
 
 interface SelectedCoinsBarProps {
   coins: SelectedCoin[];
@@ -58,7 +58,8 @@ export function SelectedCoinsBar({
 
       {coins.length < maxCoins && (
         <div className="flex items-center px-3 py-2 text-text-secondary text-sm">
-          {maxCoins - coins.length} more slot{maxCoins - coins.length !== 1 ? "s" : ""} available
+          {maxCoins - coins.length} more slot
+          {maxCoins - coins.length !== 1 ? 's' : ''} available
         </div>
       )}
     </div>

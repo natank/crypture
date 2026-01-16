@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback, memo } from "react";
+import { useState, useEffect, useCallback, memo } from 'react';
 import {
   LineChart,
   Line,
@@ -7,9 +7,12 @@ import {
   Tooltip,
   Legend,
   ResponsiveContainer,
-} from "recharts";
-import type { CoinDetails } from "types/market";
-import { fetchAssetHistory, type PriceHistoryPoint } from "@services/coinService";
+} from 'recharts';
+import type { CoinDetails } from 'types/market';
+import {
+  fetchAssetHistory,
+  type PriceHistoryPoint,
+} from '@services/coinService';
 
 interface ComparisonChartProps {
   coins: CoinDetails[];
@@ -22,13 +25,13 @@ interface NormalizedDataPoint {
   [coinId: string]: number | string;
 }
 
-const COIN_COLORS = ["#5a31f4", "#00bfa5", "#f59e0b"];
+const COIN_COLORS = ['#5a31f4', '#00bfa5', '#f59e0b'];
 
 const TIME_RANGES = [
-  { label: "7D", days: 7 },
-  { label: "30D", days: 30 },
-  { label: "90D", days: 90 },
-  { label: "1Y", days: 365 },
+  { label: '7D', days: 7 },
+  { label: '30D', days: 30 },
+  { label: '90D', days: 90 },
+  { label: '1Y', days: 365 },
 ];
 
 function normalizeData(
@@ -45,9 +48,9 @@ function normalizeData(
 }
 
 function formatDate(timestamp: number): string {
-  return new Date(timestamp).toLocaleDateString("en-US", {
-    month: "short",
-    day: "numeric",
+  return new Date(timestamp).toLocaleDateString('en-US', {
+    month: 'short',
+    day: 'numeric',
   });
 }
 
@@ -148,7 +151,7 @@ export const ComparisonChart = memo(function ComparisonChart({
       setChartData(merged);
     } catch (err) {
       setError(
-        err instanceof Error ? err.message : "Failed to load chart data"
+        err instanceof Error ? err.message : 'Failed to load chart data'
       );
     } finally {
       setIsLoading(false);
@@ -203,8 +206,8 @@ export const ComparisonChart = memo(function ComparisonChart({
               onClick={() => setSelectedRange(range.days)}
               className={`px-3 py-1.5 text-sm rounded-lg focus-ring transition-colors ${
                 selectedRange === range.days
-                  ? "bg-primary text-white"
-                  : "bg-surface-soft text-text-secondary hover:text-text-primary"
+                  ? 'bg-primary text-white'
+                  : 'bg-surface-soft text-text-secondary hover:text-text-primary'
               }`}
               aria-pressed={selectedRange === range.days}
             >

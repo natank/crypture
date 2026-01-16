@@ -1,5 +1,5 @@
 // src/hooks/usePolling.ts
-import { useEffect, useRef } from "react";
+import { useEffect, useRef } from 'react';
 
 type UsePollingOptions = {
   interval?: number;
@@ -31,7 +31,7 @@ export function usePolling(
 
     return () => {
       isMounted = false;
-      if (typeof clearInterval === "function") {
+      if (typeof clearInterval === 'function') {
         clearInterval(id);
       }
     };

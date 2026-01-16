@@ -1,6 +1,6 @@
-import { buildExportFilename } from "@utils/filename";
+import { buildExportFilename } from '@utils/filename';
 
-describe("buildExportFilename", () => {
+describe('buildExportFilename', () => {
   const RealDate = Date;
   beforeAll(() => {
     // Freeze time to 2025-08-24
@@ -16,7 +16,9 @@ describe("buildExportFilename", () => {
           super(...args);
         }
       }
-      static now() { return new RealDate(2025, 7, 24, 12, 0, 0, 0).valueOf(); }
+      static now() {
+        return new RealDate(2025, 7, 24, 12, 0, 0, 0).valueOf();
+      }
       static parse = RealDate.parse;
       static UTC = RealDate.UTC;
     } as unknown as DateConstructor;
@@ -26,11 +28,11 @@ describe("buildExportFilename", () => {
     (global as any).Date = RealDate;
   });
 
-  it("builds filename with date-only and extension .json", () => {
-    expect(buildExportFilename("json")).toBe("portfolio-2025-08-24.json");
+  it('builds filename with date-only and extension .json', () => {
+    expect(buildExportFilename('json')).toBe('portfolio-2025-08-24.json');
   });
 
-  it("builds filename with extension .csv", () => {
-    expect(buildExportFilename("csv")).toBe("portfolio-2025-08-24.csv");
+  it('builds filename with extension .csv', () => {
+    expect(buildExportFilename('csv')).toBe('portfolio-2025-08-24.csv');
   });
 });

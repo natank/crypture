@@ -107,12 +107,12 @@ describe('validateQuantity', () => {
       // This is exactly at threshold, so no warning
       expect(result.valid).toBe(true);
       expect(result.warning).toBeUndefined();
-      
+
       // Test with a value below threshold (but within 8 decimals)
       const dustResult = validateQuantity('0.00000000');
       // This is zero, so it should error
       expect(dustResult.valid).toBe(false);
-      
+
       // Use scientific notation for very small valid number
       const tinyResult = validateQuantity('1e-9');
       expect(tinyResult.valid).toBe(true);

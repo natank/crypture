@@ -25,9 +25,13 @@ export function HelpIcon({
   ariaLabel,
 }: HelpIconProps) {
   const defaultAriaLabel = ariaLabel || `Learn more about ${contentKey}`;
-  
+
   return (
-    <EducationalTooltip contentKey={contentKey} position={position} ariaLabel={defaultAriaLabel}>
+    <EducationalTooltip
+      contentKey={contentKey}
+      position={position}
+      ariaLabel={defaultAriaLabel}
+    >
       <span
         className={`inline-flex items-center justify-center tap-44 text-text-muted hover:text-brand-primary transition-colors cursor-help ${className}`}
         aria-hidden="true"
@@ -37,4 +41,3 @@ export function HelpIcon({
     </EducationalTooltip>
   );
 }
-

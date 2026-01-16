@@ -8,13 +8,13 @@ interface SuccessToastProps {
 
 /**
  * Success notification toast component.
- * 
+ *
  * Features:
  * - Green background with checkmark icon
  * - Smooth fade-in/fade-out animation
  * - ARIA role="status" for screen readers
  * - Auto-dismisses after 4 seconds (default)
- * 
+ *
  * @example
  * <SuccessToast message="✓ Added 1.5 BTC to your portfolio" visible={true} />
  */

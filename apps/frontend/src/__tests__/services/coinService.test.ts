@@ -1,20 +1,25 @@
-import { fetchTopCoins, fetchAssetHistory, fetchGlobalMarketData, clearGlobalMarketCache } from "@services/coinService";
-import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
+import {
+  fetchTopCoins,
+  fetchAssetHistory,
+  fetchGlobalMarketData,
+  clearGlobalMarketCache,
+} from '@services/coinService';
+import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 
 const mockedFetch = vi.fn();
 global.fetch = mockedFetch;
 
 const mockCoins = [
-  { id: "bitcoin", symbol: "btc", name: "Bitcoin" },
-  { id: "ethereum", symbol: "eth", name: "Ethereum" },
+  { id: 'bitcoin', symbol: 'btc', name: 'Bitcoin' },
+  { id: 'ethereum', symbol: 'eth', name: 'Ethereum' },
 ];
 
-describe("fetchTopCoins", () => {
+describe('fetchTopCoins', () => {
   beforeEach(() => {
     mockedFetch.mockReset();
   });
 
-  it("returns formatted coin list on success", async () => {
+  it('returns formatted coin list on success', async () => {
     mockedFetch.mockResolvedValueOnce({
       ok: true,
       json: async () => mockCoins,
@@ -23,34 +28,34 @@ describe("fetchTopCoins", () => {
     const coins = await fetchTopCoins();
 
     expect(coins).toEqual([
-      { id: "bitcoin", name: "Bitcoin", symbol: "BTC" },
-      { id: "ethereum", name: "Ethereum", symbol: "ETH" },
+      { id: 'bitcoin', name: 'Bitcoin', symbol: 'BTC' },
+      { id: 'ethereum', name: 'Ethereum', symbol: 'ETH' },
     ]);
     expect(mockedFetch).toHaveBeenCalledOnce();
   });
 
-  it("throws an error on failed response", async () => {
+  it('throws an error on failed response', async () => {
     mockedFetch.mockResolvedValueOnce({
       ok: false,
       status: 500,
     });
 
-    await expect(fetchTopCoins()).rejects.toThrow("CoinGecko API error: 500");
+    await expect(fetchTopCoins()).rejects.toThrow('CoinGecko API error: 500');
   });
 
-  it("throws an error on fetch failure", async () => {
-    mockedFetch.mockRejectedValueOnce(new Error("Network error"));
+  it('throws an error on fetch failure', async () => {
+    mockedFetch.mockRejectedValueOnce(new Error('Network error'));
 
-    await expect(fetchTopCoins()).rejects.toThrow("Unable to fetch coin list");
+    await expect(fetchTopCoins()).rejects.toThrow('Unable to fetch coin list');
   });
 });
 
-describe("fetchAssetHistory", () => {
+describe('fetchAssetHistory', () => {
   beforeEach(() => {
     mockedFetch.mockReset();
   });
 
-  it("returns price history on success", async () => {
+  it('returns price history on success', async () => {
     const mockHistory = {
       prices: [
         [1672531200000, 16500],
@@ -62,30 +67,36 @@ describe("fetchAssetHistory", () => {
       json: async () => mockHistory,
     });
 
-    const history = await fetchAssetHistory("bitcoin", 7);
+    const history = await fetchAssetHistory('bitcoin', 7);
 
     expect(history).toEqual(mockHistory.prices);
     expect(mockedFetch).toHaveBeenCalledOnce();
-    expect(mockedFetch).toHaveBeenCalledWith(expect.stringContaining("/api/v3/coins/bitcoin/market_chart"));
+    expect(mockedFetch).toHaveBeenCalledWith(
+      expect.stringContaining('/api/v3/coins/bitcoin/market_chart')
+    );
   });
 
-  it("throws an error on failed response", async () => {
+  it('throws an error on failed response', async () => {
     mockedFetch.mockResolvedValueOnce({
       ok: false,
       status: 404,
     });
 
-    await expect(fetchAssetHistory("nonexistent", 7)).rejects.toThrow("CoinGecko API error: 404");
+    await expect(fetchAssetHistory('nonexistent', 7)).rejects.toThrow(
+      'CoinGecko API error: 404'
+    );
   });
 
-  it("throws an error on fetch failure", async () => {
-    mockedFetch.mockRejectedValueOnce(new Error("Network error"));
+  it('throws an error on fetch failure', async () => {
+    mockedFetch.mockRejectedValueOnce(new Error('Network error'));
 
-    await expect(fetchAssetHistory("bitcoin", 7)).rejects.toThrow("Unable to fetch asset history");
+    await expect(fetchAssetHistory('bitcoin', 7)).rejects.toThrow(
+      'Unable to fetch asset history'
+    );
   });
 });
 
-describe("fetchGlobalMarketData", () => {
+describe('fetchGlobalMarketData', () => {
   beforeEach(() => {
     mockedFetch.mockReset();
     vi.useFakeTimers();
@@ -108,7 +119,7 @@ describe("fetchGlobalMarketData", () => {
     },
   };
 
-  it("returns formatted global market data on success", async () => {
+  it('returns formatted global market data on success', async () => {
     mockedFetch.mockResolvedValueOnce({
       ok: true,
       json: async () => mockGlobalResponse,
@@ -129,7 +140,7 @@ describe("fetchGlobalMarketData", () => {
     expect(mockedFetch).toHaveBeenCalledOnce();
   });
 
-  it("uses cached data if within 10 minutes", async () => {
+  it('uses cached data if within 10 minutes', async () => {
     mockedFetch.mockResolvedValue({
       ok: true,
       json: async () => mockGlobalResponse,
@@ -147,7 +158,7 @@ describe("fetchGlobalMarketData", () => {
     expect(mockedFetch).toHaveBeenCalledTimes(1);
   });
 
-  it("refetches data if cache expired (> 10 minutes)", async () => {
+  it('refetches data if cache expired (> 10 minutes)', async () => {
     mockedFetch.mockResolvedValue({
       ok: true,
       json: async () => mockGlobalResponse,
@@ -165,12 +176,14 @@ describe("fetchGlobalMarketData", () => {
     expect(mockedFetch).toHaveBeenCalledTimes(2);
   });
 
-  it("throws an error on failed response", async () => {
+  it('throws an error on failed response', async () => {
     mockedFetch.mockResolvedValueOnce({
       ok: false,
       status: 500,
     });
 
-    await expect(fetchGlobalMarketData()).rejects.toThrow("CoinGecko API error: 500");
+    await expect(fetchGlobalMarketData()).rejects.toThrow(
+      'CoinGecko API error: 500'
+    );
   });
 });

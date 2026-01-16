@@ -191,7 +191,7 @@ describe('ScrollRestoration', () => {
       const link = document.createElement('a');
       link.href = '/coin/bitcoin';
       document.body.appendChild(link);
-      
+
       // Simulate click event
       link.dispatchEvent(new MouseEvent('click', { bubbles: true }));
 

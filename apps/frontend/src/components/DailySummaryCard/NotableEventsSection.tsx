@@ -22,7 +22,9 @@ function getEventIcon(type: NotableEvent['type']): string {
   }
 }
 
-export default function NotableEventsSection({ events }: NotableEventsSectionProps) {
+export default function NotableEventsSection({
+  events,
+}: NotableEventsSectionProps) {
   if (events.length === 0) {
     return null;
   }

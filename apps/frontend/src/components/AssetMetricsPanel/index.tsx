@@ -1,7 +1,11 @@
-import { memo } from "react";
-import { MarketCoin } from "types/market";
-import { formatCurrency, formatLargeNumber, formatPercentage } from "@utils/formatters";
-import { HelpIcon } from "@components/EducationalTooltip";
+import { memo } from 'react';
+import { MarketCoin } from 'types/market';
+import {
+  formatCurrency,
+  formatLargeNumber,
+  formatPercentage,
+} from '@utils/formatters';
+import { HelpIcon } from '@components/EducationalTooltip';
 
 export interface AssetMetricsPanelProps {
   metrics: MarketCoin | null;
@@ -14,7 +18,7 @@ export interface AssetMetricsPanelProps {
  */
 function formatSupply(value: number | null | undefined): string {
   if (value === null || value === undefined) {
-    return "N/A";
+    return 'N/A';
   }
   if (value >= 1e12) return `${(value / 1e12).toFixed(2)}T`;
   if (value >= 1e9) return `${(value / 1e9).toFixed(2)}B`;
@@ -27,16 +31,16 @@ function formatSupply(value: number | null | undefined): string {
  * Formats a date string to a readable format
  */
 function formatDate(dateString: string | null | undefined): string {
-  if (!dateString) return "N/A";
+  if (!dateString) return 'N/A';
   try {
     const date = new Date(dateString);
-    return date.toLocaleDateString("en-US", {
-      month: "short",
-      day: "numeric",
-      year: "numeric",
+    return date.toLocaleDateString('en-US', {
+      month: 'short',
+      day: 'numeric',
+      year: 'numeric',
     });
   } catch {
-    return "N/A";
+    return 'N/A';
   }
 }
 
@@ -44,7 +48,8 @@ function formatDate(dateString: string | null | undefined): string {
  * Determines if the price is near ATH (within 10%)
  */
 function isNearATH(athChangePercentage: number | null | undefined): boolean {
-  if (athChangePercentage === null || athChangePercentage === undefined) return false;
+  if (athChangePercentage === null || athChangePercentage === undefined)
+    return false;
   return athChangePercentage >= -10;
 }
 
@@ -52,7 +57,8 @@ function isNearATH(athChangePercentage: number | null | undefined): boolean {
  * Determines if the price is near ATL (within 20%)
  */
 function isNearATL(atlChangePercentage: number | null | undefined): boolean {
-  if (atlChangePercentage === null || atlChangePercentage === undefined) return false;
+  if (atlChangePercentage === null || atlChangePercentage === undefined)
+    return false;
   return atlChangePercentage <= 20;
 }
 
@@ -121,9 +127,11 @@ const AssetMetricsPanel = memo(function AssetMetricsPanel({
         <h4 className="text-xs font-semibold text-text-muted uppercase tracking-wide">
           Price Extremes
         </h4>
-        
+
         {/* ATH */}
-        <div className={`p-2 rounded ${nearATH ? "bg-green-50 border border-green-200" : ""}`}>
+        <div
+          className={`p-2 rounded ${nearATH ? 'bg-green-50 border border-green-200' : ''}`}
+        >
           <div className="flex items-center gap-1">
             <span className="text-xs text-text-muted flex items-center gap-1">
               ATH:
@@ -141,13 +149,17 @@ const AssetMetricsPanel = memo(function AssetMetricsPanel({
           <div className="text-xs text-text-muted">
             {formatDate(metrics.ath_date)}
           </div>
-          <div className={`text-xs font-medium ${(metrics.ath_change_percentage || 0) >= 0 ? "text-green-600" : "text-red-600"}`}>
+          <div
+            className={`text-xs font-medium ${(metrics.ath_change_percentage || 0) >= 0 ? 'text-green-600' : 'text-red-600'}`}
+          >
             {formatPercentage(metrics.ath_change_percentage)} from ATH
           </div>
         </div>
 
         {/* ATL */}
-        <div className={`p-2 rounded ${nearATL ? "bg-red-50 border border-red-200" : ""}`}>
+        <div
+          className={`p-2 rounded ${nearATL ? 'bg-red-50 border border-red-200' : ''}`}
+        >
           <div className="flex items-center gap-1">
             <span className="text-xs text-text-muted flex items-center gap-1">
               ATL:
@@ -165,8 +177,11 @@ const AssetMetricsPanel = memo(function AssetMetricsPanel({
           <div className="text-xs text-text-muted">
             {formatDate(metrics.atl_date)}
           </div>
-          <div className={`text-xs font-medium ${(metrics.atl_change_percentage || 0) >= 0 ? "text-green-600" : "text-red-600"}`}>
-            +{formatPercentage(Math.abs(metrics.atl_change_percentage || 0))} from ATL
+          <div
+            className={`text-xs font-medium ${(metrics.atl_change_percentage || 0) >= 0 ? 'text-green-600' : 'text-red-600'}`}
+          >
+            +{formatPercentage(Math.abs(metrics.atl_change_percentage || 0))}{' '}
+            from ATL
           </div>
         </div>
       </div>
@@ -176,7 +191,7 @@ const AssetMetricsPanel = memo(function AssetMetricsPanel({
         <h4 className="text-xs font-semibold text-text-muted uppercase tracking-wide">
           Market Position
         </h4>
-        
+
         <div className="space-y-2">
           <div className="flex justify-between items-center">
             <span className="text-xs text-text-muted flex items-center gap-1">
@@ -184,10 +199,10 @@ const AssetMetricsPanel = memo(function AssetMetricsPanel({
               <HelpIcon contentKey="market_cap_rank" />
             </span>
             <span className="text-sm font-medium text-text">
-              #{metrics.market_cap_rank || "N/A"}
+              #{metrics.market_cap_rank || 'N/A'}
             </span>
           </div>
-          
+
           <div className="flex justify-between items-center">
             <span className="text-xs text-text-muted flex items-center gap-1">
               Market Cap
@@ -197,7 +212,7 @@ const AssetMetricsPanel = memo(function AssetMetricsPanel({
               {formatLargeNumber(metrics.market_cap)}
             </span>
           </div>
-          
+
           <div className="flex justify-between items-center">
             <span className="text-xs text-text-muted flex items-center gap-1">
               24h Volume
@@ -229,7 +244,7 @@ const AssetMetricsPanel = memo(function AssetMetricsPanel({
         <h4 className="text-xs font-semibold text-text-muted uppercase tracking-wide">
           Supply Info
         </h4>
-        
+
         <div className="space-y-2">
           <div className="flex justify-between items-center">
             <span className="text-xs text-text-muted flex items-center gap-1">
@@ -240,7 +255,7 @@ const AssetMetricsPanel = memo(function AssetMetricsPanel({
               {formatSupply(metrics.circulating_supply)}
             </span>
           </div>
-          
+
           <div className="flex justify-between items-center">
             <span className="text-xs text-text-muted flex items-center gap-1">
               Total Supply
@@ -250,14 +265,16 @@ const AssetMetricsPanel = memo(function AssetMetricsPanel({
               {formatSupply(metrics.total_supply)}
             </span>
           </div>
-          
+
           <div className="flex justify-between items-center">
             <span className="text-xs text-text-muted flex items-center gap-1">
               Max Supply
               <HelpIcon contentKey="max_supply" />
             </span>
             <span className="text-sm font-medium text-text">
-              {metrics.max_supply === null ? "Unlimited" : formatSupply(metrics.max_supply)}
+              {metrics.max_supply === null
+                ? 'Unlimited'
+                : formatSupply(metrics.max_supply)}
             </span>
           </div>
 
@@ -274,14 +291,20 @@ const AssetMetricsPanel = memo(function AssetMetricsPanel({
                     width: `${Math.min((metrics.circulating_supply / metrics.max_supply) * 100, 100)}%`,
                   }}
                   role="progressbar"
-                  aria-valuenow={Math.round((metrics.circulating_supply / metrics.max_supply) * 100)}
+                  aria-valuenow={Math.round(
+                    (metrics.circulating_supply / metrics.max_supply) * 100
+                  )}
                   aria-valuemin={0}
                   aria-valuemax={100}
                   aria-label={`${Math.round((metrics.circulating_supply / metrics.max_supply) * 100)}% of max supply in circulation`}
                 />
               </div>
               <div className="text-xs text-text-muted mt-1 text-right">
-                {((metrics.circulating_supply / metrics.max_supply) * 100).toFixed(1)}%
+                {(
+                  (metrics.circulating_supply / metrics.max_supply) *
+                  100
+                ).toFixed(1)}
+                %
               </div>
             </div>
           )}

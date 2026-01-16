@@ -1,6 +1,6 @@
 export const mockCoins = [
-  { id: "bitcoin", symbol: "BTC", name: "Bitcoin", current_price: 30000 },
-  { id: "ethereum", symbol: "ETH", name: "Ethereum", current_price: 2000 },
+  { id: 'bitcoin', symbol: 'BTC', name: 'Bitcoin', current_price: 30000 },
+  { id: 'ethereum', symbol: 'ETH', name: 'Ethereum', current_price: 2000 },
 ];
 
 export const mockPriceMap = {
@@ -14,6 +14,6 @@ export const mockCoinContextValue = {
   priceMap: mockPriceMap,
   loading: false,
   error: null,
-  search: "",
+  search: '',
   setSearch: () => {},
 };

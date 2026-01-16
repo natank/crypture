@@ -1,28 +1,40 @@
-import { useState, useCallback, useEffect } from "react";
-import { useParams, useNavigate } from "react-router-dom";
-import { useCoinDetails } from "@hooks/useCoinDetails";
-import { useAssetHistory } from "@hooks/useAssetHistory";
-import { formatCurrency, formatPercentage } from "@utils/formatters";
-import { CoinDescription, CoinLinks, CoinMetrics } from "@components/CoinDetail";
-import AssetChart from "@components/AssetChart";
+import { useState, useCallback, useEffect } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
+import { useCoinDetails } from '@hooks/useCoinDetails';
+import { useAssetHistory } from '@hooks/useAssetHistory';
+import { formatCurrency, formatPercentage } from '@utils/formatters';
+import {
+  CoinDescription,
+  CoinLinks,
+  CoinMetrics,
+} from '@components/CoinDetail';
+import AssetChart from '@components/AssetChart';
 
 function CoinDetailPage() {
   const { coinId } = useParams<{ coinId: string }>();
   const navigate = useNavigate();
   const { data: coin, isLoading, error } = useCoinDetails(coinId);
-  const { history, isLoading: chartLoading, error: chartError, getAssetHistory } = useAssetHistory();
+  const {
+    history,
+    isLoading: chartLoading,
+    error: chartError,
+    getAssetHistory,
+  } = useAssetHistory();
   const [selectedTimeRange, setSelectedTimeRange] = useState(30);
 
   const handleBack = () => {
     navigate(-1);
   };
 
-  const handleTimeRangeChange = useCallback((days: number) => {
-    setSelectedTimeRange(days);
-    if (coinId) {
-      getAssetHistory(coinId, days);
-    }
-  }, [coinId, getAssetHistory]);
+  const handleTimeRangeChange = useCallback(
+    (days: number) => {
+      setSelectedTimeRange(days);
+      if (coinId) {
+        getAssetHistory(coinId, days);
+      }
+    },
+    [coinId, getAssetHistory]
+  );
 
   // Load chart data when coin data is available
   useEffect(() => {
@@ -130,7 +142,10 @@ function CoinDetailPage() {
         </button>
 
         {/* Coin Header */}
-        <header className="flex flex-col sm:flex-row sm:items-center gap-4 mb-8" data-testid="coin-detail-header">
+        <header
+          className="flex flex-col sm:flex-row sm:items-center gap-4 mb-8"
+          data-testid="coin-detail-header"
+        >
           <img
             src={coin.image.large}
             alt={`${coin.name} logo`}
@@ -157,10 +172,11 @@ function CoinDetailPage() {
             </div>
             <div
               className={`text-lg font-medium ${
-                isPriceUp ? "text-success" : "text-error"
+                isPriceUp ? 'text-success' : 'text-error'
               }`}
             >
-              {isPriceUp ? "▲" : "▼"} {formatPercentage(Math.abs(priceChange))} (24h)
+              {isPriceUp ? '▲' : '▼'} {formatPercentage(Math.abs(priceChange))}{' '}
+              (24h)
             </div>
             <button
               onClick={() => navigate(`/compare?coin=${coinId}`)}

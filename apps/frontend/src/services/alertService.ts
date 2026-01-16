@@ -3,7 +3,12 @@
  * REQ-013-notifications / Backlog Item 24
  */
 
-import type { PriceAlert, CreateAlertInput, UpdateAlertInput, AlertStatus } from 'types/alert';
+import type {
+  PriceAlert,
+  CreateAlertInput,
+  UpdateAlertInput,
+  AlertStatus,
+} from 'types/alert';
 
 const ALERTS_STORAGE_KEY = 'crypture_alerts';
 const MAX_ALERTS = 50;
@@ -66,9 +71,11 @@ export function getTriggeredAlerts(): PriceAlert[] {
 
 export function createAlert(input: CreateAlertInput): PriceAlert {
   const stored = loadFromStorage();
-  
+
   if (stored.alerts.length >= MAX_ALERTS) {
-    throw new Error(`Maximum of ${MAX_ALERTS} alerts reached. Please delete some alerts first.`);
+    throw new Error(
+      `Maximum of ${MAX_ALERTS} alerts reached. Please delete some alerts first.`
+    );
   }
 
   const newAlert: PriceAlert = {
@@ -85,14 +92,17 @@ export function createAlert(input: CreateAlertInput): PriceAlert {
 
   stored.alerts.unshift(newAlert); // Add to beginning
   saveToStorage(stored);
-  
+
   return newAlert;
 }
 
-export function updateAlert(id: string, updates: UpdateAlertInput): PriceAlert | null {
+export function updateAlert(
+  id: string,
+  updates: UpdateAlertInput
+): PriceAlert | null {
   const stored = loadFromStorage();
   const index = stored.alerts.findIndex((alert) => alert.id === id);
-  
+
   if (index === -1) {
     return null;
   }
@@ -101,24 +111,24 @@ export function updateAlert(id: string, updates: UpdateAlertInput): PriceAlert |
     ...stored.alerts[index],
     ...updates,
   };
-  
+
   stored.alerts[index] = updatedAlert;
   saveToStorage(stored);
-  
+
   return updatedAlert;
 }
 
 export function deleteAlert(id: string): boolean {
   const stored = loadFromStorage();
   const index = stored.alerts.findIndex((alert) => alert.id === id);
-  
+
   if (index === -1) {
     return false;
   }
 
   stored.alerts.splice(index, 1);
   saveToStorage(stored);
-  
+
   return true;
 }
 
@@ -154,11 +164,14 @@ export function setNotificationsEnabled(enabled: boolean): void {
 
 // --- Alert Checking ---
 
-export function checkAlertCondition(alert: PriceAlert, currentPrice: number): boolean {
+export function checkAlertCondition(
+  alert: PriceAlert,
+  currentPrice: number
+): boolean {
   if (alert.status !== 'active') {
     return false;
   }
-  
+
   if (alert.condition === 'above') {
     return currentPrice >= alert.targetPrice;
   } else {
@@ -184,7 +197,11 @@ export function clearAllAlerts(): void {
   saveToStorage(stored);
 }
 
-export function getAlertCount(): { active: number; triggered: number; total: number } {
+export function getAlertCount(): {
+  active: number;
+  triggered: number;
+  total: number;
+} {
   const alerts = getAllAlerts();
   return {
     active: alerts.filter((a) => a.status === 'active').length,

@@ -67,7 +67,9 @@ export default function NotificationBanner({
                 <>
                   <p className="font-medium">
                     Alert: {latestAlert.alert.coinSymbol} is now{' '}
-                    {latestAlert.alert.condition === 'above' ? 'above' : 'below'}{' '}
+                    {latestAlert.alert.condition === 'above'
+                      ? 'above'
+                      : 'below'}{' '}
                     {formatPrice(latestAlert.alert.targetPrice)}
                   </p>
                   <p className="text-sm text-amber-100">
@@ -86,7 +88,9 @@ export default function NotificationBanner({
                 View
               </button>
               <button
-                onClick={() => hasMultiple ? onDismissAll() : onDismiss(latestAlert.alert.id)}
+                onClick={() =>
+                  hasMultiple ? onDismissAll() : onDismiss(latestAlert.alert.id)
+                }
                 className="p-1 hover:bg-white/20 rounded transition-colors"
                 aria-label="Dismiss notification"
               >

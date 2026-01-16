@@ -1,15 +1,15 @@
 // e2e/specs/portfolio-layout.spec.ts
-import { test, expect } from "@e2e/test-setup";
-import { PortfolioPage } from "@e2e/pom-pages/portfolio.pom";
-import { mockCoinGeckoMarkets } from "@e2e/mocks/mockCoinGecko";
+import { test, expect } from '@e2e/test-setup';
+import { PortfolioPage } from '@e2e/pom-pages/portfolio.pom';
+import { mockCoinGeckoMarkets } from '@e2e/mocks/mockCoinGecko';
 
-test.describe("Portfolio Overview Layout", () => {
+test.describe('Portfolio Overview Layout', () => {
   test.beforeEach(async ({ page }) => {
     const portfolioPage = new PortfolioPage(page);
     await portfolioPage.goto();
   });
 
-  test("renders layout with total value header", async ({ page }) => {
+  test('renders layout with total value header', async ({ page }) => {
     mockCoinGeckoMarkets(page);
 
     const portfolioPage = new PortfolioPage(page);
@@ -19,7 +19,7 @@ test.describe("Portfolio Overview Layout", () => {
     await expect(portfolioPage.header).toHaveText(/total portfolio value/i);
   });
 
-  test("displays Add, Export, and Import buttons", async ({ page }) => {
+  test('displays Add, Export, and Import buttons', async ({ page }) => {
     const portfolio = new PortfolioPage(page);
     mockCoinGeckoMarkets(page);
 
@@ -31,7 +31,7 @@ test.describe("Portfolio Overview Layout", () => {
     await expect(portfolio.importButton).toBeVisible();
   });
 
-  test("renders filter input and sort dropdown", async ({ page }) => {
+  test('renders filter input and sort dropdown', async ({ page }) => {
     mockCoinGeckoMarkets(page);
     const portfolioPage = new PortfolioPage(page);
     await portfolioPage.goto();
@@ -40,7 +40,7 @@ test.describe("Portfolio Overview Layout", () => {
     await expect(portfolioPage.sortDropdown).toBeVisible();
   });
 
-  test("opens modal when Add Asset is clicked", async ({ page }) => {
+  test('opens modal when Add Asset is clicked', async ({ page }) => {
     await mockCoinGeckoMarkets(page);
     const portfolio = new PortfolioPage(page);
     await portfolio.goto();

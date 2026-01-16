@@ -1,15 +1,15 @@
-import { test, expect } from "@e2e/fixtures";
-import { mockCoinGeckoMarkets } from "@e2e/mocks/mockCoinGecko";
+import { test, expect } from '@e2e/fixtures';
+import { mockCoinGeckoMarkets } from '@e2e/mocks/mockCoinGecko';
 
-test.describe("Export Portfolio", () => {
-  test("user can export portfolio as CSV", async ({ page, portfolioPage }) => {
+test.describe('Export Portfolio', () => {
+  test('user can export portfolio as CSV', async ({ page, portfolioPage }) => {
     await mockCoinGeckoMarkets(page); // ✅ ensure BTC & ETH are available
 
-    await portfolioPage.addAsset("BTC", 2);
-    await portfolioPage.selectExportFormat("CSV");
+    await portfolioPage.addAsset('BTC', 2);
+    await portfolioPage.selectExportFormat('CSV');
 
     const [download] = await Promise.all([
-      page.waitForEvent("download"),
+      page.waitForEvent('download'),
       portfolioPage.clickExportButton(),
     ]);
 

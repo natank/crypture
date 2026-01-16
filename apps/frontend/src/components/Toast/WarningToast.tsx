@@ -8,13 +8,13 @@ interface WarningToastProps {
 
 /**
  * Warning notification toast component.
- * 
+ *
  * Features:
  * - Amber background with warning triangle icon
  * - Smooth fade-in/fade-out animation
  * - ARIA role="status" for screen readers
  * - Auto-dismisses after 6 seconds (default)
- * 
+ *
  * @example
  * <WarningToast message="⚠️ Imported 4/5 assets (1 skipped - invalid format)" visible={true} />
  */

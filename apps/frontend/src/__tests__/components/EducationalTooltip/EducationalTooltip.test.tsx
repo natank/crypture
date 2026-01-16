@@ -18,9 +18,17 @@ const mockGetBoundingClientRect = vi.fn(() => ({
 
 describe('EducationalTooltip', () => {
   beforeEach(() => {
-    vi.spyOn(Element.prototype, 'getBoundingClientRect').mockImplementation(mockGetBoundingClientRect);
-    Object.defineProperty(window, 'innerWidth', { value: 1024, writable: true });
-    Object.defineProperty(window, 'innerHeight', { value: 768, writable: true });
+    vi.spyOn(Element.prototype, 'getBoundingClientRect').mockImplementation(
+      mockGetBoundingClientRect
+    );
+    Object.defineProperty(window, 'innerWidth', {
+      value: 1024,
+      writable: true,
+    });
+    Object.defineProperty(window, 'innerHeight', {
+      value: 768,
+      writable: true,
+    });
   });
 
   afterEach(() => {
@@ -107,9 +115,12 @@ describe('EducationalTooltip', () => {
 
     fireEvent.blur(trigger!);
 
-    await waitFor(() => {
-      expect(screen.queryByRole('tooltip')).not.toBeInTheDocument();
-    }, { timeout: 200 });
+    await waitFor(
+      () => {
+        expect(screen.queryByRole('tooltip')).not.toBeInTheDocument();
+      },
+      { timeout: 200 }
+    );
   });
 
   it('dismisses tooltip on ESC key', async () => {
@@ -141,7 +152,7 @@ describe('EducationalTooltip', () => {
     );
 
     const trigger = screen.getByText('Trigger').closest('div');
-    
+
     // First click shows tooltip
     fireEvent.click(trigger!);
 
@@ -169,7 +180,9 @@ describe('EducationalTooltip', () => {
 
     await waitFor(() => {
       expect(screen.getByText('24h Volume')).toBeInTheDocument();
-      expect(screen.getByText(/total value of all trades/i)).toBeInTheDocument();
+      expect(
+        screen.getByText(/total value of all trades/i)
+      ).toBeInTheDocument();
     });
   });
 
@@ -237,4 +250,3 @@ describe('EducationalTooltip', () => {
     });
   });
 });
-

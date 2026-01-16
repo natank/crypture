@@ -295,7 +295,9 @@ describe('alertService', () => {
         createdAt: Date.now(),
       };
 
-      expect(alertService.checkAlertCondition(triggeredAlert, 200000)).toBe(false);
+      expect(alertService.checkAlertCondition(triggeredAlert, 200000)).toBe(
+        false
+      );
     });
   });
 

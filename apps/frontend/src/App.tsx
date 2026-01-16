@@ -1,11 +1,16 @@
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Navigate,
+} from 'react-router-dom';
 import { ScrollRestoration } from '@components/ScrollRestoration';
-import LandingPage from "@pages/LandingPage";
-import PortfolioPage from "@pages/PortfolioPage";
-import { AboutPage } from "@pages/AboutPage";
-import { MarketPage } from "@pages/MarketPage";
-import CoinDetailPage from "@pages/CoinDetailPage";
-import CoinComparisonPage from "@pages/CoinComparisonPage";
+import LandingPage from '@pages/LandingPage';
+import PortfolioPage from '@pages/PortfolioPage';
+import { AboutPage } from '@pages/AboutPage';
+import { MarketPage } from '@pages/MarketPage';
+import CoinDetailPage from '@pages/CoinDetailPage';
+import CoinComparisonPage from '@pages/CoinComparisonPage';
 
 function App() {
   return (

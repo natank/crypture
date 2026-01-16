@@ -73,7 +73,8 @@ export default function DailySummaryCard({ summary }: DailySummaryCardProps) {
   const changeColorClass = isPositiveChange ? 'text-green-600' : 'text-red-600';
   const changeArrow = isPositiveChange ? '▲' : '▼';
 
-  const hasPerformers = summary.topPerformers.length > 0 || summary.worstPerformers.length > 0;
+  const hasPerformers =
+    summary.topPerformers.length > 0 || summary.worstPerformers.length > 0;
 
   return (
     <section
@@ -118,7 +119,9 @@ export default function DailySummaryCard({ summary }: DailySummaryCardProps) {
       <div className="mb-4" data-testid="portfolio-summary-metrics">
         <div className="flex flex-col md:flex-row md:items-baseline md:gap-4">
           <div>
-            <p className="text-sm text-gray-500 dark:text-gray-400">Portfolio Value</p>
+            <p className="text-sm text-gray-500 dark:text-gray-400">
+              Portfolio Value
+            </p>
             <p
               className="text-2xl font-bold text-gray-900 dark:text-white"
               data-testid="portfolio-value"
@@ -127,7 +130,9 @@ export default function DailySummaryCard({ summary }: DailySummaryCardProps) {
             </p>
           </div>
           <div className="mt-1 md:mt-0">
-            <p className="text-sm text-gray-500 dark:text-gray-400">24h Change</p>
+            <p className="text-sm text-gray-500 dark:text-gray-400">
+              24h Change
+            </p>
             <p
               className={`text-lg font-semibold ${changeColorClass} flex items-center gap-1`}
               data-testid="portfolio-change"

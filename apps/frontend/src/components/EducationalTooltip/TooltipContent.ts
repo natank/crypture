@@ -67,7 +67,8 @@ export const TOOLTIP_CONTENT: Record<TooltipKey, TooltipContent> = {
     title: 'Market Cap Rank',
     description:
       "The coin's position by market capitalization compared to all other cryptocurrencies. Rank #1 has the highest market cap.",
-    example: 'Bitcoin is typically ranked #1, meaning it has the largest market cap of all cryptocurrencies.',
+    example:
+      'Bitcoin is typically ranked #1, meaning it has the largest market cap of all cryptocurrencies.',
   },
   circulating_supply: {
     title: 'Circulating Supply',
@@ -100,7 +101,7 @@ export const TOOLTIP_CONTENT: Record<TooltipKey, TooltipContent> = {
   atl: {
     title: 'All-Time Low (ATL)',
     description:
-      'The lowest price this coin has ever reached since it was created. This helps you understand the coin\'s price floor and potential downside risk.',
+      "The lowest price this coin has ever reached since it was created. This helps you understand the coin's price floor and potential downside risk.",
     example:
       'If a coin dropped to $0.10 at launch, that is its ATL. The current price shows how much it has grown since then.',
   },
@@ -114,13 +115,15 @@ export const TOOLTIP_CONTENT: Record<TooltipKey, TooltipContent> = {
     title: '7d Change',
     description:
       'The percentage change in price over the last 7 days. This gives a better sense of short-term trends than daily changes.',
-    example: 'A +10% change means the price increased by 10% over the past week.',
+    example:
+      'A +10% change means the price increased by 10% over the past week.',
   },
   price_change_30d: {
     title: '30d Change',
     description:
       'The percentage change in price over the last 30 days. This helps identify medium-term trends and momentum.',
-    example: 'A -15% change means the price decreased by 15% over the past month.',
+    example:
+      'A -15% change means the price decreased by 15% over the past month.',
   },
   category_defi: {
     title: 'DeFi (Decentralized Finance)',
@@ -160,7 +163,8 @@ export const TOOLTIP_CONTENT: Record<TooltipKey, TooltipContent> = {
     title: 'Meme Coin',
     description:
       'Cryptocurrencies inspired by internet memes or jokes. These coins often have high volatility and are driven by community sentiment and social media trends.',
-    example: 'Dogecoin and Shiba Inu are popular meme coins that started as internet jokes.',
+    example:
+      'Dogecoin and Shiba Inu are popular meme coins that started as internet jokes.',
   },
   category_stablecoin: {
     title: 'Stablecoin',
@@ -209,4 +213,3 @@ export function getTooltipContent(key: TooltipKey): TooltipContent {
 export function hasTooltipContent(key: string): key is TooltipKey {
   return key in TOOLTIP_CONTENT;
 }
-

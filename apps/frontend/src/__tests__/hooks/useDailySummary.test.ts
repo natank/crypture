@@ -6,7 +6,10 @@
 import { renderHook } from '@testing-library/react';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { useDailySummary } from '@hooks/useDailySummary';
-import type { PortfolioAsset, CoinMetadata } from '@services/portfolioAnalyticsService';
+import type {
+  PortfolioAsset,
+  CoinMetadata,
+} from '@services/portfolioAnalyticsService';
 import * as alertService from '@services/alertService';
 
 // Mock alertService
@@ -16,10 +19,22 @@ vi.mock('@services/alertService', () => ({
 
 describe('useDailySummary', () => {
   const mockPortfolio: PortfolioAsset[] = [
-    { coinInfo: { id: 'bitcoin', symbol: 'btc', name: 'Bitcoin' }, quantity: 1 },
-    { coinInfo: { id: 'ethereum', symbol: 'eth', name: 'Ethereum' }, quantity: 10 },
-    { coinInfo: { id: 'solana', symbol: 'sol', name: 'Solana' }, quantity: 100 },
-    { coinInfo: { id: 'dogecoin', symbol: 'doge', name: 'Dogecoin' }, quantity: 1000 },
+    {
+      coinInfo: { id: 'bitcoin', symbol: 'btc', name: 'Bitcoin' },
+      quantity: 1,
+    },
+    {
+      coinInfo: { id: 'ethereum', symbol: 'eth', name: 'Ethereum' },
+      quantity: 10,
+    },
+    {
+      coinInfo: { id: 'solana', symbol: 'sol', name: 'Solana' },
+      quantity: 100,
+    },
+    {
+      coinInfo: { id: 'dogecoin', symbol: 'doge', name: 'Dogecoin' },
+      quantity: 1000,
+    },
   ];
 
   const mockPriceMap: Record<string, number> = {
@@ -125,7 +140,7 @@ describe('useDailySummary', () => {
       );
 
       expect(result.current.topPerformers.length).toBeLessThanOrEqual(3);
-      
+
       // Should be sorted descending by change
       const performers = result.current.topPerformers;
       for (let i = 1; i < performers.length; i++) {
@@ -167,7 +182,7 @@ describe('useDailySummary', () => {
       );
 
       expect(result.current.worstPerformers.length).toBeLessThanOrEqual(3);
-      
+
       // Should be sorted ascending (biggest loss first)
       const performers = result.current.worstPerformers;
       for (let i = 1; i < performers.length; i++) {

@@ -28,7 +28,8 @@ export function EducationalTooltip({
   ariaLabel,
 }: EducationalTooltipProps) {
   const [isVisible, setIsVisible] = useState(false);
-  const [calculatedPosition, setCalculatedPosition] = useState<TooltipPosition>('bottom');
+  const [calculatedPosition, setCalculatedPosition] =
+    useState<TooltipPosition>('bottom');
   const triggerRef = useRef<HTMLDivElement>(null);
   const tooltipRef = useRef<HTMLDivElement>(null);
   const tooltipId = `tooltip-${contentKey}-${Math.random().toString(36).substr(2, 9)}`;
@@ -198,8 +199,12 @@ export function EducationalTooltip({
           />
 
           {/* Content */}
-          <h4 className="font-semibold text-text-primary mb-1">{content.title}</h4>
-          <p className="text-text-muted text-xs leading-relaxed mb-1">{content.description}</p>
+          <h4 className="font-semibold text-text-primary mb-1">
+            {content.title}
+          </h4>
+          <p className="text-text-muted text-xs leading-relaxed mb-1">
+            {content.description}
+          </p>
           {content.example && (
             <p className="text-text-muted text-xs leading-relaxed italic mt-2">
               Example: {content.example}
@@ -210,4 +215,3 @@ export function EducationalTooltip({
     </div>
   );
 }
-

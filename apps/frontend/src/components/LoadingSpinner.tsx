@@ -5,13 +5,13 @@ type LoadingSpinnerProps = {
 };
 
 export default function LoadingSpinner({
-  label = "Loading...",
+  label = 'Loading...',
   fullScreen = false,
 }: LoadingSpinnerProps) {
   return (
     <div
       className={`flex flex-col justify-center items-center ${
-        fullScreen ? "h-screen text-center" : "gap-2"
+        fullScreen ? 'h-screen text-center' : 'gap-2'
       } text-balance`}
       role="status"
       aria-label="Loading"

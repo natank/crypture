@@ -1,7 +1,7 @@
-import React, { useMemo } from "react";
-import AssetRow from "@components/AssetRow";
-import { PortfolioState } from "@hooks/usePortfolioState";
-import { PlusIcon } from "lucide-react";
+import React, { useMemo } from 'react';
+import AssetRow from '@components/AssetRow';
+import { PortfolioState } from '@hooks/usePortfolioState';
+import { PlusIcon } from 'lucide-react';
 type AssetListProps = {
   assets: PortfolioState;
   onDelete: (id: string) => void;
@@ -35,7 +35,7 @@ export default function AssetList({
       const symbol = asset.coinInfo.symbol.toLowerCase();
       const price = priceMap[symbol];
       const value =
-        typeof price === "number" ? price * asset.quantity : undefined;
+        typeof price === 'number' ? price * asset.quantity : undefined;
       const highlightTrigger = highlightTriggers[asset.coinInfo.id] || 0;
 
       return {
@@ -58,7 +58,7 @@ export default function AssetList({
           ref={addButtonRef}
           onClick={onAddAsset}
           className={`bg-brand-primary text-white font-button px-4 py-2 rounded-md flex items-center gap-2 tap-44 focus-ring ${
-            disabled ? "opacity-60 cursor-not-allowed" : "hover:bg-purple-700"
+            disabled ? 'opacity-60 cursor-not-allowed' : 'hover:bg-purple-700'
           }`}
           aria-label="Add Asset"
           data-testid="add-asset-button"

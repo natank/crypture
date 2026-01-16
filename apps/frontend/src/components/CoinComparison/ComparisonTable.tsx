@@ -1,12 +1,12 @@
-import { memo } from "react";
-import type { CoinDetails } from "types/market";
+import { memo } from 'react';
+import type { CoinDetails } from 'types/market';
 import {
   formatCurrency,
   formatLargeNumber,
   formatPercentage,
-} from "@utils/formatters";
-import { HelpIcon } from "@components/EducationalTooltip";
-import type { TooltipKey } from "@components/EducationalTooltip";
+} from '@utils/formatters';
+import { HelpIcon } from '@components/EducationalTooltip';
+import type { TooltipKey } from '@components/EducationalTooltip';
 
 interface ComparisonTableProps {
   coins: CoinDetails[];
@@ -25,7 +25,7 @@ interface MetricConfig {
 
 function formatSupply(value: number | null | undefined): string {
   if (value === null || value === undefined) {
-    return "N/A";
+    return 'N/A';
   }
   if (value >= 1e12) return `${(value / 1e12).toFixed(2)}T`;
   if (value >= 1e9) return `${(value / 1e9).toFixed(2)}B`;
@@ -36,94 +36,94 @@ function formatSupply(value: number | null | undefined): string {
 
 const metricsConfig: MetricConfig[] = [
   {
-    key: "price",
-    label: "Price",
+    key: 'price',
+    label: 'Price',
     accessor: (c) => c.market_data.current_price.usd,
-    formatter: (v) => (v !== null ? formatCurrency(v) : "N/A"),
+    formatter: (v) => (v !== null ? formatCurrency(v) : 'N/A'),
     higherIsBetter: true,
   },
   {
-    key: "market_cap",
-    label: "Market Cap",
+    key: 'market_cap',
+    label: 'Market Cap',
     accessor: (c) => c.market_data.market_cap.usd,
-    formatter: (v) => (v !== null ? formatLargeNumber(v) : "N/A"),
+    formatter: (v) => (v !== null ? formatLargeNumber(v) : 'N/A'),
     higherIsBetter: true,
-    tooltipKey: "market_cap",
+    tooltipKey: 'market_cap',
   },
   {
-    key: "volume",
-    label: "24h Volume",
+    key: 'volume',
+    label: '24h Volume',
     accessor: (c) => c.market_data.total_volume.usd,
-    formatter: (v) => (v !== null ? formatLargeNumber(v) : "N/A"),
+    formatter: (v) => (v !== null ? formatLargeNumber(v) : 'N/A'),
     higherIsBetter: true,
-    tooltipKey: "volume",
+    tooltipKey: 'volume',
   },
   {
-    key: "change_24h",
-    label: "24h Change",
+    key: 'change_24h',
+    label: '24h Change',
     accessor: (c) => c.market_data.price_change_percentage_24h,
-    formatter: (v) => (v !== null ? formatPercentage(v) : "N/A"),
+    formatter: (v) => (v !== null ? formatPercentage(v) : 'N/A'),
     higherIsBetter: true,
     isPercentage: true,
-    tooltipKey: "price_change_24h",
+    tooltipKey: 'price_change_24h',
   },
   {
-    key: "change_7d",
-    label: "7d Change",
+    key: 'change_7d',
+    label: '7d Change',
     accessor: (c) => c.market_data.price_change_percentage_7d,
-    formatter: (v) => (v !== null ? formatPercentage(v) : "N/A"),
+    formatter: (v) => (v !== null ? formatPercentage(v) : 'N/A'),
     higherIsBetter: true,
     isPercentage: true,
-    tooltipKey: "price_change_7d",
+    tooltipKey: 'price_change_7d',
   },
   {
-    key: "change_30d",
-    label: "30d Change",
+    key: 'change_30d',
+    label: '30d Change',
     accessor: (c) => c.market_data.price_change_percentage_30d,
-    formatter: (v) => (v !== null ? formatPercentage(v) : "N/A"),
+    formatter: (v) => (v !== null ? formatPercentage(v) : 'N/A'),
     higherIsBetter: true,
     isPercentage: true,
-    tooltipKey: "price_change_30d",
+    tooltipKey: 'price_change_30d',
   },
   {
-    key: "ath",
-    label: "All-Time High",
+    key: 'ath',
+    label: 'All-Time High',
     accessor: (c) => c.market_data.ath.usd,
-    formatter: (v) => (v !== null ? formatCurrency(v) : "N/A"),
+    formatter: (v) => (v !== null ? formatCurrency(v) : 'N/A'),
     higherIsBetter: true,
-    tooltipKey: "ath",
+    tooltipKey: 'ath',
   },
   {
-    key: "atl",
-    label: "All-Time Low",
+    key: 'atl',
+    label: 'All-Time Low',
     accessor: (c) => c.market_data.atl.usd,
-    formatter: (v) => (v !== null ? formatCurrency(v) : "N/A"),
+    formatter: (v) => (v !== null ? formatCurrency(v) : 'N/A'),
     higherIsBetter: false,
-    tooltipKey: "atl",
+    tooltipKey: 'atl',
   },
   {
-    key: "circulating_supply",
-    label: "Circulating Supply",
+    key: 'circulating_supply',
+    label: 'Circulating Supply',
     accessor: (c) => c.market_data.circulating_supply,
     formatter: formatSupply,
     higherIsBetter: false,
-    tooltipKey: "circulating_supply",
+    tooltipKey: 'circulating_supply',
   },
   {
-    key: "total_supply",
-    label: "Total Supply",
+    key: 'total_supply',
+    label: 'Total Supply',
     accessor: (c) => c.market_data.total_supply,
     formatter: formatSupply,
     higherIsBetter: false,
-    tooltipKey: "total_supply",
+    tooltipKey: 'total_supply',
   },
   {
-    key: "max_supply",
-    label: "Max Supply",
+    key: 'max_supply',
+    label: 'Max Supply',
     accessor: (c) => c.market_data.max_supply,
     formatter: formatSupply,
     higherIsBetter: false,
-    tooltipKey: "max_supply",
+    tooltipKey: 'max_supply',
   },
 ];
 
@@ -231,20 +231,22 @@ export const ComparisonTable = memo(function ComparisonTable({
                   {coins.map((coin, index) => {
                     const value = metric.accessor(coin);
                     const isBest = index === bestIndex;
-                    const isPositive = metric.isPercentage && value !== null && value >= 0;
-                    const isNegative = metric.isPercentage && value !== null && value < 0;
+                    const isPositive =
+                      metric.isPercentage && value !== null && value >= 0;
+                    const isNegative =
+                      metric.isPercentage && value !== null && value < 0;
 
                     return (
                       <td
                         key={coin.id}
                         className={`px-6 py-3 text-sm font-medium ${
                           isBest
-                            ? "text-success bg-success/5"
+                            ? 'text-success bg-success/5'
                             : isPositive
-                            ? "text-success"
-                            : isNegative
-                            ? "text-error"
-                            : "text-text-primary"
+                              ? 'text-success'
+                              : isNegative
+                                ? 'text-error'
+                                : 'text-text-primary'
                         }`}
                       >
                         {metric.formatter(value)}

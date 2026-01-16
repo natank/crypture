@@ -1,43 +1,50 @@
-import { useMemo, useState, useCallback } from "react";
-import { Toaster } from "react-hot-toast";
+import { useMemo, useState, useCallback } from 'react';
+import { Toaster } from 'react-hot-toast';
 
-import { AddAssetModal } from "@components/AddAssetModal";
-import AssetList from "@components/AssetList";
-import DeleteConfirmationModal from "@components/DeleteConfirmationModal";
-import ErrorBanner from "@components/ErrorBanner";
-import ExportImportControls from "@components/ExportImportControls";
-import ImportPreviewModal from "@components/ImportPreviewModal";
-import FilterSortControls from "@components/FilterSortControls";
-import LoadingSpinner from "@components/LoadingSpinner";
-import PortfolioHeader from "@components/PortfolioHeader";
-import { HelpBanner } from "@components/HelpBanner";
-import PortfolioCompositionDashboard from "@components/portfolio/PortfolioCompositionDashboard";
-import { PortfolioPerformanceChart } from "@components/PortfolioPerformanceChart";
-import DailySummaryCard from "@components/DailySummaryCard";
+import { AddAssetModal } from '@components/AddAssetModal';
+import AssetList from '@components/AssetList';
+import DeleteConfirmationModal from '@components/DeleteConfirmationModal';
+import ErrorBanner from '@components/ErrorBanner';
+import ExportImportControls from '@components/ExportImportControls';
+import ImportPreviewModal from '@components/ImportPreviewModal';
+import FilterSortControls from '@components/FilterSortControls';
+import LoadingSpinner from '@components/LoadingSpinner';
+import PortfolioHeader from '@components/PortfolioHeader';
+import { HelpBanner } from '@components/HelpBanner';
+import PortfolioCompositionDashboard from '@components/portfolio/PortfolioCompositionDashboard';
+import { PortfolioPerformanceChart } from '@components/PortfolioPerformanceChart';
+import DailySummaryCard from '@components/DailySummaryCard';
 
-import { usePortfolioState } from "@hooks/usePortfolioState";
-import { useCoinList } from "@hooks/useCoinList";
-import { usePriceMap } from "@hooks/usePriceMap";
-import { useCoinSearch } from "@hooks/useCoinSearch";
-import { useUIState } from "@hooks/useUIState";
-import { usePersistedFilterSort } from "@hooks/usePersistedFilterSort";
-import { usePersistedExpansionState } from "@hooks/usePersistedExpansionState";
-import { useNotifications } from "@hooks/useNotifications";
-import { useDailySummary } from "@hooks/useDailySummary";
-import AppFooter from "@components/AppFooter";
-import { CoinInfo } from "@services/coinService";
-import { usePortfolioImportExport } from "@hooks/usePortfolioImportExport";
-import { CoinMetadata } from "@services/portfolioAnalyticsService";
-import { useAlerts } from "@hooks/useAlerts";
-import { useAlertPolling } from "@hooks/useAlertPolling";
-import AlertsPanel from "@components/AlertsPanel";
-import NotificationBanner from "@components/NotificationBanner";
-import NotificationPermission from "@components/NotificationPermission";
-import * as notificationService from "@services/notificationService";
-import type { MarketCoin } from "types/market";
+import { usePortfolioState } from '@hooks/usePortfolioState';
+import { useCoinList } from '@hooks/useCoinList';
+import { usePriceMap } from '@hooks/usePriceMap';
+import { useCoinSearch } from '@hooks/useCoinSearch';
+import { useUIState } from '@hooks/useUIState';
+import { usePersistedFilterSort } from '@hooks/usePersistedFilterSort';
+import { usePersistedExpansionState } from '@hooks/usePersistedExpansionState';
+import { useNotifications } from '@hooks/useNotifications';
+import { useDailySummary } from '@hooks/useDailySummary';
+import AppFooter from '@components/AppFooter';
+import { CoinInfo } from '@services/coinService';
+import { usePortfolioImportExport } from '@hooks/usePortfolioImportExport';
+import { CoinMetadata } from '@services/portfolioAnalyticsService';
+import { useAlerts } from '@hooks/useAlerts';
+import { useAlertPolling } from '@hooks/useAlertPolling';
+import AlertsPanel from '@components/AlertsPanel';
+import NotificationBanner from '@components/NotificationBanner';
+import NotificationPermission from '@components/NotificationPermission';
+import * as notificationService from '@services/notificationService';
+import type { MarketCoin } from 'types/market';
 
 export default function PortfolioPage() {
-  const { coins: allCoins, loading, error, lastUpdatedAt, refreshing, retry } = useCoinList();
+  const {
+    coins: allCoins,
+    loading,
+    error,
+    lastUpdatedAt,
+    refreshing,
+    retry,
+  } = useCoinList();
   const {
     alertCount,
     activeAlerts: alertsActive,
@@ -102,7 +109,7 @@ export default function PortfolioPage() {
         market_cap_rank: 1, // Default - would need enhanced API call
         price_change_percentage_24h: 0, // Default - would need enhanced API call
         price_change_percentage_7d: 0, // Default - would need enhanced API call
-        categories: ['Other'] // Default - would need enhanced API call
+        categories: ['Other'], // Default - would need enhanced API call
       };
     }
     return metadata;
@@ -112,15 +119,26 @@ export default function PortfolioPage() {
   const priceMapById = useMemo(() => {
     const map: Record<string, number> = {};
     for (const coin of allCoins) {
-      if (coin.id && typeof coin.current_price === 'number' && !isNaN(coin.current_price)) {
+      if (
+        coin.id &&
+        typeof coin.current_price === 'number' &&
+        !isNaN(coin.current_price)
+      ) {
         map[coin.id] = coin.current_price;
       }
     }
     return map;
   }, [allCoins]);
 
-  const { portfolio, addAsset, removeAsset, updateAssetQuantity, getAssetById, totalValue, resetPortfolio } =
-    usePortfolioState(priceMap, coinMap, loading);
+  const {
+    portfolio,
+    addAsset,
+    removeAsset,
+    updateAssetQuantity,
+    getAssetById,
+    totalValue,
+    resetPortfolio,
+  } = usePortfolioState(priceMap, coinMap, loading);
 
   // Portfolio coins for alert suggestions
   const portfolioMarketCoins = useMemo(() => {
@@ -148,7 +166,10 @@ export default function PortfolioPage() {
     sortOption,
   } = usePersistedFilterSort(portfolio);
 
-  const validAssetIds = useMemo(() => portfolio.map(a => a.coinInfo.id), [portfolio]);
+  const validAssetIds = useMemo(
+    () => portfolio.map((a) => a.coinInfo.id),
+    [portfolio]
+  );
   const expansionState = usePersistedExpansionState(validAssetIds);
 
   const notifications = useNotifications();
@@ -171,22 +192,24 @@ export default function PortfolioPage() {
   }, [allCoins]);
 
   // Memoize the callback to prevent useAlertPolling from re-running on every render
-  const handleAlertTriggered = useCallback((triggered: { alert: { coinSymbol: string; condition: string; targetPrice: number } }) => {
-    refreshAlerts();
-    notifications.success(
-      `🔔 Alert: ${triggered.alert.coinSymbol} is now ${triggered.alert.condition} $${triggered.alert.targetPrice.toLocaleString()}`
-    );
-  }, [refreshAlerts, notifications]);
+  const handleAlertTriggered = useCallback(
+    (triggered: {
+      alert: { coinSymbol: string; condition: string; targetPrice: number };
+    }) => {
+      refreshAlerts();
+      notifications.success(
+        `🔔 Alert: ${triggered.alert.coinSymbol} is now ${triggered.alert.condition} $${triggered.alert.targetPrice.toLocaleString()}`
+      );
+    },
+    [refreshAlerts, notifications]
+  );
 
-  const {
-    triggeredAlerts,
-    dismissTriggeredAlert,
-    clearAllTriggered,
-  } = useAlertPolling(alertPriceMap, {
-    intervalMs: 5 * 60 * 1000, // 5 minutes
-    enabled: !loading,
-    onAlertTriggered: handleAlertTriggered,
-  });
+  const { triggeredAlerts, dismissTriggeredAlert, clearAllTriggered } =
+    useAlertPolling(alertPriceMap, {
+      intervalMs: 5 * 60 * 1000, // 5 minutes
+      enabled: !loading,
+      onAlertTriggered: handleAlertTriggered,
+    });
 
   // Check if we should prompt for notification permission
   const handleOpenAlertsPanel = useCallback(() => {
@@ -198,10 +221,12 @@ export default function PortfolioPage() {
   }, [alertCount.total]);
 
   // Track highlight triggers for visual feedback (Phase 5)
-  const [highlightTriggers, setHighlightTriggers] = useState<Record<string, number>>({});
+  const [highlightTriggers, setHighlightTriggers] = useState<
+    Record<string, number>
+  >({});
 
   const triggerHighlight = useCallback((assetId: string) => {
-    setHighlightTriggers(prev => ({
+    setHighlightTriggers((prev) => ({
       ...prev,
       [assetId]: (prev[assetId] || 0) + 1,
     }));
@@ -225,49 +250,67 @@ export default function PortfolioPage() {
   });
 
   // All event handlers wrapped with useCallback for stable references
-  const handleAddAsset = useCallback((asset: { coinInfo: CoinInfo; quantity: number }) => {
-    addAsset(asset);
-    // Trigger highlight for the added/updated asset
-    triggerHighlight(asset.coinInfo.id);
-  }, [addAsset, triggerHighlight]);
+  const handleAddAsset = useCallback(
+    (asset: { coinInfo: CoinInfo; quantity: number }) => {
+      addAsset(asset);
+      // Trigger highlight for the added/updated asset
+      triggerHighlight(asset.coinInfo.id);
+    },
+    [addAsset, triggerHighlight]
+  );
 
-  const handleUpdateQuantity = useCallback((id: string, newQuantity: number) => {
-    updateAssetQuantity(id, newQuantity);
-    // Trigger highlight for the updated asset
-    triggerHighlight(id);
-  }, [updateAssetQuantity, triggerHighlight]);
+  const handleUpdateQuantity = useCallback(
+    (id: string, newQuantity: number) => {
+      updateAssetQuantity(id, newQuantity);
+      // Trigger highlight for the updated asset
+      triggerHighlight(id);
+    },
+    [updateAssetQuantity, triggerHighlight]
+  );
 
-  const handleDeleteAsset = useCallback((id: string) => {
-    requestDeleteAsset(id);
-  }, [requestDeleteAsset]);
+  const handleDeleteAsset = useCallback(
+    (id: string) => {
+      requestDeleteAsset(id);
+    },
+    [requestDeleteAsset]
+  );
 
-  const handleExport = useCallback((format: "csv" | "json") => {
-    try {
-      if (portfolio.length === 0) {
-        notifications.warning("⚠️ Your portfolio is empty. Add assets before exporting.");
-        return;
+  const handleExport = useCallback(
+    (format: 'csv' | 'json') => {
+      try {
+        if (portfolio.length === 0) {
+          notifications.warning(
+            '⚠️ Your portfolio is empty. Add assets before exporting.'
+          );
+          return;
+        }
+
+        const result = exportPortfolio(format);
+        notifications.success(
+          `✓ Exported ${result.count} asset${result.count !== 1 ? 's' : ''} to ${result.filename}`
+        );
+      } catch (err) {
+        const errorMessage =
+          err instanceof Error ? err.message : 'Failed to export portfolio';
+        notifications.error(`✗ ${errorMessage}`);
       }
+    },
+    [portfolio.length, exportPortfolio, notifications]
+  );
 
-      const result = exportPortfolio(format);
-      notifications.success(
-        `✓ Exported ${result.count} asset${result.count !== 1 ? 's' : ''} to ${result.filename}`
-      );
-    } catch (err) {
-      const errorMessage = err instanceof Error ? err.message : "Failed to export portfolio";
-      notifications.error(`✗ ${errorMessage}`);
-    }
-  }, [portfolio.length, exportPortfolio, notifications]);
-
-  const handleImport = useCallback((file: File) => {
-    onFileSelected(file);
-  }, [onFileSelected]);
+  const handleImport = useCallback(
+    (file: File) => {
+      onFileSelected(file);
+    },
+    [onFileSelected]
+  );
 
   const handleApplyMerge = useCallback(() => {
     try {
       const result = applyMerge();
 
       // Trigger highlights for all imported/updated assets
-      portfolio.forEach(asset => {
+      portfolio.forEach((asset) => {
         triggerHighlight(asset.coinInfo.id);
       });
 
@@ -281,7 +324,8 @@ export default function PortfolioPage() {
         );
       }
     } catch (err) {
-      const errorMessage = err instanceof Error ? err.message : "Failed to merge portfolio";
+      const errorMessage =
+        err instanceof Error ? err.message : 'Failed to merge portfolio';
       notifications.error(`✗ ${errorMessage}`);
     }
   }, [applyMerge, portfolio, triggerHighlight, notifications]);
@@ -291,7 +335,7 @@ export default function PortfolioPage() {
       const result = applyReplace();
 
       // Trigger highlights for all replaced assets
-      portfolio.forEach(asset => {
+      portfolio.forEach((asset) => {
         triggerHighlight(asset.coinInfo.id);
       });
 
@@ -305,14 +349,15 @@ export default function PortfolioPage() {
         );
       }
     } catch (err) {
-      const errorMessage = err instanceof Error ? err.message : "Failed to replace portfolio";
+      const errorMessage =
+        err instanceof Error ? err.message : 'Failed to replace portfolio';
       notifications.error(`✗ ${errorMessage}`);
     }
   }, [applyReplace, portfolio, triggerHighlight, notifications]);
 
   const e2eMode =
-    typeof window !== "undefined" &&
-    new URLSearchParams(window.location.search).get("e2e") === "1";
+    typeof window !== 'undefined' &&
+    new URLSearchParams(window.location.search).get('e2e') === '1';
 
   // Early return for loading state - placed AFTER all hooks
   if (loading) {
@@ -327,7 +372,7 @@ export default function PortfolioPage() {
     );
   }
 
-  const assetToDelete = getAssetById(assetIdPendingDeletion || "");
+  const assetToDelete = getAssetById(assetIdPendingDeletion || '');
 
   return (
     <>
@@ -377,9 +422,7 @@ export default function PortfolioPage() {
       />
 
       {/* Help Banner (Phase 7) */}
-      <HelpBanner
-        message="Tip: You can add multiple purchases of the same asset. Your quantities will be summed automatically, making it easy to track assets bought at different times or prices."
-      />
+      <HelpBanner message="Tip: You can add multiple purchases of the same asset. Your quantities will be summed automatically, making it easy to track assets bought at different times or prices." />
 
       {/* Error banner if coin list fails */}
       {error && (
@@ -389,11 +432,7 @@ export default function PortfolioPage() {
         />
       )}
 
-      {importError && (
-        <ErrorBanner
-          message={importError}
-        />
-      )}
+      {importError && <ErrorBanner message={importError} />}
 
       {/* Daily Summary Card */}
       <div className="w-full max-w-4xl mx-auto px-6 md:px-10 mb-6">
@@ -414,10 +453,12 @@ export default function PortfolioPage() {
         />
       </div>
 
-
       {/* Lightweight updating indicator during background refreshes */}
       {refreshing && (
-        <div className="w-full max-w-4xl mx-auto px-6 md:px-10 -mt-2 mb-2" aria-live="polite">
+        <div
+          className="w-full max-w-4xl mx-auto px-6 md:px-10 -mt-2 mb-2"
+          aria-live="polite"
+        >
           <LoadingSpinner label=" Updating prices…" />
         </div>
       )}
@@ -496,11 +537,17 @@ export default function PortfolioPage() {
               if (assetIdPendingDeletion && assetToDelete) {
                 try {
                   const assetName = assetToDelete.coinInfo.name;
-                  const assetSymbol = assetToDelete.coinInfo.symbol.toUpperCase();
+                  const assetSymbol =
+                    assetToDelete.coinInfo.symbol.toUpperCase();
                   removeAsset(assetIdPendingDeletion);
-                  notifications.success(`✓ Removed ${assetName} (${assetSymbol}) from portfolio`);
+                  notifications.success(
+                    `✓ Removed ${assetName} (${assetSymbol}) from portfolio`
+                  );
                 } catch (err) {
-                  const errorMessage = err instanceof Error ? err.message : "Failed to remove asset";
+                  const errorMessage =
+                    err instanceof Error
+                      ? err.message
+                      : 'Failed to remove asset';
                   notifications.error(`✗ ${errorMessage}`);
                 }
               }

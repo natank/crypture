@@ -1,6 +1,6 @@
-import { useState, useEffect } from "react";
-import type { MarketCoin } from "types/market";
-import { fetchAssetMetrics } from "@services/coinService";
+import { useState, useEffect } from 'react';
+import type { MarketCoin } from 'types/market';
+import { fetchAssetMetrics } from '@services/coinService';
 
 export type AssetMetricsState = {
   data: MarketCoin | null;
@@ -12,7 +12,10 @@ export type AssetMetricsState = {
  * Hook to fetch detailed market metrics for a single asset.
  * Only fetches when enabled (e.g., when the asset row is expanded).
  */
-export function useAssetMetrics(coinId: string, enabled: boolean = false): AssetMetricsState {
+export function useAssetMetrics(
+  coinId: string,
+  enabled: boolean = false
+): AssetMetricsState {
   const [data, setData] = useState<MarketCoin | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -35,7 +38,9 @@ export function useAssetMetrics(coinId: string, enabled: boolean = false): Asset
         }
       } catch (err) {
         if (!cancelled) {
-          setError(err instanceof Error ? err.message : "Failed to fetch asset metrics");
+          setError(
+            err instanceof Error ? err.message : 'Failed to fetch asset metrics'
+          );
         }
       } finally {
         if (!cancelled) {

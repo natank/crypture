@@ -1,4 +1,4 @@
-import { Page, Locator } from "@playwright/test";
+import { Page, Locator } from '@playwright/test';
 
 export class AddAssetModal {
   readonly page: Page;
@@ -11,23 +11,23 @@ export class AddAssetModal {
 
   constructor(page: Page) {
     this.page = page;
-    this.modal = page.getByRole("dialog", { name: /add crypto asset/i });
+    this.modal = page.getByRole('dialog', { name: /add crypto asset/i });
 
-    this.assetSelect = this.modal.getByRole("combobox");
+    this.assetSelect = this.modal.getByRole('combobox');
     this.quantityInput = this.modal.getByLabel(/quantity/i);
-    this.confirmButton = this.modal.getByRole("button", { name: /add asset/i });
-    this.cancelButton = this.modal.getByRole("button", { name: /cancel/i });
+    this.confirmButton = this.modal.getByRole('button', { name: /add asset/i });
+    this.cancelButton = this.modal.getByRole('button', { name: /cancel/i });
     this.errorMessage = this.modal.getByText(/invalid/i);
   }
 
   async openAndAdd(symbol: string, quantity: number) {
-    await this.page.getByTestId("add-asset-button").click();
+    await this.page.getByTestId('add-asset-button').click();
 
     // Attempt dropdown-based selection first
     try {
       const labelMap: Record<string, string> = {
-        BTC: "Bitcoin (BTC)",
-        ETH: "Ethereum (ETH)",
+        BTC: 'Bitcoin (BTC)',
+        ETH: 'Ethereum (ETH)',
       };
       await this.assetSelect.selectOption({ label: labelMap[symbol] });
     } catch {
@@ -41,7 +41,7 @@ export class AddAssetModal {
   }
 
   async open() {
-    await this.page.getByTestId("add-asset-button").click();
+    await this.page.getByTestId('add-asset-button').click();
   }
 
   async isVisible(): Promise<boolean> {

@@ -8,13 +8,13 @@ interface ErrorToastProps {
 
 /**
  * Error notification toast component.
- * 
+ *
  * Features:
  * - Red background with X icon
  * - Smooth fade-in/fade-out animation
  * - ARIA role="alert" for immediate screen reader announcement
  * - Auto-dismisses after 8 seconds (default) - longer for errors
- * 
+ *
  * @example
  * <ErrorToast message="✗ Failed to save changes. Please try again." visible={true} />
  */

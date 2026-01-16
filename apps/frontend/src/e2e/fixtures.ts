@@ -1,8 +1,8 @@
-import { test as base } from "@playwright/test";
-import { AddAssetModal } from "@e2e/pom-pages/add-asset-modal.pom";
-import { DeleteConfirmationModal } from "@e2e/pom-pages/delete-confirmation-modal.pom";
-import { PortfolioPage } from "@e2e/pom-pages/portfolio.pom";
-import { mockCoinGeckoMarkets } from "./mocks/mockCoinGecko";
+import { test as base } from '@playwright/test';
+import { AddAssetModal } from '@e2e/pom-pages/add-asset-modal.pom';
+import { DeleteConfirmationModal } from '@e2e/pom-pages/delete-confirmation-modal.pom';
+import { PortfolioPage } from '@e2e/pom-pages/portfolio.pom';
+import { mockCoinGeckoMarkets } from './mocks/mockCoinGecko';
 
 type Fixtures = {
   portfolioPage: PortfolioPage;
@@ -29,4 +29,4 @@ export const test = base.extend<Fixtures>({
   },
 });
 
-export { expect } from "@playwright/test";
+export { expect } from '@playwright/test';

@@ -5,5 +5,5 @@
  * Useful for filenames (e.g., portfolio-2025-07-20.json).
  */
 export function getFormattedDate(date: Date = new Date()): string {
-  return date.toISOString().split("T")[0];
+  return date.toISOString().split('T')[0];
 }

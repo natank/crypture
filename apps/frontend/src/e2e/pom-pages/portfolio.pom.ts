@@ -1,4 +1,4 @@
-import type { Locator, Page } from "@playwright/test";
+import type { Locator, Page } from '@playwright/test';
 
 export class PortfolioPage {
   readonly page: Page;
@@ -32,7 +32,10 @@ export class PortfolioPage {
   readonly timeRangeButtonByDays: (symbol: string, days: number) => Locator;
   readonly chartBySymbol: (symbol: string) => Locator;
   readonly chartLegendBySymbol: (symbol: string) => Locator;
-  readonly chartLegendItemBySymbolAndLabel: (symbol: string, label: string) => Locator;
+  readonly chartLegendItemBySymbolAndLabel: (
+    symbol: string,
+    label: string
+  ) => Locator;
 
   // Asset Metrics Panel
   readonly expandedContainerBySymbol: (symbol: string) => Locator;
@@ -46,23 +49,23 @@ export class PortfolioPage {
     this.header = page.getByText(/total portfolio value/i);
 
     // Action Buttons
-    this.addAssetButton = page.getByTestId("add-asset-button");
-    this.exportButton = page.getByTestId("export-button");
-    this.importButton = page.getByTestId("import-button");
+    this.addAssetButton = page.getByTestId('add-asset-button');
+    this.exportButton = page.getByTestId('export-button');
+    this.importButton = page.getByTestId('import-button');
     this.exportFormatSelect = page.getByLabel(/select file format/i);
 
     // Filter/Sort Controls (use testid and first() to avoid multiple matches)
-    this.filterInput = page.getByTestId("filter-input").first();
-    this.sortDropdown = page.getByTestId("sort-dropdown").first();
+    this.filterInput = page.getByTestId('filter-input').first();
+    this.sortDropdown = page.getByTestId('sort-dropdown').first();
 
     // Modal Elements
-    this.modal = page.getByRole("dialog");
-    this.modalAssetSelect = this.modal.getByRole("combobox");
+    this.modal = page.getByRole('dialog');
+    this.modalAssetSelect = this.modal.getByRole('combobox');
     this.modalQuantityInput = this.modal.getByLabel(/quantity/i);
-    this.modalConfirmButton = this.modal.getByRole("button", {
+    this.modalConfirmButton = this.modal.getByRole('button', {
       name: /add asset/i,
     });
-    this.modalCancelButton = this.modal.getByRole("button", {
+    this.modalCancelButton = this.modal.getByRole('button', {
       name: /cancel/i,
     });
     this.modalErrorMessage = this.modal.getByText(/invalid/i);
@@ -70,43 +73,57 @@ export class PortfolioPage {
     // Asset List
     this.assetList = page.locator("[data-testid='asset-list']");
     this.assetItemBySymbol = (symbol: string) =>
-      page.getByText(new RegExp(`${symbol}\\s*\\(`, "i"));
+      page.getByText(new RegExp(`${symbol}\\s*\\(`, 'i'));
     this.assetQuantityBySymbol = (symbol: string) =>
-      this.assetRow(symbol).getByText(new RegExp(`Qty:\\s*\\d+(\\.\\d+)?`, "i"));
+      this.assetRow(symbol).getByText(
+        new RegExp(`Qty:\\s*\\d+(\\.\\d+)?`, 'i')
+      );
 
     // Chart
     this.chartContainerBySymbol = (symbol: string) =>
-      page.locator(`[data-testid='asset-chart-container-${symbol.toUpperCase()}']`);
+      page.locator(
+        `[data-testid='asset-chart-container-${symbol.toUpperCase()}']`
+      );
     this.timeRangeButtonByDays = (symbol: string, days: number) =>
-      this.chartContainerBySymbol(symbol).getByTestId(`time-range-button-${days}`);
+      this.chartContainerBySymbol(symbol).getByTestId(
+        `time-range-button-${days}`
+      );
     this.chartBySymbol = (symbol: string) =>
-      this.chartContainerBySymbol(symbol).locator("canvas");
+      this.chartContainerBySymbol(symbol).locator('canvas');
     this.chartLegendBySymbol = (symbol: string) =>
-      this.chartContainerBySymbol(symbol).locator("[data-testid='chart-legend']");
+      this.chartContainerBySymbol(symbol).locator(
+        "[data-testid='chart-legend']"
+      );
     this.chartLegendItemBySymbolAndLabel = (symbol: string, label: string) =>
       this.chartLegendBySymbol(symbol).locator(`text=${label}`);
 
-    // Asset Metrics Panel 
+    // Asset Metrics Panel
     // Note: asset.coinInfo.symbol is uppercase (transformed by fetchTopCoins)
     this.expandedContainerBySymbol = (symbol: string) =>
-      page.locator(`[data-testid='asset-expanded-container-${symbol.toUpperCase()}']`);
+      page.locator(
+        `[data-testid='asset-expanded-container-${symbol.toUpperCase()}']`
+      );
     this.metricsContainerBySymbol = (symbol: string) =>
-      page.locator(`[data-testid='asset-metrics-container-${symbol.toUpperCase()}']`);
+      page.locator(
+        `[data-testid='asset-metrics-container-${symbol.toUpperCase()}']`
+      );
     this.metricsPanelBySymbol = (symbol: string) =>
-      this.metricsContainerBySymbol(symbol).locator("[data-testid='asset-metrics-panel']");
+      this.metricsContainerBySymbol(symbol).locator(
+        "[data-testid='asset-metrics-panel']"
+      );
   }
 
   // --------- Page Actions ---------
 
   async goto() {
-    await this.page.goto("/portfolio");
+    await this.page.goto('/portfolio');
   }
 
   async openAddAssetModal() {
     await this.addAssetButton.click();
   }
 
-  async selectExportFormat(label: "CSV" | "JSON") {
+  async selectExportFormat(label: 'CSV' | 'JSON') {
     const value = label.toLowerCase();
     await this.exportFormatSelect.selectOption(value);
   }
@@ -120,21 +137,26 @@ export class PortfolioPage {
 
     // Wait for the select to be ready and have options loaded
     await this.modalAssetSelect.waitFor({ state: 'visible', timeout: 10000 });
-    
+
     // Wait for at least one option to be present (besides the placeholder)
-    await this.page.waitForFunction(() => {
-      const select = document.querySelector('[data-testid="asset-select"]') as HTMLSelectElement;
-      return select && select.options.length > 1;
-    }, { timeout: 15000 });
+    await this.page.waitForFunction(
+      () => {
+        const select = document.querySelector(
+          '[data-testid="asset-select"]'
+        ) as HTMLSelectElement;
+        return select && select.options.length > 1;
+      },
+      { timeout: 15000 }
+    );
 
     // First try selecting by option value which is CoinGecko coin.id
-    const idMap: Record<string, string> = { BTC: "bitcoin", ETH: "ethereum" };
+    const idMap: Record<string, string> = { BTC: 'bitcoin', ETH: 'ethereum' };
     const labelMap: Record<string, string> = {
-      BTC: "Bitcoin (BTC)",
-      ETH: "Ethereum (ETH)",
+      BTC: 'Bitcoin (BTC)',
+      ETH: 'Ethereum (ETH)',
     };
 
-    const regex = new RegExp(`\\(${symbol}\\)`, "i");
+    const regex = new RegExp(`\\(${symbol}\\)`, 'i');
 
     try {
       const value = idMap[symbol] ?? symbol.toLowerCase();
@@ -142,14 +164,18 @@ export class PortfolioPage {
     } catch {
       try {
         // Fallback to exact label
-        await this.modalAssetSelect.selectOption({ label: labelMap[symbol] ?? symbol });
+        await this.modalAssetSelect.selectOption({
+          label: labelMap[symbol] ?? symbol,
+        });
       } catch {
         // Final fallback: find option containing (SYMBOL) and select by its value
         const option = this.modalAssetSelect
-          .locator("option")
+          .locator('option')
           .filter({ hasText: regex });
         // Increase timeout for CI - options may take time to load
-        const valueAttr = await option.first().getAttribute("value", { timeout: 15000 });
+        const valueAttr = await option
+          .first()
+          .getAttribute('value', { timeout: 15000 });
         if (!valueAttr) throw new Error(`No option found for symbol ${symbol}`);
         await this.modalAssetSelect.selectOption(valueAttr);
       }
@@ -185,10 +211,10 @@ export class PortfolioPage {
   async openDeleteModalFor(symbol: string) {
     // Map symbols to full names for consistent tooltip naming
     const nameMap: Record<string, string> = {
-      BTC: "Bitcoin",
-      ETH: "Ethereum",
+      BTC: 'Bitcoin',
+      ETH: 'Ethereum',
     };
-    
+
     const fullName = nameMap[symbol] || symbol;
     const deleteButton = this.page.getByLabel(`Delete ${fullName}`);
     await deleteButton.click();
@@ -200,23 +226,23 @@ export class PortfolioPage {
     );
   }
   // Method to sort assets by name
-  async sortByName(order: "asc" | "desc") {
+  async sortByName(order: 'asc' | 'desc') {
     await this.sortDropdown.selectOption(
-      order === "asc" ? "name-asc" : "name-desc"
+      order === 'asc' ? 'name-asc' : 'name-desc'
     );
   }
 
   // Method to sort assets by value
-  async sortByValue(order: "asc" | "desc") {
+  async sortByValue(order: 'asc' | 'desc') {
     await this.sortDropdown.selectOption(
-      order === "asc" ? "value-asc" : "value-desc"
+      order === 'asc' ? 'value-asc' : 'value-desc'
     );
   }
 
   // Method to get asset names
   async getAssetNames(): Promise<string[]> {
     const assetNames = await this.assetList
-      .locator(".asset-name")
+      .locator('.asset-name')
       .allTextContents();
     return assetNames;
   }
@@ -224,9 +250,9 @@ export class PortfolioPage {
   // Method to get asset values
   async getAssetValues(): Promise<number[]> {
     const assetValues = await this.assetList
-      .locator(".asset-value")
+      .locator('.asset-value')
       .evaluateAll((nodes) =>
-        nodes.map((n) => parseFloat(n.textContent || "0"))
+        nodes.map((n) => parseFloat(n.textContent || '0'))
       );
     return assetValues;
   }
@@ -234,7 +260,7 @@ export class PortfolioPage {
   // Method to filter assets by name
   async filterByName(partialName: string) {
     await this.filterInput.fill(partialName);
-    await this.page.keyboard.press("Enter");
+    await this.page.keyboard.press('Enter');
   }
 
   assetQuantity(symbol: string, expectedQty: number) {
@@ -247,7 +273,7 @@ export class PortfolioPage {
 
   emptyState() {
     // Prefer stable test id for empty state
-    return this.page.getByTestId("empty-state");
+    return this.page.getByTestId('empty-state');
   }
 
   async isEmptyStateVisible() {

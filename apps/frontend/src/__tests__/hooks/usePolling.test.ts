@@ -1,14 +1,14 @@
-import { renderHook } from "@testing-library/react";
-import { vi } from "vitest";
-import { usePolling } from "@hooks/usePolling";
+import { renderHook } from '@testing-library/react';
+import { vi } from 'vitest';
+import { usePolling } from '@hooks/usePolling';
 
-describe("usePolling", () => {
+describe('usePolling', () => {
   afterEach(() => {
     vi.useRealTimers();
     vi.clearAllTimers();
   });
 
-  it("calls the callback immediately if immediate=true", () => {
+  it('calls the callback immediately if immediate=true', () => {
     vi.useFakeTimers(); // ✅ needed here
 
     const callback = vi.fn();
@@ -17,7 +17,7 @@ describe("usePolling", () => {
     expect(callback).toHaveBeenCalledTimes(1);
   });
 
-  it("does not call the callback immediately if immediate=false", () => {
+  it('does not call the callback immediately if immediate=false', () => {
     vi.useFakeTimers(); // ✅
 
     const callback = vi.fn();
@@ -28,7 +28,7 @@ describe("usePolling", () => {
     expect(callback).not.toHaveBeenCalled();
   });
 
-  it("calls the callback on each interval", () => {
+  it('calls the callback on each interval', () => {
     vi.useFakeTimers(); // ✅
 
     const callback = vi.fn();
@@ -40,10 +40,10 @@ describe("usePolling", () => {
     expect(callback).toHaveBeenCalledTimes(4); // 1 immediate + 3 intervals
   });
 
-  it("clears the interval on unmount", () => {
+  it('clears the interval on unmount', () => {
     vi.useFakeTimers(); // ✅
 
-    const clearSpy = vi.spyOn(globalThis, "clearInterval");
+    const clearSpy = vi.spyOn(globalThis, 'clearInterval');
 
     const { unmount } = renderHook(() =>
       usePolling(() => {}, { interval: 5000 })
@@ -53,8 +53,8 @@ describe("usePolling", () => {
     expect(clearSpy).toHaveBeenCalled();
   });
 
-  it("uses the latest callback after re-render", () => {
-    vi.useFakeTimers({ toFake: ["setInterval", "clearInterval"] }); // ✅ critical fix
+  it('uses the latest callback after re-render', () => {
+    vi.useFakeTimers({ toFake: ['setInterval', 'clearInterval'] }); // ✅ critical fix
 
     const firstCallback = vi.fn();
     const updatedCallback = vi.fn();

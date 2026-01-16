@@ -75,7 +75,11 @@ function getNotableEvents(
   }
 
   // 2. Get significant moves (>10% in 24h)
-  const significantMoves = getSignificantMoves(portfolio, priceMap, coinMetadata);
+  const significantMoves = getSignificantMoves(
+    portfolio,
+    priceMap,
+    coinMetadata
+  );
 
   significantMoves.forEach((move: AssetPerformance) => {
     const direction = move.change24hPercent > 0 ? 'up' : 'down';
@@ -166,8 +170,18 @@ export function useDailySummary({
       totalValue
     );
 
-    const topPerformers = getTopPerformers(portfolio, priceMap, coinMetadata, 3);
-    const worstPerformers = getWorstPerformers(portfolio, priceMap, coinMetadata, 3);
+    const topPerformers = getTopPerformers(
+      portfolio,
+      priceMap,
+      coinMetadata,
+      3
+    );
+    const worstPerformers = getWorstPerformers(
+      portfolio,
+      priceMap,
+      coinMetadata,
+      3
+    );
     const notableEvents = getNotableEvents(portfolio, priceMap, coinMetadata);
 
     return {

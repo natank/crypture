@@ -1,13 +1,13 @@
-import { useState, useCallback, useEffect, useRef } from "react";
-import { useNavigate, useSearchParams } from "react-router-dom";
-import { fetchTopCoins, type CoinInfo } from "@services/coinService";
-import type { CoinDetails } from "types/market";
+import { useState, useCallback, useEffect, useRef } from 'react';
+import { useNavigate, useSearchParams } from 'react-router-dom';
+import { fetchTopCoins, type CoinInfo } from '@services/coinService';
+import type { CoinDetails } from 'types/market';
 import {
   CoinSelector,
   SelectedCoinsBar,
   ComparisonTable,
   ComparisonChart,
-} from "@components/CoinComparison";
+} from '@components/CoinComparison';
 
 export interface SelectedCoin {
   id: string;
@@ -55,7 +55,7 @@ function CoinComparisonPage() {
       setDetailsLoading((prev) => new Set(prev).add(coin.id));
 
       try {
-        const { fetchCoinDetails } = await import("@services/coinService");
+        const { fetchCoinDetails } = await import('@services/coinService');
         const details = await fetchCoinDetails(coin.id);
         setCoinDetails((prev) => new Map(prev).set(coin.id, details));
 
@@ -71,15 +71,15 @@ function CoinComparisonPage() {
           next.delete(coin.id);
           return next;
         });
-      // Log for debugging if needed
-      if (process.env.NODE_ENV === 'development') {
-        console.debug(`Loaded details for ${coin.id}`);
-      }
+        // Log for debugging if needed
+        if (process.env.NODE_ENV === 'development') {
+          console.debug(`Loaded details for ${coin.id}`);
+        }
       } catch (err) {
         setDetailsErrors((prev) =>
           new Map(prev).set(
             coin.id,
-            err instanceof Error ? err.message : "Failed to load details"
+            err instanceof Error ? err.message : 'Failed to load details'
           )
         );
       } finally {
@@ -103,7 +103,7 @@ function CoinComparisonPage() {
         setCoinsError(null);
       } catch (err) {
         setCoinsError(
-          err instanceof Error ? err.message : "Failed to load coins"
+          err instanceof Error ? err.message : 'Failed to load coins'
         );
       } finally {
         setCoinsLoading(false);
@@ -114,7 +114,7 @@ function CoinComparisonPage() {
 
   // Handle initial coin from URL params
   useEffect(() => {
-    const coinId = searchParams.get("coin");
+    const coinId = searchParams.get('coin');
     if (coinId && availableCoins.length > 0 && !initialCoinProcessed.current) {
       const coin = availableCoins.find((c) => c.id === coinId);
       if (coin) {
@@ -123,7 +123,7 @@ function CoinComparisonPage() {
           id: coin.id,
           name: coin.name,
           symbol: coin.symbol,
-          image: "", // Will be populated from details
+          image: '', // Will be populated from details
         });
       }
     }
@@ -149,7 +149,7 @@ function CoinComparisonPage() {
         id: coin.id,
         name: coin.name,
         symbol: coin.symbol,
-        image: "",
+        image: '',
       });
     },
     [handleAddCoin]
@@ -213,11 +213,18 @@ function CoinComparisonPage() {
 
         {/* Error Display */}
         {detailsErrors.size > 0 && (
-          <div className="mb-4 p-4 bg-red-50 border border-red-200 rounded-lg" role="alert">
-            <p className="text-red-700 font-medium">Some coins failed to load:</p>
+          <div
+            className="mb-4 p-4 bg-red-50 border border-red-200 rounded-lg"
+            role="alert"
+          >
+            <p className="text-red-700 font-medium">
+              Some coins failed to load:
+            </p>
             <ul className="mt-2 text-sm text-red-600">
               {Array.from(detailsErrors.entries()).map(([coinId, error]) => (
-                <li key={coinId}>{coinId}: {error}</li>
+                <li key={coinId}>
+                  {coinId}: {error}
+                </li>
               ))}
             </ul>
           </div>

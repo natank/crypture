@@ -11,7 +11,10 @@ export interface AssetPerformance {
   currentValue: number;
 }
 
-export type NotableEventType = 'alert_triggered' | 'significant_move' | 'price_milestone';
+export type NotableEventType =
+  | 'alert_triggered'
+  | 'significant_move'
+  | 'price_milestone';
 
 export interface NotableEvent {
   id: string;

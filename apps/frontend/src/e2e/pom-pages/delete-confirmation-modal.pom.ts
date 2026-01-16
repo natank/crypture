@@ -1,4 +1,4 @@
-import { Page, Locator } from "@playwright/test";
+import { Page, Locator } from '@playwright/test';
 
 export class DeleteConfirmationModal {
   readonly page: Page;
@@ -9,10 +9,10 @@ export class DeleteConfirmationModal {
 
   constructor(page: Page) {
     this.page = page;
-    this.modal = page.getByRole("dialog");
+    this.modal = page.getByRole('dialog');
 
-    this.confirmButton = this.modal.getByRole("button", { name: /confirm/i });
-    this.cancelButton = this.modal.getByRole("button", { name: /cancel/i });
+    this.confirmButton = this.modal.getByRole('button', { name: /confirm/i });
+    this.cancelButton = this.modal.getByRole('button', { name: /cancel/i });
     this.message = this.modal.getByText(/are you sure/i);
   }
 
@@ -29,6 +29,6 @@ export class DeleteConfirmationModal {
   }
 
   async getMessageText(): Promise<string> {
-    return (await this.message.textContent()) ?? "";
+    return (await this.message.textContent()) ?? '';
   }
 }

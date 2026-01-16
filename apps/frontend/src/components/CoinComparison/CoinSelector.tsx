@@ -1,5 +1,5 @@
-import { useState, useMemo, useRef, useEffect } from "react";
-import type { CoinInfo } from "@services/coinService";
+import { useState, useMemo, useRef, useEffect } from 'react';
+import type { CoinInfo } from '@services/coinService';
 
 interface CoinSelectorProps {
   coins: CoinInfo[];
@@ -16,7 +16,7 @@ export function CoinSelector({
   disabled = false,
   error,
 }: CoinSelectorProps) {
-  const [search, setSearch] = useState("");
+  const [search, setSearch] = useState('');
   const [isOpen, setIsOpen] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -44,18 +44,18 @@ export function CoinSelector({
       }
     };
 
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
   const handleSelect = (coin: CoinInfo) => {
     onSelect(coin);
-    setSearch("");
+    setSearch('');
     setIsOpen(false);
   };
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
-    if (e.key === "Escape") {
+    if (e.key === 'Escape') {
       setIsOpen(false);
       inputRef.current?.blur();
     }

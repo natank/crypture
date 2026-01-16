@@ -59,10 +59,6 @@ describe('useNotifications', () => {
         })
       );
     });
-
-
-
-
   });
 
   describe('error notifications', () => {

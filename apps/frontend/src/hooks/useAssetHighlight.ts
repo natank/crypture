@@ -1,14 +1,17 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect } from 'react';
 
 /**
  * Hook to manage temporary visual highlight for an asset after operations
  * Returns true for 3 seconds after the trigger counter changes
- * 
+ *
  * @param assetId - The ID of the asset to potentially highlight
  * @param triggerCounter - Counter that increments when highlight should trigger
  * @returns isHighlighted - Boolean indicating if asset should be highlighted
  */
-export function useAssetHighlight(assetId: string, triggerCounter: number): boolean {
+export function useAssetHighlight(
+  assetId: string,
+  triggerCounter: number
+): boolean {
   const [isHighlighted, setIsHighlighted] = useState(false);
 
   useEffect(() => {

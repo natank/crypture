@@ -55,14 +55,14 @@ export async function mockCoinGeckoMarkets(page: Page) {
     const url = route.request().url();
     const params = new URL(url).searchParams;
     const ids = params.get('ids');
-    
+
     // If specific IDs are requested (for asset metrics), filter the response
     let responseData = mockMarketCoins;
     if (ids) {
       const idList = ids.split(',');
-      responseData = mockMarketCoins.filter(coin => idList.includes(coin.id));
+      responseData = mockMarketCoins.filter((coin) => idList.includes(coin.id));
     }
-    
+
     route.fulfill({
       status: 200,
       contentType: 'application/json',
@@ -72,18 +72,21 @@ export async function mockCoinGeckoMarkets(page: Page) {
 }
 
 // Generates mock history data for a given number of days
-const generateMockHistory = (days: number, basePrice: number): PriceHistoryPoint[] => {
-    const data: PriceHistoryPoint[] = [];
-    const today = new Date();
-    for (let i = days - 1; i >= 0; i--) {
-        const date = new Date(today);
-        date.setDate(today.getDate() - i);
-        const price = basePrice + Math.random() * (basePrice * 0.1) - (basePrice * 0.05);
-        data.push([date.getTime(), price]);
-    }
-    return data;
+const generateMockHistory = (
+  days: number,
+  basePrice: number
+): PriceHistoryPoint[] => {
+  const data: PriceHistoryPoint[] = [];
+  const today = new Date();
+  for (let i = days - 1; i >= 0; i--) {
+    const date = new Date(today);
+    date.setDate(today.getDate() - i);
+    const price =
+      basePrice + Math.random() * (basePrice * 0.1) - basePrice * 0.05;
+    data.push([date.getTime(), price]);
+  }
+  return data;
 };
-
 
 // Mock for the asset price history fetch
 export async function mockCoinGeckoHistory(page: Page) {
@@ -94,9 +97,9 @@ export async function mockCoinGeckoHistory(page: Page) {
 
     let prices: PriceHistoryPoint[] = [];
     if (assetId === 'bitcoin') {
-        prices = generateMockHistory(days, 55000);
+      prices = generateMockHistory(days, 55000);
     } else if (assetId === 'ethereum') {
-        prices = generateMockHistory(days, 4000);
+      prices = generateMockHistory(days, 4000);
     }
 
     route.fulfill({

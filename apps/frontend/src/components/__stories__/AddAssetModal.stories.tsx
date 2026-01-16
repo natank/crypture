@@ -1,15 +1,15 @@
-import React, { useState } from "react";
-import { AddAssetModal } from "@components/AddAssetModal";
-import { PortfolioAsset } from "@hooks/usePortfolioState";
-import type { Meta, StoryObj } from "@storybook/react-vite";
-import { CoinInfo } from "@services/coinService";
+import React, { useState } from 'react';
+import { AddAssetModal } from '@components/AddAssetModal';
+import { PortfolioAsset } from '@hooks/usePortfolioState';
+import type { Meta, StoryObj } from '@storybook/react-vite';
+import { CoinInfo } from '@services/coinService';
 
 const meta: Meta<typeof AddAssetModal> = {
-  title: "Modals/AddAssetModal",
+  title: 'Modals/AddAssetModal',
   component: AddAssetModal,
-  tags: ["autodocs"],
+  tags: ['autodocs'],
   parameters: {
-    layout: "centered",
+    layout: 'centered',
   },
 };
 
@@ -17,31 +17,31 @@ export default meta;
 type Story = StoryObj<typeof AddAssetModal>;
 
 const mockAddAsset = (asset: PortfolioAsset) => {
-  console.log("Mock Add Asset:", asset);
+  console.log('Mock Add Asset:', asset);
 };
 
 const mockOnClose = () => {
-  console.log("Modal closed");
+  console.log('Modal closed');
 };
 
 const mockCoins: CoinInfo[] = [
   {
-    id: "bitcoin",
-    symbol: "btc",
-    name: "Bitcoin",
+    id: 'bitcoin',
+    symbol: 'btc',
+    name: 'Bitcoin',
     current_price: 30000,
   },
   {
-    id: "ethereum",
-    symbol: "eth",
-    name: "Ethereum",
+    id: 'ethereum',
+    symbol: 'eth',
+    name: 'Ethereum',
     current_price: 2000,
   },
 ];
 
 export const Default: Story = {
   render: () => {
-    const [search, setSearch] = useState("");
+    const [search, setSearch] = useState('');
     return (
       <AddAssetModal
         onClose={mockOnClose}
@@ -56,12 +56,12 @@ export const Default: Story = {
 
 export const WithError: Story = {
   render: () => {
-    const [search, setSearch] = useState("");
+    const [search, setSearch] = useState('');
     return (
       <AddAssetModal
         onClose={mockOnClose}
         addAsset={() => {
-          throw new Error("Invalid asset quantity");
+          throw new Error('Invalid asset quantity');
         }}
         coins={mockCoins}
         search={search}
@@ -73,7 +73,7 @@ export const WithError: Story = {
 
 export const LoadingState: Story = {
   render: () => {
-    const [search, setSearch] = useState("");
+    const [search, setSearch] = useState('');
     return (
       <AddAssetModal
         onClose={mockOnClose}
@@ -90,7 +90,7 @@ export const LoadingState: Story = {
 
 export const CoinFetchError: Story = {
   render: () => {
-    const [search, setSearch] = useState("");
+    const [search, setSearch] = useState('');
     return (
       <AddAssetModal
         onClose={mockOnClose}

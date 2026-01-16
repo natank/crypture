@@ -1,7 +1,7 @@
-import { fireEvent, render, screen } from "@testing-library/react";
-import { MemoryRouter } from "react-router-dom";
-import PortfolioPage from "@pages/PortfolioPage";
-import { describe, it, expect } from "vitest";
+import { fireEvent, render, screen } from '@testing-library/react';
+import { MemoryRouter } from 'react-router-dom';
+import PortfolioPage from '@pages/PortfolioPage';
+import { describe, it, expect } from 'vitest';
 
 const removeAsset = vi.fn();
 const addAsset = vi.fn();
@@ -10,13 +10,13 @@ const requestDeleteAsset = vi.fn();
 const getAssetById = vi.fn((id: string) => ({
   coinInfo: {
     id,
-    name: "Bitcoin",
-    symbol: "btc",
+    name: 'Bitcoin',
+    symbol: 'btc',
   },
   quantity: 0.5,
 }));
 
-vi.mock("@components/DeleteConfirmationModal", () => ({
+vi.mock('@components/DeleteConfirmationModal', () => ({
   default: ({
     isOpen,
     assetName,
@@ -35,14 +35,14 @@ vi.mock("@components/DeleteConfirmationModal", () => ({
       </div>
     ) : null,
 }));
-vi.mock("@hooks/usePortfolioState", () => ({
+vi.mock('@hooks/usePortfolioState', () => ({
   usePortfolioState: () => ({
     portfolio: [
       {
         coinInfo: {
-          id: "btc",
-          name: "Bitcoin",
-          symbol: "btc",
+          id: 'btc',
+          name: 'Bitcoin',
+          symbol: 'btc',
         },
         quantity: 0.5,
       },
@@ -55,42 +55,42 @@ vi.mock("@hooks/usePortfolioState", () => ({
 }));
 
 // 🧪 Mock useUIState
-vi.mock("@hooks/useUIState", () => ({
+vi.mock('@hooks/useUIState', () => ({
   useUIState: () => ({
     shouldShowDeleteConfirmationModal: true,
-    assetIdPendingDeletion: "btc",
+    assetIdPendingDeletion: 'btc',
     cancelDeleteAsset,
     requestDeleteAsset,
     shouldShowAddAssetModal: false,
   }),
 }));
 
-vi.mock("@hooks/useCoinList", () => ({
+vi.mock('@hooks/useCoinList', () => ({
   useCoinList: () => ({
-    coins: [{ id: "btc", name: "Bitcoin", symbol: "btc", current_price: 3000 }],
+    coins: [{ id: 'btc', name: 'Bitcoin', symbol: 'btc', current_price: 3000 }],
     loading: false,
     error: null,
     lastUpdatedAt: Date.now(),
   }),
 }));
 
-vi.mock("@hooks/usePriceMap", () => ({
+vi.mock('@hooks/usePriceMap', () => ({
   usePriceMap: () => ({
     btc: 3000,
   }),
 }));
 
-vi.mock("@hooks/useCoinSearch", () => ({
+vi.mock('@hooks/useCoinSearch', () => ({
   useCoinSearch: () => ({
-    search: "",
+    search: '',
     setSearch: vi.fn(),
     filteredCoins: [
-      { id: "btc", name: "Bitcoin", symbol: "btc", current_price: 3000 },
+      { id: 'btc', name: 'Bitcoin', symbol: 'btc', current_price: 3000 },
     ],
   }),
 }));
 
-vi.mock("@hooks/useAlerts", () => ({
+vi.mock('@hooks/useAlerts', () => ({
   useAlerts: () => ({
     alerts: [],
     activeAlerts: [],
@@ -107,7 +107,7 @@ vi.mock("@hooks/useAlerts", () => ({
   }),
 }));
 
-vi.mock("@hooks/useAlertPolling", () => ({
+vi.mock('@hooks/useAlertPolling', () => ({
   useAlertPolling: () => ({
     triggeredAlerts: [],
     isPolling: false,
@@ -118,7 +118,7 @@ vi.mock("@hooks/useAlertPolling", () => ({
   }),
 }));
 
-vi.mock("@services/notificationService", () => ({
+vi.mock('@services/notificationService', () => ({
   isNotificationSupported: () => true,
   getPermissionStatus: () => 'default',
   requestPermission: vi.fn().mockResolvedValue('granted'),
@@ -126,12 +126,12 @@ vi.mock("@services/notificationService", () => ({
   sendAlertNotification: vi.fn().mockReturnValue(true),
 }));
 
-describe("PortfolioPage", () => {
+describe('PortfolioPage', () => {
   beforeEach(() => {
-    vi.mock("@hooks/useCoinList", () => ({
+    vi.mock('@hooks/useCoinList', () => ({
       useCoinList: () => ({
         coins: [
-          { id: "btc", name: "Bitcoin", symbol: "btc", current_price: 3000 },
+          { id: 'btc', name: 'Bitcoin', symbol: 'btc', current_price: 3000 },
         ],
         loading: false,
         error: null,
@@ -139,69 +139,69 @@ describe("PortfolioPage", () => {
       }),
     }));
 
-    vi.mock("@hooks/usePriceMap", () => ({
+    vi.mock('@hooks/usePriceMap', () => ({
       usePriceMap: () => ({
         btc: 3000,
       }),
     }));
 
-    vi.mock("@hooks/useCoinSearch", () => ({
+    vi.mock('@hooks/useCoinSearch', () => ({
       useCoinSearch: () => ({
-        search: "",
+        search: '',
         setSearch: vi.fn(),
         filteredCoins: [
-          { id: "btc", name: "Bitcoin", symbol: "btc", current_price: 3000 },
+          { id: 'btc', name: 'Bitcoin', symbol: 'btc', current_price: 3000 },
         ],
       }),
     }));
   });
 
-  it("renders without crashing", () => {
+  it('renders without crashing', () => {
     render(
       <MemoryRouter>
         <PortfolioPage />
       </MemoryRouter>
     );
-    expect(screen.getByTestId("total-value")).toHaveTextContent(
+    expect(screen.getByTestId('total-value')).toHaveTextContent(
       /^💰\s*Total Portfolio Value:\s*\$\d{1,3}(,\d{3})*$/
     );
   });
 
-  it("shows the Add, Export, and Import buttons", () => {
+  it('shows the Add, Export, and Import buttons', () => {
     render(
       <MemoryRouter>
         <PortfolioPage />
       </MemoryRouter>
     );
     expect(
-      screen.getByRole("button", { name: /add asset/i })
+      screen.getByRole('button', { name: /add asset/i })
     ).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: /export/i })).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: /import/i })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /export/i })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /import/i })).toBeInTheDocument();
   });
 
-  it("displays the filter input and sort dropdown", () => {
+  it('displays the filter input and sort dropdown', () => {
     render(
       <MemoryRouter>
         <PortfolioPage />
       </MemoryRouter>
     );
     // Use getAllByTestId since there may be multiple filter inputs on the page
-    const filterInputs = screen.getAllByTestId("filter-input");
+    const filterInputs = screen.getAllByTestId('filter-input');
     expect(filterInputs.length).toBeGreaterThan(0);
-    
+
     // Use getAllByLabelText since there may be multiple sort dropdowns
     const sortDropdowns = screen.getAllByLabelText(/sort/i);
     expect(sortDropdowns.length).toBeGreaterThan(0);
   });
 
-  it("renders a static asset list row (placeholder content)", async () => {
+  it('renders a static asset list row (placeholder content)', async () => {
     vi.resetModules();
 
-    vi.doMock("@hooks/useCoinList", () => ({
+    vi.doMock('@hooks/useCoinList', () => ({
       useCoinList: () => ({
         coins: [
-          { id: "btc", name: "Bitcoin", symbol: "btc", current_price: 0 }, // still present
+          { id: 'btc', name: 'Bitcoin', symbol: 'btc', current_price: 0 }, // still present
         ],
         loading: false,
         error: null,
@@ -209,19 +209,19 @@ describe("PortfolioPage", () => {
       }),
     }));
 
-    vi.doMock("@hooks/usePriceMap", () => ({
+    vi.doMock('@hooks/usePriceMap', () => ({
       usePriceMap: () => ({}), // ✅ no prices, triggers fallback UI
     }));
 
-    vi.doMock("@hooks/useCoinSearch", () => ({
+    vi.doMock('@hooks/useCoinSearch', () => ({
       useCoinSearch: () => ({
-        search: "",
+        search: '',
         setSearch: vi.fn(),
         filteredCoins: [],
       }),
     }));
 
-    const { default: PortfolioPage } = await import("@pages/PortfolioPage");
+    const { default: PortfolioPage } = await import('@pages/PortfolioPage');
     const { getByText } = render(
       <MemoryRouter>
         <PortfolioPage />
@@ -234,20 +234,20 @@ describe("PortfolioPage", () => {
     // Fallback indicators
     expect(
       screen.getByText(
-        (_, el) => el?.textContent?.replace(/\s+/g, " ").trim() === "Price: —"
+        (_, el) => el?.textContent?.replace(/\s+/g, ' ').trim() === 'Price: —'
       )
     ).toBeInTheDocument();
 
     expect(
       screen.getByText(
-        (_, el) => el?.textContent?.replace(/\s+/g, " ").trim() === "Total: —"
+        (_, el) => el?.textContent?.replace(/\s+/g, ' ').trim() === 'Total: —'
       )
     ).toBeInTheDocument();
 
     expect(screen.getAllByText(/price fetch failed/i)).toHaveLength(2);
   });
 
-  it("renders DeleteConfirmationModal when delete is requested", async () => {
+  it('renders DeleteConfirmationModal when delete is requested', async () => {
     const { getByLabelText, getByTestId } = render(
       <MemoryRouter>
         <PortfolioPage />
@@ -255,13 +255,13 @@ describe("PortfolioPage", () => {
     );
 
     // Simulate delete click
-    const deleteButton = getByLabelText("Delete Bitcoin");
+    const deleteButton = getByLabelText('Delete Bitcoin');
     fireEvent.click(deleteButton);
 
     // Assert modal appears
-    expect(getByTestId("mock-delete-modal")).toBeInTheDocument();
+    expect(getByTestId('mock-delete-modal')).toBeInTheDocument();
   });
-  it("provides correct assetName to DeleteConfirmationModal", async () => {
+  it('provides correct assetName to DeleteConfirmationModal', async () => {
     const { getByLabelText, getByTestId } = render(
       <MemoryRouter>
         <PortfolioPage />
@@ -269,20 +269,20 @@ describe("PortfolioPage", () => {
     );
 
     // Trigger deletion of Bitcoin (BTC)
-    fireEvent.click(getByLabelText("Delete Bitcoin"));
+    fireEvent.click(getByLabelText('Delete Bitcoin'));
 
     // Assert modal contains Bitcoin's name
-    expect(getByTestId("mock-delete-modal")).toHaveTextContent(
-      "Confirm delete Bitcoin"
+    expect(getByTestId('mock-delete-modal')).toHaveTextContent(
+      'Confirm delete Bitcoin'
     );
   });
-  it("passes priceMap to usePortfolioState and totalValue to PortfolioHeader", async () => {
+  it('passes priceMap to usePortfolioState and totalValue to PortfolioHeader', async () => {
     const mockPriceMap = { btc: 3000 };
 
     const mockUsePortfolioState = vi.fn(() => ({
       portfolio: [
         {
-          coinInfo: { id: "btc", name: "Bitcoin", symbol: "btc" },
+          coinInfo: { id: 'btc', name: 'Bitcoin', symbol: 'btc' },
           quantity: 0.5,
         },
       ],
@@ -296,20 +296,20 @@ describe("PortfolioPage", () => {
 
     vi.resetModules(); // ✅ clear cache
 
-    vi.doMock("@hooks/usePriceMap", () => ({
+    vi.doMock('@hooks/usePriceMap', () => ({
       usePriceMap: () => mockPriceMap,
     }));
 
-    vi.doMock("@hooks/usePortfolioState", () => ({
+    vi.doMock('@hooks/usePortfolioState', () => ({
       usePortfolioState: mockUsePortfolioState,
     }));
 
-    vi.doMock("@components/PortfolioHeader", () => ({
+    vi.doMock('@components/PortfolioHeader', () => ({
       default: mockPortfolioHeader,
     }));
 
-    const { render } = await import("@testing-library/react");
-    const { default: PortfolioPage } = await import("@pages/PortfolioPage");
+    const { render } = await import('@testing-library/react');
+    const { default: PortfolioPage } = await import('@pages/PortfolioPage');
 
     render(
       <MemoryRouter>
@@ -325,7 +325,7 @@ describe("PortfolioPage", () => {
 
     expect(props).toEqual(
       expect.objectContaining({
-        totalValue: "12345",
+        totalValue: '12345',
         lastUpdatedAt: expect.any(Number),
       })
     );
@@ -338,26 +338,26 @@ describe("PortfolioPage", () => {
   });
 });
 
-describe("PortfolioPage delete flow", () => {
-  it("calls removeAsset and cancelDeleteAsset when confirm is clicked", () => {
+describe('PortfolioPage delete flow', () => {
+  it('calls removeAsset and cancelDeleteAsset when confirm is clicked', () => {
     const { getByTestId } = render(
       <MemoryRouter>
         <PortfolioPage />
       </MemoryRouter>
     );
 
-    const confirmButton = getByTestId("confirm-delete");
+    const confirmButton = getByTestId('confirm-delete');
     fireEvent.click(confirmButton);
 
-    expect(removeAsset).toHaveBeenCalledWith("btc");
+    expect(removeAsset).toHaveBeenCalledWith('btc');
     expect(cancelDeleteAsset).toHaveBeenCalled();
   });
 });
 
-describe("PortfolioPage (AddAssetModal rendering)", () => {
+describe('PortfolioPage (AddAssetModal rendering)', () => {
   beforeEach(() => {
     vi.resetModules(); // ensure isolation
-    vi.doMock("@hooks/usePortfolioState", () => ({
+    vi.doMock('@hooks/usePortfolioState', () => ({
       usePortfolioState: () => ({
         portfolio: [],
         addAsset: vi.fn(),
@@ -367,7 +367,7 @@ describe("PortfolioPage (AddAssetModal rendering)", () => {
       }),
     }));
 
-    vi.doMock("@hooks/useUIState", () => ({
+    vi.doMock('@hooks/useUIState', () => ({
       useUIState: () => ({
         shouldShowAddAssetModal: true,
         closeAddAssetModal: vi.fn(),
@@ -378,7 +378,7 @@ describe("PortfolioPage (AddAssetModal rendering)", () => {
       }),
     }));
 
-    vi.doMock("@components/AddAssetModal", () => ({
+    vi.doMock('@components/AddAssetModal', () => ({
       AddAssetModal: ({ onClose }: { onClose: () => void }) => (
         <div data-testid="mock-add-asset-modal">
           Add Modal
@@ -388,13 +388,13 @@ describe("PortfolioPage (AddAssetModal rendering)", () => {
     }));
   });
 
-  it("renders AddAssetModal when shouldShowAddAssetModal is true", async () => {
-    const { default: PortfolioPage } = await import("@pages/PortfolioPage");
+  it('renders AddAssetModal when shouldShowAddAssetModal is true', async () => {
+    const { default: PortfolioPage } = await import('@pages/PortfolioPage');
     const { getByTestId } = render(
       <MemoryRouter>
         <PortfolioPage />
       </MemoryRouter>
     );
-    expect(getByTestId("mock-add-asset-modal")).toBeInTheDocument();
+    expect(getByTestId('mock-add-asset-modal')).toBeInTheDocument();
   });
 });

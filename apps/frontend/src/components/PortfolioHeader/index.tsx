@@ -1,6 +1,6 @@
-import React from "react";
-import { useNavigate, NavLink } from "react-router-dom";
-import AlertButton from "@components/AlertButton";
+import React from 'react';
+import { useNavigate, NavLink } from 'react-router-dom';
+import AlertButton from '@components/AlertButton';
 
 type PortfolioHeaderProps = {
   totalValue?: string | number | null;
@@ -19,11 +19,11 @@ export default function PortfolioHeader({
 }: PortfolioHeaderProps) {
   const formattedValue =
     totalValue != null && !isNaN(Number(totalValue))
-      ? new Intl.NumberFormat("en-US", {
-        style: "currency",
-        currency: "USD",
-        maximumFractionDigits: 0,
-      }).format(Number(totalValue))
+      ? new Intl.NumberFormat('en-US', {
+          style: 'currency',
+          currency: 'USD',
+          maximumFractionDigits: 0,
+        }).format(Number(totalValue))
       : null;
 
   const relativeTime = lastUpdatedAt
@@ -56,18 +56,17 @@ export default function PortfolioHeader({
                 alt="Crypture"
               />
             </div>
-            <span className="text-xl font-bold text-white">
-              Crypture
-            </span>
+            <span className="text-xl font-bold text-white">Crypture</span>
           </a>
 
           <nav className="hidden md:flex items-center space-x-1">
             <NavLink
               to="/portfolio"
               className={({ isActive }) =>
-                `px-3 py-2 rounded-md text-sm font-medium transition-colors ${isActive
-                  ? "bg-white/20 text-white"
-                  : "text-white/80 hover:bg-white/10 hover:text-white"
+                `px-3 py-2 rounded-md text-sm font-medium transition-colors ${
+                  isActive
+                    ? 'bg-white/20 text-white'
+                    : 'text-white/80 hover:bg-white/10 hover:text-white'
                 }`
               }
             >
@@ -76,9 +75,10 @@ export default function PortfolioHeader({
             <NavLink
               to="/market"
               className={({ isActive }) =>
-                `px-3 py-2 rounded-md text-sm font-medium transition-colors ${isActive
-                  ? "bg-white/20 text-white"
-                  : "text-white/80 hover:bg-white/10 hover:text-white"
+                `px-3 py-2 rounded-md text-sm font-medium transition-colors ${
+                  isActive
+                    ? 'bg-white/20 text-white'
+                    : 'text-white/80 hover:bg-white/10 hover:text-white'
                 }`
               }
             >
@@ -97,28 +97,28 @@ export default function PortfolioHeader({
             />
           )}
 
-        <div className="text-right">
-          {formattedValue ? (
-            <div
-              className="text-xl font-brand text-white flex items-center gap-2"
-              data-testid="total-value"
-              aria-live="polite"
-            >
-              💰 <span>Total Portfolio Value: {formattedValue}</span>
-            </div>
-          ) : (
-            <div className="h-7"></div> // Spacer
-          )}
+          <div className="text-right">
+            {formattedValue ? (
+              <div
+                className="text-xl font-brand text-white flex items-center gap-2"
+                data-testid="total-value"
+                aria-live="polite"
+              >
+                💰 <span>Total Portfolio Value: {formattedValue}</span>
+              </div>
+            ) : (
+              <div className="h-7"></div> // Spacer
+            )}
 
-          {relativeTime && (
-            <p
-              className="text-sm text-white/70 font-medium mt-1"
-              aria-label={`Last updated ${relativeTime}`}
-            >
-              Last updated: {relativeTime}
-            </p>
-          )}
-        </div>
+            {relativeTime && (
+              <p
+                className="text-sm text-white/70 font-medium mt-1"
+                aria-label={`Last updated ${relativeTime}`}
+              >
+                Last updated: {relativeTime}
+              </p>
+            )}
+          </div>
         </div>
       </div>
     </header>

@@ -18,13 +18,13 @@ const DEFAULT_DURATIONS = {
 
 /**
  * Custom hook for consistent toast notifications across the application.
- * 
+ *
  * Wraps react-hot-toast with:
  * - Consistent durations for different notification types
  * - Custom styled toast components
  * - Proper ARIA labels for accessibility
  * - Screen reader announcements via aria-live regions
- * 
+ *
  * @example
  * const notifications = useNotifications();
  * notifications.success('Asset added successfully');
@@ -41,7 +41,13 @@ export function useNotifications() {
     };
 
     return toast.custom(
-      (t) => <SuccessToast message={message} icon={options.icon} visible={t.visible} />,
+      (t) => (
+        <SuccessToast
+          message={message}
+          icon={options.icon}
+          visible={t.visible}
+        />
+      ),
       toastOptions
     );
   };
@@ -56,7 +62,9 @@ export function useNotifications() {
     };
 
     return toast.custom(
-      (t) => <ErrorToast message={message} icon={options.icon} visible={t.visible} />,
+      (t) => (
+        <ErrorToast message={message} icon={options.icon} visible={t.visible} />
+      ),
       toastOptions
     );
   };
@@ -71,7 +79,13 @@ export function useNotifications() {
     };
 
     return toast.custom(
-      (t) => <WarningToast message={message} icon={options.icon} visible={t.visible} />,
+      (t) => (
+        <WarningToast
+          message={message}
+          icon={options.icon}
+          visible={t.visible}
+        />
+      ),
       toastOptions
     );
   };

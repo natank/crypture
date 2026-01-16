@@ -22,8 +22,12 @@ vi.mock('recharts', async () => {
   const OriginalModule = await vi.importActual('recharts');
   return {
     ...OriginalModule,
-    ResponsiveContainer: ({ children }: { children: React.ReactNode }) => <div data-testid="responsive-container">{children}</div>,
-    LineChart: ({ children }: { children: React.ReactNode }) => <div data-testid="line-chart">{children}</div>,
+    ResponsiveContainer: ({ children }: { children: React.ReactNode }) => (
+      <div data-testid="responsive-container">{children}</div>
+    ),
+    LineChart: ({ children }: { children: React.ReactNode }) => (
+      <div data-testid="line-chart">{children}</div>
+    ),
     CartesianGrid: () => <div data-testid="cartesian-grid" />,
     XAxis: () => <div data-testid="x-axis" />,
     YAxis: () => <div data-testid="y-axis" />,
@@ -47,7 +51,9 @@ describe('AssetChart', () => {
 
   it('renders the no data state correctly', () => {
     render(<AssetChart {...defaultProps} data={[]} />);
-    expect(screen.getByText('No data available to display chart.')).toBeInTheDocument();
+    expect(
+      screen.getByText('No data available to display chart.')
+    ).toBeInTheDocument();
   });
 
   it('renders the chart when data is provided', () => {
@@ -58,7 +64,9 @@ describe('AssetChart', () => {
 
   it('calls onTimeRangeChange when a time range button is clicked', () => {
     const handleTimeRangeChange = vi.fn();
-    render(<AssetChart {...defaultProps} onTimeRangeChange={handleTimeRangeChange} />);
+    render(
+      <AssetChart {...defaultProps} onTimeRangeChange={handleTimeRangeChange} />
+    );
 
     const button7D = screen.getByTestId('time-range-button-7');
     fireEvent.click(button7D);

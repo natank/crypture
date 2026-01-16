@@ -1,6 +1,6 @@
-import { useState, useEffect } from "react";
-import type { CoinDetails } from "types/market";
-import { fetchCoinDetails } from "@services/coinService";
+import { useState, useEffect } from 'react';
+import type { CoinDetails } from 'types/market';
+import { fetchCoinDetails } from '@services/coinService';
 
 export type CoinDetailsState = {
   data: CoinDetails | null;
@@ -37,7 +37,9 @@ export function useCoinDetails(coinId: string | undefined): CoinDetailsState {
         }
       } catch (err) {
         if (!cancelled) {
-          setError(err instanceof Error ? err.message : "Failed to fetch coin details");
+          setError(
+            err instanceof Error ? err.message : 'Failed to fetch coin details'
+          );
         }
       } finally {
         if (!cancelled) {

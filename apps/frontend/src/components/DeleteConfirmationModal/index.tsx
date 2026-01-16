@@ -1,5 +1,5 @@
-import React from "react";
-import { Trash2, X, Check } from "lucide-react";
+import React from 'react';
+import { Trash2, X, Check } from 'lucide-react';
 
 type DeleteConfirmationModalProps = {
   assetName: string;
@@ -23,7 +23,7 @@ export default function DeleteConfirmationModal({
       aria-modal="true"
       aria-labelledby="delete-modal-title"
     >
-      <div className="modal-content card flex flex-col gap-8 sm:gap-6 p-6 sm:p-8" >
+      <div className="modal-content card flex flex-col gap-8 sm:gap-6 p-6 sm:p-8">
         <h2
           id="delete-modal-title"
           className="text-2xl sm:text-3xl font-bold text-error text-balance mb-2 flex items-center gap-2"
@@ -32,7 +32,8 @@ export default function DeleteConfirmationModal({
           Remove {assetName}?
         </h2>
         <p className="text-base text-text-muted text-balance">
-          This action will permanently delete this asset from your portfolio.<br />
+          This action will permanently delete this asset from your portfolio.
+          <br />
           Are you sure you want to proceed?
         </p>
         <div className="flex justify-end gap-4 pt-4">

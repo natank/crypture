@@ -1,6 +1,6 @@
 /**
  * Validates a quantity input string for crypto asset editing.
- * 
+ *
  * Requirements:
  * - Must be a positive number
  * - Cannot be zero
@@ -8,7 +8,7 @@
  * - No special characters except decimal point
  * - Warns for unusually large values (> 1,000,000)
  * - Warns for dust amounts (< 0.00000001)
- * 
+ *
  * @param value - The string value to validate (from input field)
  * @returns Validation result with error message if invalid, warning if unusual
  */

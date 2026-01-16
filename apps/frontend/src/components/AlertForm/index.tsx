@@ -44,11 +44,13 @@ export default function AlertForm({
   }, [editAlert, availableCoins]);
 
   const filteredCoins = searchQuery
-    ? availableCoins.filter(
-        (coin) =>
-          coin.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-          coin.symbol.toLowerCase().includes(searchQuery.toLowerCase())
-      ).slice(0, 10)
+    ? availableCoins
+        .filter(
+          (coin) =>
+            coin.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+            coin.symbol.toLowerCase().includes(searchQuery.toLowerCase())
+        )
+        .slice(0, 10)
     : portfolioCoins.length > 0
       ? portfolioCoins.slice(0, 5)
       : availableCoins.slice(0, 5);
@@ -218,7 +220,9 @@ export default function AlertForm({
           Target Price (USD)
         </label>
         <div className="relative">
-          <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500">$</span>
+          <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500">
+            $
+          </span>
           <input
             type="number"
             value={targetPrice}
@@ -257,7 +261,11 @@ export default function AlertForm({
           disabled={isLoading}
           className="flex-1 py-2 px-4 bg-indigo-600 hover:bg-indigo-700 disabled:bg-indigo-400 text-white rounded-lg font-medium transition-colors focus-ring"
         >
-          {isLoading ? 'Saving...' : editAlert ? 'Update Alert' : 'Create Alert'}
+          {isLoading
+            ? 'Saving...'
+            : editAlert
+              ? 'Update Alert'
+              : 'Create Alert'}
         </button>
       </div>
     </form>

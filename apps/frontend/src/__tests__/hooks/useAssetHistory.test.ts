@@ -19,7 +19,9 @@ describe('useAssetHistory', () => {
   });
 
   it('should fetch and set history data successfully', async () => {
-    const mockedFetch = vi.spyOn(coinService, 'fetchAssetHistory').mockResolvedValue(mockHistoryData);
+    const mockedFetch = vi
+      .spyOn(coinService, 'fetchAssetHistory')
+      .mockResolvedValue(mockHistoryData);
 
     const { result } = renderHook(() => useAssetHistory());
 
@@ -47,7 +49,9 @@ describe('useAssetHistory', () => {
 
   it('should handle errors during fetch', async () => {
     const errorMessage = 'Unable to fetch price history';
-    const mockedFetch = vi.spyOn(coinService, 'fetchAssetHistory').mockRejectedValue(new Error(errorMessage));
+    const mockedFetch = vi
+      .spyOn(coinService, 'fetchAssetHistory')
+      .mockRejectedValue(new Error(errorMessage));
 
     const { result } = renderHook(() => useAssetHistory());
 
@@ -56,8 +60,8 @@ describe('useAssetHistory', () => {
     });
 
     // Need to wait for the final state update after the promise resolves
-    await new Promise(resolve => setTimeout(resolve, 0));
-    act(() => { });
+    await new Promise((resolve) => setTimeout(resolve, 0));
+    act(() => {});
 
     expect(mockedFetch).toHaveBeenCalledWith(assetId, days);
     expect(result.current.history).toBeNull();
@@ -66,7 +70,9 @@ describe('useAssetHistory', () => {
   });
 
   it('should set loading state correctly', async () => {
-    const mockedFetch = vi.spyOn(coinService, 'fetchAssetHistory').mockResolvedValue(mockHistoryData);
+    const mockedFetch = vi
+      .spyOn(coinService, 'fetchAssetHistory')
+      .mockResolvedValue(mockHistoryData);
     const { result } = renderHook(() => useAssetHistory());
 
     let promise: Promise<void>;

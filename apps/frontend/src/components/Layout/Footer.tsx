@@ -2,7 +2,7 @@ import React from 'react';
 
 export function Footer() {
   const currentYear = new Date().getFullYear();
-  
+
   const footerLinks = [
     {
       title: 'Product',
@@ -41,12 +41,12 @@ export function Footer() {
       <div className="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:py-16 lg:px-8">
         <div className="xl:grid xl:grid-cols-3 xl:gap-8">
           <div className="space-y-8 xl:col-span-1">
-            <a 
-              href="#" 
+            <a
+              href="#"
               onClick={(e) => {
                 e.preventDefault();
                 window.scrollTo({ top: 0, behavior: 'smooth' });
-              }} 
+              }}
               className="flex items-center space-x-2"
             >
               <img
@@ -71,7 +71,10 @@ export function Footer() {
                   rel="noopener noreferrer"
                 >
                   <span className="sr-only">{item.name}</span>
-                  <i className={`fab fa-${item.icon} h-6 w-6`} aria-hidden="true" />
+                  <i
+                    className={`fab fa-${item.icon} h-6 w-6`}
+                    aria-hidden="true"
+                  />
                 </a>
               ))}
             </div>

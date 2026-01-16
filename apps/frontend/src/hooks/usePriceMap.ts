@@ -1,6 +1,6 @@
 // src/hooks/usePriceMap.ts
-import { useMemo } from "react";
-import { type CoinInfo } from "@services/coinService";
+import { useMemo } from 'react';
+import { type CoinInfo } from '@services/coinService';
 
 export function usePriceMap(coins: CoinInfo[]) {
   return useMemo(() => {
@@ -10,7 +10,7 @@ export function usePriceMap(coins: CoinInfo[]) {
       const symbol = coin.symbol?.toLowerCase();
       const price = coin.current_price;
 
-      if (symbol && typeof price === "number" && !isNaN(price)) {
+      if (symbol && typeof price === 'number' && !isNaN(price)) {
         map[symbol] = price;
       }
     }

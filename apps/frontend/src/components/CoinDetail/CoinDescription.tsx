@@ -1,4 +1,4 @@
-import { useState, memo } from "react";
+import { useState, memo } from 'react';
 
 interface CoinDescriptionProps {
   description: string;
@@ -18,11 +18,12 @@ export const CoinDescription = memo(function CoinDescription({
   }
 
   // Strip HTML tags from description
-  const cleanDescription = description.replace(/<[^>]*>/g, "");
+  const cleanDescription = description.replace(/<[^>]*>/g, '');
   const isLong = cleanDescription.length > MAX_LENGTH;
-  const displayText = isExpanded || !isLong
-    ? cleanDescription
-    : `${cleanDescription.slice(0, MAX_LENGTH)}...`;
+  const displayText =
+    isExpanded || !isLong
+      ? cleanDescription
+      : `${cleanDescription.slice(0, MAX_LENGTH)}...`;
 
   return (
     <section
@@ -41,7 +42,7 @@ export const CoinDescription = memo(function CoinDescription({
           className="mt-3 text-primary hover:text-primary-dark text-sm font-medium focus-ring"
           aria-expanded={isExpanded}
         >
-          {isExpanded ? "Show less" : "Read more"}
+          {isExpanded ? 'Show less' : 'Read more'}
         </button>
       )}
     </section>

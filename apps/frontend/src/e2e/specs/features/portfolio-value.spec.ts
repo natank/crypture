@@ -1,28 +1,28 @@
-import { test, expect } from "@e2e/fixtures";
-import { mockCoinGeckoMarkets } from "@e2e/mocks/mockCoinGecko";
+import { test, expect } from '@e2e/fixtures';
+import { mockCoinGeckoMarkets } from '@e2e/mocks/mockCoinGecko';
 
-test.describe("Portfolio value display", () => {
-  test("should show BTC value = $15,000 when added at 0.5 @ $30k", async ({
+test.describe('Portfolio value display', () => {
+  test('should show BTC value = $15,000 when added at 0.5 @ $30k', async ({
     portfolioPage,
     addAssetModal,
   }) => {
     await mockCoinGeckoMarkets(portfolioPage.page);
 
-    await addAssetModal.openAndAdd("BTC", 0.5);
+    await addAssetModal.openAndAdd('BTC', 0.5);
 
-    const btcRow = portfolioPage.assetRow("BTC");
-    await expect(btcRow).toContainText("Price: $30,000");
-    await expect(btcRow).toContainText("Total: $15,000");
-    await expect(portfolioPage.header).toContainText("$15,000");
+    const btcRow = portfolioPage.assetRow('BTC');
+    await expect(btcRow).toContainText('Price: $30,000');
+    await expect(btcRow).toContainText('Total: $15,000');
+    await expect(portfolioPage.header).toContainText('$15,000');
   });
 
-  test("should show global and inline fallback when price fetch fails", async ({
+  test('should show global and inline fallback when price fetch fails', async ({
     portfolioPage,
     addAssetModal,
   }) => {
     // 1. Simulate CoinGecko API failure
-    await portfolioPage.page.route("**/coins/markets**", (route) =>
-      route.fulfill({ status: 500, body: "Internal Server Error" })
+    await portfolioPage.page.route('**/coins/markets**', (route) =>
+      route.fulfill({ status: 500, body: 'Internal Server Error' })
     );
 
     // 2. Load the page
@@ -44,10 +44,10 @@ test.describe("Portfolio value display", () => {
     await expect(modalInlineError).toContainText(/error|failed/i);
 
     // 6. Asset <select> is not rendered
-    const assetSelect = portfolioPage.page.locator("select#asset-select");
+    const assetSelect = portfolioPage.page.locator('select#asset-select');
     await expect(assetSelect).toHaveCount(0);
   });
-  test("should update BTC value when price changes via polling", async ({
+  test('should update BTC value when price changes via polling', async ({
     portfolioPage,
     addAssetModal,
   }) => {
@@ -56,22 +56,22 @@ test.describe("Portfolio value display", () => {
       BTC: 30000,
     });
 
-    await addAssetModal.openAndAdd("BTC", 0.5);
+    await addAssetModal.openAndAdd('BTC', 0.5);
 
-    const btcRow = portfolioPage.assetRow("BTC");
-    await expect(btcRow).toContainText("Total: $15,000");
+    const btcRow = portfolioPage.assetRow('BTC');
+    await expect(btcRow).toContainText('Total: $15,000');
 
     // 2. Mock API to respond with BTC @ $40,000 on next fetch
-    await portfolioPage.page.unroute("**/coins/markets**"); // remove old handler
-    await portfolioPage.page.route("**/coins/markets**", (route) => {
+    await portfolioPage.page.unroute('**/coins/markets**'); // remove old handler
+    await portfolioPage.page.route('**/coins/markets**', (route) => {
       route.fulfill({
         status: 200,
-        contentType: "application/json",
+        contentType: 'application/json',
         body: JSON.stringify([
           {
-            id: "bitcoin",
-            symbol: "btc",
-            name: "Bitcoin",
+            id: 'bitcoin',
+            symbol: 'btc',
+            name: 'Bitcoin',
             current_price: 40000,
           },
         ]),
@@ -82,9 +82,9 @@ test.describe("Portfolio value display", () => {
     await portfolioPage.reload();
 
     // 4. Verify updated value deterministically
-    const btcRowAfter = portfolioPage.assetRow("BTC");
-    await expect(btcRowAfter).toContainText("Total: $20,000");
+    const btcRowAfter = portfolioPage.assetRow('BTC');
+    await expect(btcRowAfter).toContainText('Total: $20,000');
 
-    await expect(portfolioPage.header).toContainText("$20,000");
+    await expect(portfolioPage.header).toContainText('$20,000');
   });
 });

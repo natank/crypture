@@ -7,7 +7,11 @@ import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import AlertForm from '@components/AlertForm';
 import AlertList from '@components/AlertList';
-import type { PriceAlert, CreateAlertInput, UpdateAlertInput } from 'types/alert';
+import type {
+  PriceAlert,
+  CreateAlertInput,
+  UpdateAlertInput,
+} from 'types/alert';
 import type { MarketCoin } from 'types/market';
 
 interface AlertsPanelProps {
@@ -43,7 +47,6 @@ export default function AlertsPanel({
   muteAlert,
   reactivateAlert,
 }: AlertsPanelProps) {
-
   const [showForm, setShowForm] = useState(false);
   const [editingAlert, setEditingAlert] = useState<PriceAlert | null>(null);
   const panelRef = useRef<HTMLDivElement>(null);

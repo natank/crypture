@@ -1,4 +1,13 @@
-import type { GlobalMarketData, GlobalMarketApiResponse, TrendingCoin, TrendingApiResponse, MarketMover, Category, MarketCoin, CoinDetails } from "types/market";
+import type {
+  GlobalMarketData,
+  GlobalMarketApiResponse,
+  TrendingCoin,
+  TrendingApiResponse,
+  MarketMover,
+  Category,
+  MarketCoin,
+  CoinDetails,
+} from 'types/market';
 
 export type CoinInfo = {
   id: string;
@@ -33,11 +42,11 @@ export async function fetchTopCoins(): Promise<CoinInfo[]> {
   } catch (error: unknown) {
     if (
       error instanceof Error &&
-      error.message.startsWith("CoinGecko API error")
+      error.message.startsWith('CoinGecko API error')
     ) {
       throw error;
     }
-    throw new Error("Unable to fetch coin list");
+    throw new Error('Unable to fetch coin list');
   }
 }
 
@@ -68,18 +77,19 @@ export async function fetchAssetHistory(
   } catch (error: unknown) {
     if (
       error instanceof Error &&
-      error.message.startsWith("CoinGecko API error")
+      error.message.startsWith('CoinGecko API error')
     ) {
       throw error;
     }
-    throw new Error("Unable to fetch asset history");
+    throw new Error('Unable to fetch asset history');
   }
 }
 
 // Cache for global market data
 
 const CACHE_DURATION = 10 * 60 * 1000; // 10 minutes
-let globalMarketCache: { data: GlobalMarketData; timestamp: number } | null = null;
+let globalMarketCache: { data: GlobalMarketData; timestamp: number } | null =
+  null;
 
 export const clearGlobalMarketCache = () => {
   globalMarketCache = null;
@@ -87,7 +97,10 @@ export const clearGlobalMarketCache = () => {
 
 export async function fetchGlobalMarketData(): Promise<GlobalMarketData> {
   // Check cache first
-  if (globalMarketCache && (Date.now() - globalMarketCache.timestamp) < CACHE_DURATION) {
+  if (
+    globalMarketCache &&
+    Date.now() - globalMarketCache.timestamp < CACHE_DURATION
+  ) {
     return globalMarketCache.data;
   }
 
@@ -124,11 +137,11 @@ export async function fetchGlobalMarketData(): Promise<GlobalMarketData> {
   } catch (error: unknown) {
     if (
       error instanceof Error &&
-      error.message.startsWith("CoinGecko API error")
+      error.message.startsWith('CoinGecko API error')
     ) {
       throw error;
     }
-    throw new Error("Unable to fetch global market data");
+    throw new Error('Unable to fetch global market data');
   }
 }
 
@@ -147,15 +160,18 @@ export async function fetchTrendingCoins(): Promise<TrendingCoin[]> {
   } catch (error: unknown) {
     if (
       error instanceof Error &&
-      error.message.startsWith("CoinGecko API error")
+      error.message.startsWith('CoinGecko API error')
     ) {
       throw error;
     }
-    throw new Error("Unable to fetch trending coins");
+    throw new Error('Unable to fetch trending coins');
   }
 }
 
-export async function fetchTopMovers(): Promise<{ gainers: MarketMover[]; losers: MarketMover[] }> {
+export async function fetchTopMovers(): Promise<{
+  gainers: MarketMover[];
+  losers: MarketMover[];
+}> {
   const BASE_URL = `https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&per_page=5&page=1&x_cg_demo_api_key=${API_KEY}`;
   const GAINERS_URL = `${BASE_URL}&order=price_change_percentage_24h_desc`;
   const LOSERS_URL = `${BASE_URL}&order=price_change_percentage_24h_asc`;
@@ -163,7 +179,7 @@ export async function fetchTopMovers(): Promise<{ gainers: MarketMover[]; losers
   try {
     const [gainersRes, losersRes] = await Promise.all([
       fetch(GAINERS_URL),
-      fetch(LOSERS_URL)
+      fetch(LOSERS_URL),
     ]);
 
     if (!gainersRes.ok || !losersRes.ok) {
@@ -177,11 +193,11 @@ export async function fetchTopMovers(): Promise<{ gainers: MarketMover[]; losers
   } catch (error: unknown) {
     if (
       error instanceof Error &&
-      error.message.startsWith("CoinGecko API error")
+      error.message.startsWith('CoinGecko API error')
     ) {
       throw error;
     }
-    throw new Error("Unable to fetch top movers");
+    throw new Error('Unable to fetch top movers');
   }
 }
 
@@ -200,15 +216,17 @@ export async function fetchCategories(): Promise<Category[]> {
   } catch (error: unknown) {
     if (
       error instanceof Error &&
-      error.message.startsWith("CoinGecko API error")
+      error.message.startsWith('CoinGecko API error')
     ) {
       throw error;
     }
-    throw new Error("Unable to fetch categories");
+    throw new Error('Unable to fetch categories');
   }
 }
 
-export async function fetchMarketCoins(category?: string): Promise<MarketCoin[]> {
+export async function fetchMarketCoins(
+  category?: string
+): Promise<MarketCoin[]> {
   let url = `https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=100&page=1&sparkline=false&x_cg_demo_api_key=${API_KEY}`;
 
   if (category) {
@@ -227,22 +245,25 @@ export async function fetchMarketCoins(category?: string): Promise<MarketCoin[]>
   } catch (error: unknown) {
     if (
       error instanceof Error &&
-      error.message.startsWith("CoinGecko API error")
+      error.message.startsWith('CoinGecko API error')
     ) {
       throw error;
     }
-    throw new Error("Unable to fetch market coins");
+    throw new Error('Unable to fetch market coins');
   }
 }
 
 // Cache for asset metrics data
-const assetMetricsCache: Map<string, { data: MarketCoin; timestamp: number }> = new Map();
+const assetMetricsCache: Map<string, { data: MarketCoin; timestamp: number }> =
+  new Map();
 const ASSET_METRICS_CACHE_DURATION = 5 * 60 * 1000; // 5 minutes
 
-export async function fetchAssetMetrics(coinId: string): Promise<MarketCoin | null> {
+export async function fetchAssetMetrics(
+  coinId: string
+): Promise<MarketCoin | null> {
   // Check cache first
   const cached = assetMetricsCache.get(coinId);
-  if (cached && (Date.now() - cached.timestamp) < ASSET_METRICS_CACHE_DURATION) {
+  if (cached && Date.now() - cached.timestamp < ASSET_METRICS_CACHE_DURATION) {
     return cached.data;
   }
 
@@ -256,13 +277,13 @@ export async function fetchAssetMetrics(coinId: string): Promise<MarketCoin | nu
     }
 
     const data: MarketCoin[] = await response.json();
-    
+
     if (data.length === 0) {
       return null;
     }
 
     const coinData = data[0];
-    
+
     // Update cache
     assetMetricsCache.set(coinId, {
       data: coinData,
@@ -273,22 +294,23 @@ export async function fetchAssetMetrics(coinId: string): Promise<MarketCoin | nu
   } catch (error: unknown) {
     if (
       error instanceof Error &&
-      error.message.startsWith("CoinGecko API error")
+      error.message.startsWith('CoinGecko API error')
     ) {
       throw error;
     }
-    throw new Error("Unable to fetch asset metrics");
+    throw new Error('Unable to fetch asset metrics');
   }
 }
 
 // Cache for coin details data (REQ-014)
-const coinDetailsCache: Map<string, { data: CoinDetails; timestamp: number }> = new Map();
+const coinDetailsCache: Map<string, { data: CoinDetails; timestamp: number }> =
+  new Map();
 const COIN_DETAILS_CACHE_DURATION = 10 * 60 * 1000; // 10 minutes
 
 export async function fetchCoinDetails(coinId: string): Promise<CoinDetails> {
   // Check cache first
   const cached = coinDetailsCache.get(coinId);
-  if (cached && (Date.now() - cached.timestamp) < COIN_DETAILS_CACHE_DURATION) {
+  if (cached && Date.now() - cached.timestamp < COIN_DETAILS_CACHE_DURATION) {
     return cached.data;
   }
 
@@ -299,13 +321,13 @@ export async function fetchCoinDetails(coinId: string): Promise<CoinDetails> {
 
     if (!response.ok) {
       if (response.status === 404) {
-        throw new Error("Coin not found");
+        throw new Error('Coin not found');
       }
       throw new Error(`CoinGecko API error: ${response.status}`);
     }
 
     const data: CoinDetails = await response.json();
-    
+
     // Update cache
     coinDetailsCache.set(coinId, {
       data,
@@ -316,10 +338,11 @@ export async function fetchCoinDetails(coinId: string): Promise<CoinDetails> {
   } catch (error: unknown) {
     if (
       error instanceof Error &&
-      (error.message.startsWith("CoinGecko API error") || error.message === "Coin not found")
+      (error.message.startsWith('CoinGecko API error') ||
+        error.message === 'Coin not found')
     ) {
       throw error;
     }
-    throw new Error("Unable to fetch coin details");
+    throw new Error('Unable to fetch coin details');
   }
 }

@@ -1,15 +1,15 @@
-import React from "react";
-import { describe, it, expect, vi } from "vitest";
-import { render, screen, fireEvent } from "@testing-library/react";
-import { AssetSelector } from "@components/AssetSelector";
+import React from 'react';
+import { describe, it, expect, vi } from 'vitest';
+import { render, screen, fireEvent } from '@testing-library/react';
+import { AssetSelector } from '@components/AssetSelector';
 
 const mockCoins = [
-  { id: "bitcoin", name: "Bitcoin", symbol: "BTC", current_price: 30000 },
-  { id: "ethereum", name: "Ethereum", symbol: "ETH", current_price: 2000 },
+  { id: 'bitcoin', name: 'Bitcoin', symbol: 'BTC', current_price: 30000 },
+  { id: 'ethereum', name: 'Ethereum', symbol: 'ETH', current_price: 2000 },
 ];
 
-describe("AssetSelector (refactored)", () => {
-  it("renders dropdown options", () => {
+describe('AssetSelector (refactored)', () => {
+  it('renders dropdown options', () => {
     render(
       <AssetSelector
         id="asset-select"
@@ -20,12 +20,12 @@ describe("AssetSelector (refactored)", () => {
       />
     );
 
-    expect(screen.getByText("Select a crypto asset")).toBeInTheDocument();
-    expect(screen.getByText("Bitcoin (BTC)")).toBeInTheDocument();
-    expect(screen.getByText("Ethereum (ETH)")).toBeInTheDocument();
+    expect(screen.getByText('Select a crypto asset')).toBeInTheDocument();
+    expect(screen.getByText('Bitcoin (BTC)')).toBeInTheDocument();
+    expect(screen.getByText('Ethereum (ETH)')).toBeInTheDocument();
   });
 
-  it("calls onSelect when asset is selected", () => {
+  it('calls onSelect when asset is selected', () => {
     const onSelect = vi.fn();
 
     render(
@@ -37,14 +37,14 @@ describe("AssetSelector (refactored)", () => {
       />
     );
 
-    fireEvent.change(screen.getByRole("combobox"), {
-      target: { value: "ethereum" },
+    fireEvent.change(screen.getByRole('combobox'), {
+      target: { value: 'ethereum' },
     });
 
     expect(onSelect).toHaveBeenCalledWith(mockCoins[1]);
   });
 
-  it("calls onSearchChange when input changes", () => {
+  it('calls onSearchChange when input changes', () => {
     const onSearchChange = vi.fn();
 
     render(
@@ -56,14 +56,14 @@ describe("AssetSelector (refactored)", () => {
       />
     );
 
-    fireEvent.change(screen.getByPlaceholderText("Search assets..."), {
-      target: { value: "btc" },
+    fireEvent.change(screen.getByPlaceholderText('Search assets...'), {
+      target: { value: 'btc' },
     });
 
-    expect(onSearchChange).toHaveBeenCalledWith("btc");
+    expect(onSearchChange).toHaveBeenCalledWith('btc');
   });
 
-  it("disables select and input when `disabled` is true", () => {
+  it('disables select and input when `disabled` is true', () => {
     render(
       <AssetSelector
         coins={mockCoins}
@@ -74,7 +74,7 @@ describe("AssetSelector (refactored)", () => {
       />
     );
 
-    expect(screen.getByRole("combobox")).toBeDisabled();
-    expect(screen.getByPlaceholderText("Search assets...")).toBeDisabled();
+    expect(screen.getByRole('combobox')).toBeDisabled();
+    expect(screen.getByPlaceholderText('Search assets...')).toBeDisabled();
   });
 });

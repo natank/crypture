@@ -32,7 +32,7 @@ const AssetChart: React.FC<AssetChartProps> = ({
   isLoading,
   error,
   onTimeRangeChange,
-  selectedTimeRange
+  selectedTimeRange,
 }) => {
   if (isLoading) {
     return <div className="text-center p-4">Loading chart data...</div>;
@@ -43,11 +43,16 @@ const AssetChart: React.FC<AssetChartProps> = ({
   }
 
   if (!data || data.length === 0) {
-    return <div className="text-center p-4">No data available to display chart.</div>;
+    return (
+      <div className="text-center p-4">No data available to display chart.</div>
+    );
   }
 
   const formattedData = data.map(([timestamp, price]) => ({
-    date: new Date(timestamp).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }),
+    date: new Date(timestamp).toLocaleDateString('en-US', {
+      month: 'short',
+      day: 'numeric',
+    }),
     price: price,
   }));
 
@@ -61,10 +66,12 @@ const AssetChart: React.FC<AssetChartProps> = ({
               key={days}
               onClick={() => onTimeRangeChange(days)}
               data-testid={`time-range-button-${days}`}
-              className={`px-3 py-1 text-sm rounded-md transition-colors ${selectedTimeRange === days
+              className={`px-3 py-1 text-sm rounded-md transition-colors ${
+                selectedTimeRange === days
                   ? 'bg-brand-primary text-white'
                   : 'bg-surface-soft hover:bg-surface-medium'
-                }`}>
+              }`}
+            >
               {days === 365 ? '1Y' : `${days}D`}
             </button>
           ))}
@@ -81,7 +88,12 @@ const AssetChart: React.FC<AssetChartProps> = ({
             fontSize={12}
             tickFormatter={(value) => currencyFormatter.format(value)}
           />
-          <Tooltip formatter={(value: number) => [currencyFormatter.format(value), 'Price']} />
+          <Tooltip
+            formatter={(value: number) => [
+              currencyFormatter.format(value),
+              'Price',
+            ]}
+          />
           <Legend />
           <Line
             type="monotone"
