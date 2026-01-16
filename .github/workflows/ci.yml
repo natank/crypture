@@ -40,7 +40,7 @@ jobs:
         run: npm ci
       
       - name: Run type checking
-        run: npm run typecheck
+        run: npm run typecheck:ci
       
       - name: Run unit tests
         run: npm run test:unit

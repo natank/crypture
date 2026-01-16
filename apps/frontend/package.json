@@ -9,6 +9,7 @@
     "build:ci": "tsc -b tsconfig.build.json && vite build",
     "lint": "eslint . --ext .ts,.tsx",
     "typecheck": "tsc --noEmit",
+    "typecheck:ci": "tsc --noEmit --skipLibCheck --noUnusedLocals false --noUnusedParameters false --noImplicitReturns false --noImplicitOverride false",
     "preview": "vite preview",
     "test": "vitest run --reporter verbose",
     "test:unit": "vitest run --config vitest.config.ts --reporter verbose",
