@@ -5,10 +5,12 @@ on:
     branches: [ main, develop, phase-2-backend-implementation ]
     paths:
       - 'apps/backend-proxy/**'
+      - '.github/workflows/backend-ci.yml'
   pull_request:
     branches: [ main, develop ]
     paths:
       - 'apps/backend-proxy/**'
+      - '.github/workflows/backend-ci.yml'
   workflow_dispatch:
     inputs:
       test_type:
