@@ -193,7 +193,8 @@ This implementation plan breaks down the INFRA-01 story into granular 1-2 day ta
 - [ ] Environment variable setup
 - [ ] Basic health check endpoint
 - [ ] Podman container configuration (Containerfile)
-- [ ] Container development environment setup
+- [ ] Podman Compose configuration for multi-service development
+- [ ] Container development environment setup (backend + database)
 - [ ] Local containerized development workflow
 
 **Technical Validation:**
@@ -202,13 +203,15 @@ This implementation plan breaks down the INFRA-01 story into granular 1-2 day ta
 - [ ] TypeScript compilation succeeds
 - [ ] Jest tests run without errors
 - [ ] Podman container builds and runs successfully
+- [ ] Podman Compose starts all services successfully
 - [ ] Containerized development workflow functional
 - [ ] Environment variables work in container
+- [ ] Multi-service communication (backend + database) works
 
 **Rollback Procedure:**
 - Delete `apps/backend-proxy/` directory
 - Remove backend dependencies from root `package.json`
-- Remove Podman configuration files
+- Remove Podman configuration files (Containerfile, podman-compose.yml)
 
 ---
 
@@ -411,6 +414,7 @@ T1.1 → T1.2 → T1.3 → T1.4 → T2.1 → T2.2 → T2.3 → T2.4 → T3.1 →
 - [ ] Zero API key exposure
 - [ ] Frontend using proxy client
 - [ ] Podman container builds and runs successfully
+- [ ] Podman Compose multi-service environment functional
 - [ ] Containerized development workflow functional
 
 ### **Quality Gate 3: End of Phase 3**
