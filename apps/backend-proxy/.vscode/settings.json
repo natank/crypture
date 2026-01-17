@@ -1,0 +1,20 @@
+{
+  "typescript.preferences.includePackageJsonAutoImports": "on",
+  "typescript.suggest.autoImports": true,
+  "typescript.updateImportsOnFileMove.enabled": "always",
+  "typescript.preferences.importModuleSpecifier": "relative",
+  "typescript.tsc.autoDetect": "off",
+  "typescript.validate.enable": true,
+  "typescript.tsdk": "node_modules/typescript/lib",
+  "typescript.preferences.quoteStyle": "single",
+  "typescript.tsserver.experimental.enableProjectDiagnostics": false,
+  "typescript.workspaceSymbols.scope": "allOpenProjects",
+  "jest.jestCommandLine": "npm run test",
+  "jest.enableCodeLens": true,
+  "jest.showCoverageOnLoad": true,
+  "jest.autoEnable": true,
+  "files.associations": {
+    "*.test.ts": "typescript",
+    "*.spec.ts": "typescript"
+  }
+}

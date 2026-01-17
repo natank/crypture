@@ -1,0 +1,21 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "noUnusedLocals": false,
+    "noUnusedParameters": false,
+    "noImplicitOverride": false,
+    "exactOptionalPropertyTypes": false,
+    "rootDir": "."
+  },
+  "include": [
+    "src/**/*",
+    "src/**/*.d.ts",
+    "tests/**/*",
+    "tests/**/*.d.ts"
+  ],
+  "exclude": [
+    "node_modules",
+    "dist",
+    "coverage"
+  ]
+}
