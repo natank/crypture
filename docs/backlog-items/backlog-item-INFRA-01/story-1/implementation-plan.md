@@ -34,10 +34,15 @@ This implementation plan breaks down the INFRA-01 story into granular 1-2 day ta
 ### **Phase 2: Backend Implementation (Week 2)**
 | Day | Task ID | Task Description | Effort | Dependencies |
 |-----|---------|-----------------|--------|--------------|
-| 6-8.75 | T2.1 | Create Express.js backend service structure | 3.75 days | T1.4 |
-| 9 | T2.2 | Implement CoinGecko API proxy endpoints | 1 day | T2.1 |
-| 10 | T2.3 | Add rate limiting and security middleware | 1 day | T2.2 |
-| 11 | T2.4 | Create shared libraries (types, api-client, utils) | 1 day | T2.3 |
+| 6 | T2.1.0 | Backend Service Foundation | 0.5 day | T1.4 |
+| 6 | T2.1.1 | Testing Foundation | 0.5 day | T2.1.0 |
+| 6.5 | T2.1.2 | Containerization | 0.5 day | T2.1.1 |
+| 6.5 | T2.1.3 | Development Environment | 0.5 day | T2.1.2 |
+| 7 | T2.1.4 | API Documentation | 0.25 day | T2.1.3 |
+| 7-7.75 | T2.1.5 | Advanced Testing & CI/CD | 0.75 day | T2.1.4 |
+| 8 | T2.2 | Implement CoinGecko API Proxy Endpoints | 1 day | T2.1.5 |
+| 9 | T2.3 | Add rate limiting and security middleware | 1 day | T2.2 |
+| 10 | T2.4 | Create shared libraries (types, api-client, utils) | 1 day | T2.3 |
 
 ### **Phase 3: Production Readiness (Week 3)**
 | Day | Task ID | Task Description | Effort | Dependencies |
@@ -182,59 +187,155 @@ This implementation plan breaks down the INFRA-01 story into granular 1-2 day ta
 
 ### **Phase 2: Backend Implementation (Week 2)**
 
-#### **T2.1: Create Express.js Backend Service Structure**
-**Duration:** 3.75 days (0.5 day containerization + 0.5 day dev enhancements + 0.75 day Testcontainers)  
+#### **T2.1.0: Backend Service Foundation**
+**Duration:** 0.5 day  
 **Owner:** Backend Development Senior  
+**Dependencies:** T1.4  
 **Acceptance Criteria:**
 - [ ] `apps/backend-proxy/` directory structure created
 - [ ] Express.js server setup in `src/main.ts`
 - [ ] TypeScript configuration for backend
-- [ ] Jest testing configuration (unit tests)
-- [ ] Supertest integration testing framework
-- [ ] Testcontainers setup for backend integration tests
-- [ ] Hybrid testing approach (simple + Testcontainers)
 - [ ] Environment variable setup
 - [ ] Basic health check endpoint
+
+**Technical Validation:**
+- [ ] Backend service starts successfully
+- [ ] Health check endpoint responds
+- [ ] TypeScript compilation succeeds
+
+**Rollback Procedure:**
+- Delete `apps/backend-proxy/` directory
+- Remove backend dependencies from root `package.json`
+
+---
+
+#### **T2.1.1: Testing Foundation**
+**Duration:** 0.5 day  
+**Owner:** Backend Development Senior  
+**Dependencies:** T2.1.0  
+**Acceptance Criteria:**
+- [ ] Jest testing configuration (unit tests)
+- [ ] Supertest integration testing framework
+- [ ] Basic unit tests for health endpoint
+- [ ] Basic integration tests for health endpoint
+- [ ] Development scripts (dev, build, test, clean)
+
+**Technical Validation:**
+- [ ] Jest unit tests run without errors
+- [ ] Supertest integration tests pass
+- [ ] Development scripts execute correctly
+
+**Rollback Procedure:**
+- Remove Jest and Supertest configurations
+- Remove test files and scripts
+
+---
+
+#### **T2.1.2: Containerization**
+**Duration:** 0.5 day  
+**Owner:** Backend Development Senior  
+**Dependencies:** T2.1.1  
+**Acceptance Criteria:**
 - [ ] Podman container configuration (Containerfile)
 - [ ] Podman Compose configuration for backend service
+- [ ] Container builds and runs successfully
+- [ ] Local containerized development workflow
+
+**Technical Validation:**
+- [ ] Podman container builds and runs successfully
+- [ ] Podman Compose starts backend service successfully
+- [ ] Environment variables work in container
+
+**Rollback Procedure:**
+- Remove Podman configuration files (Containerfile, podman-compose.yml)
+
+---
+
+#### **T2.1.3: Development Environment**
+**Duration:** 0.5 day  
+**Owner:** Backend Development Senior  
+**Dependencies:** T2.1.2  
+**Acceptance Criteria:**
 - [ ] Hot reloading configuration for development
 - [ ] Request/response logging middleware
 - [ ] CORS configuration for frontend integration
-- [ ] API documentation (Swagger/OpenAPI)
-- [ ] Development scripts (dev, build, test, clean)
 - [ ] Environment validation on startup
-- [ ] Local containerized development workflow
+
+**Technical Validation:**
+- [ ] Hot reloading works in development
+- [ ] Request logging captures API calls
+- [ ] CORS allows frontend requests
+- [ ] Environment validation works
+
+**Rollback Procedure:**
+- Remove development environment configurations
+- Remove middleware and validation code
+
+---
+
+#### **T2.1.4: API Documentation**
+**Duration:** 0.25 day  
+**Owner:** Backend Development Senior  
+**Dependencies:** T2.1.3  
+**Acceptance Criteria:**
+- [ ] API documentation (Swagger/OpenAPI)
+- [ ] Development documentation and README
+- [ ] API endpoints documented
+
+**Technical Validation:**
+- [ ] Swagger documentation accessible
+- [ ] API documentation complete and accurate
+
+**Rollback Procedure:**
+- Remove Swagger/OpenAPI configuration
+- Remove documentation files
+
+---
+
+#### **T2.1.5: Advanced Testing & CI/CD**
+**Duration:** 0.75 day  
+**Owner:** Backend Development Senior  
+**Dependencies:** T2.1.4  
+**Acceptance Criteria:**
+- [ ] Testcontainers setup for backend integration tests
+- [ ] Hybrid testing approach (simple + Testcontainers)
 - [ ] GitHub Actions workflow for backend tests
 - [ ] Testcontainers CI/CD integration
 - [ ] Container reuse optimization for CI
 - [ ] Parallel test execution setup
 
 **Technical Validation:**
-- [ ] Backend service starts successfully
-- [ ] Health check endpoint responds
-- [ ] TypeScript compilation succeeds
-- [ ] Jest unit tests run without errors
-- [ ] Supertest integration tests pass
 - [ ] Testcontainers integration tests pass
-- [ ] Hybrid testing approach functional (both test types work)
-- [ ] Podman container builds and runs successfully
-- [ ] Podman Compose starts backend service successfully
-- [ ] Containerized development workflow functional
-- [ ] Environment variables work in container
-- [ ] Hot reloading works in development
-- [ ] Request logging captures API calls
-- [ ] CORS allows frontend requests
-- [ ] Swagger documentation accessible
-- [ ] Development scripts execute correctly
+- [ ] Hybrid testing approach functional
 - [ ] GitHub Actions workflow runs successfully
 - [ ] Testcontainers tests pass in CI/CD
 - [ ] Container reuse optimization works in CI
 - [ ] Parallel test execution functional
 
 **Rollback Procedure:**
-- Delete `apps/backend-proxy/` directory
-- Remove backend dependencies from root `package.json`
-- Remove Podman configuration files (Containerfile, podman-compose.yml)
+- Remove Testcontainers configuration
+- Remove GitHub Actions workflow files
+- Remove advanced test configurations
+
+---
+
+### **T2.1: Complete Backend Service Structure**
+**Total Duration:** 3.75 days (T2.1.0 through T2.1.5)  
+**Owner:** Backend Development Senior  
+**Dependencies:** T1.4  
+
+**Task Dependency Flow:**
+```
+T2.1.0 (Foundation) → T2.1.1 (Testing) → T2.1.2 (Containerization)
+                                   ↓
+T2.1.3 (Dev Environment) → T2.1.4 (Documentation) → T2.1.5 (Advanced Testing)
+```
+
+**Overall Quality Gate:**
+- [ ] All T2.1.0-2.1.5 quality gates passed
+- [ ] Complete backend service functional
+- [ ] All testing approaches working
+- [ ] CI/CD pipeline operational
 
 ---
 
