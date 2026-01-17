@@ -4,6 +4,18 @@ import helmet from 'helmet';
 import morgan from 'morgan';
 import dotenv from 'dotenv';
 import { healthRouter } from './routes/health';
+import { 
+  requestLogger, 
+  responseLogger, 
+  errorLogger, 
+  morganLogger, 
+  apiLogger 
+} from './middleware/logger';
+import { 
+  corsMiddleware, 
+  corsLogger, 
+  apiCors 
+} from './middleware/cors';
 
 // Load environment variables
 dotenv.config();
@@ -13,18 +25,29 @@ const PORT = process.env.PORT || 3000;
 const HOST = process.env.HOST || 'localhost';
 const NODE_ENV = process.env.NODE_ENV || 'development';
 
-// Middleware
+// Enhanced Middleware Stack
+app.use(requestLogger); // Add request ID and start time
+app.use(corsLogger); // Log CORS requests
 app.use(helmet()); // Security headers
-app.use(cors({
-  origin: process.env.CORS_ORIGIN || 'http://localhost:5173',
-  credentials: true
-}));
-app.use(morgan('combined')); // Request logging
-app.use(express.json()); // Parse JSON bodies
-app.use(express.urlencoded({ extended: true })); // Parse URL-encoded bodies
 
-// Routes
-app.use('/api/health', healthRouter);
+// Environment-aware CORS
+if (NODE_ENV === 'development') {
+  app.use(corsMiddleware()); // Development CORS (permissive)
+} else {
+  app.use(corsMiddleware()); // Production CORS (strict)
+}
+
+app.use(morganLogger()); // Enhanced request logging
+app.use(express.json({ limit: '10mb' })); // Parse JSON bodies with size limit
+app.use(express.urlencoded({ extended: true, limit: '10mb' })); // Parse URL-encoded bodies
+
+// API-specific middleware for development
+if (NODE_ENV === 'development') {
+  app.use('/api', apiLogger); // Detailed API logging in development
+}
+
+// Routes with enhanced CORS
+app.use('/api/health', apiCors.health, healthRouter);
 
 // Root endpoint
 app.get('/', (_req, res) => {
@@ -45,14 +68,16 @@ app.use('*', (req, res) => {
   });
 });
 
-// Error handler
+// Enhanced error handler
+app.use(errorLogger);
 app.use((err: any, _req: express.Request, res: express.Response, _next: express.NextFunction) => {
-  console.error('Error:', err);
+  const requestId = (_req as any).requestId || 'unknown';
   
   res.status(err.status || 500).json({
     error: NODE_ENV === 'production' ? 'Internal Server Error' : err.message,
     message: NODE_ENV === 'production' ? 'Something went wrong' : err.stack,
-    timestamp: new Date().toISOString()
+    timestamp: new Date().toISOString(),
+    requestId: requestId
   });
 });
 

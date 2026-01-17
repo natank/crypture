@@ -4,7 +4,7 @@
   "description": "Crypture backend proxy service",
   "main": "dist/main.js",
   "scripts": {
-    "dev": "nodemon src/main.ts",
+    "dev": "nodemon",
     "build": "tsc",
     "start": "node dist/main.js",
     "test": "jest",
@@ -27,7 +27,17 @@
     "container:logs": "podman-compose -f podman-compose.yml logs -f",
     "container:logs:dev": "podman-compose -f podman-compose.dev.yml logs -f",
     "container:exec": "podman exec -it crypture-backend-proxy sh",
-    "container:exec:dev": "podman exec -it crypture-backend-proxy-dev sh"
+    "container:exec:dev": "podman exec -it crypture-backend-proxy-dev sh",
+    "dev:debug": "nodemon --inspect=0.0.0.0:9229",
+    "dev:verbose": "DEBUG=* npm run dev",
+    "dev:clean": "npm run clean && npm run dev",
+    "dev:test": "npm run test:unit -- --watch",
+    "dev:lint": "npm run lint -- --watch",
+    "dev:build": "npm run build && npm run dev",
+    "logs:dev": "tail -f logs/development.log",
+    "logs:app": "pm2 logs",
+    "start:prod": "NODE_ENV=production npm start",
+    "start:dev": "NODE_ENV=development npm start"
   },
   "keywords": [
     "crypture",
