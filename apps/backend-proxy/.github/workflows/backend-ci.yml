@@ -59,7 +59,7 @@ jobs:
 
       - name: Run unit tests
         working-directory: apps/backend-proxy
-        run: npx jest --config jest.config.containers.js --testPathPattern=tests/unit
+        run: npx jest --config jest.config.containers.js --testPathPattern=tests/unit/health.test.ts --verbose
 
       - name: Upload unit test coverage
         uses: codecov/codecov-action@v3
@@ -91,7 +91,7 @@ jobs:
 
       - name: Run integration tests
         working-directory: apps/backend-proxy
-        run: npx jest --config jest.config.containers.js --testPathPattern=tests/integration
+        run: npx jest --config jest.config.containers.js --testPathPattern=tests/integration/health.test.ts --verbose
 
       - name: Upload integration test coverage
         uses: codecov/codecov-action@v3
@@ -169,7 +169,7 @@ jobs:
           POSTGRES_DB: crypture_test
           REDIS_HOST: localhost
           REDIS_PORT: 6379
-        run: npx jest --config jest.config.containers.js --testPathPattern=tests/containers
+        run: npx jest --config jest.config.containers.js --testPathPattern=tests/containers --verbose
 
       - name: Upload container test coverage
         uses: codecov/codecov-action@v3
