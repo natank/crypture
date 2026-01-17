@@ -32,7 +32,12 @@ jobs:
   unit-tests:
     name: Unit Tests
     runs-on: ubuntu-latest
-    if: github.event.inputs.test_type == 'all' || github.event.inputs.test_type == 'unit' || github.event.inputs.test_type == ''
+    if: |
+      github.event_name == 'push' || 
+      github.event_name == 'pull_request' || 
+      github.event.inputs.test_type == 'all' || 
+      github.event.inputs.test_type == 'unit' || 
+      github.event.inputs.test_type == ''
     
     steps:
       - name: Checkout code
@@ -72,7 +77,12 @@ jobs:
   integration-tests:
     name: Integration Tests
     runs-on: ubuntu-latest
-    if: github.event.inputs.test_type == 'all' || github.event.inputs.test_type == 'integration' || github.event.inputs.test_type == ''
+    if: |
+      github.event_name == 'push' || 
+      github.event_name == 'pull_request' || 
+      github.event.inputs.test_type == 'all' || 
+      github.event.inputs.test_type == 'integration' || 
+      github.event.inputs.test_type == ''
     
     steps:
       - name: Checkout code
@@ -104,7 +114,12 @@ jobs:
   container-tests:
     name: Testcontainers Tests
     runs-on: ubuntu-latest
-    if: github.event.inputs.test_type == 'all' || github.event.inputs.test_type == 'containers' || github.event.inputs.test_type == ''
+    if: |
+      github.event_name == 'push' || 
+      github.event_name == 'pull_request' || 
+      github.event.inputs.test_type == 'all' || 
+      github.event.inputs.test_type == 'containers' || 
+      github.event.inputs.test_type == ''
     
     services:
       postgres:
@@ -182,7 +197,11 @@ jobs:
   build-and-test-container:
     name: Build and Test Container
     runs-on: ubuntu-latest
-    if: github.event.inputs.test_type == 'all' || github.event.inputs.test_type == ''
+    if: |
+      github.event_name == 'push' || 
+      github.event_name == 'pull_request' || 
+      github.event.inputs.test_type == 'all' || 
+      github.event.inputs.test_type == ''
     
     steps:
       - name: Checkout code
@@ -220,7 +239,11 @@ jobs:
   security-scan:
     name: Security Scan
     runs-on: ubuntu-latest
-    if: github.event.inputs.test_type == 'all' || github.event.inputs.test_type == ''
+    if: |
+      github.event_name == 'push' || 
+      github.event_name == 'pull_request' || 
+      github.event.inputs.test_type == 'all' || 
+      github.event.inputs.test_type == ''
     
     steps:
       - name: Checkout code
@@ -242,7 +265,11 @@ jobs:
   performance-tests:
     name: Performance Tests
     runs-on: ubuntu-latest
-    if: github.event.inputs.test_type == 'all' || github.event.inputs.test_type == ''
+    if: |
+      github.event_name == 'push' || 
+      github.event_name == 'pull_request' || 
+      github.event.inputs.test_type == 'all' || 
+      github.event.inputs.test_type == ''
     
     steps:
       - name: Checkout code
