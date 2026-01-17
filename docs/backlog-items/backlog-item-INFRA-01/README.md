@@ -83,10 +83,13 @@ docs/backlog-items/backlog-item-INFRA-01/
   - **T1.5: Configure ESLint** ✅ COMPLETED
 - **Phase 2: Backend Implementation** 🔄 IN PROGRESS
   - **Branch:** `phase-2-backend-implementation` created
-  - **T2.1: Create Express.js Backend Service Structure** 🔄 NEXT TASK
-    - Duration: 3 days (enhanced with containerization and dev environment)
+  - **T2.1: Create Express.js Backend Service Structure** 🔄 IN PROGRESS
+    - **T2.1.0: Backend Service Foundation** ✅ COMPLETED
+    - **T2.1.1: Testing Foundation** 🔄 NEXT TASK
+    - Total Duration: 3.75 days (6 subtasks)
     - Containerization: Podman + Podman Compose
     - Development features: Hot reload, logging, CORS, Swagger docs
+    - Testing: Jest + Supertest + Testcontainers + CI/CD
 
 ### ⏳ Phase 4-6: SKIPPED
 - [x] Skip design phases (leverage existing NX integration plan)
@@ -101,6 +104,6 @@ docs/backlog-items/backlog-item-INFRA-01/
 
 **Last Updated:** 17/01/2026  
 **Current Phase:** Phase 2 Backend Implementation  
-**Next Task:** T2.1 - Create Express.js Backend Service Structure (3 days)  
+**Next Task:** T2.1.1 - Testing Foundation (0.5 day)  
 **Branch:** phase-2-backend-implementation  
 **Owner:** Backend Development Senior
