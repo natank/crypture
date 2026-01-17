@@ -34,10 +34,10 @@ This implementation plan breaks down the INFRA-01 story into granular 1-2 day ta
 ### **Phase 2: Backend Implementation (Week 2)**
 | Day | Task ID | Task Description | Effort | Dependencies |
 |-----|---------|-----------------|--------|--------------|
-| 6-7.5 | T2.1 | Create Express.js backend service structure | 2.5 days | T1.4 |
-| 8 | T2.2 | Implement CoinGecko API proxy endpoints | 1 day | T2.1 |
-| 9 | T2.3 | Add rate limiting and security middleware | 1 day | T2.2 |
-| 10 | T2.4 | Create shared libraries (types, api-client, utils) | 1 day | T2.3 |
+| 6-8 | T2.1 | Create Express.js backend service structure | 3 days | T1.4 |
+| 9 | T2.2 | Implement CoinGecko API proxy endpoints | 1 day | T2.1 |
+| 10 | T2.3 | Add rate limiting and security middleware | 1 day | T2.2 |
+| 11 | T2.4 | Create shared libraries (types, api-client, utils) | 1 day | T2.3 |
 
 ### **Phase 3: Production Readiness (Week 3)**
 | Day | Task ID | Task Description | Effort | Dependencies |
@@ -183,7 +183,7 @@ This implementation plan breaks down the INFRA-01 story into granular 1-2 day ta
 ### **Phase 2: Backend Implementation (Week 2)**
 
 #### **T2.1: Create Express.js Backend Service Structure**
-**Duration:** 2.5 days (0.5 day added for containerization)  
+**Duration:** 3 days (0.5 day for containerization + 0.5 day for dev enhancements)  
 **Owner:** Backend Development Senior  
 **Acceptance Criteria:**
 - [ ] `apps/backend-proxy/` directory structure created
@@ -193,8 +193,13 @@ This implementation plan breaks down the INFRA-01 story into granular 1-2 day ta
 - [ ] Environment variable setup
 - [ ] Basic health check endpoint
 - [ ] Podman container configuration (Containerfile)
-- [ ] Podman Compose configuration for multi-service development
-- [ ] Container development environment setup (backend + database)
+- [ ] Podman Compose configuration for backend service
+- [ ] Hot reloading configuration for development
+- [ ] Request/response logging middleware
+- [ ] CORS configuration for frontend integration
+- [ ] API documentation (Swagger/OpenAPI)
+- [ ] Development scripts (dev, build, test, clean)
+- [ ] Environment validation on startup
 - [ ] Local containerized development workflow
 
 **Technical Validation:**
@@ -203,10 +208,14 @@ This implementation plan breaks down the INFRA-01 story into granular 1-2 day ta
 - [ ] TypeScript compilation succeeds
 - [ ] Jest tests run without errors
 - [ ] Podman container builds and runs successfully
-- [ ] Podman Compose starts all services successfully
+- [ ] Podman Compose starts backend service successfully
 - [ ] Containerized development workflow functional
 - [ ] Environment variables work in container
-- [ ] Multi-service communication (backend + database) works
+- [ ] Hot reloading works in development
+- [ ] Request logging captures API calls
+- [ ] CORS allows frontend requests
+- [ ] Swagger documentation accessible
+- [ ] Development scripts execute correctly
 
 **Rollback Procedure:**
 - Delete `apps/backend-proxy/` directory
@@ -414,8 +423,12 @@ T1.1 → T1.2 → T1.3 → T1.4 → T2.1 → T2.2 → T2.3 → T2.4 → T3.1 →
 - [ ] Zero API key exposure
 - [ ] Frontend using proxy client
 - [ ] Podman container builds and runs successfully
-- [ ] Podman Compose multi-service environment functional
+- [ ] Podman Compose backend service functional
 - [ ] Containerized development workflow functional
+- [ ] Hot reloading works in development
+- [ ] Request logging captures API calls
+- [ ] CORS allows frontend requests
+- [ ] Swagger documentation accessible
 
 ### **Quality Gate 3: End of Phase 3**
 - [ ] Production deployment successful
