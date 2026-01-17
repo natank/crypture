@@ -217,7 +217,7 @@ This implementation plan breaks down the INFRA-01 story into granular 1-2 day ta
 - Remove backend dependencies from root `package.json`
 
 **Completion Date:** 17/01/2026  
-**Commit:** [TBD] - feat: T2.1.0 Backend Service Foundation
+**Commit:** 75c100d - feat: T2.1.0 Backend Service Foundation
 
 ---
 
