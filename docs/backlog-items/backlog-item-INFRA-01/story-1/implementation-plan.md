@@ -34,7 +34,7 @@ This implementation plan breaks down the INFRA-01 story into granular 1-2 day ta
 ### **Phase 2: Backend Implementation (Week 2)**
 | Day | Task ID | Task Description | Effort | Dependencies |
 |-----|---------|-----------------|--------|--------------|
-| 6-8 | T2.1 | Create Express.js backend service structure | 3 days | T1.4 |
+| 6-8.75 | T2.1 | Create Express.js backend service structure | 3.75 days | T1.4 |
 | 9 | T2.2 | Implement CoinGecko API proxy endpoints | 1 day | T2.1 |
 | 10 | T2.3 | Add rate limiting and security middleware | 1 day | T2.2 |
 | 11 | T2.4 | Create shared libraries (types, api-client, utils) | 1 day | T2.3 |
@@ -183,13 +183,16 @@ This implementation plan breaks down the INFRA-01 story into granular 1-2 day ta
 ### **Phase 2: Backend Implementation (Week 2)**
 
 #### **T2.1: Create Express.js Backend Service Structure**
-**Duration:** 3 days (0.5 day for containerization + 0.5 day for dev enhancements)  
+**Duration:** 3.75 days (0.5 day containerization + 0.5 day dev enhancements + 0.75 day Testcontainers)  
 **Owner:** Backend Development Senior  
 **Acceptance Criteria:**
 - [ ] `apps/backend-proxy/` directory structure created
 - [ ] Express.js server setup in `src/main.ts`
 - [ ] TypeScript configuration for backend
-- [ ] Jest testing configuration
+- [ ] Jest testing configuration (unit tests)
+- [ ] Supertest integration testing framework
+- [ ] Testcontainers setup for backend integration tests
+- [ ] Hybrid testing approach (simple + Testcontainers)
 - [ ] Environment variable setup
 - [ ] Basic health check endpoint
 - [ ] Podman container configuration (Containerfile)
@@ -201,12 +204,19 @@ This implementation plan breaks down the INFRA-01 story into granular 1-2 day ta
 - [ ] Development scripts (dev, build, test, clean)
 - [ ] Environment validation on startup
 - [ ] Local containerized development workflow
+- [ ] GitHub Actions workflow for backend tests
+- [ ] Testcontainers CI/CD integration
+- [ ] Container reuse optimization for CI
+- [ ] Parallel test execution setup
 
 **Technical Validation:**
 - [ ] Backend service starts successfully
 - [ ] Health check endpoint responds
 - [ ] TypeScript compilation succeeds
-- [ ] Jest tests run without errors
+- [ ] Jest unit tests run without errors
+- [ ] Supertest integration tests pass
+- [ ] Testcontainers integration tests pass
+- [ ] Hybrid testing approach functional (both test types work)
 - [ ] Podman container builds and runs successfully
 - [ ] Podman Compose starts backend service successfully
 - [ ] Containerized development workflow functional
@@ -216,6 +226,10 @@ This implementation plan breaks down the INFRA-01 story into granular 1-2 day ta
 - [ ] CORS allows frontend requests
 - [ ] Swagger documentation accessible
 - [ ] Development scripts execute correctly
+- [ ] GitHub Actions workflow runs successfully
+- [ ] Testcontainers tests pass in CI/CD
+- [ ] Container reuse optimization works in CI
+- [ ] Parallel test execution functional
 
 **Rollback Procedure:**
 - Delete `apps/backend-proxy/` directory
@@ -429,6 +443,12 @@ T1.1 → T1.2 → T1.3 → T1.4 → T2.1 → T2.2 → T2.3 → T2.4 → T3.1 →
 - [ ] Request logging captures API calls
 - [ ] CORS allows frontend requests
 - [ ] Swagger documentation accessible
+- [ ] Jest unit tests passing
+- [ ] Supertest integration tests passing
+- [ ] Testcontainers integration tests passing
+- [ ] Hybrid testing approach functional
+- [ ] GitHub Actions backend CI/CD passing
+- [ ] Testcontainers tests passing in CI/CD
 
 ### **Quality Gate 3: End of Phase 3**
 - [ ] Production deployment successful
