@@ -91,29 +91,22 @@ app.use((err: any, _req: express.Request, res: express.Response, _next: express.
   });
 });
 
-// Start server
-const server = app.listen(PORT, () => {
-  console.log(`🚀 Crypture Backend Proxy Service running on http://${HOST}:${PORT}`);
-  console.log(`📊 Environment: ${NODE_ENV}`);
-  console.log(`🔗 Health check: http://${HOST}:${PORT}/api/health`);
-  console.log(`📅 Started at: ${new Date().toISOString()}`);
-});
-
-// Graceful shutdown
-process.on('SIGTERM', () => {
-  console.log('🛑 SIGTERM received, shutting down gracefully');
-  server.close(() => {
-    console.log('✅ Server closed');
-    process.exit(0);
+// Start server only if this file is run directly
+if (require.main === module) {
+  const server = app.listen(PORT, () => {
+    console.log(`🚀 Crypture Backend Proxy Service running on http://${HOST}:${PORT}`);
+    console.log(`📊 Environment: ${NODE_ENV}`);
+    console.log(`🔗 Health check: http://${HOST}:${PORT}/api/health`);
+    console.log(`📅 Started at: ${new Date().toISOString()}`);
   });
-});
 
-process.on('SIGINT', () => {
-  console.log('🛑 SIGINT received, shutting down gracefully');
-  server.close(() => {
-    console.log('✅ Server closed');
-    process.exit(0);
+  process.on('SIGTERM', () => {
+    console.log('🛑 SIGTERM received, shutting down gracefully');
+    server.close(() => {
+      console.log('✅ Server closed');
+      process.exit(0);
+    });
   });
-});
+}
 
 export default app;

@@ -142,12 +142,88 @@ The service includes comprehensive test coverage:
 - **Integration Tests:** 10 tests for full application
 - **Total Coverage:** 100% for health endpoints
 
+## 🧪 Advanced Testing
+
+The service includes comprehensive testing with Testcontainers:
+
+### Quick Start with Podman (Recommended)
+
+**First time setup:**
+```bash
+# 1. Run setup script (one-time)
+./tests/integration/setup-testcontainers.sh
+
+# 2. Reload shell
+source ~/.zshrc
+
+# 3. Run tests
+./tests/integration/run-tests.sh
+```
+
+**Subsequent runs:**
+```bash
+# Integration tests
+./tests/integration/run-tests.sh
+
+# Container tests
+./tests/integration/run-container-tests.sh
+
+# All tests
+./tests/integration/run-all-tests.sh
+```
+
+### Hybrid Testing Approach
+```bash
+# Unit tests (fast, no Docker required)
+npm run test:containers:unit
+
+# Integration tests (medium, Podman required)
+npm run test:containers:integration
+
+# Container tests (slow, full Podman)
+npm run test:containers:health
+
+# Full test suite
+npm run test:full
+```
+
+### Testcontainers Integration
+- **PostgreSQL 15** - Primary database testing
+- **Redis 7** - Caching layer testing
+- **MongoDB 7** - Document storage testing
+- **Elasticsearch 8.11** - Search engine testing
+- **RabbitMQ 3.12** - Message queue testing
+- **Nginx** - Reverse proxy testing
+
+### CI/CD Pipeline
+```bash
+# Run CI tests locally
+npm run test:ci
+
+# Validate Testcontainers setup
+./scripts/validate-testcontainers.sh
+
+# Start test containers
+npm run containers:start
+```
+
+### Testing Documentation
+- **Testcontainers Quick Start:** `tests/integration/README_TESTCONTAINERS.md` ⭐
+- **Advanced Testing Guide:** `docs/ADVANCED_TESTING.md`
+- **Testcontainers Setup:** `tests/integration/containers/`
+- **CI/CD Workflow:** `.github/workflows/backend-ci.yml`
+
 ## 📊 Container Validation
 
-Run the container validation script:
+The service includes comprehensive container validation:
 
 ```bash
+# Validate container configuration
 ./scripts/validate-containers.sh
+
+# Test container build and run
+npm run container:build
+npm run container:run
 ```
 
 ## 🔒 Security Features
