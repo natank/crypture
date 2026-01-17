@@ -64,7 +64,7 @@ jobs:
 
       - name: Run unit tests
         working-directory: apps/backend-proxy
-        run: npx jest --config jest.config.containers.js --testPathPattern=tests/unit/health.test.ts --verbose
+        run: npm run test:containers:unit
 
       - name: Upload unit test coverage
         uses: codecov/codecov-action@v3
@@ -101,7 +101,7 @@ jobs:
 
       - name: Run integration tests
         working-directory: apps/backend-proxy
-        run: npx jest --config jest.config.containers.js --testPathPattern=tests/integration/health.test.ts --verbose
+        run: npm run test:containers:integration
 
       - name: Upload integration test coverage
         uses: codecov/codecov-action@v3
