@@ -2,7 +2,27 @@ import { Router } from 'express';
 
 const router = Router();
 
-// Health check endpoint
+/**
+ * @swagger
+ * /api/health:
+ *   get:
+ *     summary: Get basic health status
+ *     description: Returns the current health status of the backend service
+ *     tags: [Health]
+ *     responses:
+ *       200:
+ *         description: Service is healthy
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/HealthResponse'
+ *       500:
+ *         description: Service is unhealthy
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/ErrorResponse'
+ */
 router.get('/', (_req, res) => {
   const healthCheck = {
     status: 'healthy',
@@ -24,7 +44,27 @@ router.get('/', (_req, res) => {
   res.status(200).json(healthCheck);
 });
 
-// Detailed health check
+/**
+ * @swagger
+ * /api/health/detailed:
+ *   get:
+ *     summary: Get detailed health status
+ *     description: Returns detailed health status including system information and configuration
+ *     tags: [Health]
+ *     responses:
+ *       200:
+ *         description: Detailed health information
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/DetailedHealthResponse'
+ *       500:
+ *         description: Service is unhealthy
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/ErrorResponse'
+ */
 router.get('/detailed', (_req, res) => {
   const detailedHealth = {
     status: 'healthy',

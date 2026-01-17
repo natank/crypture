@@ -103,6 +103,37 @@ LOG_LEVEL=info
 - **Basic Health:** `GET /api/health`
 - **Detailed Health:** `GET /api/health/detailed`
 
+## 📚 API Documentation
+
+### Interactive Documentation
+- **Swagger UI:** `GET /api-docs`
+- **OpenAPI Spec:** `GET /api-docs/json`
+
+### Documentation Features
+- **Interactive API Explorer** - Test endpoints directly
+- **Comprehensive Schemas** - Detailed request/response documentation
+- **Environment-Aware** - Different servers for dev/prod
+- **Real-time Validation** - Request/response validation
+
+### Quick Start
+```bash
+# Start development server
+npm run dev
+
+# Open API documentation
+npm run docs:open
+# Or navigate to: http://localhost:3000/api-docs
+```
+
+### Documentation Scripts
+```bash
+npm run docs:serve      # Start server with documentation
+npm run docs:build      # Build and start server
+npm run docs:open       # Open documentation in browser
+npm run docs:json       # Export Swagger JSON
+npm run docs:validate   # Validate Swagger specification
+```
+
 ## 🧪 Testing
 
 The service includes comprehensive test coverage:

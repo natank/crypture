@@ -16,6 +16,7 @@ import {
   corsLogger, 
   apiCors 
 } from './middleware/cors';
+import { specs, swaggerUi } from './config/swagger';
 
 // Load environment variables
 dotenv.config();
@@ -49,13 +50,22 @@ if (NODE_ENV === 'development') {
 // Routes with enhanced CORS
 app.use('/api/health', apiCors.health, healthRouter);
 
+// API Documentation
+app.use('/api-docs', apiCors.dev, swaggerUi.serve, swaggerUi.setup(specs, {
+  explorer: true,
+  customCss: '.swagger-ui .topbar { display: none }',
+  customSiteTitle: 'Crypture Backend API Documentation'
+}));
+
 // Root endpoint
 app.get('/', (_req, res) => {
   res.json({
     message: 'Crypture Backend Proxy Service',
     version: '1.0.0',
     environment: NODE_ENV,
-    timestamp: new Date().toISOString()
+    timestamp: new Date().toISOString(),
+    documentation: '/api-docs',
+    health: '/api/health'
   });
 });
 
