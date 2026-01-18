@@ -3,7 +3,6 @@
  * REQ-013-notifications / Backlog Item 24
  */
 
-import React from 'react';
 import Tooltip from '@components/Tooltip';
 
 interface AlertButtonProps {
