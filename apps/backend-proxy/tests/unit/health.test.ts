@@ -14,11 +14,11 @@ describe('Health Router Unit Tests', () => {
     // Create a test app with just the health router
     app = express();
     app.use(express.json());
-    
+
     // Import and use the health router
-    const { healthRouter } = require('../../dist/routes/health');
+    const { healthRouter } = require('../../src/routes/health');
     app.use('/api/health', healthRouter);
-    
+
     // Add error handler
     app.use((err: any, _req: express.Request, res: express.Response, _next: express.NextFunction) => {
       console.error('Test error:', err);
