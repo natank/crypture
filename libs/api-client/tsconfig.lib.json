@@ -3,6 +3,8 @@
   "compilerOptions": {
     "outDir": "../../dist/out-tsc",
     "declaration": true,
+    "declarationMap": true,
+    "composite": true,
     "types": ["node"]
   },
   "include": ["src/**/*.ts"],
@@ -11,5 +13,10 @@
     "jest.config.cts",
     "src/**/*.spec.ts",
     "src/**/*.test.ts"
+  ],
+  "references": [
+    {
+      "path": "../shared-types"
+    }
   ]
 }
