@@ -46,10 +46,11 @@
       }
     },
     "test": {
-      "executor": "@nx/vite:test",
+      "executor": "@nx/vitest:test",
       "outputs": ["{workspaceRoot}/coverage/apps/frontend"],
       "options": {
-        "passWithNoTests": true
+        "passWithNoTests": true,
+        "reportsDirectory": "{workspaceRoot}/coverage/apps/frontend"
       }
     },
     "typecheck": {
