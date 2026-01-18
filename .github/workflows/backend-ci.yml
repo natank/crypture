@@ -1,0 +1,382 @@
+name: Backend CI/CD Pipeline
+
+on:
+  push:
+    paths:
+      - 'apps/backend-proxy/**'
+      - '.github/workflows/backend-ci.yml'
+  pull_request:
+    paths:
+      - 'apps/backend-proxy/**'
+      - '.github/workflows/backend-ci.yml'
+  workflow_dispatch:
+    inputs:
+      test_type:
+        description: 'Type of tests to run'
+        required: true
+        default: 'all'
+        type: choice
+        options:
+          - all
+          - unit
+          - integration
+          - containers
+
+env:
+  NODE_VERSION: '20'
+  POSTGRES_VERSION: '15'
+  REDIS_VERSION: '7'
+
+jobs:
+  # Unit Tests Job
+  unit-tests:
+    name: Unit Tests
+    runs-on: ubuntu-latest
+    if: |
+      github.event_name == 'push' || 
+      github.event_name == 'pull_request' || 
+      github.event.inputs.test_type == 'all' || 
+      github.event.inputs.test_type == 'unit' || 
+      github.event.inputs.test_type == ''
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+          cache-dependency-path: apps/backend-proxy/package-lock.json
+
+      - name: Install dependencies
+        working-directory: apps/backend-proxy
+        run: npm ci
+
+      - name: Run type checking
+        working-directory: apps/backend-proxy
+        run: npm run typecheck
+
+      - name: Run linting
+        working-directory: apps/backend-proxy
+        run: npm run lint
+
+      - name: Run unit tests
+        working-directory: apps/backend-proxy
+        run: npm run test:containers:unit
+
+      - name: Upload unit test coverage
+        uses: codecov/codecov-action@v3
+        with:
+          file: apps/backend-proxy/coverage/lcov.info
+          flags: unit
+          name: backend-unit-coverage
+
+  # Integration Tests Job
+  integration-tests:
+    name: Integration Tests
+    runs-on: ubuntu-latest
+    if: |
+      github.event_name == 'push' || 
+      github.event_name == 'pull_request' || 
+      github.event.inputs.test_type == 'all' || 
+      github.event.inputs.test_type == 'integration' || 
+      github.event.inputs.test_type == ''
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+          cache-dependency-path: apps/backend-proxy/package-lock.json
+
+      - name: Install dependencies
+        working-directory: apps/backend-proxy
+        run: npm ci
+
+      - name: Run integration tests
+        working-directory: apps/backend-proxy
+        run: npm run test:containers:integration
+
+      - name: Upload integration test coverage
+        uses: codecov/codecov-action@v3
+        with:
+          file: apps/backend-proxy/coverage/lcov.info
+          flags: integration
+          name: backend-integration-coverage
+
+  # Testcontainers Tests Job
+  container-tests:
+    name: Testcontainers Tests
+    runs-on: ubuntu-latest
+    if: |
+      github.event_name == 'push' || 
+      github.event_name == 'pull_request' || 
+      github.event.inputs.test_type == 'all' || 
+      github.event.inputs.test_type == 'containers' || 
+      github.event.inputs.test_type == ''
+    
+    services:
+      postgres:
+        image: postgres:${{ env.POSTGRES_VERSION }}
+        env:
+          POSTGRES_PASSWORD: test_password
+          POSTGRES_USER: test_user
+          POSTGRES_DB: crypture_test
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 5432:5432
+
+      redis:
+        image: redis:${{ env.REDIS_VERSION }}
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 6379:6379
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+          cache-dependency-path: apps/backend-proxy/package-lock.json
+
+      - name: Install dependencies
+        working-directory: apps/backend-proxy
+        run: npm ci
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Enable Docker socket for Testcontainers
+        run: |
+          sudo chmod 666 /var/run/docker.sock
+
+      - name: Wait for services to be ready
+        run: |
+          timeout 60 bash -c 'until nc -z localhost 5432; do sleep 1; done'
+          timeout 60 bash -c 'until nc -z localhost 6379; do sleep 1; done'
+
+      - name: Run Testcontainers tests
+        working-directory: apps/backend-proxy
+        env:
+          NODE_ENV: test
+          POSTGRES_HOST: localhost
+          POSTGRES_PORT: 5432
+          POSTGRES_USER: test_user
+          POSTGRES_PASSWORD: test_password
+          POSTGRES_DB: crypture_test
+          REDIS_HOST: localhost
+          REDIS_PORT: 6379
+        run: npx jest --config jest.config.containers.js --testPathPattern=tests/containers --verbose
+
+      - name: Upload container test coverage
+        uses: codecov/codecov-action@v3
+        with:
+          file: apps/backend-proxy/coverage/lcov.info
+          flags: containers
+          name: backend-containers-coverage
+
+  # Build and Test Container Job
+  build-and-test-container:
+    name: Build and Test Container
+    runs-on: ubuntu-latest
+    if: |
+      github.event_name == 'push' || 
+      github.event_name == 'pull_request' || 
+      github.event.inputs.test_type == 'all' || 
+      github.event.inputs.test_type == ''
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build production container
+        working-directory: apps/backend-proxy
+        run: |
+          docker build -t crypture-backend-proxy:test -f Containerfile .
+
+      - name: Test production container
+        run: |
+          docker run --rm -d --name test-container -p 3000:3000 crypture-backend-proxy:test
+          sleep 10
+          curl -f http://localhost:3000/api/health || exit 1
+          curl -f http://localhost:3000/api/health/detailed || exit 1
+          docker stop test-container
+
+      - name: Build development container
+        working-directory: apps/backend-proxy
+        run: |
+          docker build -t crypture-backend-proxy:dev-test -f Containerfile.dev .
+
+      - name: Test development container
+        run: |
+          docker run --rm -d --name dev-test-container -p 3001:3000 crypture-backend-proxy:dev-test
+          sleep 10
+          curl -f http://localhost:3001/api/health || exit 1
+          docker stop dev-test-container
+
+  # Security Scanning Job
+  security-scan:
+    name: Security Scan
+    runs-on: ubuntu-latest
+    if: |
+      github.event_name == 'push' || 
+      github.event_name == 'pull_request' || 
+      github.event.inputs.test_type == 'all' || 
+      github.event.inputs.test_type == ''
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Run npm audit
+        working-directory: apps/backend-proxy
+        run: npm audit --audit-level moderate
+
+      - name: Run Snyk security scan
+        uses: snyk/actions/node@master
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+        with:
+          args: --severity-threshold=high
+          command: test
+
+  # Performance Tests Job
+  performance-tests:
+    name: Performance Tests
+    runs-on: ubuntu-latest
+    if: |
+      github.event_name == 'push' || 
+      github.event_name == 'pull_request' || 
+      github.event.inputs.test_type == 'all' || 
+      github.event.inputs.test_type == ''
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+          cache-dependency-path: apps/backend-proxy/package-lock.json
+
+      - name: Install dependencies
+        working-directory: apps/backend-proxy
+        run: npm ci
+
+      - name: Start application
+        working-directory: apps/backend-proxy
+        run: |
+          npm run build
+          npm start &
+          sleep 10
+
+      - name: Run performance tests
+        working-directory: apps/backend-proxy
+        run: |
+          # Install artillery for performance testing
+          npm install -g artillery
+          # Create simple performance test
+          cat > performance-test.yml << 'EOF'
+          config:
+            target: 'http://localhost:3000'
+            phases:
+              - duration: 60
+                arrivalRate: 10
+            payload:
+              path: 'test-data.csv'
+          scenarios:
+            - name: 'Health Check Load Test'
+              weight: 100
+              flow:
+                - get:
+                    url: '/api/health'
+                - think: 1
+            - name: 'Detailed Health Load Test'
+              weight: 50
+              flow:
+                - get:
+                    url: '/api/health/detailed'
+                - think: 2
+          EOF
+          # Run performance test
+          artillery run performance-test.yml
+
+  # Deploy to Staging (if main branch)
+  deploy-staging:
+    name: Deploy to Staging
+    runs-on: ubuntu-latest
+    needs: [unit-tests, integration-tests, container-tests]
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    
+    environment: staging
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Login to Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build and push container
+        working-directory: apps/backend-proxy
+        run: |
+          docker build -t ghcr.io/${{ github.repository }}/crypture-backend-proxy:${{ github.sha }} -f Containerfile .
+          docker push ghcr.io/${{ github.repository }}/crypture-backend-proxy:${{ github.sha }}
+          docker tag ghcr.io/${{ github.repository }}/crypture-backend-proxy:${{ github.sha }} ghcr.io/${{ github.repository }}/crypture-backend-proxy:latest
+          docker push ghcr.io/${{ github.repository }}/crypture-backend-proxy:latest
+
+      - name: Deploy to staging
+        run: |
+          echo "Deploying to staging environment..."
+          # Add your staging deployment logic here
+          # For example, update Kubernetes deployment or trigger staging pipeline
+
+  # Notification Job
+  notify:
+    name: Notify Results
+    runs-on: ubuntu-latest
+    needs: [unit-tests, integration-tests, container-tests, build-and-test-container]
+    if: always()
+    
+    steps:
+      - name: Notify on success
+        if: ${{ needs.unit-tests.result == 'success' && needs.integration-tests.result == 'success' && needs.container-tests.result == 'success' }}
+        run: |
+          echo "✅ All tests passed successfully!"
+          # Add Slack/Teams notification here if needed
+
+      - name: Notify on failure
+        if: ${{ needs.unit-tests.result == 'failure' || needs.integration-tests.result == 'failure' || needs.container-tests.result == 'failure' }}
+        run: |
+          echo "❌ Some tests failed!"
+          # Add Slack/Teams notification here if needed

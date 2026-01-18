@@ -1,0 +1,31 @@
+{
+  "watch": ["src"],
+  "ext": "ts,json",
+  "ignore": ["src/**/*.spec.ts", "src/**/*.test.ts"],
+  "exec": "ts-node src/main.ts",
+  "env": {
+    "NODE_ENV": "development",
+    "PORT": "3000",
+    "HOST": "localhost",
+    "CORS_ORIGIN": "http://localhost:5173",
+    "LOG_LEVEL": "debug"
+  },
+  "delay": "1000",
+  "restartable": "rs",
+  "colours": true,
+  "verbose": true,
+  "events": {
+    "start": "echo '🚀 Backend server starting...'",
+    "restart": "echo '🔄 Backend server restarting...'",
+    "crash": "echo '💥 Backend server crashed! Restarting...'"
+  },
+  "tasks": {
+    "build": "tsc",
+    "test": "npm run test:unit",
+    "lint": "npm run lint"
+  },
+  "watchOptions": {
+    "usePolling": false,
+    "interval": 1000
+  }
+}

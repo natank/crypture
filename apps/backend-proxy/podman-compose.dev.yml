@@ -1,0 +1,31 @@
+version: '3.8'
+
+services:
+  backend-proxy-dev:
+    build:
+      context: .
+      dockerfile: Containerfile.dev
+    container_name: crypture-backend-proxy-dev
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=development
+      - PORT=3000
+      - HOST=0.0.0.0
+      - CORS_ORIGIN=http://localhost:5173
+      - LOG_LEVEL=debug
+    volumes:
+      # Mount entire source for development
+      - .:/app
+      - /app/node_modules
+    restart: unless-stopped
+    stdin_open: true
+    tty: true
+    networks:
+      - crypture-network
+
+networks:
+  crypture-network:
+    driver: bridge
+    name: crypture-network
+    external: true
