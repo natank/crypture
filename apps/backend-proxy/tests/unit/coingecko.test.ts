@@ -422,6 +422,7 @@ describe('CoinGeckoService', () => {
       mockAxiosInstance.get.mockRejectedValue(networkError);
 
       await expect(service.getSimplePrice('bitcoin', 'usd')).rejects.toThrow();
+      
       expect(mockAxiosInstance.get).toHaveBeenCalledTimes(4); // 1 initial + 3 retries
     });
 
