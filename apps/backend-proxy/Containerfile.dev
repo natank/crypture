@@ -1,6 +1,9 @@
 # Development Containerfile with hot reload support
 FROM docker.io/node:20-alpine
 
+# Ensure binding to all interfaces
+ENV HOST=0.0.0.0
+
 # Set working directory
 WORKDIR /app
 
@@ -12,6 +15,9 @@ COPY package*.json ./
 
 # Install all dependencies (including dev dependencies)
 RUN npm ci && npm cache clean --force
+
+# Copy source code (files ignored by .dockerignore will be excluded)
+COPY . .
 
 # Create non-root user for security
 RUN addgroup -g 1001 -S nodejs && \
