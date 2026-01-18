@@ -46,11 +46,16 @@
       }
     },
     "test": {
-      "executor": "@nx/vitest:test",
+      "executor": "nx:run-commands",
       "outputs": ["{workspaceRoot}/coverage/apps/frontend"],
       "options": {
-        "passWithNoTests": true,
-        "reportsDirectory": "{workspaceRoot}/coverage/apps/frontend"
+        "command": "npm run test:unit",
+        "cwd": "apps/frontend"
+      },
+      "configurations": {
+        "ci": {
+          "command": "npm run test:unit -- --run"
+        }
       }
     },
     "typecheck": {
