@@ -8,13 +8,13 @@ export const handleValidationErrors = (
   req: Request,
   res: Response,
   next: NextFunction
-) => {
+): void => {
   const errors = validationResult(req);
   
   if (!errors.isEmpty()) {
     const requestId = (req as any).requestId || 'unknown';
     
-    return res.status(400).json({
+    res.status(400).json({
       error: 'Validation Error',
       message: 'Invalid request parameters',
       errors: errors.array().map(err => ({
@@ -25,6 +25,7 @@ export const handleValidationErrors = (
       timestamp: new Date().toISOString(),
       requestId
     });
+    return;
   }
   
   next();
