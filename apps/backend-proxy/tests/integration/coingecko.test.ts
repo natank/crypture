@@ -1,7 +1,33 @@
+// Mock the CoinGeckoService BEFORE importing the app
+jest.mock('../../src/services/coingecko');
+
 import request from 'supertest';
 import app from '../../src/main';
+import { CoinGeckoService } from '../../src/services/coingecko';
+
+const MockedCoinGeckoService = CoinGeckoService as jest.MockedClass<typeof CoinGeckoService>;
 
 describe('CoinGecko Routes - Basic Tests', () => {
+  let mockService: jest.Mocked<CoinGeckoService>;
+
+  beforeEach(() => {
+    jest.clearAllMocks();
+    
+    mockService = {
+      ping: jest.fn().mockResolvedValue(true),
+      getRateLimitInfo: jest.fn(),
+      getSimplePrice: jest.fn(),
+      getCoinsMarkets: jest.fn(),
+      getCoinById: jest.fn(),
+      search: jest.fn(),
+      getTrending: jest.fn(),
+      getCategories: jest.fn(),
+      getGlobal: jest.fn(),
+      getMarketChart: jest.fn()
+    } as any;
+
+    MockedCoinGeckoService.mockImplementation(() => mockService);
+  });
   it('should return 404 for non-existent CoinGecko endpoint', async () => {
     const response = await request(app)
       .get('/api/coingecko/non-existent')
@@ -50,7 +76,7 @@ describe('CoinGecko Routes - Basic Tests', () => {
 
   it('should have proper CORS headers', async () => {
     const response = await request(app)
-      .get('/api/coingecko/ping')
+      .get('/api/health')
       .set('Origin', 'http://localhost:5173')
       .expect(200);
 
@@ -58,12 +84,11 @@ describe('CoinGecko Routes - Basic Tests', () => {
     expect(response.headers['access-control-allow-origin']).toBe('http://localhost:5173');
   });
 
-  it('should have proper request ID in response', async () => {
+  it('should have proper request ID in error responses', async () => {
     const response = await request(app)
-      .get('/api/coingecko/ping');
+      .get('/api/coingecko/simple/price')
+      .expect(400);
 
-    // May return 200 or 503 depending on API availability
-    expect([200, 503]).toContain(response.status);
     expect(response.body).toHaveProperty('requestId');
     expect(typeof response.body.requestId).toBe('string');
     expect(response.body.requestId).toMatch(/^[a-z0-9]+$/);
