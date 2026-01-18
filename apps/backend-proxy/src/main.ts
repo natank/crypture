@@ -17,6 +17,10 @@ import {
   corsLogger, 
   apiCors 
 } from './middleware/cors';
+import { 
+  apiRateLimiter, 
+  proxyRateLimiter 
+} from './middleware/rateLimiter';
 import { specs, swaggerUi } from './config/swagger';
 
 // Load environment variables
@@ -48,9 +52,12 @@ if (NODE_ENV === 'development') {
   app.use('/api', apiLogger); // Detailed API logging in development
 }
 
-// Routes with enhanced CORS
+// Apply rate limiting to API routes
+app.use('/api', apiRateLimiter); // General API rate limiting (50 req/min)
+
+// Routes with enhanced CORS and specific rate limiting
 app.use('/api/health', apiCors.health, healthRouter);
-app.use('/api/coingecko', apiCors.health, coingeckoRouter);
+app.use('/api/coingecko', apiCors.health, proxyRateLimiter, coingeckoRouter); // Proxy-specific rate limiting (100 req/min)
 
 // API Documentation
 app.use('/api-docs', apiCors.dev, swaggerUi.serve, swaggerUi.setup(specs, {
