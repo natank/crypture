@@ -12,7 +12,7 @@
     "affected:test": "nx affected -t test",
     "affected:lint": "nx affected -t lint",
     "affected:typecheck": "nx affected -t typecheck",
-    "affected:graph": "nx affected:graph",
+    "affected:graph": "nx graph --affected",
     "ci:affected": "nx affected -t lint,typecheck,test,build --parallel=3 --configuration=ci",
     "ci:all": "nx run-many -t lint,typecheck,test,build --parallel=3 --configuration=ci",
     "ci:info": "node nx.ci.js info"
