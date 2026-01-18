@@ -4,6 +4,7 @@ import helmet from 'helmet';
 import morgan from 'morgan';
 import dotenv from 'dotenv';
 import { healthRouter } from './routes/health';
+import { coingeckoRouter } from './routes/coingecko';
 import { 
   requestLogger, 
   responseLogger, 
@@ -49,6 +50,7 @@ if (NODE_ENV === 'development') {
 
 // Routes with enhanced CORS
 app.use('/api/health', apiCors.health, healthRouter);
+app.use('/api/coingecko', apiCors.health, coingeckoRouter);
 
 // API Documentation
 app.use('/api-docs', apiCors.dev, swaggerUi.serve, swaggerUi.setup(specs, {

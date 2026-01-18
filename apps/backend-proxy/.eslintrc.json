@@ -1,13 +1,29 @@
 {
-    "extends": "../../.eslintrc.json",
-    "parser": "@typescript-eslint/parser",
-    "plugins": [
-        "@typescript-eslint"
-    ],
-    "parserOptions": {
-        "project": "./tsconfig.json",
-        "ecmaVersion": 2020,
-        "sourceType": "module"
-    },
-    "rules": {}
+  "extends": "../../.eslintrc.json",
+  "parser": "@typescript-eslint/parser",
+  "plugins": [
+    "@typescript-eslint"
+  ],
+  "parserOptions": {
+    "project": "./tsconfig.json",
+    "ecmaVersion": 2020,
+    "sourceType": "module",
+    "tsconfigRootDir": "/Users/nati/Projects/crypture/apps/backend-proxy"
+  },
+  "env": {
+    "jest": true
+  },
+  "globals": {
+    "describe": "readonly",
+    "it": "readonly",
+    "test": "readonly",
+    "expect": "readonly",
+    "beforeEach": "readonly",
+    "afterEach": "readonly",
+    "beforeAll": "readonly",
+    "afterAll": "readonly",
+    "jest": "readonly"
+  },
+  "rules": {},
+  "ignorePatterns": ["dist", "node_modules", "*.js"]
 }

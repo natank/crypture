@@ -188,6 +188,116 @@ const options = {
               description: 'Response timestamp'
             }
           }
+        },
+        CoinGeckoSimplePrice: {
+          type: 'object',
+          description: 'Simple price data from CoinGecko API',
+          example: {
+            bitcoin: {
+              usd: 43250.50,
+              usd_market_cap: 845000000000,
+              usd_24h_vol: 12345678900,
+              usd_24h_change: 2.5,
+              last_updated_at: 1642694400
+            }
+          }
+        },
+        CoinGeckoMarketData: {
+          type: 'array',
+          description: 'Market data for multiple coins',
+          items: {
+            type: 'object',
+            properties: {
+              id: { type: 'string', description: 'Coin identifier' },
+              symbol: { type: 'string', description: 'Coin symbol' },
+              name: { type: 'string', description: 'Coin name' },
+              current_price: { type: 'number', description: 'Current price in USD' },
+              market_cap: { type: 'number', description: 'Market capitalization' },
+              market_cap_rank: { type: 'number', description: 'Market cap rank' },
+              price_change_24h: { type: 'number', description: '24h price change' },
+              price_change_percentage_24h: { type: 'number', description: '24h price change percentage' }
+            }
+          }
+        },
+        CoinGeckoSearchResponse: {
+          type: 'object',
+          description: 'Search results from CoinGecko API',
+          properties: {
+            coins: {
+              type: 'array',
+              items: {
+                type: 'object',
+                properties: {
+                  id: { type: 'string', description: 'Coin identifier' },
+                  name: { type: 'string', description: 'Coin name' },
+                  symbol: { type: 'string', description: 'Coin symbol' },
+                  market_cap_rank: { type: 'number', description: 'Market cap rank' },
+                  thumb: { type: 'string', description: 'Thumbnail image URL' }
+                }
+              }
+            }
+          }
+        },
+        CoinGeckoTrendingResponse: {
+          type: 'object',
+          description: 'Trending coins from CoinGecko API',
+          properties: {
+            coins: {
+              type: 'array',
+              items: {
+                type: 'object',
+                properties: {
+                  item: {
+                    type: 'object',
+                    properties: {
+                      id: { type: 'string', description: 'Coin identifier' },
+                      name: { type: 'string', description: 'Coin name' },
+                      symbol: { type: 'string', description: 'Coin symbol' },
+                      market_cap_rank: { type: 'number', description: 'Market cap rank' },
+                      price_btc: { type: 'number', description: 'Price in BTC' },
+                      score: { type: 'number', description: 'Trending score' }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        CoinGeckoGlobalResponse: {
+          type: 'object',
+          description: 'Global cryptocurrency market data',
+          properties: {
+            data: {
+              type: 'object',
+              properties: {
+                active_cryptocurrencies: { type: 'number', description: 'Number of active cryptocurrencies' },
+                markets: { type: 'number', description: 'Number of markets' },
+                total_market_cap: {
+                  type: 'object',
+                  properties: {
+                    usd: { type: 'number', description: 'Total market cap in USD' }
+                  }
+                },
+                total_volume: {
+                  type: 'object',
+                  properties: {
+                    usd: { type: 'number', description: 'Total volume in USD' }
+                  }
+                },
+                market_cap_change_percentage_24h_usd: { type: 'number', description: '24h market cap change percentage' }
+              }
+            }
+          }
+        },
+        CoinGeckoRateLimitResponse: {
+          type: 'object',
+          description: 'Rate limit information',
+          properties: {
+            rateLimit: { type: 'number', description: 'Total rate limit' },
+            remaining: { type: 'number', description: 'Remaining requests' },
+            usage: { type: 'number', description: 'Used requests' },
+            percentage: { type: 'number', description: 'Usage percentage' }
+          }
         }
       }
     },
@@ -199,6 +309,10 @@ const options = {
       {
         name: 'System',
         description: 'System information and configuration'
+      },
+      {
+        name: 'CoinGecko',
+        description: 'CoinGecko API proxy endpoints for cryptocurrency data'
       }
     ]
   },
