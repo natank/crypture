@@ -28,12 +28,12 @@
   },
   "include": [
     "src/**/*",
-    "src/**/*.d.ts"
+    "src/**/*.d.ts",
+    "tests/**/*"
   ],
   "exclude": [
     "node_modules",
     "dist",
-    "coverage",
-    "tests"
+    "coverage"
   ]
 }
