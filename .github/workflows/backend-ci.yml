@@ -29,15 +29,10 @@ env:
 
 jobs:
   # Unit Tests Job
-  unit-tests:
-    name: Unit Tests
+  backend-unit-tests:
+    name: Backend Unit Tests
     runs-on: ubuntu-latest
-    if: |
-      github.event_name == 'push' || 
-      github.event_name == 'pull_request' || 
-      github.event.inputs.test_type == 'all' || 
-      github.event.inputs.test_type == 'unit' || 
-      github.event.inputs.test_type == ''
+    if: github.event_name != 'workflow_dispatch' || inputs.test_type == 'all' || inputs.test_type == 'unit'
     
     steps:
       - name: Checkout code
@@ -74,15 +69,10 @@ jobs:
           name: backend-unit-coverage
 
   # Integration Tests Job
-  integration-tests:
-    name: Integration Tests
+  backend-integration-tests:
+    name: Backend Integration Tests
     runs-on: ubuntu-latest
-    if: |
-      github.event_name == 'push' || 
-      github.event_name == 'pull_request' || 
-      github.event.inputs.test_type == 'all' || 
-      github.event.inputs.test_type == 'integration' || 
-      github.event.inputs.test_type == ''
+    if: github.event_name != 'workflow_dispatch' || inputs.test_type == 'all' || inputs.test_type == 'integration'
     
     steps:
       - name: Checkout code
@@ -111,15 +101,10 @@ jobs:
           name: backend-integration-coverage
 
   # Testcontainers Tests Job
-  container-tests:
-    name: Testcontainers Tests
+  backend-container-tests:
+    name: Backend Testcontainers Tests
     runs-on: ubuntu-latest
-    if: |
-      github.event_name == 'push' || 
-      github.event_name == 'pull_request' || 
-      github.event.inputs.test_type == 'all' || 
-      github.event.inputs.test_type == 'containers' || 
-      github.event.inputs.test_type == ''
+    if: github.event_name != 'workflow_dispatch' || inputs.test_type == 'all' || inputs.test_type == 'containers'
     
     services:
       postgres:
@@ -194,14 +179,10 @@ jobs:
           name: backend-containers-coverage
 
   # Build and Test Container Job
-  build-and-test-container:
-    name: Build and Test Container
+  backend-build-container:
+    name: Backend Build Container
     runs-on: ubuntu-latest
-    if: |
-      github.event_name == 'push' || 
-      github.event_name == 'pull_request' || 
-      github.event.inputs.test_type == 'all' || 
-      github.event.inputs.test_type == ''
+    if: github.event_name != 'workflow_dispatch' || inputs.test_type == 'all'
     
     steps:
       - name: Checkout code
@@ -236,14 +217,10 @@ jobs:
           docker stop dev-test-container
 
   # Security Scanning Job
-  security-scan:
-    name: Security Scan
+  backend-security-scan:
+    name: Backend Security Scan
     runs-on: ubuntu-latest
-    if: |
-      github.event_name == 'push' || 
-      github.event_name == 'pull_request' || 
-      github.event.inputs.test_type == 'all' || 
-      github.event.inputs.test_type == ''
+    if: github.event_name != 'workflow_dispatch' || inputs.test_type == 'all'
     
     steps:
       - name: Checkout code
@@ -262,14 +239,10 @@ jobs:
           command: test
 
   # Performance Tests Job
-  performance-tests:
-    name: Performance Tests
+  backend-performance-tests:
+    name: Backend Performance Tests
     runs-on: ubuntu-latest
-    if: |
-      github.event_name == 'push' || 
-      github.event_name == 'pull_request' || 
-      github.event.inputs.test_type == 'all' || 
-      github.event.inputs.test_type == ''
+    if: github.event_name != 'workflow_dispatch' || inputs.test_type == 'all'
     
     steps:
       - name: Checkout code
@@ -328,7 +301,7 @@ jobs:
   deploy-staging:
     name: Deploy to Staging
     runs-on: ubuntu-latest
-    needs: [unit-tests, integration-tests, container-tests]
+    needs: [backend-unit-tests, backend-integration-tests, backend-container-tests]
     if: github.ref == 'refs/heads/main' && github.event_name == 'push'
     
     environment: staging
@@ -358,25 +331,21 @@ jobs:
       - name: Deploy to staging
         run: |
           echo "Deploying to staging environment..."
-          # Add your staging deployment logic here
-          # For example, update Kubernetes deployment or trigger staging pipeline
 
   # Notification Job
   notify:
     name: Notify Results
     runs-on: ubuntu-latest
-    needs: [unit-tests, integration-tests, container-tests, build-and-test-container]
+    needs: [backend-unit-tests, backend-integration-tests, backend-container-tests, backend-build-container]
     if: always()
     
     steps:
       - name: Notify on success
-        if: ${{ needs.unit-tests.result == 'success' && needs.integration-tests.result == 'success' && needs.container-tests.result == 'success' }}
+        if: ${{ needs.backend-unit-tests.result == 'success' && needs.backend-integration-tests.result == 'success' && needs.backend-container-tests.result == 'success' }}
         run: |
           echo "✅ All tests passed successfully!"
-          # Add Slack/Teams notification here if needed
 
       - name: Notify on failure
-        if: ${{ needs.unit-tests.result == 'failure' || needs.integration-tests.result == 'failure' || needs.container-tests.result == 'failure' }}
+        if: ${{ needs.backend-unit-tests.result == 'failure' || needs.backend-integration-tests.result == 'failure' || needs.backend-container-tests.result == 'failure' }}
         run: |
           echo "❌ Some tests failed!"
-          # Add Slack/Teams notification here if needed
