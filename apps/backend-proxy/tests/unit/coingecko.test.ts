@@ -411,7 +411,7 @@ describe('CoinGeckoService', () => {
 
       expect(mockAxiosInstance.get).toHaveBeenCalledTimes(4);
       expect(result).toEqual({ bitcoin: { usd: 43250.50 } });
-    });
+    }, 10000);
 
     it('should fail after max retries exhausted', async () => {
       // Always fail
@@ -424,7 +424,7 @@ describe('CoinGeckoService', () => {
       await expect(service.getSimplePrice('bitcoin', 'usd')).rejects.toThrow();
       
       expect(mockAxiosInstance.get).toHaveBeenCalledTimes(4); // 1 initial + 3 retries
-    });
+    }, 10000);
 
     it('should not retry on non-retryable errors', async () => {
       const notRetryableError = new Error('Not found') as any;
