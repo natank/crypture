@@ -13,6 +13,9 @@ describe('CoinGeckoService', () => {
     // Clear all mocks
     jest.clearAllMocks();
     
+    // Mock environment variable
+    delete process.env.COINGECKO_API_KEY;
+    
     // Create a mock axios instance
     mockAxiosInstance = {
       get: jest.fn(),
@@ -25,8 +28,18 @@ describe('CoinGeckoService', () => {
     // Mock axios.create to return our mock instance
     MockedAxios.create = jest.fn().mockReturnValue(mockAxiosInstance);
     
+    // Mock console methods to avoid noise in tests
+    jest.spyOn(console, 'warn').mockImplementation(() => {});
+    jest.spyOn(console, 'error').mockImplementation(() => {});
+    jest.spyOn(console, 'log').mockImplementation(() => {});
+    
     // Create service instance
     service = new CoinGeckoService();
+  });
+
+  afterEach(() => {
+    // Restore console methods
+    jest.restoreAllMocks();
   });
 
   describe('Constructor', () => {
