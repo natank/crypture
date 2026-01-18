@@ -8,6 +8,16 @@ describe('Rate Limiter Middleware', () => {
   beforeEach(() => {
     app = express();
     app.use(express.json());
+    
+    // Mock console methods to avoid noise in tests
+    jest.spyOn(console, 'warn').mockImplementation(() => {});
+    jest.spyOn(console, 'error').mockImplementation(() => {});
+    jest.spyOn(console, 'log').mockImplementation(() => {});
+  });
+
+  afterEach(() => {
+    // Restore console methods
+    jest.restoreAllMocks();
   });
 
   describe('apiRateLimiter', () => {
