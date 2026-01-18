@@ -4,7 +4,6 @@ import type {
   CoinGeckoSimplePrice,
   CoinGeckoSearchResponse,
   CoinGeckoTrendingResponse,
-  ApiResponse,
 } from '@crypture/shared-types';
 
 // Initialize the CoinGecko client with the backend proxy URL
