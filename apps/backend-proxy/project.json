@@ -1,0 +1,73 @@
+{
+  "name": "backend-proxy",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "apps/backend-proxy/src",
+  "projectType": "application",
+  "tags": ["type:app", "scope:backend"],
+  "targets": {
+    "build": {
+      "executor": "@nx/js:tsc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/apps/backend-proxy",
+        "main": "apps/backend-proxy/src/index.ts",
+        "tsConfig": "apps/backend-proxy/tsconfig.json",
+        "assets": ["apps/backend-proxy/src/assets"]
+      },
+      "configurations": {
+        "production": {
+          "optimization": true,
+          "extractLicenses": true,
+          "inspect": false
+        },
+        "ci": {
+          "optimization": true,
+          "extractLicenses": false
+        }
+      }
+    },
+    "test": {
+      "executor": "@nx/jest:jest",
+      "outputs": ["{workspaceRoot}/coverage/apps/backend-proxy"],
+      "options": {
+        "jestConfig": "apps/backend-proxy/jest.config.ts",
+        "passWithNoTests": false
+      },
+      "configurations": {
+        "ci": {
+          "ci": true,
+          "coverage": true,
+          "coverageReporters": ["text", "lcov"]
+        }
+      }
+    },
+    "test:unit": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "npm run test:unit",
+        "cwd": "apps/backend-proxy"
+      }
+    },
+    "test:integration": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "npm run test:containers:integration",
+        "cwd": "apps/backend-proxy"
+      }
+    },
+    "lint": {
+      "executor": "@nx/eslint:lint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["apps/backend-proxy/**/*.ts"]
+      }
+    },
+    "typecheck": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "npm run typecheck",
+        "cwd": "apps/backend-proxy"
+      }
+    }
+  }
+}

@@ -50,6 +50,7 @@ jobs:
         run: npm ci
       
       - name: Initialize NX Cloud
+        if: env.NX_CLOUD_ACCESS_TOKEN != ''
         run: npx nx-cloud start-ci-run --distribute-on="3 linux-medium-js" --stop-agents-after="build"
       
       - name: Run affected ${{ matrix.target }}
