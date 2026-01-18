@@ -278,8 +278,6 @@ jobs:
             phases:
               - duration: 60
                 arrivalRate: 10
-            payload:
-              path: 'test-data.csv'
           scenarios:
             - name: 'Health Check Load Test'
               weight: 100
