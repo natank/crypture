@@ -5,7 +5,6 @@
     "declarationMap": false,
     "emitDeclarationOnly": false,
     "outDir": "./dist",
-    "rootDir": "./src",
     "declaration": false,
     "noEmit": false,
     "lib": ["dom", "dom.iterable", "esnext"],
