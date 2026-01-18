@@ -212,8 +212,8 @@ jobs:
       - name: Test development container
         run: |
           docker run --rm -d --name dev-test-container -p 3001:3000 crypture-backend-proxy:dev-test
-          sleep 10
-          curl -f http://localhost:3001/api/health || exit 1
+          sleep 30
+          curl -f http://localhost:3001/api/health || (docker logs dev-test-container && exit 1)
           docker stop dev-test-container
 
   # Security Scanning Job

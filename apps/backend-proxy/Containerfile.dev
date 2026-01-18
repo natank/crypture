@@ -1,6 +1,9 @@
 # Development Containerfile with hot reload support
 FROM docker.io/node:20-alpine
 
+# Ensure binding to all interfaces
+ENV HOST=0.0.0.0
+
 # Set working directory
 WORKDIR /app
 
