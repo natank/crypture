@@ -147,7 +147,7 @@ test.describe('Navigation State Preservation (KI-04)', () => {
       await expect(coinLink).toBeVisible({ timeout: 5000 });
 
       // Check sessionStorage right before click
-      const savedBeforeClick = await page.evaluate(() =>
+      await page.evaluate(() =>
         sessionStorage.getItem('scroll_/portfolio')
       );
 
@@ -159,7 +159,7 @@ test.describe('Navigation State Preservation (KI-04)', () => {
       expect(page.url()).toContain('/coin/');
 
       // Check what's in sessionStorage after navigation
-      const savedAfter = await page.evaluate(() =>
+      await page.evaluate(() =>
         sessionStorage.getItem('scroll_/portfolio')
       );
 
@@ -175,7 +175,7 @@ test.describe('Navigation State Preservation (KI-04)', () => {
 
       // Check final scroll position
       const scrollAfter = await page.evaluate(() => window.scrollY);
-      const savedFinal = await page.evaluate(() =>
+      await page.evaluate(() =>
         sessionStorage.getItem('scroll_/portfolio')
       );
 

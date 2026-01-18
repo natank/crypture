@@ -418,7 +418,7 @@ test.describe('Delete Asset Notifications', () => {
     // The row should have the highlight class applied (bg-teal-50)
     // Note: The highlight will fade after 3 seconds, so we check immediately
     const rowElement = assetRow.locator('div').first();
-    const className = await rowElement.getAttribute('class');
+    await rowElement.getAttribute('class');
 
     // Verify the highlight class is present or was present (may have transitioned)
     // We just verify the row exists and is visible - the visual highlight is a UX enhancement

@@ -3,7 +3,7 @@
  * REQ-013-notifications / Backlog Item 24
  */
 
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Bell, VolumeX, Trash2, Edit, Circle, Check } from 'lucide-react';
 import AlertDeleteConfirmationModal from '@components/AlertDeleteConfirmationModal';
 import type { PriceAlert } from 'types/alert';

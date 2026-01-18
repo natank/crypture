@@ -72,7 +72,7 @@ test.describe('Portfolio Performance Chart', () => {
     // Recharts tooltip usually has a specific class
     // Note: This may be flaky as tooltip requires hovering over data points
     // Consider this a smoke test rather than a strict requirement
-    const tooltip = portfolioPage.page.locator('.recharts-tooltip-wrapper');
+    portfolioPage.page.locator('.recharts-tooltip-wrapper');
     // Just verify the chart is interactive, tooltip may not always appear
     await expect(chart).toBeVisible();
   });
