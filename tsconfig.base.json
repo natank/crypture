@@ -29,7 +29,10 @@
       "@types/*": ["frontend/src/types/*"],
       "@e2e/*": ["frontend/src/e2e/*"],
       "@test-setup": ["frontend/src/e2e/test-setup.ts"],
-      "@assets/*": ["frontend/public/assets/*"]
+      "@assets/*": ["frontend/public/assets/*"],
+      "@crypture/shared-types": ["libs/shared-types/src/index.ts"],
+      "@crypture/api-client": ["libs/api-client/src/index.ts"],
+      "@crypture/utils": ["libs/utils/src/index.ts"]
     }
   }
 }
