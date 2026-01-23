@@ -53,24 +53,29 @@ describe('notificationService', () => {
   });
 
   afterEach(() => {
-    // Restore original
+    // Restore original to both global and window
     if (originalNotification) {
       (global as { Notification?: typeof Notification }).Notification =
         originalNotification;
+      (window as { Notification?: typeof Notification }).Notification =
+        originalNotification;
     } else {
       delete (global as { Notification?: typeof Notification }).Notification;
+      delete (window as { Notification?: typeof Notification }).Notification;
     }
   });
 
   describe('isNotificationSupported', () => {
     it('returns true when Notification API is available', () => {
-      (global as { Notification?: typeof Notification }).Notification =
-        createMockNotification();
+      const MockNotif = createMockNotification();
+      (global as { Notification?: typeof Notification }).Notification = MockNotif;
+      (window as { Notification?: typeof Notification }).Notification = MockNotif;
       expect(notificationService.isNotificationSupported()).toBe(true);
     });
 
     it('returns false when Notification API is not available', () => {
       delete (global as { Notification?: typeof Notification }).Notification;
+      delete (window as { Notification?: typeof Notification }).Notification;
       expect(notificationService.isNotificationSupported()).toBe(false);
     });
   });
@@ -82,14 +87,16 @@ describe('notificationService', () => {
     });
 
     it('returns current permission status', () => {
-      (global as { Notification?: typeof Notification }).Notification =
-        createMockNotification('granted');
+      const MockNotif = createMockNotification('granted');
+      (global as { Notification?: typeof Notification }).Notification = MockNotif;
+      (window as { Notification?: typeof Notification }).Notification = MockNotif;
       expect(notificationService.getPermissionStatus()).toBe('granted');
     });
 
     it('returns "default" when not yet requested', () => {
-      (global as { Notification?: typeof Notification }).Notification =
-        createMockNotification('default');
+      const MockNotif = createMockNotification('default');
+      (global as { Notification?: typeof Notification }).Notification = MockNotif;
+      (window as { Notification?: typeof Notification }).Notification = MockNotif;
       expect(notificationService.getPermissionStatus()).toBe('default');
     });
   });
@@ -104,8 +111,8 @@ describe('notificationService', () => {
     it('returns permission result on success', async () => {
       const MockNotif = createMockNotification();
       MockNotif.requestPermission = vi.fn().mockResolvedValue('granted');
-      (global as { Notification?: typeof Notification }).Notification =
-        MockNotif;
+      (global as { Notification?: typeof Notification }).Notification = MockNotif;
+      (window as { Notification?: typeof Notification }).Notification = MockNotif;
 
       const result = await notificationService.requestPermission();
       expect(result).toBe('granted');
@@ -116,8 +123,8 @@ describe('notificationService', () => {
       MockNotif.requestPermission = vi
         .fn()
         .mockRejectedValue(new Error('Test error'));
-      (global as { Notification?: typeof Notification }).Notification =
-        MockNotif;
+      (global as { Notification?: typeof Notification }).Notification = MockNotif;
+      (window as { Notification?: typeof Notification }).Notification = MockNotif;
 
       const consoleSpy = vi
         .spyOn(console, 'error')
@@ -144,8 +151,9 @@ describe('notificationService', () => {
     });
 
     it('returns false when permission is not granted', () => {
-      (global as { Notification?: typeof Notification }).Notification =
-        createMockNotification('denied');
+      const MockNotif = createMockNotification('denied');
+      (global as { Notification?: typeof Notification }).Notification = MockNotif;
+      (window as { Notification?: typeof Notification }).Notification = MockNotif;
       const consoleSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
 
       const result = notificationService.sendNotification({
@@ -159,8 +167,8 @@ describe('notificationService', () => {
 
     it('creates notification when permission is granted', () => {
       const MockNotif = createMockNotification('granted');
-      (global as { Notification?: typeof Notification }).Notification =
-        MockNotif;
+      (global as { Notification?: typeof Notification }).Notification = MockNotif;
+      (window as { Notification?: typeof Notification }).Notification = MockNotif;
 
       const result = notificationService.sendNotification({
         title: 'Test Alert',
@@ -180,8 +188,8 @@ describe('notificationService', () => {
   describe('sendAlertNotification', () => {
     it('formats price alert notification correctly for "above" condition', () => {
       const MockNotif = createMockNotification('granted');
-      (global as { Notification?: typeof Notification }).Notification =
-        MockNotif;
+      (global as { Notification?: typeof Notification }).Notification = MockNotif;
+      (window as { Notification?: typeof Notification }).Notification = MockNotif;
 
       notificationService.sendAlertNotification('BTC', 'above', 100000, 101000);
 
@@ -195,8 +203,8 @@ describe('notificationService', () => {
 
     it('formats price alert notification correctly for "below" condition', () => {
       const MockNotif = createMockNotification('granted');
-      (global as { Notification?: typeof Notification }).Notification =
-        MockNotif;
+      (global as { Notification?: typeof Notification }).Notification = MockNotif;
+      (window as { Notification?: typeof Notification }).Notification = MockNotif;
 
       notificationService.sendAlertNotification('ETH', 'below', 2500, 2400);
 
