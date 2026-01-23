@@ -53,14 +53,14 @@ describe('notificationService', () => {
   });
 
   afterEach(() => {
-    // Restore original to both global and window
+    // Restore original or delete
     if (originalNotification) {
-      (global as { Notification?: typeof Notification }).Notification =
-        originalNotification;
-      (window as { Notification?: typeof Notification }).Notification =
-        originalNotification;
+      Object.defineProperty(window, 'Notification', {
+        value: originalNotification,
+        writable: true,
+        configurable: true,
+      });
     } else {
-      delete (global as { Notification?: typeof Notification }).Notification;
       delete (window as { Notification?: typeof Notification }).Notification;
     }
   });
@@ -68,13 +68,15 @@ describe('notificationService', () => {
   describe('isNotificationSupported', () => {
     it('returns true when Notification API is available', () => {
       const MockNotif = createMockNotification();
-      (global as { Notification?: typeof Notification }).Notification = MockNotif;
-      (window as { Notification?: typeof Notification }).Notification = MockNotif;
+      Object.defineProperty(window, 'Notification', {
+        value: MockNotif,
+        writable: true,
+        configurable: true,
+      });
       expect(notificationService.isNotificationSupported()).toBe(true);
     });
 
     it('returns false when Notification API is not available', () => {
-      delete (global as { Notification?: typeof Notification }).Notification;
       delete (window as { Notification?: typeof Notification }).Notification;
       expect(notificationService.isNotificationSupported()).toBe(false);
     });
@@ -82,28 +84,34 @@ describe('notificationService', () => {
 
   describe('getPermissionStatus', () => {
     it('returns "unsupported" when Notification API is not available', () => {
-      delete (global as { Notification?: typeof Notification }).Notification;
+      delete (window as { Notification?: typeof Notification }).Notification;
       expect(notificationService.getPermissionStatus()).toBe('unsupported');
     });
 
     it('returns current permission status', () => {
       const MockNotif = createMockNotification('granted');
-      (global as { Notification?: typeof Notification }).Notification = MockNotif;
-      (window as { Notification?: typeof Notification }).Notification = MockNotif;
+      Object.defineProperty(window, 'Notification', {
+        value: MockNotif,
+        writable: true,
+        configurable: true,
+      });
       expect(notificationService.getPermissionStatus()).toBe('granted');
     });
 
     it('returns "default" when not yet requested', () => {
       const MockNotif = createMockNotification('default');
-      (global as { Notification?: typeof Notification }).Notification = MockNotif;
-      (window as { Notification?: typeof Notification }).Notification = MockNotif;
+      Object.defineProperty(window, 'Notification', {
+        value: MockNotif,
+        writable: true,
+        configurable: true,
+      });
       expect(notificationService.getPermissionStatus()).toBe('default');
     });
   });
 
   describe('requestPermission', () => {
     it('returns "unsupported" when Notification API is not available', async () => {
-      delete (global as { Notification?: typeof Notification }).Notification;
+      delete (window as { Notification?: typeof Notification }).Notification;
       const result = await notificationService.requestPermission();
       expect(result).toBe('unsupported');
     });
@@ -111,8 +119,11 @@ describe('notificationService', () => {
     it('returns permission result on success', async () => {
       const MockNotif = createMockNotification();
       MockNotif.requestPermission = vi.fn().mockResolvedValue('granted');
-      (global as { Notification?: typeof Notification }).Notification = MockNotif;
-      (window as { Notification?: typeof Notification }).Notification = MockNotif;
+      Object.defineProperty(window, 'Notification', {
+        value: MockNotif,
+        writable: true,
+        configurable: true,
+      });
 
       const result = await notificationService.requestPermission();
       expect(result).toBe('granted');
@@ -123,8 +134,11 @@ describe('notificationService', () => {
       MockNotif.requestPermission = vi
         .fn()
         .mockRejectedValue(new Error('Test error'));
-      (global as { Notification?: typeof Notification }).Notification = MockNotif;
-      (window as { Notification?: typeof Notification }).Notification = MockNotif;
+      Object.defineProperty(window, 'Notification', {
+        value: MockNotif,
+        writable: true,
+        configurable: true,
+      });
 
       const consoleSpy = vi
         .spyOn(console, 'error')
@@ -138,7 +152,7 @@ describe('notificationService', () => {
 
   describe('sendNotification', () => {
     it('returns false when Notification API is not available', () => {
-      delete (global as { Notification?: typeof Notification }).Notification;
+      delete (window as { Notification?: typeof Notification }).Notification;
       const consoleSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
 
       const result = notificationService.sendNotification({
@@ -152,8 +166,11 @@ describe('notificationService', () => {
 
     it('returns false when permission is not granted', () => {
       const MockNotif = createMockNotification('denied');
-      (global as { Notification?: typeof Notification }).Notification = MockNotif;
-      (window as { Notification?: typeof Notification }).Notification = MockNotif;
+      Object.defineProperty(window, 'Notification', {
+        value: MockNotif,
+        writable: true,
+        configurable: true,
+      });
       const consoleSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
 
       const result = notificationService.sendNotification({
@@ -167,8 +184,11 @@ describe('notificationService', () => {
 
     it('creates notification when permission is granted', () => {
       const MockNotif = createMockNotification('granted');
-      (global as { Notification?: typeof Notification }).Notification = MockNotif;
-      (window as { Notification?: typeof Notification }).Notification = MockNotif;
+      Object.defineProperty(window, 'Notification', {
+        value: MockNotif,
+        writable: true,
+        configurable: true,
+      });
 
       const result = notificationService.sendNotification({
         title: 'Test Alert',
@@ -188,8 +208,11 @@ describe('notificationService', () => {
   describe('sendAlertNotification', () => {
     it('formats price alert notification correctly for "above" condition', () => {
       const MockNotif = createMockNotification('granted');
-      (global as { Notification?: typeof Notification }).Notification = MockNotif;
-      (window as { Notification?: typeof Notification }).Notification = MockNotif;
+      Object.defineProperty(window, 'Notification', {
+        value: MockNotif,
+        writable: true,
+        configurable: true,
+      });
 
       notificationService.sendAlertNotification('BTC', 'above', 100000, 101000);
 
@@ -203,8 +226,11 @@ describe('notificationService', () => {
 
     it('formats price alert notification correctly for "below" condition', () => {
       const MockNotif = createMockNotification('granted');
-      (global as { Notification?: typeof Notification }).Notification = MockNotif;
-      (window as { Notification?: typeof Notification }).Notification = MockNotif;
+      Object.defineProperty(window, 'Notification', {
+        value: MockNotif,
+        writable: true,
+        configurable: true,
+      });
 
       notificationService.sendAlertNotification('ETH', 'below', 2500, 2400);
 
