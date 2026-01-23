@@ -3,27 +3,16 @@ import { defineConfig } from "@playwright/test";
 
 export default defineConfig({
   testDir: "./src/e2e/specs",
-  testMatch: "**/*.spec.ts", // Match only .spec.ts files
-  // In CI, only run critical smoke tests
-  testIgnore: process.env.CI ? [
-    '**/a11y-mobile-smoke.spec.ts',
-    '**/a11y/**',
-    '**/features/category-exploration.spec.ts',
-    '**/features/coin-comparison.spec.ts',
-    '**/features/daily-summary.spec.ts',
-    '**/features/educational-tooltips.spec.ts',
-    '**/features/expansion-state-preservation.spec.ts',
-    '**/features/market-overview.spec.ts',
-    '**/features/notifications.spec.ts',
-    '**/features/price-alerts.spec.ts',
-    '**/features/view-asset-chart.spec.ts',
-    '**/features/view-asset-metrics.spec.ts',
-    '**/flows/refreshing-disabled-controls.spec.ts',
-    '**/flows/retry-reenable-controls.spec.ts',
-    '**/portfolio-composition-viz.spec.ts',
-    '**/portfolio-performance.spec.ts',
-    '**/trending-discovery.spec.ts',
-  ] : [],
+  // In CI, only run critical smoke tests (add-asset, portfolio basics)
+  testMatch: process.env.CI 
+    ? [
+        '**/features/add-asset.spec.ts',
+        '**/features/delete-asset.spec.ts',
+        '**/features/portfolio-value.spec.ts',
+        '**/flows/persist-portfolio.spec.ts',
+      ]
+    : "**/*.spec.ts", // Run all tests locally
+  testIgnore: [],
   use: {
     baseURL: process.env.CI ? "http://127.0.0.1:4173" : "http://localhost:4200",
     headless: true,
