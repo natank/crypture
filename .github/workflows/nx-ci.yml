@@ -16,7 +16,6 @@ concurrency:
 
 env:
   NX_CLOUD_ACCESS_TOKEN: ${{ secrets.NX_CLOUD_ACCESS_TOKEN }}
-  NX_REJECT_UNKNOWN_LOCAL_CACHE: 0
   NODE_VERSION: '20'
 
 jobs:
