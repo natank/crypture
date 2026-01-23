@@ -7,7 +7,7 @@
     "dev": "vite",
     "build": "tsc -b && vite build",
     "build:ci": "tsc -b tsconfig.build.json && vite build",
-    "lint": "eslint . --ext .ts,.tsx",
+    "lint": "eslint .",
     "typecheck": "tsc --noEmit",
     "typecheck:ci": "tsc --noEmit --skipLibCheck --noUnusedLocals false --noUnusedParameters false --noImplicitReturns false --noImplicitOverride false",
     "preview": "vite preview",
