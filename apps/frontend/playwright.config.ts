@@ -4,23 +4,23 @@ import { defineConfig } from "@playwright/test";
 export default defineConfig({
   testDir: "./src/e2e/specs",
   // In CI, run critical smoke tests covering core functionality
-  testMatch: process.env.CI 
+  testMatch: process.env.CI
     ? [
-        // Core portfolio operations
-        '**/features/add-asset.spec.ts',
-        '**/features/delete-asset.spec.ts',
-        '**/features/edit-asset-quantity.spec.ts',
-        '**/features/portfolio-value.spec.ts',
-        '**/features/value-calculation.spec.ts',
-        // Data persistence & import/export
-        '**/flows/persist-portfolio.spec.ts',
-        '**/flows/export-portfolio.spec.ts',
-        '**/flows/import-portfolio.spec.ts',
-        // UI/UX critical paths
-        '**/features/asset-sorting-filtering.spec.ts',
-        '**/features/portfolio-layout.spec.ts',
-        '**/features/navigation-state-preservation.spec.ts',
-      ]
+      // Core portfolio operations
+      '**/features/add-asset.spec.ts',
+      '**/features/delete-asset.spec.ts',
+      '**/features/edit-asset-quantity.spec.ts',
+      '**/features/portfolio-value.spec.ts',
+      '**/features/value-calculation.spec.ts',
+      // Data persistence & import/export
+      '**/flows/persist-portfolio.spec.ts',
+      '**/flows/export-portfolio.spec.ts',
+      '**/flows/import-portfolio.spec.ts',
+      // UI/UX critical paths
+      '**/features/asset-sorting-filtering.spec.ts',
+      '**/features/portfolio-layout.spec.ts',
+      '**/features/navigation-state-preservation.spec.ts',
+    ]
     : "**/*.spec.ts", // Run all tests locally
   testIgnore: [],
   use: {
@@ -36,9 +36,9 @@ export default defineConfig({
   workers: process.env.CI ? 1 : undefined, // Single worker in CI
   fullyParallel: false, // Run tests serially
   webServer: process.env.CI ? {
-    command: "sleep 3 && npx nx serve frontend --host 127.0.0.1 --port 4173",
+    command: "npx nx preview frontend --host 127.0.0.1 --port 4173 --no-watch",
     url: "http://127.0.0.1:4173",
-    timeout: 120 * 1000, // wait up to 120s for server to start in CI (cold start can be slow)
+    timeout: 120 * 1000, // wait up to 120s for server to start in CI
     reuseExistingServer: false,
   } : {
     command: "npx nx serve frontend",

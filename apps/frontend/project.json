@@ -43,9 +43,8 @@
     },
     "preview": {
       "executor": "@nx/vite:preview-server",
-      "defaultConfiguration": "preview",
       "options": {
-        "buildTarget": "frontend:build:preview"
+        "buildTarget": "frontend:build:production"
       }
     },
     "test": {
