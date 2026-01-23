@@ -10,6 +10,7 @@ export const test = baseTest.extend({
 
       const allowlist = [
         /^http:\/\/localhost/,
+        /^http:\/\/127\.0\.0\.1/, // CI uses 127.0.0.1 instead of localhost
         /.*\/assets\//,
         /.*\.woff2?$/, // fonts
         /.*\/_next\//, // optional for Next.js/static assets
