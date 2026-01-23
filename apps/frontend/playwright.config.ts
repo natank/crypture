@@ -40,8 +40,6 @@ export default defineConfig({
     url: "http://127.0.0.1:4173",
     timeout: 90 * 1000, // wait up to 90s for server to start in CI (cold start can be slow)
     reuseExistingServer: false,
-    stdout: 'pipe',
-    stderr: 'pipe',
   } : {
     command: "npx nx serve frontend",
     url: "http://localhost:4200",
