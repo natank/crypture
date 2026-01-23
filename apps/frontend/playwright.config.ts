@@ -36,7 +36,7 @@ export default defineConfig({
   workers: process.env.CI ? 1 : undefined, // Single worker in CI
   fullyParallel: false, // Run tests serially
   webServer: process.env.CI ? {
-    command: "npm run preview -- --host 127.0.0.1 --port 4173 --strictPort --open none",
+    command: "npx nx serve frontend --host 127.0.0.1 --port 4173",
     url: "http://127.0.0.1:4173",
     timeout: 120 * 1000, // wait up to 120s for server to start in CI (cold start can be slow)
     reuseExistingServer: false,
