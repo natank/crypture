@@ -1,13 +1,27 @@
 name: NX Monorepo CI/CD
 
+# DISABLED: This workflow requires NX Cloud. Use nx-ci-local.yml instead.
+# To re-enable NX Cloud:
+# 1. Add nxCloudId to nx.json
+# 2. Set NX_CLOUD_ACCESS_TOKEN secret in GitHub
+# 3. Uncomment the triggers below
+
+# on:
+#   pull_request:
+#     branches:
+#       - main
+#   push:
+#     branches:
+#       - main
+#   workflow_dispatch:
+
 on:
-  pull_request:
-    branches:
-      - main
-  push:
-    branches:
-      - main
   workflow_dispatch:
+    inputs:
+      enable_nx_cloud:
+        description: 'Enable NX Cloud (requires NX_CLOUD_ACCESS_TOKEN secret)'
+        required: false
+        default: 'false'
 
 # Cancel in-progress runs for the same PR/branch
 concurrency:
