@@ -67,6 +67,11 @@ frontend_typecheck() {
 frontend_lint() {
     echo -e "\n${YELLOW}>>> Frontend lint${NC}"
     (cd "$ROOT_DIR/apps/frontend" && npm run lint)
+    local exit_code=$?
+    if [ $exit_code -ne 0 ]; then
+        echo -e "${RED}✗ Frontend lint failed${NC}"
+        exit $exit_code
+    fi
     echo -e "${GREEN}✓ Frontend lint passed${NC}"
 }
 
