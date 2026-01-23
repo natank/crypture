@@ -6,9 +6,10 @@
 import { describe, it, expect, beforeEach, vi, afterEach } from 'vitest';
 import * as notificationService from '@services/notificationService';
 
-// Create a mock Notification class using a proper class-based approach
+// Create a mock Notification class that tracks constructor calls
 const createMockNotification = (permission: NotificationPermission = 'default') => {
   const mockClose = vi.fn();
+  const calls: Array<{ title: string; options?: NotificationOptions }> = [];
 
   // Create a proper class that can be instantiated with `new`
   class MockNotificationClass {
@@ -18,28 +19,13 @@ const createMockNotification = (permission: NotificationPermission = 'default') 
     public onclick: ((this: Notification, ev: Event) => unknown) | null = null;
     public close = mockClose;
 
-    constructor(_title: string, _options?: NotificationOptions) {
-      // Constructor captures title/options if needed for assertions
+    constructor(title: string, options?: NotificationOptions) {
+      // Track constructor calls for assertions
+      calls.push({ title, options });
     }
   }
 
-  // Wrap with vi.fn() to enable toHaveBeenCalledWith assertions
-  const SpyableCtor = vi.fn(
-    (title: string, options?: NotificationOptions) =>
-      new MockNotificationClass(title, options)
-  ) as unknown as typeof Notification;
-
-  // Copy static properties to the spyable constructor
-  Object.defineProperty(SpyableCtor, 'permission', {
-    get: () => MockNotificationClass.permission,
-    set: (v: NotificationPermission) => (MockNotificationClass.permission = v),
-    configurable: true,
-  });
-
-  (SpyableCtor as typeof Notification).requestPermission =
-    MockNotificationClass.requestPermission;
-
-  return SpyableCtor;
+  return { MockNotificationClass, calls, mockClose };
 };
 
 describe('notificationService', () => {
@@ -67,9 +53,9 @@ describe('notificationService', () => {
 
   describe('isNotificationSupported', () => {
     it('returns true when Notification API is available', () => {
-      const MockNotif = createMockNotification();
+      const { MockNotificationClass } = createMockNotification();
       Object.defineProperty(window, 'Notification', {
-        value: MockNotif,
+        value: MockNotificationClass,
         writable: true,
         configurable: true,
       });
@@ -89,9 +75,9 @@ describe('notificationService', () => {
     });
 
     it('returns current permission status', () => {
-      const MockNotif = createMockNotification('granted');
+      const { MockNotificationClass } = createMockNotification('granted');
       Object.defineProperty(window, 'Notification', {
-        value: MockNotif,
+        value: MockNotificationClass,
         writable: true,
         configurable: true,
       });
@@ -99,9 +85,9 @@ describe('notificationService', () => {
     });
 
     it('returns "default" when not yet requested', () => {
-      const MockNotif = createMockNotification('default');
+      const { MockNotificationClass } = createMockNotification('default');
       Object.defineProperty(window, 'Notification', {
-        value: MockNotif,
+        value: MockNotificationClass,
         writable: true,
         configurable: true,
       });
@@ -117,10 +103,10 @@ describe('notificationService', () => {
     });
 
     it('returns permission result on success', async () => {
-      const MockNotif = createMockNotification();
-      MockNotif.requestPermission = vi.fn().mockResolvedValue('granted');
+      const { MockNotificationClass } = createMockNotification();
+      MockNotificationClass.requestPermission = vi.fn().mockResolvedValue('granted');
       Object.defineProperty(window, 'Notification', {
-        value: MockNotif,
+        value: MockNotificationClass,
         writable: true,
         configurable: true,
       });
@@ -130,12 +116,12 @@ describe('notificationService', () => {
     });
 
     it('returns "denied" on error', async () => {
-      const MockNotif = createMockNotification();
-      MockNotif.requestPermission = vi
+      const { MockNotificationClass } = createMockNotification();
+      MockNotificationClass.requestPermission = vi
         .fn()
         .mockRejectedValue(new Error('Test error'));
       Object.defineProperty(window, 'Notification', {
-        value: MockNotif,
+        value: MockNotificationClass,
         writable: true,
         configurable: true,
       });
@@ -165,9 +151,9 @@ describe('notificationService', () => {
     });
 
     it('returns false when permission is not granted', () => {
-      const MockNotif = createMockNotification('denied');
+      const { MockNotificationClass } = createMockNotification('denied');
       Object.defineProperty(window, 'Notification', {
-        value: MockNotif,
+        value: MockNotificationClass,
         writable: true,
         configurable: true,
       });
@@ -183,9 +169,9 @@ describe('notificationService', () => {
     });
 
     it('creates notification when permission is granted', () => {
-      const MockNotif = createMockNotification('granted');
+      const { MockNotificationClass, calls } = createMockNotification('granted');
       Object.defineProperty(window, 'Notification', {
-        value: MockNotif,
+        value: MockNotificationClass,
         writable: true,
         configurable: true,
       });
@@ -196,8 +182,9 @@ describe('notificationService', () => {
       });
 
       expect(result).toBe(true);
-      expect(MockNotif).toHaveBeenCalledWith(
-        'Test Alert',
+      expect(calls).toHaveLength(1);
+      expect(calls[0].title).toBe('Test Alert');
+      expect(calls[0].options).toEqual(
         expect.objectContaining({
           body: 'Price reached target',
         })
@@ -207,39 +194,33 @@ describe('notificationService', () => {
 
   describe('sendAlertNotification', () => {
     it('formats price alert notification correctly for "above" condition', () => {
-      const MockNotif = createMockNotification('granted');
+      const { MockNotificationClass, calls } = createMockNotification('granted');
       Object.defineProperty(window, 'Notification', {
-        value: MockNotif,
+        value: MockNotificationClass,
         writable: true,
         configurable: true,
       });
 
       notificationService.sendAlertNotification('BTC', 'above', 100000, 101000);
 
-      expect(MockNotif).toHaveBeenCalledWith(
-        '🔔 Price Alert: BTC',
-        expect.objectContaining({
-          body: expect.stringContaining('above'),
-        })
-      );
+      expect(calls).toHaveLength(1);
+      expect(calls[0].title).toBe('🔔 Price Alert: BTC');
+      expect(calls[0].options?.body).toContain('above');
     });
 
     it('formats price alert notification correctly for "below" condition', () => {
-      const MockNotif = createMockNotification('granted');
+      const { MockNotificationClass, calls } = createMockNotification('granted');
       Object.defineProperty(window, 'Notification', {
-        value: MockNotif,
+        value: MockNotificationClass,
         writable: true,
         configurable: true,
       });
 
       notificationService.sendAlertNotification('ETH', 'below', 2500, 2400);
 
-      expect(MockNotif).toHaveBeenCalledWith(
-        '🔔 Price Alert: ETH',
-        expect.objectContaining({
-          body: expect.stringContaining('below'),
-        })
-      );
+      expect(calls).toHaveLength(1);
+      expect(calls[0].title).toBe('🔔 Price Alert: ETH');
+      expect(calls[0].options?.body).toContain('below');
     });
   });
 });
