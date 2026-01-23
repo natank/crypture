@@ -25,7 +25,7 @@ export default defineConfig({
     '**/trending-discovery.spec.ts',
   ] : [],
   use: {
-    baseURL: process.env.CI ? "http://localhost:4173" : "http://localhost:4200",
+    baseURL: process.env.CI ? "http://127.0.0.1:4173" : "http://localhost:4200",
     headless: true,
     viewport: { width: 1280, height: 720 },
     actionTimeout: 5000, // 5 second timeout for actions
@@ -37,9 +37,9 @@ export default defineConfig({
   workers: process.env.CI ? 1 : undefined, // Single worker in CI
   fullyParallel: false, // Run tests serially
   webServer: process.env.CI ? {
-    command: "npm run preview",
-    url: "http://localhost:4173",
-    timeout: 15 * 1000, // wait up to 15s for server to start
+    command: "npm run preview -- --host 127.0.0.1 --port 4173 --strictPort",
+    url: "http://127.0.0.1:4173",
+    timeout: 60 * 1000, // wait up to 60s for server to start in CI (cold start can be slow)
     reuseExistingServer: false,
   } : {
     command: "npx nx serve frontend",
