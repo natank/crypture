@@ -30,9 +30,9 @@
       "@e2e/*": ["frontend/src/e2e/*"],
       "@test-setup": ["frontend/src/e2e/test-setup.ts"],
       "@assets/*": ["frontend/public/assets/*"],
-      "@crypture/shared-types": ["libs/shared-types/src/index.ts"],
-      "@crypture/api-client": ["libs/api-client/src/index.ts"],
-      "@crypture/utils": ["libs/utils/src/index.ts"]
+      "@crypture/shared-types": ["dist/out-tsc/libs/shared-types/src/index.d.ts"],
+      "@crypture/api-client": ["dist/out-tsc/libs/api-client/src/index.d.ts"],
+      "@crypture/utils": ["dist/out-tsc/libs/utils/src/index.d.ts"]
     }
   }
 }
