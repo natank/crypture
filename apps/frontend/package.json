@@ -24,8 +24,6 @@
     "build-storybook": "storybook build"
   },
   "dependencies": {
-    "@crypture/api-client": "*",
-    "@crypture/shared-types": "*",
     "@fortawesome/fontawesome-free": "^7.0.0",
     "@tailwindcss/vite": "^4.1.7",
     "@types/recharts": "^1.8.29",

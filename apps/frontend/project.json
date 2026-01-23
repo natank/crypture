@@ -19,9 +19,6 @@
         },
         "production": {
           "mode": "production"
-        },
-        "ci": {
-          "mode": "production"
         }
       }
     },
