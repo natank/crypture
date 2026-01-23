@@ -35,9 +35,9 @@ jobs:
       
       - name: Build shared libraries
         run: |
-          npx nx build shared-types
-          npx nx build api-client
-          npx nx build utils
+          npx nx build shared-types --verbose
+          npx nx build api-client --verbose --skip-nx-cache
+          npx nx build utils --verbose
       
       - name: Run type checking
         working-directory: ./apps/frontend
@@ -74,9 +74,9 @@ jobs:
       
       - name: Build shared libraries
         run: |
-          npx nx build shared-types
-          npx nx build api-client
-          npx nx build utils
+          npx nx build shared-types --verbose
+          npx nx build api-client --verbose --skip-nx-cache
+          npx nx build utils --verbose
       
       - name: Build project
         working-directory: ./apps/frontend
