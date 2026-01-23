@@ -35,11 +35,13 @@ run_step() {
     fi
 }
 
-# Clean previous builds (optional, comment out for faster iteration)
+# Clean previous builds (simulates fresh CI environment)
 clean_builds() {
-    echo -e "\n${YELLOW}>>> Cleaning previous builds${NC}"
-    rm -rf dist/out-tsc/libs 2>/dev/null || true
+    echo -e "\n${YELLOW}>>> Cleaning previous builds (simulating fresh CI)${NC}"
+    rm -rf dist/libs 2>/dev/null || true
+    rm -rf dist/out-tsc 2>/dev/null || true
     rm -rf apps/frontend/dist 2>/dev/null || true
+    rm -rf node_modules/.cache 2>/dev/null || true
     echo -e "${GREEN}✓ Cleaned${NC}"
 }
 
