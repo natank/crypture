@@ -8,7 +8,13 @@
     "declaration": false,
     "noEmit": false,
     "lib": ["dom", "dom.iterable", "esnext"],
-    "types": ["node", "playwright", "vitest", "vitest/globals", "framer-motion"],
+    "types": [
+      "node",
+      "playwright",
+      "vitest",
+      "vitest/globals",
+      "framer-motion"
+    ],
     "moduleResolution": "bundler",
     "esModuleInterop": true,
     "baseUrl": ".",
@@ -28,5 +34,13 @@
       "@crypture/utils": ["../../libs/utils/src/index.ts"]
     }
   },
-  "include": ["src"]
+  "include": ["src"],
+  "references": [
+    {
+      "path": "../../libs/shared-types"
+    },
+    {
+      "path": "../../libs/api-client"
+    }
+  ]
 }

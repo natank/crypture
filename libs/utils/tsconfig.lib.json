@@ -1,7 +1,7 @@
 {
   "extends": "./tsconfig.json",
   "compilerOptions": {
-    "outDir": "../../dist/out-tsc",
+    "outDir": "../../dist/out-tsc/libs/utils",
     "declaration": true,
     "declarationMap": true,
     "composite": true,
@@ -14,9 +14,5 @@
     "src/**/*.spec.ts",
     "src/**/*.test.ts"
   ],
-  "references": [
-    {
-      "path": "../shared-types"
-    }
-  ]
+  "references": []
 }

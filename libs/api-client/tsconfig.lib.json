@@ -1,7 +1,7 @@
 {
   "extends": "./tsconfig.json",
   "compilerOptions": {
-    "outDir": "../../dist/out-tsc",
+    "outDir": "../../dist/out-tsc/libs/api-client",
     "declaration": true,
     "declarationMap": true,
     "composite": true,
@@ -16,7 +16,7 @@
   ],
   "references": [
     {
-      "path": "../shared-types"
+      "path": "../shared-types/tsconfig.lib.json"
     }
   ]
 }

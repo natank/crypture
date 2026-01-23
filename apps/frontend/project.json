@@ -1,6 +1,6 @@
 {
   "name": "frontend",
-  "$schema": "../node_modules/nx/schemas/project-schema.json",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "src",
   "projectType": "application",
   "tags": ["nx-react", "nx-vite"],
@@ -59,11 +59,15 @@
       }
     },
     "typecheck": {
-      "executor": "@nx/js:tsc",
-      "outputs": ["{options.outputPath}"],
+      "executor": "nx:run-commands",
       "options": {
-        "tsConfigPath": "tsconfig.app.json",
-        "outputPath": "dist/apps/frontend"
+        "command": "tsc --noEmit -p tsconfig.app.json",
+        "cwd": "apps/frontend"
+      },
+      "configurations": {
+        "ci": {
+          "command": "npm run typecheck:ci"
+        }
       }
     }
   }

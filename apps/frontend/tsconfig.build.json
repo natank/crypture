@@ -15,5 +15,13 @@
     "**/__tests__/**",
     "**/e2e/**",
     "**/*.stories.tsx"
+  ],
+  "references": [
+    {
+      "path": "../../libs/shared-types/tsconfig.lib.json"
+    },
+    {
+      "path": "../../libs/api-client/tsconfig.lib.json"
+    }
   ]
 }

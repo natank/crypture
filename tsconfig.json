@@ -1,0 +1,17 @@
+{
+  "extends": "./tsconfig.base.json",
+  "compilerOptions": {
+    "composite": true,
+    "declaration": true,
+    "declarationMap": true
+  },
+  "files": [],
+  "include": [],
+  "references": [
+    { "path": "./libs/shared-types" },
+    { "path": "./libs/api-client" },
+    { "path": "./libs/utils" },
+    { "path": "./apps/frontend" },
+    { "path": "./apps/backend-proxy" }
+  ]
+}
