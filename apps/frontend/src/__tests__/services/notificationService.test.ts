@@ -6,23 +6,40 @@
 import { describe, it, expect, beforeEach, vi, afterEach } from 'vitest';
 import * as notificationService from '@services/notificationService';
 
-// Create a mock Notification class
-const createMockNotification = (permission: string = 'default') => {
+// Create a mock Notification class using a proper class-based approach
+const createMockNotification = (permission: NotificationPermission = 'default') => {
   const mockClose = vi.fn();
-  const MockNotification = vi.fn().mockImplementation(() => ({
-    close: mockClose,
-    onclick: null,
-  })) as unknown as typeof Notification;
 
-  Object.defineProperty(MockNotification, 'permission', {
-    value: permission,
-    writable: true,
+  // Create a proper class that can be instantiated with `new`
+  class MockNotificationClass {
+    static permission: NotificationPermission = permission;
+    static requestPermission = vi.fn().mockResolvedValue('granted' as NotificationPermission);
+
+    public onclick: ((this: Notification, ev: Event) => unknown) | null = null;
+    public close = mockClose;
+
+    constructor(_title: string, _options?: NotificationOptions) {
+      // Constructor captures title/options if needed for assertions
+    }
+  }
+
+  // Wrap with vi.fn() to enable toHaveBeenCalledWith assertions
+  const SpyableCtor = vi.fn(
+    (title: string, options?: NotificationOptions) =>
+      new MockNotificationClass(title, options)
+  ) as unknown as typeof Notification;
+
+  // Copy static properties to the spyable constructor
+  Object.defineProperty(SpyableCtor, 'permission', {
+    get: () => MockNotificationClass.permission,
+    set: (v: NotificationPermission) => (MockNotificationClass.permission = v),
     configurable: true,
   });
 
-  MockNotification.requestPermission = vi.fn().mockResolvedValue('granted');
+  (SpyableCtor as typeof Notification).requestPermission =
+    MockNotificationClass.requestPermission;
 
-  return MockNotification;
+  return SpyableCtor;
 };
 
 describe('notificationService', () => {

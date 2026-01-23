@@ -217,10 +217,10 @@ export const PortfolioPerformanceChart: React.FC<
                   boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)',
                 }}
                 labelFormatter={(label) => new Date(label).toLocaleString()}
-                formatter={(value: number) => [
-                  formatCurrency(value),
-                  'Portfolio Value',
-                ]}
+                formatter={(value) => {
+                  const n = typeof value === 'number' ? value : 0;
+                  return [formatCurrency(n), 'Portfolio Value'] as const;
+                }}
               />
               <Area
                 type="monotone"

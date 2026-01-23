@@ -89,10 +89,10 @@ const AssetChart: React.FC<AssetChartProps> = ({
             tickFormatter={(value) => currencyFormatter.format(value)}
           />
           <Tooltip
-            formatter={(value: number) => [
-              currencyFormatter.format(value),
-              'Price',
-            ]}
+            formatter={(value) => {
+              const n = typeof value === 'number' ? value : 0;
+              return [currencyFormatter.format(n), 'Price'] as const;
+            }}
           />
           <Legend />
           <Line

@@ -85,10 +85,13 @@ export default function AllocationPieChart({
             cx="50%"
             cy="50%"
             labelLine={false}
-            label={({ name, percentage }) => {
+            label={(props) => {
+              // Recharts passes the actual data entry under `payload`
+              const entry = props.payload as AllocationItem | undefined;
+              const pct = entry?.percentage ?? 0;
               // Only show label if percentage is > 5% to avoid clutter
-              if (percentage < 5) return '';
-              return `${name} (${percentage.toFixed(1)}%)`;
+              if (pct < 5) return '';
+              return `${entry?.name ?? props.name} (${pct.toFixed(1)}%)`;
             }}
             outerRadius={80}
             innerRadius={40}
