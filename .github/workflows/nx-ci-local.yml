@@ -47,7 +47,16 @@ jobs:
       
       - name: Install dependencies
         run: npm ci
-      
+
+      - name: CI diagnostics (Docker/Testcontainers)
+        if: matrix.target == 'test'
+        run: |
+          echo "=== Docker Info ==="
+          docker version
+          docker info
+          echo "=== Testcontainers Env ==="
+          printenv | grep TESTCONTAINERS || true
+
       - name: Cache NX artifacts
         uses: actions/cache@v4
         with:
@@ -66,6 +75,8 @@ jobs:
         run: npx nx affected -t ${{ matrix.target }} --parallel=3 --configuration=ci
         env:
           CI: true
+          TESTCONTAINERS_RYUK_DISABLED: true
+          TESTCONTAINERS_DOCKER_SOCKET_OVERRIDE: /var/run/docker.sock
       
       - name: Upload coverage reports
         if: matrix.target == 'test' && always()

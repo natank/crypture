@@ -10,7 +10,7 @@
       "outputs": ["{options.outputPath}"],
       "options": {
         "outputPath": "dist/apps/backend-proxy",
-        "main": "apps/backend-proxy/src/index.ts",
+        "main": "apps/backend-proxy/src/main.ts",
         "tsConfig": "apps/backend-proxy/tsconfig.json",
         "assets": ["apps/backend-proxy/src/assets"]
       },

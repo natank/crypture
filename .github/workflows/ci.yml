@@ -1,13 +1,8 @@
 name: CI/CD Pipeline
 
-# Trigger workflow on pull requests and pushes to main branch
+# Manual-only (use nx-ci-local.yml as primary PR/push workflow)
 on:
-  pull_request:
-    branches:
-      - main
-  push:
-    branches:
-      - main
+  workflow_dispatch:
 
 # Cancel in-progress runs for the same PR/branch to save resources
 concurrency:
