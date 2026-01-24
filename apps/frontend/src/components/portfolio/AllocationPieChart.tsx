@@ -73,12 +73,9 @@ export default function AllocationPieChart({
       role="img"
       aria-label={`Portfolio allocation ${viewLabels[viewType]}`}
       id="allocation-chart-panel"
+      className="h-64 md:h-80 lg:h-96 min-h-[256px]"
     >
-      <ResponsiveContainer
-        width="100%"
-        height={300}
-        className="h-64 md:h-80 lg:h-96"
-      >
+      <ResponsiveContainer width="100%" height="100%" minHeight={256}>
         <PieChart>
           <Pie
             data={data}

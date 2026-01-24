@@ -158,7 +158,7 @@ export const PortfolioPerformanceChart: React.FC<
         </div>
       </div>
 
-      <div className="h-[300px] w-full">
+      <div className="h-[300px] w-full min-h-[300px]">
         {loading ? (
           <div className="h-full w-full flex items-center justify-center bg-gray-50 dark:bg-gray-900/50 rounded-lg animate-pulse">
             <div className="text-gray-400">Loading chart data...</div>
@@ -174,7 +174,7 @@ export const PortfolioPerformanceChart: React.FC<
             </button>
           </div>
         ) : (
-          <ResponsiveContainer width="100%" height="100%">
+          <ResponsiveContainer width="100%" height="100%" minHeight={300}>
             <AreaChart data={history}>
               <defs>
                 <linearGradient id="colorValue" x1="0" y1="0" x2="0" y2="1">
