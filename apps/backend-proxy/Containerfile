@@ -20,6 +20,9 @@ FROM docker.io/node:20-alpine
 
 WORKDIR /app
 
+# Ensure binding to all interfaces in container
+ENV HOST=0.0.0.0
+
 # Copy package files
 COPY package*.json ./
 
