@@ -1,5 +1,6 @@
 import swaggerJsdoc from 'swagger-jsdoc';
 import swaggerUi from 'swagger-ui-express';
+import path from 'path';
 
 const options = {
   definition: {
@@ -316,7 +317,9 @@ const options = {
       }
     ]
   },
-  apis: ['./src/routes/*.ts', './src/**/*.ts'], // Paths to files containing OpenAPI definitions
+  apis: process.env.NODE_ENV === 'production'
+    ? [path.join(__dirname, '../routes/*.js'), path.join(__dirname, '../**/*.js')]
+    : ['./src/routes/*.ts', './src/**/*.ts'],
 };
 
 const specs = swaggerJsdoc(options);

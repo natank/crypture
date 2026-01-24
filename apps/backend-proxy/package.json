@@ -2,11 +2,11 @@
   "name": "backend-proxy",
   "version": "1.0.0",
   "description": "Crypture backend proxy service",
-  "main": "dist/main.js",
+  "main": "dist/src/main.js",
   "scripts": {
     "dev": "npx nodemon --config nodemon.json",
     "build": "tsc",
-    "start": "node dist/main.js",
+    "start": "node dist/src/main.js",
     "test": "jest",
     "test:unit": "jest --testPathPatterns=tests/unit",
     "test:integration": "jest --testPathPatterns=tests/integration",
