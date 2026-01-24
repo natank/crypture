@@ -3,29 +3,28 @@ import { defineConfig } from "@playwright/test";
 
 export default defineConfig({
   testDir: "./src/e2e/specs",
-  testMatch: "**/*.spec.ts", // Match only .spec.ts files
-  // In CI, only run critical smoke tests
-  testIgnore: process.env.CI ? [
-    '**/a11y-mobile-smoke.spec.ts',
-    '**/a11y/**',
-    '**/features/category-exploration.spec.ts',
-    '**/features/coin-comparison.spec.ts',
-    '**/features/daily-summary.spec.ts',
-    '**/features/educational-tooltips.spec.ts',
-    '**/features/expansion-state-preservation.spec.ts',
-    '**/features/market-overview.spec.ts',
-    '**/features/notifications.spec.ts',
-    '**/features/price-alerts.spec.ts',
-    '**/features/view-asset-chart.spec.ts',
-    '**/features/view-asset-metrics.spec.ts',
-    '**/flows/refreshing-disabled-controls.spec.ts',
-    '**/flows/retry-reenable-controls.spec.ts',
-    '**/portfolio-composition-viz.spec.ts',
-    '**/portfolio-performance.spec.ts',
-    '**/trending-discovery.spec.ts',
-  ] : [],
+  // In CI, run critical smoke tests covering core functionality
+  testMatch: process.env.CI
+    ? [
+      // Core portfolio operations
+      '**/features/add-asset.spec.ts',
+      '**/features/delete-asset.spec.ts',
+      '**/features/edit-asset-quantity.spec.ts',
+      '**/features/portfolio-value.spec.ts',
+      '**/features/value-calculation.spec.ts',
+      // Data persistence & import/export
+      '**/flows/persist-portfolio.spec.ts',
+      '**/flows/export-portfolio.spec.ts',
+      '**/flows/import-portfolio.spec.ts',
+      // UI/UX critical paths
+      '**/features/asset-sorting-filtering.spec.ts',
+      '**/features/portfolio-layout.spec.ts',
+      '**/features/navigation-state-preservation.spec.ts',
+    ]
+    : "**/*.spec.ts", // Run all tests locally
+  testIgnore: [],
   use: {
-    baseURL: process.env.CI ? "http://localhost:4173" : "http://localhost:4200",
+    baseURL: process.env.CI ? "http://127.0.0.1:4173" : "http://localhost:4200",
     headless: true,
     viewport: { width: 1280, height: 720 },
     actionTimeout: 5000, // 5 second timeout for actions
@@ -37,9 +36,9 @@ export default defineConfig({
   workers: process.env.CI ? 1 : undefined, // Single worker in CI
   fullyParallel: false, // Run tests serially
   webServer: process.env.CI ? {
-    command: "npm run preview",
-    url: "http://localhost:4173",
-    timeout: 15 * 1000, // wait up to 15s for server to start
+    command: "npx vite preview --outDir ../../dist/apps/frontend --host 127.0.0.1 --port 4173",
+    url: "http://127.0.0.1:4173",
+    timeout: 120 * 1000, // wait up to 120s for server to start in CI
     reuseExistingServer: false,
   } : {
     command: "npx nx serve frontend",

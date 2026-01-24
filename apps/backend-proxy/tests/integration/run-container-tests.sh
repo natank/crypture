@@ -10,4 +10,4 @@ echo "  TESTCONTAINERS_DOCKER_SOCKET_OVERRIDE=$TESTCONTAINERS_DOCKER_SOCKET_OVER
 echo "  TESTCONTAINERS_RYUK_DISABLED=$TESTCONTAINERS_RYUK_DISABLED"
 echo ""
 
-npx jest --config jest.config.containers.js --testPathPattern=tests/containers
+npx jest --config jest.config.containers.js --testPathPatterns=tests/containers

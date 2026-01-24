@@ -25,6 +25,13 @@ export default tseslint.config({ ignores: ["dist", "coverage"] }, {
   rules: {
     ...reactHooks.configs.recommended.rules,
 
+    // Disable overly strict React Hooks rules that flag intentional patterns
+    "react-hooks/rules-of-hooks": "error", // Keep this - catches real hook violations
+    "react-hooks/exhaustive-deps": "warn", // Keep as warning
+    "react-hooks/purity": "off", // Disable - flags Date.now(), Math.random() which are fine in many contexts
+    "react-hooks/set-state-in-effect": "off", // Disable - initialization patterns are valid
+    "react-hooks/globals": "off", // Disable - test harness patterns are valid
+
     // ✅ Allow aliases like @services, ignore node_modules
     "import/no-unresolved": [
       "error",

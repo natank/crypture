@@ -36,6 +36,7 @@ export default function AlertDeleteConfirmationModal({
       document.addEventListener('keydown', handleEscape);
       return () => document.removeEventListener('keydown', handleEscape);
     }
+    return undefined;
   }, [isOpen, onCancel]);
 
   if (!isOpen) return null;

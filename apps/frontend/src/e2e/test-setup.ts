@@ -5,11 +5,20 @@ import { test as baseTest } from '@playwright/test';
 
 export const test = baseTest.extend({
   page: async ({ page }, use) => {
+    // Suppress chart dimension warnings in CI (headless mode issue)
+    page.on('console', (msg) => {
+      if (msg.type() === 'warning' && 
+          msg.text().includes('The width(-1) and height(-1) of chart should be greater than 0')) {
+        return;
+      }
+    });
+
     await page.route('**/*', async (route) => {
       const url = route.request().url();
 
       const allowlist = [
         /^http:\/\/localhost/,
+        /^http:\/\/127\.0\.0\.1/, // CI uses 127.0.0.1 instead of localhost
         /.*\/assets\//,
         /.*\.woff2?$/, // fonts
         /.*\/_next\//, // optional for Next.js/static assets

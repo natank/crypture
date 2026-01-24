@@ -20,7 +20,10 @@ export default defineConfig({
     },
   },
   build: {
-    outDir: "dist", // compiled JS/CSS/assets will go here
+    outDir: "dist",
     emptyOutDir: true,
+  },
+  server: {
+    host: true,
   },
 });

@@ -20,4 +20,4 @@ npm run test:integration
 echo ""
 
 echo "🐳 Running container tests..."
-npx jest --config jest.config.containers.js --testPathPattern=tests/containers
+npx jest --config jest.config.containers.js --testPathPatterns=tests/containers

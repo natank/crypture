@@ -1,0 +1,338 @@
+name: NX Monorepo CI/CD
+
+# DISABLED: This workflow requires NX Cloud. Use nx-ci-local.yml instead.
+# To re-enable NX Cloud:
+# 1. Add nxCloudId to nx.json
+# 2. Set NX_CLOUD_ACCESS_TOKEN secret in GitHub
+# 3. Uncomment the triggers below
+
+# on:
+#   pull_request:
+#     branches:
+#       - main
+#   push:
+#     branches:
+#       - main
+#   workflow_dispatch:
+
+on:
+  workflow_dispatch:
+    inputs:
+      enable_nx_cloud:
+        description: 'Enable NX Cloud (requires NX_CLOUD_ACCESS_TOKEN secret)'
+        required: false
+        default: 'false'
+
+# Cancel in-progress runs for the same PR/branch
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  NX_CLOUD_ACCESS_TOKEN: ${{ secrets.NX_CLOUD_ACCESS_TOKEN }}
+  NODE_VERSION: '20'
+
+jobs:
+  # Main CI job using NX affected commands
+  nx-affected:
+    name: NX Affected Tasks
+    runs-on: ubuntu-latest
+    
+    strategy:
+      matrix:
+        target: [lint, typecheck, test, build]
+      fail-fast: false
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+      
+      - name: Derive appropriate SHAs for base and head for nx affected commands
+        uses: nrwl/nx-set-shas@v4
+        with:
+          main-branch-name: 'main'
+      
+      - name: Install dependencies
+        run: npm ci
+      
+      - name: Initialize NX Cloud
+        if: env.NX_CLOUD_ACCESS_TOKEN != ''
+        run: npx nx-cloud start-ci-run --distribute-on="3 linux-medium-js" --stop-agents-after="build"
+      
+      - name: Run affected ${{ matrix.target }}
+        run: npx nx affected -t ${{ matrix.target }} --parallel=3 --configuration=ci
+        env:
+          CI: true
+      
+      - name: Upload coverage reports
+        if: matrix.target == 'test' && always()
+        uses: codecov/codecov-action@v4
+        with:
+          files: ./coverage/**/lcov.info
+          flags: affected-${{ matrix.target }}
+          name: nx-affected-coverage
+  
+  # Frontend E2E tests (only run if frontend is affected)
+  frontend-e2e:
+    name: Frontend E2E Tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+      
+      - name: Derive appropriate SHAs for base and head
+        uses: nrwl/nx-set-shas@v4
+        with:
+          main-branch-name: 'main'
+      
+      - name: Install dependencies
+        run: npm ci
+      
+      - name: Install Playwright browsers
+        working-directory: apps/frontend
+        run: npx playwright install --with-deps
+      
+      - name: Check if frontend is affected
+        id: check-affected
+        run: |
+          if npx nx show project frontend --affected; then
+            echo "affected=true" >> $GITHUB_OUTPUT
+          else
+            echo "affected=false" >> $GITHUB_OUTPUT
+          fi
+      
+      - name: Build frontend
+        if: steps.check-affected.outputs.affected == 'true'
+        run: npx nx build frontend --configuration=ci
+      
+      - name: Run E2E tests
+        if: steps.check-affected.outputs.affected == 'true'
+        working-directory: apps/frontend
+        run: npm run test:e2e:ci
+        env:
+          CI: true
+      
+      - name: Upload Playwright report
+        if: failure() && steps.check-affected.outputs.affected == 'true'
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report
+          path: apps/frontend/playwright-report/
+          retention-days: 30
+      
+      - name: Upload test results
+        if: always() && steps.check-affected.outputs.affected == 'true'
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-results
+          path: apps/frontend/test-results/
+          retention-days: 30
+  
+  # Backend integration tests (only run if backend is affected)
+  backend-integration:
+    name: Backend Integration Tests
+    runs-on: ubuntu-latest
+    
+    services:
+      postgres:
+        image: postgres:15
+        env:
+          POSTGRES_PASSWORD: test_password
+          POSTGRES_USER: test_user
+          POSTGRES_DB: crypture_test
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 5432:5432
+      
+      redis:
+        image: redis:7
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 6379:6379
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+      
+      - name: Derive appropriate SHAs for base and head
+        uses: nrwl/nx-set-shas@v4
+        with:
+          main-branch-name: 'main'
+      
+      - name: Install dependencies
+        run: npm ci
+      
+      - name: Check if backend is affected
+        id: check-affected
+        run: |
+          if npx nx show project backend-proxy --affected; then
+            echo "affected=true" >> $GITHUB_OUTPUT
+          else
+            echo "affected=false" >> $GITHUB_OUTPUT
+          fi
+      
+      - name: Wait for services
+        if: steps.check-affected.outputs.affected == 'true'
+        run: |
+          timeout 60 bash -c 'until nc -z localhost 5432; do sleep 1; done'
+          timeout 60 bash -c 'until nc -z localhost 6379; do sleep 1; done'
+      
+      - name: Run integration tests
+        if: steps.check-affected.outputs.affected == 'true'
+        working-directory: apps/backend-proxy
+        env:
+          NODE_ENV: test
+          POSTGRES_HOST: localhost
+          POSTGRES_PORT: 5432
+          POSTGRES_USER: test_user
+          POSTGRES_PASSWORD: test_password
+          POSTGRES_DB: crypture_test
+          REDIS_HOST: localhost
+          REDIS_PORT: 6379
+        run: npm run test:containers:integration
+      
+      - name: Upload integration test coverage
+        if: steps.check-affected.outputs.affected == 'true'
+        uses: codecov/codecov-action@v4
+        with:
+          file: apps/backend-proxy/coverage/lcov.info
+          flags: backend-integration
+          name: backend-integration-coverage
+  
+  # Build shared libraries (run on any library change)
+  build-libraries:
+    name: Build Shared Libraries
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+      
+      - name: Derive appropriate SHAs for base and head
+        uses: nrwl/nx-set-shas@v4
+        with:
+          main-branch-name: 'main'
+      
+      - name: Install dependencies
+        run: npm ci
+      
+      - name: Build affected libraries
+        run: npx nx affected -t build --projects=tag:type:lib --parallel=3
+      
+      - name: Cache library builds
+        uses: actions/cache@v4
+        with:
+          path: |
+            dist/libs
+            node_modules/.cache
+          key: libs-${{ github.sha }}
+          restore-keys: |
+            libs-
+  
+  # Security and quality checks
+  security-quality:
+    name: Security & Quality Checks
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+      
+      - name: Install dependencies
+        run: npm ci
+      
+      - name: Run npm audit
+        run: npm audit --audit-level moderate
+        continue-on-error: true
+      
+      - name: Check for circular dependencies
+        run: npx nx graph --file=dependency-graph.json
+      
+      - name: Upload dependency graph
+        uses: actions/upload-artifact@v4
+        with:
+          name: dependency-graph
+          path: dependency-graph.json
+          retention-days: 7
+  
+  # Summary job
+  ci-summary:
+    name: CI Summary
+    runs-on: ubuntu-latest
+    needs: [nx-affected, frontend-e2e, backend-integration, build-libraries, security-quality]
+    if: always()
+    
+    steps:
+      - name: Check job results
+        run: |
+          echo "NX Affected: ${{ needs.nx-affected.result }}"
+          echo "Frontend E2E: ${{ needs.frontend-e2e.result }}"
+          echo "Backend Integration: ${{ needs.backend-integration.result }}"
+          echo "Build Libraries: ${{ needs.build-libraries.result }}"
+          echo "Security & Quality: ${{ needs.security-quality.result }}"
+      
+      - name: Fail if any job failed
+        if: |
+          needs.nx-affected.result == 'failure' ||
+          needs.frontend-e2e.result == 'failure' ||
+          needs.backend-integration.result == 'failure' ||
+          needs.build-libraries.result == 'failure'
+        run: exit 1
+      
+      - name: Success message
+        if: |
+          needs.nx-affected.result == 'success' &&
+          (needs.frontend-e2e.result == 'success' || needs.frontend-e2e.result == 'skipped') &&
+          (needs.backend-integration.result == 'success' || needs.backend-integration.result == 'skipped') &&
+          needs.build-libraries.result == 'success'
+        run: echo "✅ All CI checks passed successfully!"

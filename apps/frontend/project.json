@@ -1,6 +1,6 @@
 {
   "name": "frontend",
-  "$schema": "../node_modules/nx/schemas/project-schema.json",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "src",
   "projectType": "application",
   "tags": ["nx-react", "nx-vite"],
@@ -18,6 +18,9 @@
           "mode": "development"
         },
         "production": {
+          "mode": "production"
+        },
+        "ci": {
           "mode": "production"
         }
       }
@@ -40,24 +43,33 @@
     },
     "preview": {
       "executor": "@nx/vite:preview-server",
-      "defaultConfiguration": "preview",
       "options": {
-        "buildTarget": "frontend:build:preview"
+        "buildTarget": "frontend:build:production"
       }
     },
     "test": {
-      "executor": "@nx/vite:test",
+      "executor": "nx:run-commands",
       "outputs": ["{workspaceRoot}/coverage/apps/frontend"],
       "options": {
-        "passWithNoTests": true
+        "command": "npm run test:unit",
+        "cwd": "apps/frontend"
+      },
+      "configurations": {
+        "ci": {
+          "command": "npm run test:unit -- --run"
+        }
       }
     },
     "typecheck": {
-      "executor": "@nx/js:tsc",
-      "outputs": ["{options.outputPath}"],
+      "executor": "nx:run-commands",
       "options": {
-        "tsConfigPath": "tsconfig.app.json",
-        "outputPath": "dist/apps/frontend"
+        "command": "tsc --noEmit -p tsconfig.app.json",
+        "cwd": "apps/frontend"
+      },
+      "configurations": {
+        "ci": {
+          "command": "npm run typecheck:ci"
+        }
       }
     }
   }

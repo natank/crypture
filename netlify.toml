@@ -1,7 +1,7 @@
 [build]
   base = "/"
-  publish = "apps/frontend/dist"
-  command = "cd apps/frontend && npm install && npm run build:ci"
+  publish = "dist/apps/frontend"
+  command = "npm ci && npx nx build frontend --configuration=ci"
 
 [build.environment]
   NODE_VERSION = "20"

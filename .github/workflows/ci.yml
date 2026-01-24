@@ -1,13 +1,8 @@
 name: CI/CD Pipeline
 
-# Trigger workflow on pull requests and pushes to main branch
+# Manual-only (use nx-ci-local.yml as primary PR/push workflow)
 on:
-  pull_request:
-    branches:
-      - main
-  push:
-    branches:
-      - main
+  workflow_dispatch:
 
 # Cancel in-progress runs for the same PR/branch to save resources
 concurrency:
@@ -20,11 +15,6 @@ jobs:
     name: Unit Tests (Vitest)
     runs-on: ubuntu-latest
     
-    # Set working directory to frontend where tests are located
-    defaults:
-      run:
-        working-directory: ./apps/frontend
-    
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -32,31 +22,33 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '24'
+          node-version: '20'
           cache: 'npm'
-          cache-dependency-path: './apps/frontend/package-lock.json'
       
       - name: Install dependencies
         run: npm ci
       
+      - name: Build shared libraries
+        run: |
+          npx nx build shared-types --verbose
+          npx nx build api-client --verbose --skip-nx-cache
+          npx nx build utils --verbose
+      
       - name: Run type checking
+        working-directory: ./apps/frontend
         run: npm run typecheck:ci
       
       - name: Run unit tests
+        working-directory: ./apps/frontend
         run: npm run test:unit
         env:
-          # Ensure tests run in CI mode
           CI: true
 
   # Job 2: Run E2E tests with Playwright
   e2e-tests:
     name: E2E Tests (Playwright)
     runs-on: ubuntu-latest
-    timeout-minutes: 5
-    
-    defaults:
-      run:
-        working-directory: ./apps/frontend
+    timeout-minutes: 10
     
     steps:
       - name: Checkout code
@@ -65,20 +57,34 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '24'
+          node-version: '20'
           cache: 'npm'
-          cache-dependency-path: './apps/frontend/package-lock.json'
       
       - name: Install dependencies
         run: npm ci
       
       - name: Install Playwright browsers
+        working-directory: ./apps/frontend
         run: npx playwright install --with-deps
       
-      - name: Build project
-        run: npm run build:ci
+      - name: Build shared libraries
+        run: |
+          npx nx build shared-types --verbose
+          npx nx build api-client --verbose --skip-nx-cache
+          npx nx build utils --verbose
+
+      - name: Build frontend
+        run: npx nx build frontend --configuration=ci
+
+      - name: Debug frontend build output
+        run: |
+          echo "dist/apps/frontend contents:"
+          ls -la dist/apps/frontend || true
+          echo "apps/frontend/dist contents:"
+          ls -la apps/frontend/dist || true
       
       - name: Run E2E tests
+        working-directory: ./apps/frontend
         run: npm run test:e2e:ci
         env:
           CI: true
@@ -104,10 +110,6 @@ jobs:
     name: Lint Code
     runs-on: ubuntu-latest
     
-    defaults:
-      run:
-        working-directory: ./apps/frontend
-    
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -115,12 +117,12 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '24'
+          node-version: '20'
           cache: 'npm'
-          cache-dependency-path: './apps/frontend/package-lock.json'
       
       - name: Install dependencies
         run: npm ci
       
       - name: Run ESLint
+        working-directory: ./apps/frontend
         run: npm run lint

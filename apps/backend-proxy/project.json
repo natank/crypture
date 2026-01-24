@@ -1,0 +1,71 @@
+{
+  "name": "backend-proxy",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "apps/backend-proxy/src",
+  "projectType": "application",
+  "tags": ["type:app", "scope:backend"],
+  "targets": {
+    "build": {
+      "executor": "@nx/js:tsc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/apps/backend-proxy",
+        "main": "apps/backend-proxy/src/main.ts",
+        "tsConfig": "apps/backend-proxy/tsconfig.json",
+        "assets": ["apps/backend-proxy/src/assets"]
+      },
+      "configurations": {
+        "production": {
+          "optimization": true,
+          "extractLicenses": true,
+          "inspect": false
+        },
+        "ci": {
+          "optimization": true,
+          "extractLicenses": false
+        }
+      }
+    },
+    "test": {
+      "executor": "nx:run-commands",
+      "outputs": ["{workspaceRoot}/coverage/apps/backend-proxy"],
+      "options": {
+        "command": "npm run test:containers:unit",
+        "cwd": "apps/backend-proxy"
+      },
+      "configurations": {
+        "ci": {
+          "command": "npm run test:containers:unit -- --ci --coverage"
+        }
+      }
+    },
+    "test:unit": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "npm run test:unit",
+        "cwd": "apps/backend-proxy"
+      }
+    },
+    "test:integration": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "npm run test:containers:integration",
+        "cwd": "apps/backend-proxy"
+      }
+    },
+    "lint": {
+      "executor": "@nx/eslint:lint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["apps/backend-proxy/**/*.ts"]
+      }
+    },
+    "typecheck": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "npm run typecheck",
+        "cwd": "apps/backend-proxy"
+      }
+    }
+  }
+}

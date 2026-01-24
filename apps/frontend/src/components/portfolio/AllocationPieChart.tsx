@@ -73,22 +73,22 @@ export default function AllocationPieChart({
       role="img"
       aria-label={`Portfolio allocation ${viewLabels[viewType]}`}
       id="allocation-chart-panel"
+      className="h-64 md:h-80 lg:h-96 min-h-[256px]"
     >
-      <ResponsiveContainer
-        width="100%"
-        height={300}
-        className="h-64 md:h-80 lg:h-96"
-      >
+      <ResponsiveContainer width="100%" height="100%" minHeight={256}>
         <PieChart>
           <Pie
             data={data}
             cx="50%"
             cy="50%"
             labelLine={false}
-            label={({ name, percentage }) => {
+            label={(props) => {
+              // Recharts passes the actual data entry under `payload`
+              const entry = props.payload as AllocationItem | undefined;
+              const pct = entry?.percentage ?? 0;
               // Only show label if percentage is > 5% to avoid clutter
-              if (percentage < 5) return '';
-              return `${name} (${percentage.toFixed(1)}%)`;
+              if (pct < 5) return '';
+              return `${entry?.name ?? props.name} (${pct.toFixed(1)}%)`;
             }}
             outerRadius={80}
             innerRadius={40}

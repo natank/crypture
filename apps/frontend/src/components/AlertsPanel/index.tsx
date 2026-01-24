@@ -68,6 +68,7 @@ export default function AlertsPanel({
       document.addEventListener('keydown', handleEscape);
       return () => document.removeEventListener('keydown', handleEscape);
     }
+    return undefined;
   }, [isOpen, showForm, onClose]);
 
   // Focus trap

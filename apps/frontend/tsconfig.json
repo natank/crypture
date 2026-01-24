@@ -8,7 +8,13 @@
     "declaration": false,
     "noEmit": false,
     "lib": ["dom", "dom.iterable", "esnext"],
-    "types": ["node", "playwright", "vitest", "vitest/globals", "framer-motion"],
+    "types": [
+      "node",
+      "playwright",
+      "vitest",
+      "vitest/globals",
+      "framer-motion"
+    ],
     "moduleResolution": "bundler",
     "esModuleInterop": true,
     "baseUrl": ".",
@@ -23,10 +29,18 @@
       "@e2e/*": ["src/e2e/*"],
       "@test-setup": ["src/e2e/test-setup.ts"],
       "@assets/*": ["public/assets/*"],
-      "@crypture/shared-types": ["../../libs/shared-types/src/index.ts"],
-      "@crypture/api-client": ["../../libs/api-client/src/index.ts"],
-      "@crypture/utils": ["../../libs/utils/src/index.ts"]
+      "@crypture/shared-types": ["../../dist/libs/shared-types/src/index.d.ts"],
+      "@crypture/api-client": ["../../dist/libs/api-client/src/index.d.ts"],
+      "@crypture/utils": ["../../dist/libs/utils/src/index.d.ts"]
     }
   },
-  "include": ["src"]
+  "include": ["src"],
+  "references": [
+    {
+      "path": "../../libs/shared-types"
+    },
+    {
+      "path": "../../libs/api-client"
+    }
+  ]
 }

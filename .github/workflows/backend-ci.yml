@@ -169,7 +169,7 @@ jobs:
           POSTGRES_DB: crypture_test
           REDIS_HOST: localhost
           REDIS_PORT: 6379
-        run: npx jest --config jest.config.containers.js --testPathPattern=tests/containers --verbose
+        run: npx jest --config jest.config.containers.js --testPathPatterns=tests/containers --verbose
 
       - name: Upload container test coverage
         uses: codecov/codecov-action@v3
