@@ -76,7 +76,8 @@
     "helmet": "^7.1.0",
     "morgan": "^1.10.0",
     "swagger-jsdoc": "^6.2.8",
-    "swagger-ui-express": "^5.0.1"
+    "swagger-ui-express": "^5.0.1",
+    "@vercel/node": "^5.3.7"
   },
   "devDependencies": {
     "@nx/eslint": "^22.3.3",
