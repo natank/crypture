@@ -77,6 +77,16 @@ jobs:
           npx nx build shared-types --verbose
           npx nx build api-client --verbose --skip-nx-cache
           npx nx build utils --verbose
+
+      - name: Build frontend
+        run: npx nx build frontend --configuration=ci
+
+      - name: Debug frontend build output
+        run: |
+          echo "dist/apps/frontend contents:"
+          ls -la dist/apps/frontend || true
+          echo "apps/frontend/dist contents:"
+          ls -la apps/frontend/dist || true
       
       - name: Run E2E tests
         working-directory: ./apps/frontend
