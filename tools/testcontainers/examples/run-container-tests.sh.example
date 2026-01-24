@@ -12,4 +12,4 @@ echo "  TESTCONTAINERS_RYUK_DISABLED=$TESTCONTAINERS_RYUK_DISABLED"
 echo ""
 
 # Customize this command for your service
-npx jest --config jest.config.containers.js --testPathPattern=tests/containers
+npx jest --config jest.config.containers.js --testPathPatterns=tests/containers

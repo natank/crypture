@@ -231,9 +231,9 @@ module.exports = {
 ```json
 {
   "scripts": {
-    "test:unit": "jest --testPathPattern=tests/unit",
-    "test:integration": "jest --testPathPattern=tests/integration",
-    "test:containers": "jest --config jest.config.containers.js --testPathPattern=tests/containers",
+    "test:unit": "jest --testPathPatterns=tests/unit",
+    "test:integration": "jest --testPathPatterns=tests/integration",
+    "test:containers": "jest --config jest.config.containers.js --testPathPatterns=tests/containers",
     "test:all": "npm run test:unit && npm run test:integration && npm run test:containers"
   }
 }
