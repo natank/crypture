@@ -44,7 +44,7 @@ export default defineConfig({
         reuseExistingServer: false,
       }
     : {
-        command: 'cd apps/frontend && npm run dev',
+        command: 'npm run dev',
         url: 'http://localhost:5173',
         timeout: 60 * 1000, // wait up to 60s for server to start
         reuseExistingServer: true,
