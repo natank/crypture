@@ -247,7 +247,6 @@ export class CoinGeckoService {
         params: {
           vs_currency: vsCurrency,
           days,
-          interval: days === 1 ? 'hourly' : 'daily',
         },
       });
       return response.data;
