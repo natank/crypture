@@ -56,8 +56,8 @@ HTMLAnchorElement.prototype.click = function () {
 };
 
 // Mock navigateFetch to prevent JSDOM navigation errors
-const originalNavigateFetch = globalThis.navigateFetch;
-globalThis.navigateFetch = vi.fn(() => Promise.resolve());
+const originalNavigateFetch = (globalThis as any).navigateFetch;
+(globalThis as any).navigateFetch = vi.fn(() => Promise.resolve());
 
 // Mock window.scrollY
 let mockScrollY = 0;
@@ -80,7 +80,7 @@ describe('ScrollRestoration', () => {
     vi.useRealTimers();
     // Restore original mocks
     HTMLAnchorElement.prototype.click = originalClick;
-    globalThis.navigateFetch = originalNavigateFetch;
+    (globalThis as any).navigateFetch = originalNavigateFetch;
   });
 
   const renderWithRouter = (initialPath: string = '/portfolio') => {
