@@ -72,15 +72,9 @@ export class CoinGeckoService {
             `📡 CoinGecko API Request: ${config.method?.toUpperCase()} ${config.url}`
           );
           console.log(`🔍 Request headers:`, Object.keys(config.headers));
-          console.log(`🔍 Full headers object:`, config.headers);
           if (config.headers['x-cg-demo-api-key']) {
-            const apiKey = config.headers['x-cg-demo-api-key'] as string;
             console.log(
-              `✅ Using x-cg-demo-api-key header (length: ${apiKey.length})`
-            );
-            console.log(`✅ API Key prefix: ${apiKey.substring(0, 8)}...`);
-            console.log(
-              `✅ API Key starts with CG-: ${apiKey.startsWith('CG-')}`
+              `✅ Using x-cg-demo-api-key header (length: ${(config.headers['x-cg-demo-api-key'] as string)?.length})`
             );
           } else {
             console.log(
@@ -294,6 +288,28 @@ export class CoinGeckoService {
     } catch (error) {
       console.error('❌ Failed to get rate limit info:', error);
       return null;
+    }
+  }
+
+  /**
+   * Test method to verify API key is being sent correctly
+   */
+  async testApiKey(): Promise<{ headers: any; url: string }> {
+    try {
+      const response = await this.api.get('/ping');
+      return {
+        headers: response.config.headers,
+        url: response.config.url || 'unknown',
+      };
+    } catch (error) {
+      if (error && typeof error === 'object' && 'config' in error) {
+        const axiosError = error as { config: { headers: any; url?: string } };
+        return {
+          headers: axiosError.config.headers,
+          url: axiosError.config.url || 'unknown',
+        };
+      }
+      throw error;
     }
   }
 }
