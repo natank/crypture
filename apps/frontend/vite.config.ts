@@ -21,6 +21,8 @@ export default defineConfig({
         '/Users/nati-home/Projects/crypture/libs/api-client/src/index.ts',
       '@crypture/shared-types':
         '/Users/nati-home/Projects/crypture/libs/shared-types/src/index.ts',
+      '@crypture/utils':
+        '/Users/nati-home/Projects/crypture/libs/utils/src/index.ts',
     },
   },
   build: {

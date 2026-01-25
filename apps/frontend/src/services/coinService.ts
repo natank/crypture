@@ -1,14 +1,13 @@
 import { coinGeckoApiService } from './coinGeckoApiService';
 import type {
   GlobalMarketData,
-  GlobalMarketApiResponse,
   TrendingCoin,
-  TrendingApiResponse,
   MarketMover,
   Category,
   MarketCoin,
   CoinDetails,
 } from 'types/market';
+import type { CoinGeckoPriceData } from '@crypture/shared-types';
 
 export type CoinInfo = {
   id: string;
@@ -52,6 +51,9 @@ export async function fetchAssetHistory(
     const data = await coinGeckoApiService.getMarketChart(assetId, {
       days,
     });
+    if (!data || !data.prices) {
+      throw new Error('No price data received');
+    }
     return data.prices;
   } catch (error: unknown) {
     if (error instanceof Error) {
@@ -112,7 +114,22 @@ export async function fetchGlobalMarketData(): Promise<GlobalMarketData> {
 export async function fetchTrendingCoins(): Promise<TrendingCoin[]> {
   try {
     const data = await coinGeckoApiService.getTrending();
-    return data.coins.map((coin: { item: TrendingCoin }) => coin.item);
+    if (!data || !data.coins) {
+      throw new Error('No trending data received');
+    }
+    return data.coins.map((coin) => ({
+      id: coin.item.id,
+      name: coin.item.name,
+      symbol: coin.item.symbol,
+      market_cap_rank: coin.item.market_cap_rank,
+      thumb: coin.item.thumb,
+      small: coin.item.small,
+      large: coin.item.large,
+      slug: coin.item.slug,
+      price_btc: coin.item.price_btc,
+      score: coin.item.score,
+      coin_id: parseInt(coin.item.id, 10) || 0,
+    }));
   } catch (error: unknown) {
     if (error instanceof Error) {
       throw error;
@@ -139,7 +156,22 @@ export async function fetchTopMovers(): Promise<{
       }),
     ]);
 
-    return { gainers, losers };
+    const mapToMarketMover = (coins: CoinGeckoPriceData[]): MarketMover[] =>
+      coins.map((coin) => ({
+        id: coin.id,
+        name: coin.name,
+        symbol: coin.symbol,
+        current_price: coin.current_price,
+        price_change_percentage_24h: coin.price_change_percentage_24h,
+        image: '', // Default empty string since CoinGeckoPriceData doesn't have image
+        market_cap: coin.market_cap,
+        market_cap_rank: coin.market_cap_rank,
+      }));
+
+    return {
+      gainers: mapToMarketMover(gainers),
+      losers: mapToMarketMover(losers),
+    };
   } catch (error: unknown) {
     if (error instanceof Error) {
       throw error;
@@ -151,7 +183,10 @@ export async function fetchTopMovers(): Promise<{
 export async function fetchCategories(): Promise<Category[]> {
   try {
     const data = await coinGeckoApiService.getCategories();
-    return data;
+    return data.map((category) => ({
+      category_id: category.id,
+      name: category.name,
+    }));
   } catch (error: unknown) {
     if (error instanceof Error) {
       throw error;
@@ -167,10 +202,12 @@ export async function fetchMarketCoins(
     const data = await coinGeckoApiService.getCoinsMarkets({
       perPage: 100,
       page: 1,
-      sparkline: false,
       category,
     });
-    return data;
+    return data.map((coin) => ({
+      ...coin,
+      image: '', // Default empty string since CoinGeckoPriceData doesn't have image
+    }));
   } catch (error: unknown) {
     if (error instanceof Error) {
       throw error;
@@ -202,7 +239,10 @@ export async function fetchAssetMetrics(
       return null;
     }
 
-    const coinData = data[0];
+    const coinData: MarketCoin = {
+      ...data[0],
+      image: '', // Default empty string since CoinGeckoPriceData doesn't have image
+    };
 
     // Update cache
     assetMetricsCache.set(coinId, {
@@ -233,23 +273,69 @@ export async function fetchCoinDetails(coinId: string): Promise<CoinDetails> {
 
   try {
     const data = await coinGeckoApiService.getCoinById(coinId);
-    
+
     if (!data) {
       throw new Error('Coin not found');
     }
 
+    // Map CoinGeckoPriceData to CoinDetails with default values
+    const coinDetails: CoinDetails = {
+      id: data.id,
+      symbol: data.symbol,
+      name: data.name,
+      image: {
+        large: '',
+        small: '',
+        thumb: '',
+      },
+      description: {
+        en: '',
+      },
+      links: {
+        homepage: [],
+        whitepaper: '',
+        blockchain_site: [],
+        twitter_screen_name: '',
+        subreddit_url: '',
+        repos_url: {
+          github: [],
+        },
+      },
+      categories: [],
+      market_cap_rank: data.market_cap_rank,
+      market_data: {
+        current_price: { usd: data.current_price },
+        market_cap: { usd: data.market_cap },
+        total_volume: { usd: data.total_volume },
+        high_24h: { usd: data.high_24h },
+        low_24h: { usd: data.low_24h },
+        price_change_percentage_24h: data.price_change_percentage_24h,
+        price_change_percentage_7d: 0,
+        price_change_percentage_30d: 0,
+        ath: { usd: data.ath },
+        ath_date: { usd: data.ath_date },
+        ath_change_percentage: { usd: data.ath_change_percentage },
+        atl: { usd: data.atl },
+        atl_date: { usd: data.atl_date },
+        atl_change_percentage: { usd: data.atl_change_percentage },
+        circulating_supply: data.circulating_supply,
+        total_supply: data.total_supply,
+        max_supply: data.max_supply,
+      },
+    };
+
     // Update cache
     coinDetailsCache.set(coinId, {
-      data,
+      data: coinDetails,
       timestamp: Date.now(),
     });
 
-    return data;
+    return coinDetails;
   } catch (error: unknown) {
     if (
       error instanceof Error &&
       (error.message === 'Coin not found' ||
-       error.message.includes('Coin not found'))
+        error.message.includes('Coin not found'))
     ) {
       throw error;
     }

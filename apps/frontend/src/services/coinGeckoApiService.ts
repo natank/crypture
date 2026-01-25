@@ -133,6 +133,9 @@ export const coinGeckoApiService = {
   async getGlobal(): Promise<CoinGeckoGlobalResponse> {
     try {
       const response = await client.getGlobal();
+      if (!response.data) {
+        throw new Error('No data received from global market API');
+      }
       return response.data;
     } catch (error) {
       console.error('Failed to fetch global market data:', error);
