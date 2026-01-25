@@ -1,6 +1,7 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import tailwindcss from '@tailwindcss/vite';
+import { resolve } from 'path';
 
 export default defineConfig({
   plugins: [react(), tailwindcss()],
@@ -17,12 +18,15 @@ export default defineConfig({
       '@test-setup': '/src/e2e/test-setup.ts',
       '@types': '/src/types',
       '@assets': '/public/assets',
-      '@crypture/api-client':
-        '/Users/nati-home/Projects/crypture/libs/api-client/src/index.ts',
-      '@crypture/shared-types':
-        '/Users/nati-home/Projects/crypture/libs/shared-types/src/index.ts',
-      '@crypture/utils':
-        '/Users/nati-home/Projects/crypture/libs/utils/src/index.ts',
+      '@crypture/api-client': resolve(
+        __dirname,
+        '../../libs/api-client/src/index.ts'
+      ),
+      '@crypture/shared-types': resolve(
+        __dirname,
+        '../../libs/shared-types/src/index.ts'
+      ),
+      '@crypture/utils': resolve(__dirname, '../../libs/utils/src/index.ts'),
     },
   },
   build: {
