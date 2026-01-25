@@ -72,9 +72,15 @@ export class CoinGeckoService {
             `📡 CoinGecko API Request: ${config.method?.toUpperCase()} ${config.url}`
           );
           console.log(`🔍 Request headers:`, Object.keys(config.headers));
+          console.log(`🔍 Full headers object:`, config.headers);
           if (config.headers['x-cg-demo-api-key']) {
+            const apiKey = config.headers['x-cg-demo-api-key'] as string;
             console.log(
-              `✅ Using x-cg-demo-api-key header (length: ${(config.headers['x-cg-demo-api-key'] as string)?.length})`
+              `✅ Using x-cg-demo-api-key header (length: ${apiKey.length})`
+            );
+            console.log(`✅ API Key prefix: ${apiKey.substring(0, 8)}...`);
+            console.log(
+              `✅ API Key starts with CG-: ${apiKey.startsWith('CG-')}`
             );
           } else {
             console.log(
