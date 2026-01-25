@@ -183,4 +183,40 @@ router.get('/env-debug', (_req, res) => {
   res.status(200).json(envDebug);
 });
 
+/**
+ * @swagger
+ * /api/health/headers-test:
+ *   get:
+ *     summary: Test CoinGecko API headers (for debugging)
+ *     description: Makes a test request to CoinGecko and shows the headers being sent
+ *     tags: [Health]
+ *     responses:
+ *       200:
+ *         description: Headers test result
+ */
+router.get('/headers-test', async (_req, res) => {
+  try {
+    // Import CoinGeckoService to test
+    const { CoinGeckoService } = await import('../services/coingecko');
+    const service = new CoinGeckoService();
+
+    // Make a simple test request
+    const response = await service.ping();
+
+    res.status(200).json({
+      success: true,
+      message: 'CoinGecko API test successful',
+      pingResult: response,
+      timestamp: new Date().toISOString(),
+    });
+  } catch (error: any) {
+    res.status(500).json({
+      success: false,
+      message: 'CoinGecko API test failed',
+      error: error.message,
+      timestamp: new Date().toISOString(),
+    });
+  }
+});
+
 export { router as healthRouter };
