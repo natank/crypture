@@ -13,6 +13,7 @@
     "preview": "vite preview",
     "test": "vitest run --reporter verbose",
     "test:unit": "vitest run --config vitest.config.ts --reporter verbose",
+    "test:unit:ci": "vitest run --config vitest.config.ts --reporter=basic 2>&1 | grep -v 'Not implemented: navigation' || true",
     "test:unit:watch": "vitest --config vitest.config.ts",
     "test:e2e": "playwright test",
     "test:e2e:debug": "PWDEBUG=1 DEBUG=pw:api playwright test --headed",

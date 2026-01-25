@@ -2,42 +2,42 @@ import { test as base, expect, Page } from '@playwright/test';
 
 async function mockMarketsFailThenSucceed(page: Page) {
   let callCount = 0;
-  await page.route(
-    '**/api.coingecko.com/api/v3/coins/markets**',
-    async (route) => {
-      callCount++;
-      if (callCount === 1) {
-        return route.fulfill({
-          status: 500,
-          contentType: 'application/json',
-          body: JSON.stringify({ error: 'fail' }),
-        });
-      }
-      const body = [
-        {
-          id: 'bitcoin',
-          symbol: 'btc',
-          name: 'Bitcoin',
-          current_price: 30000,
-          image:
-            'https://assets.coingecko.com/coins/images/1/large/bitcoin.png',
-        },
-        {
-          id: 'ethereum',
-          symbol: 'eth',
-          name: 'Ethereum',
-          current_price: 2000,
-          image:
-            'https://assets.coingecko.com/coins/images/279/large/ethereum.png',
-        },
-      ];
+  await page.route('**/api/coingecko/coins/markets**', async (route) => {
+    callCount++;
+    if (callCount === 1) {
       return route.fulfill({
-        status: 200,
+        status: 500,
         contentType: 'application/json',
-        body: JSON.stringify(body),
+        body: JSON.stringify({ error: 'fail' }),
       });
     }
-  );
+    const body = [
+      {
+        id: 'bitcoin',
+        symbol: 'btc',
+        name: 'Bitcoin',
+        current_price: 30000,
+        image: 'https://assets.coingecko.com/coins/images/1/large/bitcoin.png',
+      },
+      {
+        id: 'ethereum',
+        symbol: 'eth',
+        name: 'Ethereum',
+        current_price: 2000,
+        image:
+          'https://assets.coingecko.com/coins/images/279/large/ethereum.png',
+      },
+    ];
+    return route.fulfill({
+      status: 200,
+      contentType: 'application/json',
+      body: JSON.stringify({
+        data: body,
+        timestamp: new Date().toISOString(),
+        requestId: 'mock-request-id',
+      }),
+    });
+  });
 }
 
 base.describe('Retry flow clears error and re-enables controls', () => {

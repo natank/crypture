@@ -4,7 +4,7 @@
     "composite": false,
     "declarationMap": false,
     "emitDeclarationOnly": false,
-    "outDir": "./dist",
+    "outDir": "../../dist/out-tsc",
     "declaration": false,
     "noEmit": false,
     "lib": ["dom", "dom.iterable", "esnext"],
@@ -29,18 +29,10 @@
       "@e2e/*": ["src/e2e/*"],
       "@test-setup": ["src/e2e/test-setup.ts"],
       "@assets/*": ["public/assets/*"],
-      "@crypture/shared-types": ["../../dist/libs/shared-types/src/index.d.ts"],
-      "@crypture/api-client": ["../../dist/libs/api-client/src/index.d.ts"],
-      "@crypture/utils": ["../../dist/libs/utils/src/index.d.ts"]
+      "@crypture/shared-types": ["../../libs/shared-types/src/index.ts"],
+      "@crypture/api-client": ["../../libs/api-client/src/index.ts"],
+      "@crypture/utils": ["../../libs/utils/src/index.ts"]
     }
   },
-  "include": ["src"],
-  "references": [
-    {
-      "path": "../../libs/shared-types"
-    },
-    {
-      "path": "../../libs/api-client"
-    }
-  ]
+  "include": ["src"]
 }

@@ -1,13 +1,13 @@
+import { coinGeckoApiService } from './coinGeckoApiService';
 import type {
   GlobalMarketData,
-  GlobalMarketApiResponse,
   TrendingCoin,
-  TrendingApiResponse,
   MarketMover,
   Category,
   MarketCoin,
   CoinDetails,
 } from 'types/market';
+import type { CoinGeckoPriceData } from '@crypture/shared-types';
 
 export type CoinInfo = {
   id: string;
@@ -16,22 +16,12 @@ export type CoinInfo = {
   current_price: number;
 };
 
-const API_KEY = import.meta.env.VITE_COINGECKO_API_KEY;
-
-const COINS_URL =
-  `https://api.coingecko.com/api/v3/coins/markets` +
-  `?vs_currency=usd&order=market_cap_desc&per_page=100&page=1` +
-  `&x_cg_demo_api_key=${API_KEY}`;
-
 export async function fetchTopCoins(): Promise<CoinInfo[]> {
   try {
-    const response = await fetch(COINS_URL);
-
-    if (!response.ok) {
-      throw new Error(`CoinGecko API error: ${response.status}`);
-    }
-
-    const data: CoinInfo[] = await response.json();
+    const data = await coinGeckoApiService.getCoinsMarkets({
+      perPage: 100,
+      page: 1,
+    });
 
     return data.map((coin) => ({
       id: coin.id,
@@ -40,10 +30,7 @@ export async function fetchTopCoins(): Promise<CoinInfo[]> {
       current_price: coin.current_price,
     }));
   } catch (error: unknown) {
-    if (
-      error instanceof Error &&
-      error.message.startsWith('CoinGecko API error')
-    ) {
+    if (error instanceof Error) {
       throw error;
     }
     throw new Error('Unable to fetch coin list');
@@ -60,25 +47,16 @@ export async function fetchAssetHistory(
   assetId: string,
   days: number
 ): Promise<PriceHistoryPoint[]> {
-  const HISTORY_URL =
-    `https://api.coingecko.com/api/v3/coins/${assetId}/market_chart` +
-    `?vs_currency=usd&days=${days}&interval=daily&x_cg_demo_api_key=${API_KEY}`;
-
   try {
-    const response = await fetch(HISTORY_URL);
-
-    if (!response.ok) {
-      throw new Error(`CoinGecko API error: ${response.status}`);
+    const data = await coinGeckoApiService.getMarketChart(assetId, {
+      days,
+    });
+    if (!data || !data.prices) {
+      throw new Error('No price data received');
     }
-
-    const data: PriceHistoryResponse = await response.json();
-
     return data.prices;
   } catch (error: unknown) {
-    if (
-      error instanceof Error &&
-      error.message.startsWith('CoinGecko API error')
-    ) {
+    if (error instanceof Error) {
       throw error;
     }
     throw new Error('Unable to fetch asset history');
@@ -104,27 +82,18 @@ export async function fetchGlobalMarketData(): Promise<GlobalMarketData> {
     return globalMarketCache.data;
   }
 
-  const GLOBAL_URL = `https://api.coingecko.com/api/v3/global?x_cg_demo_api_key=${API_KEY}`;
-
   try {
-    const response = await fetch(GLOBAL_URL);
-
-    if (!response.ok) {
-      throw new Error(`CoinGecko API error: ${response.status}`);
-    }
-
-    const json: GlobalMarketApiResponse = await response.json();
-    const { data } = json;
+    const data = await coinGeckoApiService.getGlobal();
 
     const marketData: GlobalMarketData = {
-      totalMarketCap: data.total_market_cap.usd,
-      totalVolume24h: data.total_volume.usd,
-      btcDominance: data.market_cap_percentage.btc,
-      ethDominance: data.market_cap_percentage.eth,
-      marketCapChange24h: data.market_cap_change_percentage_24h_usd,
-      activeCryptocurrencies: data.active_cryptocurrencies,
-      markets: data.markets,
-      updatedAt: data.updated_at,
+      totalMarketCap: data.data.total_market_cap.usd,
+      totalVolume24h: data.data.total_volume.usd,
+      btcDominance: data.data.market_cap_percentage.btc,
+      ethDominance: data.data.market_cap_percentage.eth,
+      marketCapChange24h: data.data.market_cap_change_percentage_24h_usd,
+      activeCryptocurrencies: data.data.active_cryptocurrencies,
+      markets: data.data.markets,
+      updatedAt: data.data.updated_at,
     };
 
     // Update cache
@@ -135,10 +104,7 @@ export async function fetchGlobalMarketData(): Promise<GlobalMarketData> {
 
     return marketData;
   } catch (error: unknown) {
-    if (
-      error instanceof Error &&
-      error.message.startsWith('CoinGecko API error')
-    ) {
+    if (error instanceof Error) {
       throw error;
     }
     throw new Error('Unable to fetch global market data');
@@ -146,22 +112,26 @@ export async function fetchGlobalMarketData(): Promise<GlobalMarketData> {
 }
 
 export async function fetchTrendingCoins(): Promise<TrendingCoin[]> {
-  const TRENDING_URL = `https://api.coingecko.com/api/v3/search/trending?x_cg_demo_api_key=${API_KEY}`;
-
   try {
-    const response = await fetch(TRENDING_URL);
-
-    if (!response.ok) {
-      throw new Error(`CoinGecko API error: ${response.status}`);
+    const data = await coinGeckoApiService.getTrending();
+    if (!data || !data.coins) {
+      throw new Error('No trending data received');
     }
-
-    const json: TrendingApiResponse = await response.json();
-    return json.coins.map((coin: { item: TrendingCoin }) => coin.item);
+    return data.coins.map((coin) => ({
+      id: coin.item.id,
+      name: coin.item.name,
+      symbol: coin.item.symbol,
+      market_cap_rank: coin.item.market_cap_rank,
+      thumb: coin.item.thumb,
+      small: coin.item.small,
+      large: coin.item.large,
+      slug: coin.item.slug,
+      price_btc: coin.item.price_btc,
+      score: coin.item.score,
+      coin_id: parseInt(coin.item.id, 10) || 0,
+    }));
   } catch (error: unknown) {
-    if (
-      error instanceof Error &&
-      error.message.startsWith('CoinGecko API error')
-    ) {
+    if (error instanceof Error) {
       throw error;
     }
     throw new Error('Unable to fetch trending coins');
@@ -172,29 +142,38 @@ export async function fetchTopMovers(): Promise<{
   gainers: MarketMover[];
   losers: MarketMover[];
 }> {
-  const BASE_URL = `https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&per_page=5&page=1&x_cg_demo_api_key=${API_KEY}`;
-  const GAINERS_URL = `${BASE_URL}&order=price_change_percentage_24h_desc`;
-  const LOSERS_URL = `${BASE_URL}&order=price_change_percentage_24h_asc`;
-
   try {
-    const [gainersRes, losersRes] = await Promise.all([
-      fetch(GAINERS_URL),
-      fetch(LOSERS_URL),
+    const [gainers, losers] = await Promise.all([
+      coinGeckoApiService.getCoinsMarkets({
+        perPage: 5,
+        page: 1,
+        order: 'price_change_percentage_24h_desc',
+      }),
+      coinGeckoApiService.getCoinsMarkets({
+        perPage: 5,
+        page: 1,
+        order: 'price_change_percentage_24h_asc',
+      }),
     ]);
 
-    if (!gainersRes.ok || !losersRes.ok) {
-      throw new Error(`CoinGecko API error`);
-    }
+    const mapToMarketMover = (coins: CoinGeckoPriceData[]): MarketMover[] =>
+      coins.map((coin) => ({
+        id: coin.id,
+        name: coin.name,
+        symbol: coin.symbol,
+        current_price: coin.current_price,
+        price_change_percentage_24h: coin.price_change_percentage_24h,
+        image: '', // Default empty string since CoinGeckoPriceData doesn't have image
+        market_cap: coin.market_cap,
+        market_cap_rank: coin.market_cap_rank,
+      }));
 
-    const gainers: MarketMover[] = await gainersRes.json();
-    const losers: MarketMover[] = await losersRes.json();
-
-    return { gainers, losers };
+    return {
+      gainers: mapToMarketMover(gainers),
+      losers: mapToMarketMover(losers),
+    };
   } catch (error: unknown) {
-    if (
-      error instanceof Error &&
-      error.message.startsWith('CoinGecko API error')
-    ) {
+    if (error instanceof Error) {
       throw error;
     }
     throw new Error('Unable to fetch top movers');
@@ -202,22 +181,14 @@ export async function fetchTopMovers(): Promise<{
 }
 
 export async function fetchCategories(): Promise<Category[]> {
-  const CATEGORIES_URL = `https://api.coingecko.com/api/v3/coins/categories/list?x_cg_demo_api_key=${API_KEY}`;
-
   try {
-    const response = await fetch(CATEGORIES_URL);
-
-    if (!response.ok) {
-      throw new Error(`CoinGecko API error: ${response.status}`);
-    }
-
-    const data: Category[] = await response.json();
-    return data;
+    const data = await coinGeckoApiService.getCategories();
+    return data.map((category) => ({
+      category_id: category.id,
+      name: category.name,
+    }));
   } catch (error: unknown) {
-    if (
-      error instanceof Error &&
-      error.message.startsWith('CoinGecko API error')
-    ) {
+    if (error instanceof Error) {
       throw error;
     }
     throw new Error('Unable to fetch categories');
@@ -227,26 +198,18 @@ export async function fetchCategories(): Promise<Category[]> {
 export async function fetchMarketCoins(
   category?: string
 ): Promise<MarketCoin[]> {
-  let url = `https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=100&page=1&sparkline=false&x_cg_demo_api_key=${API_KEY}`;
-
-  if (category) {
-    url += `&category=${category}`;
-  }
-
   try {
-    const response = await fetch(url);
-
-    if (!response.ok) {
-      throw new Error(`CoinGecko API error: ${response.status}`);
-    }
-
-    const data: MarketCoin[] = await response.json();
-    return data;
+    const data = await coinGeckoApiService.getCoinsMarkets({
+      perPage: 100,
+      page: 1,
+      category,
+    });
+    return data.map((coin) => ({
+      ...coin,
+      image: '', // Default empty string since CoinGeckoPriceData doesn't have image
+    }));
   } catch (error: unknown) {
-    if (
-      error instanceof Error &&
-      error.message.startsWith('CoinGecko API error')
-    ) {
+    if (error instanceof Error) {
       throw error;
     }
     throw new Error('Unable to fetch market coins');
@@ -267,22 +230,19 @@ export async function fetchAssetMetrics(
     return cached.data;
   }
 
-  const url = `https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&ids=${coinId}&x_cg_demo_api_key=${API_KEY}`;
-
   try {
-    const response = await fetch(url);
-
-    if (!response.ok) {
-      throw new Error(`CoinGecko API error: ${response.status}`);
-    }
-
-    const data: MarketCoin[] = await response.json();
+    const data = await coinGeckoApiService.getCoinsMarkets({
+      ids: [coinId],
+    });
 
     if (data.length === 0) {
       return null;
     }
 
-    const coinData = data[0];
+    const coinData: MarketCoin = {
+      ...data[0],
+      image: '', // Default empty string since CoinGeckoPriceData doesn't have image
+    };
 
     // Update cache
     assetMetricsCache.set(coinId, {
@@ -292,10 +252,7 @@ export async function fetchAssetMetrics(
 
     return coinData;
   } catch (error: unknown) {
-    if (
-      error instanceof Error &&
-      error.message.startsWith('CoinGecko API error')
-    ) {
+    if (error instanceof Error) {
       throw error;
     }
     throw new Error('Unable to fetch asset metrics');
@@ -314,32 +271,71 @@ export async function fetchCoinDetails(coinId: string): Promise<CoinDetails> {
     return cached.data;
   }
 
-  const url = `https://api.coingecko.com/api/v3/coins/${coinId}?localization=false&tickers=false&market_data=true&community_data=false&developer_data=false&sparkline=false&x_cg_demo_api_key=${API_KEY}`;
-
   try {
-    const response = await fetch(url);
+    const data = await coinGeckoApiService.getCoinById(coinId);
 
-    if (!response.ok) {
-      if (response.status === 404) {
-        throw new Error('Coin not found');
-      }
-      throw new Error(`CoinGecko API error: ${response.status}`);
+    if (!data) {
+      throw new Error('Coin not found');
     }
 
-    const data: CoinDetails = await response.json();
+    // Map CoinGeckoPriceData to CoinDetails with default values
+    const coinDetails: CoinDetails = {
+      id: data.id,
+      symbol: data.symbol,
+      name: data.name,
+      image: {
+        large: '',
+        small: '',
+        thumb: '',
+      },
+      description: {
+        en: '',
+      },
+      links: {
+        homepage: [],
+        whitepaper: '',
+        blockchain_site: [],
+        twitter_screen_name: '',
+        subreddit_url: '',
+        repos_url: {
+          github: [],
+        },
+      },
+      categories: [],
+      market_cap_rank: data.market_cap_rank,
+      market_data: {
+        current_price: { usd: data.current_price },
+        market_cap: { usd: data.market_cap },
+        total_volume: { usd: data.total_volume },
+        high_24h: { usd: data.high_24h },
+        low_24h: { usd: data.low_24h },
+        price_change_percentage_24h: data.price_change_percentage_24h,
+        price_change_percentage_7d: 0,
+        price_change_percentage_30d: 0,
+        ath: { usd: data.ath },
+        ath_date: { usd: data.ath_date },
+        ath_change_percentage: { usd: data.ath_change_percentage },
+        atl: { usd: data.atl },
+        atl_date: { usd: data.atl_date },
+        atl_change_percentage: { usd: data.atl_change_percentage },
+        circulating_supply: data.circulating_supply,
+        total_supply: data.total_supply,
+        max_supply: data.max_supply,
+      },
+    };
 
     // Update cache
     coinDetailsCache.set(coinId, {
-      data,
+      data: coinDetails,
       timestamp: Date.now(),
     });
 
-    return data;
+    return coinDetails;
   } catch (error: unknown) {
     if (
       error instanceof Error &&
-      (error.message.startsWith('CoinGecko API error') ||
-        error.message === 'Coin not found')
+      (error.message === 'Coin not found' ||
+        error.message.includes('Coin not found'))
     ) {
       throw error;
     }

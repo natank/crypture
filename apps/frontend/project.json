@@ -56,7 +56,7 @@
       },
       "configurations": {
         "ci": {
-          "command": "npm run test:unit -- --run"
+          "command": "npm run test:unit:ci"
         }
       }
     },

@@ -6,74 +6,86 @@ test.describe('Portfolio Composition Visualizations', () => {
 
   test.beforeEach(async ({ page }) => {
     // Mock CoinGecko API for coin list
-    await page.route('**/coins/list*', async (route) => {
-      await route.fulfill({
-        status: 200,
-        contentType: 'application/json',
-        body: JSON.stringify([
-          { id: 'bitcoin', symbol: 'btc', name: 'Bitcoin' },
-          { id: 'ethereum', symbol: 'eth', name: 'Ethereum' },
-          { id: 'cardano', symbol: 'ada', name: 'Cardano' },
-        ]),
-      });
-    });
-
-    // Mock price data
-    await page.route('**/simple/price*', async (route) => {
+    await page.route('**/api/coingecko/coins/list*', async (route) => {
       await route.fulfill({
         status: 200,
         contentType: 'application/json',
         body: JSON.stringify({
-          bitcoin: { usd: 50000 },
-          ethereum: { usd: 3000 },
-          cardano: { usd: 0.5 },
+          data: [
+            { id: 'bitcoin', symbol: 'btc', name: 'Bitcoin' },
+            { id: 'ethereum', symbol: 'eth', name: 'Ethereum' },
+            { id: 'cardano', symbol: 'ada', name: 'Cardano' },
+          ],
+          timestamp: new Date().toISOString(),
+          requestId: 'mock-request-id',
+        }),
+      });
+    });
+
+    // Mock price data
+    await page.route('**/api/coingecko/simple/price*', async (route) => {
+      await route.fulfill({
+        status: 200,
+        contentType: 'application/json',
+        body: JSON.stringify({
+          data: {
+            bitcoin: { usd: 50000 },
+            ethereum: { usd: 3000 },
+            cardano: { usd: 0.5 },
+          },
+          timestamp: new Date().toISOString(),
+          requestId: 'mock-request-id',
         }),
       });
     });
 
     // Mock market data with metadata for composition analysis
-    await page.route('**/coins/markets*', async (route) => {
+    await page.route('**/api/coingecko/coins/markets*', async (route) => {
       await route.fulfill({
         status: 200,
         contentType: 'application/json',
-        body: JSON.stringify([
-          {
-            id: 'bitcoin',
-            symbol: 'btc',
-            name: 'Bitcoin',
-            image: 'https://example.com/btc.png',
-            current_price: 50000,
-            market_cap: 1000000000000,
-            market_cap_rank: 1,
-            price_change_percentage_24h: 2.5,
-            price_change_percentage_7d: 5.0,
-            categories: ['Layer 1', 'Store of Value'],
-          },
-          {
-            id: 'ethereum',
-            symbol: 'eth',
-            name: 'Ethereum',
-            image: 'https://example.com/eth.png',
-            current_price: 3000,
-            market_cap: 350000000000,
-            market_cap_rank: 2,
-            price_change_percentage_24h: 3.2,
-            price_change_percentage_7d: 7.5,
-            categories: ['Layer 1', 'Smart Contracts'],
-          },
-          {
-            id: 'cardano',
-            symbol: 'ada',
-            name: 'Cardano',
-            image: 'https://example.com/ada.png',
-            current_price: 0.5,
-            market_cap: 17000000000,
-            market_cap_rank: 8,
-            price_change_percentage_24h: -1.5,
-            price_change_percentage_7d: 2.0,
-            categories: ['Layer 1', 'Smart Contracts'],
-          },
-        ]),
+        body: JSON.stringify({
+          data: [
+            {
+              id: 'bitcoin',
+              symbol: 'btc',
+              name: 'Bitcoin',
+              image: 'https://example.com/btc.png',
+              current_price: 50000,
+              market_cap: 1000000000000,
+              market_cap_rank: 1,
+              price_change_percentage_24h: 2.5,
+              price_change_percentage_7d: 5.0,
+              categories: ['Layer 1', 'Store of Value'],
+            },
+            {
+              id: 'ethereum',
+              symbol: 'eth',
+              name: 'Ethereum',
+              image: 'https://example.com/eth.png',
+              current_price: 3000,
+              market_cap: 350000000000,
+              market_cap_rank: 2,
+              price_change_percentage_24h: 3.2,
+              price_change_percentage_7d: 7.5,
+              categories: ['Layer 1', 'Smart Contracts'],
+            },
+            {
+              id: 'cardano',
+              symbol: 'ada',
+              name: 'Cardano',
+              image: 'https://example.com/ada.png',
+              current_price: 0.5,
+              market_cap: 17000000000,
+              market_cap_rank: 8,
+              price_change_percentage_24h: -1.5,
+              price_change_percentage_7d: 2.0,
+              categories: ['Layer 1', 'Smart Contracts'],
+            },
+          ],
+          timestamp: new Date().toISOString(),
+          requestId: 'mock-request-id',
+        }),
       });
     });
 

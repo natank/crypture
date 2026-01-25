@@ -1,25 +1,25 @@
 // vitest.config.ts
-import { defineConfig } from "vitest/config";
+import { defineConfig } from 'vitest/config';
 
 export default defineConfig({
   test: {
     globals: true,
-    environment: "jsdom",
-    setupFiles: ["./src/setupTests.ts"],
-    include: ["**/*.{test,test.*}.?(c|m)[jt]s?(x)"],
+    environment: 'jsdom',
+    setupFiles: ['./src/setupTests.ts'],
+    include: ['**/*.{test,test.*}.?(c|m)[jt]s?(x)'],
     coverage: {
-      provider: "v8", // or 'c8'
-      reporter: ["text", "html", "json-summary"],
+      provider: 'v8', // or 'c8'
+      reporter: ['text', 'html', 'json-summary'],
       all: true,
       exclude: [
-        "**/node_modules/**",
-        "**/dist/**",
-        "**/__tests__/**",
-        "**/*.test.*",
-        "**/*.spec.*",
-        "**/mocks/**",
-        "**/stories/**",
-        "**/.vite/**",
+        '**/node_modules/**',
+        '**/dist/**',
+        '**/__tests__/**',
+        '**/*.test.*',
+        '**/*.spec.*',
+        '**/mocks/**',
+        '**/stories/**',
+        '**/.vite/**',
       ],
       thresholds: {
         lines: 60,
@@ -31,15 +31,19 @@ export default defineConfig({
   },
   resolve: {
     alias: {
-      "@hooks": "/src/hooks",
-      "@components": "/src/components",
-      "@context": "/src/context",
-      "@services": "/src/services",
-      "@pages": "/src/pages",
-      "@utils": "/src/utils",
-      "@types": "/src/types",
-      "@e2e": "/src/e2e",
-      "@test-setup": "/src/e2e/test-setup.ts",
+      '@hooks': '/src/hooks',
+      '@components': '/src/components',
+      '@context': '/src/context',
+      '@services': '/src/services',
+      '@pages': '/src/pages',
+      '@utils': '/src/utils',
+      '@types': '/src/types',
+      '@e2e': '/src/e2e',
+      '@test-setup': '/src/e2e/test-setup.ts',
+      '@crypture/api-client':
+        '/Users/nati-home/Projects/crypture/libs/api-client/src/index.ts',
+      '@crypture/shared-types':
+        '/Users/nati-home/Projects/crypture/libs/shared-types/src/index.ts',
     },
   },
 });

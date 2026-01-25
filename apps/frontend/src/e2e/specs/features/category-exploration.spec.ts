@@ -49,17 +49,90 @@ test.describe('Category Exploration', () => {
   test.beforeEach(async ({ page }) => {
     marketPage = new MarketPage(page);
 
-    // Mock Categories
-    await page.route('**/api/v3/coins/categories/list*', async (route) => {
+    // Mock Global Market Data
+    await page.route('**/api/coingecko/global*', async (route) => {
       await route.fulfill({
         status: 200,
         contentType: 'application/json',
-        body: JSON.stringify(mockCategories),
+        body: JSON.stringify({
+          data: {
+            data: {
+              total_market_cap: { usd: 2500000000000 },
+              total_volume: { usd: 120000000000 },
+              market_cap_percentage: { btc: 45.0, eth: 18.0 },
+              market_cap_change_percentage_24h_usd: 2.5,
+              active_cryptocurrencies: 10000,
+              markets: 750,
+              updated_at: Date.now() / 1000,
+            },
+          },
+          timestamp: new Date().toISOString(),
+          requestId: 'mock-request-id',
+        }),
       });
     });
 
+    // Mock Trending Coins
+    await page.route('**/api/coingecko/search/trending*', async (route) => {
+      await route.fulfill({
+        status: 200,
+        contentType: 'application/json',
+        body: JSON.stringify({
+          data: {
+            coins: [
+              {
+                item: {
+                  id: 'bitcoin',
+                  name: 'Bitcoin',
+                  symbol: 'BTC',
+                  market_cap_rank: 1,
+                  thumb: 'btc.png',
+                  score: 0,
+                },
+              },
+            ],
+          },
+          timestamp: new Date().toISOString(),
+          requestId: 'mock-request-id',
+        }),
+      });
+    });
+
+    // Mock Categories
+    await page.route(
+      '**/api/coingecko/coins/categories/list*',
+      async (route) => {
+        await route.fulfill({
+          status: 200,
+          contentType: 'application/json',
+          body: JSON.stringify({
+            data: mockCategories,
+            timestamp: new Date().toISOString(),
+            requestId: 'mock-request-id',
+          }),
+        });
+      }
+    );
+
+    // Mock Categories endpoint (without /list)
+    await page.route('**/api/coingecko/coins/categories', async (route) => {
+      const url = route.request().url();
+      // Only match exact /categories, not /categories/list
+      if (!url.includes('/list')) {
+        await route.fulfill({
+          status: 200,
+          contentType: 'application/json',
+          body: JSON.stringify({
+            data: mockCategories,
+            timestamp: new Date().toISOString(),
+            requestId: 'mock-request-id',
+          }),
+        });
+      }
+    });
+
     // Mock Market Data
-    await page.route('**/api/v3/coins/markets*', async (route) => {
+    await page.route('**/api/coingecko/coins/markets*', async (route) => {
       const url = new URL(route.request().url());
       const category = url.searchParams.get('category');
 
@@ -67,14 +140,22 @@ test.describe('Category Exploration', () => {
         await route.fulfill({
           status: 200,
           contentType: 'application/json',
-          body: JSON.stringify(mockCoinsDeFi),
+          body: JSON.stringify({
+            data: mockCoinsDeFi,
+            timestamp: new Date().toISOString(),
+            requestId: 'mock-request-id',
+          }),
         });
       } else {
         // Default / All
         await route.fulfill({
           status: 200,
           contentType: 'application/json',
-          body: JSON.stringify(mockCoinsAll),
+          body: JSON.stringify({
+            data: mockCoinsAll,
+            timestamp: new Date().toISOString(),
+            requestId: 'mock-request-id',
+          }),
         });
       }
     });

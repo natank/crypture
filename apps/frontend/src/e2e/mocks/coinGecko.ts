@@ -49,9 +49,9 @@ const mockMarketCoins = [
   },
 ];
 
-// Mock for the main coin list fetch
+// Mock for the main coin list fetch (now through backend proxy)
 export async function mockCoinGeckoMarkets(page: Page) {
-  await page.route('**/api/v3/coins/markets*', (route) => {
+  await page.route('**/api/coingecko/coins/markets*', (route) => {
     const url = route.request().url();
     const params = new URL(url).searchParams;
     const ids = params.get('ids');
@@ -66,7 +66,11 @@ export async function mockCoinGeckoMarkets(page: Page) {
     route.fulfill({
       status: 200,
       contentType: 'application/json',
-      json: responseData,
+      body: JSON.stringify({
+        data: responseData,
+        timestamp: new Date().toISOString(),
+        requestId: 'mock-request-id',
+      }),
     });
   });
 }
@@ -88,9 +92,9 @@ const generateMockHistory = (
   return data;
 };
 
-// Mock for the asset price history fetch
+// Mock for the asset price history fetch (now through backend proxy)
 export async function mockCoinGeckoHistory(page: Page) {
-  await page.route('**/api/v3/coins/*/market_chart*', (route) => {
+  await page.route('**/api/coingecko/coins/*/market_chart*', (route) => {
     const url = route.request().url();
     const assetId = url.match(/coins\/(.*?)\/market_chart/)?.[1];
     const days = parseInt(new URL(url).searchParams.get('days') || '30', 10);
@@ -105,9 +109,13 @@ export async function mockCoinGeckoHistory(page: Page) {
     route.fulfill({
       status: 200,
       contentType: 'application/json',
-      json: {
-        prices,
-      },
+      body: JSON.stringify({
+        data: {
+          prices,
+        },
+        timestamp: new Date().toISOString(),
+        requestId: 'mock-request-id',
+      }),
     });
   });
 }

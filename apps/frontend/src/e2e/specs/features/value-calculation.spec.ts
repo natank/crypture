@@ -52,13 +52,12 @@ test.describe('Total Portfolio Value Calculation', () => {
     portfolioPage,
   }) => {
     // 🧪 Step 0: Provide asset data without price
-    await page.route(
-      '**/api.coingecko.com/api/v3/coins/markets**',
-      async (route) => {
-        route.fulfill({
-          status: 200,
-          contentType: 'application/json',
-          body: JSON.stringify([
+    await page.route('**/api/coingecko/coins/markets**', async (route) => {
+      route.fulfill({
+        status: 200,
+        contentType: 'application/json',
+        body: JSON.stringify({
+          data: [
             {
               id: 'bitcoin',
               symbol: 'btc',
@@ -66,10 +65,12 @@ test.describe('Total Portfolio Value Calculation', () => {
               image:
                 'https://assets.coingecko.com/coins/images/1/large/bitcoin.png',
             },
-          ]),
-        });
-      }
-    );
+          ],
+          timestamp: new Date().toISOString(),
+          requestId: 'mock-request-id',
+        }),
+      });
+    });
 
     // ➕ Step 1: Add BTC
     await addAssetModal.openAndAdd('BTC', 0.5);

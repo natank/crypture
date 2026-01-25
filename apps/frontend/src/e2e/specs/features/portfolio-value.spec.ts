@@ -21,8 +21,9 @@ test.describe('Portfolio value display', () => {
     addAssetModal,
   }) => {
     // 1. Simulate CoinGecko API failure
-    await portfolioPage.page.route('**/coins/markets**', (route) =>
-      route.fulfill({ status: 500, body: 'Internal Server Error' })
+    await portfolioPage.page.route(
+      '**/api/coingecko/coins/markets**',
+      (route) => route.fulfill({ status: 500, body: 'Internal Server Error' })
     );
 
     // 2. Load the page
@@ -41,7 +42,7 @@ test.describe('Portfolio value display', () => {
       .locator('div[role="alert"]');
 
     await expect(modalInlineError).toBeVisible();
-    await expect(modalInlineError).toContainText(/error|failed/i);
+    await expect(modalInlineError).toContainText(/error|failed|unexpected/i);
 
     // 6. Asset <select> is not rendered
     const assetSelect = portfolioPage.page.locator('select#asset-select');
@@ -62,21 +63,28 @@ test.describe('Portfolio value display', () => {
     await expect(btcRow).toContainText('Total: $15,000');
 
     // 2. Mock API to respond with BTC @ $40,000 on next fetch
-    await portfolioPage.page.unroute('**/coins/markets**'); // remove old handler
-    await portfolioPage.page.route('**/coins/markets**', (route) => {
-      route.fulfill({
-        status: 200,
-        contentType: 'application/json',
-        body: JSON.stringify([
-          {
-            id: 'bitcoin',
-            symbol: 'btc',
-            name: 'Bitcoin',
-            current_price: 40000,
-          },
-        ]),
-      });
-    });
+    await portfolioPage.page.unroute('**/api/coingecko/coins/markets**'); // remove old handler
+    await portfolioPage.page.route(
+      '**/api/coingecko/coins/markets**',
+      (route) => {
+        route.fulfill({
+          status: 200,
+          contentType: 'application/json',
+          body: JSON.stringify({
+            data: [
+              {
+                id: 'bitcoin',
+                symbol: 'btc',
+                name: 'Bitcoin',
+                current_price: 40000,
+              },
+            ],
+            timestamp: new Date().toISOString(),
+            requestId: 'mock-request-id',
+          }),
+        });
+      }
+    );
 
     // 3. Force a refetch by reloading the page so we don't depend on polling timing
     await portfolioPage.reload();
