@@ -265,23 +265,6 @@ export class CoinGeckoService {
     try {
       const response = await this.api.get('/ping');
       return response.status === 200;
-    } catch (error) {
-      console.error('❌ CoinGecko API ping failed:', error);
-      return false;
-    }
-  }
-
-  // Get rate limit information
-  async getRateLimitInfo(): Promise<{
-    limit: number;
-    remaining: number;
-  } | null> {
-    try {
-      const response = await this.api.get(
-        '/simple/price?ids=bitcoin&vs_currencies=usd'
-      );
-      const limit = response.headers['x-ratelimit-requests-limit'];
-      const remaining = response.headers['x-ratelimit-requests-remaining'];
 
       if (limit && remaining) {
         return {
@@ -294,6 +277,28 @@ export class CoinGeckoService {
     } catch (error) {
       console.error('❌ Failed to get rate limit info:', error);
       return null;
+    }
+  }
+
+  /**
+   * Test method to verify API key is being sent correctly
+   */
+  async testApiKey(): Promise<{ headers: any; url: string }> {
+    try {
+      const response = await this.api.get('/ping');
+      return {
+        headers: response.config.headers,
+        url: response.config.url,
+      };
+    } catch (error) {
+      if (error && typeof error === 'object' && 'config' in error) {
+        const axiosError = error as { config: { headers: any; url: string } };
+        return {
+          headers: axiosError.config.headers,
+          url: axiosError.config.url,
+        };
+      }
+      throw error;
     }
   }
 }
