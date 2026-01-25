@@ -40,23 +40,24 @@ const coingeckoService = new CoinGeckoService();
 // Enhanced error handler for proxy routes
 const handleProxyError = (error: any, req: Request, res: Response) => {
   const requestId = (req as any).requestId || 'unknown';
-  
+
   if (error.response?.status === 429) {
     return res.status(429).json({
       error: 'Rate Limit Exceeded',
       message: 'CoinGecko API rate limit exceeded. Please try again later.',
       timestamp: new Date().toISOString(),
       requestId,
-      retryAfter: error.response.headers['retry-after'] || 60
+      retryAfter: error.response.headers['retry-after'] || 60,
     });
   }
 
   if (error.code === 'ECONNRESET' || error.code === 'ETIMEDOUT') {
     return res.status(503).json({
       error: 'Service Unavailable',
-      message: 'CoinGecko API is temporarily unavailable. Please try again later.',
+      message:
+        'CoinGecko API is temporarily unavailable. Please try again later.',
       timestamp: new Date().toISOString(),
-      requestId
+      requestId,
     });
   }
 
@@ -65,16 +66,17 @@ const handleProxyError = (error: any, req: Request, res: Response) => {
       error: 'Authentication Error',
       message: 'Invalid CoinGecko API key.',
       timestamp: new Date().toISOString(),
-      requestId
+      requestId,
     });
   }
 
   if (error.response?.status >= 400 && error.response?.status < 500) {
     return res.status(error.response.status).json({
       error: 'Bad Request',
-      message: error.response.data?.error || 'Invalid request to CoinGecko API.',
+      message:
+        error.response.data?.error || 'Invalid request to CoinGecko API.',
       timestamp: new Date().toISOString(),
-      requestId
+      requestId,
     });
   }
 
@@ -83,7 +85,7 @@ const handleProxyError = (error: any, req: Request, res: Response) => {
     error: 'Internal Server Error',
     message: 'An unexpected error occurred while proxying to CoinGecko API.',
     timestamp: new Date().toISOString(),
-    requestId
+    requestId,
   });
 };
 
@@ -91,20 +93,20 @@ const handleProxyError = (error: any, req: Request, res: Response) => {
 router.get('/ping', async (req: Request, res: Response) => {
   try {
     const isHealthy = await coingeckoService.ping();
-    
+
     if (isHealthy) {
       res.json({
         status: 'healthy',
         message: 'CoinGecko API is accessible',
         timestamp: new Date().toISOString(),
-        requestId: (req as any).requestId
+        requestId: (req as any).requestId,
       });
     } else {
       res.status(503).json({
         status: 'unhealthy',
         message: 'CoinGecko API is not accessible',
         timestamp: new Date().toISOString(),
-        requestId: (req as any).requestId
+        requestId: (req as any).requestId,
       });
     }
   } catch (error) {
@@ -137,21 +139,29 @@ router.get('/ping', async (req: Request, res: Response) => {
 router.get('/rate-limit', async (req: Request, res: Response) => {
   try {
     const rateLimitInfo = await coingeckoService.getRateLimitInfo();
-    
-    if (rateLimitInfo) {
+
+    if (
+      rateLimitInfo &&
+      rateLimitInfo.limit !== null &&
+      rateLimitInfo.remaining !== null
+    ) {
       res.json({
         rateLimit: rateLimitInfo.limit,
         remaining: rateLimitInfo.remaining,
         usage: rateLimitInfo.limit - rateLimitInfo.remaining,
-        percentage: Math.round(((rateLimitInfo.limit - rateLimitInfo.remaining) / rateLimitInfo.limit) * 100),
+        percentage: Math.round(
+          ((rateLimitInfo.limit - rateLimitInfo.remaining) /
+            rateLimitInfo.limit) *
+            100
+        ),
         timestamp: new Date().toISOString(),
-        requestId: (req as any).requestId
+        requestId: (req as any).requestId,
       });
     } else {
       res.json({
         message: 'Rate limit information not available (free tier)',
         timestamp: new Date().toISOString(),
-        requestId: (req as any).requestId
+        requestId: (req as any).requestId,
       });
     }
   } catch (error) {
@@ -205,25 +215,25 @@ router.get('/rate-limit', async (req: Request, res: Response) => {
 router.get('/simple/price', async (req: Request, res: Response) => {
   try {
     const { ids, vs_currencies = 'usd' } = req.query;
-    
+
     if (!ids) {
       return res.status(400).json({
         error: 'Bad Request',
         message: 'Missing required parameter: ids',
         timestamp: new Date().toISOString(),
-        requestId: (req as any).requestId
+        requestId: (req as any).requestId,
       });
     }
 
     const priceData = await coingeckoService.getSimplePrice(
-      ids as string, 
+      ids as string,
       vs_currencies as string
     );
 
     res.json({
       data: priceData,
       timestamp: new Date().toISOString(),
-      requestId: (req as any).requestId
+      requestId: (req as any).requestId,
     });
     return;
   } catch (error) {
@@ -298,7 +308,7 @@ router.get('/coins/markets', async (req: Request, res: Response) => {
       order = 'market_cap_desc',
       per_page = '100',
       page = '1',
-      sparkline = 'false'
+      sparkline = 'false',
     } = req.query;
 
     const marketsData = await coingeckoService.getCoinsMarkets(
@@ -314,10 +324,10 @@ router.get('/coins/markets', async (req: Request, res: Response) => {
       pagination: {
         page: parseInt(page as string),
         per_page: parseInt(per_page as string),
-        total: marketsData.length
+        total: marketsData.length,
       },
       timestamp: new Date().toISOString(),
-      requestId: (req as any).requestId
+      requestId: (req as any).requestId,
     });
     return;
   } catch (error) {
@@ -368,13 +378,13 @@ router.get('/coins/markets', async (req: Request, res: Response) => {
 router.get('/coins/:id', async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
-    
+
     if (!id) {
       return res.status(400).json({
         error: 'Bad Request',
         message: 'Missing required parameter: coin id',
         timestamp: new Date().toISOString(),
-        requestId: (req as any).requestId
+        requestId: (req as any).requestId,
       });
     }
 
@@ -383,7 +393,7 @@ router.get('/coins/:id', async (req: Request, res: Response) => {
     res.json({
       data: coinData,
       timestamp: new Date().toISOString(),
-      requestId: (req as any).requestId
+      requestId: (req as any).requestId,
     });
     return;
   } catch (error) {
@@ -430,13 +440,13 @@ router.get('/coins/:id', async (req: Request, res: Response) => {
 router.get('/search', async (req: Request, res: Response) => {
   try {
     const { query } = req.query;
-    
+
     if (!query) {
       return res.status(400).json({
         error: 'Bad Request',
         message: 'Missing required parameter: query',
         timestamp: new Date().toISOString(),
-        requestId: (req as any).requestId
+        requestId: (req as any).requestId,
       });
     }
 
@@ -445,7 +455,7 @@ router.get('/search', async (req: Request, res: Response) => {
     res.json({
       data: searchData,
       timestamp: new Date().toISOString(),
-      requestId: (req as any).requestId
+      requestId: (req as any).requestId,
     });
     return;
   } catch (error) {
@@ -482,7 +492,7 @@ router.get('/search/trending', async (req: Request, res: Response) => {
     res.json({
       data: trendingData,
       timestamp: new Date().toISOString(),
-      requestId: (req as any).requestId
+      requestId: (req as any).requestId,
     });
   } catch (error) {
     handleProxyError(error, req, res);
@@ -518,7 +528,7 @@ router.get('/coins/categories', async (req: Request, res: Response) => {
     res.json({
       data: categoriesData,
       timestamp: new Date().toISOString(),
-      requestId: (req as any).requestId
+      requestId: (req as any).requestId,
     });
   } catch (error) {
     handleProxyError(error, req, res);
@@ -554,7 +564,7 @@ router.get('/global', async (req: Request, res: Response) => {
     res.json({
       data: globalData,
       timestamp: new Date().toISOString(),
-      requestId: (req as any).requestId
+      requestId: (req as any).requestId,
     });
   } catch (error) {
     handleProxyError(error, req, res);
@@ -619,13 +629,13 @@ router.get('/coins/:id/market_chart', async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
     const { vs_currency = 'usd', days = '7' } = req.query;
-    
+
     if (!id) {
       return res.status(400).json({
         error: 'Bad Request',
         message: 'Missing required parameter: coin id',
         timestamp: new Date().toISOString(),
-        requestId: (req as any).requestId
+        requestId: (req as any).requestId,
       });
     }
 
@@ -638,7 +648,7 @@ router.get('/coins/:id/market_chart', async (req: Request, res: Response) => {
     res.json({
       data: chartData,
       timestamp: new Date().toISOString(),
-      requestId: (req as any).requestId
+      requestId: (req as any).requestId,
     });
     return;
   } catch (error) {
