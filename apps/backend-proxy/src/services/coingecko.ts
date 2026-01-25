@@ -16,43 +16,45 @@ export class CoinGeckoService {
   private readonly retryDelay = 1000; // 1 second
 
   constructor() {
+    console.log(
+      '🔍 CoinGecko Service Constructor - Debugging Environment Variables'
+    );
+    console.log(`📦 NODE_ENV: ${process.env.NODE_ENV}`);
+    console.log(
+      `🔑 COINGECKO_API_KEY exists: ${!!process.env.COINGECKO_API_KEY}`
+    );
+    console.log(
+      `🔑 COINGECKO_API_KEY length: ${process.env.COINGECKO_API_KEY?.length || 0}`
+    );
+    console.log(
+      `🔑 COINGECKO_API_KEY prefix: ${process.env.COINGECKO_API_KEY?.substring(0, 8) || 'undefined'}...`
+    );
+
     if (!process.env.COINGECKO_API_KEY) {
       console.warn(
         '⚠️  COINGECKO_API_KEY not found in environment variables. Using free tier with rate limits.'
       );
+      console.warn(
+        '🔧 To fix: Add COINGECKO_API_KEY to your Vercel environment variables'
+      );
     } else {
       console.log('✅ COINGECKO_API_KEY found in environment variables');
-      console.log(
-        `🔑 API Key length: ${process.env.COINGECKO_API_KEY.length} characters`
-      );
-      console.log(
-        `🔑 API Key prefix: ${process.env.COINGECKO_API_KEY.substring(0, 8)}...`
-      );
     }
 
-    // Determine the correct header based on API key format
-    let apiKeyHeader = {};
+    // Create headers with API key if available
+    const headers: Record<string, string> = {
+      'Content-Type': 'application/json',
+    };
+
     if (process.env.COINGECKO_API_KEY) {
-      const apiKey = process.env.COINGECKO_API_KEY;
-      if (apiKey.startsWith('CG-')) {
-        // Demo/Pro API key format
-        apiKeyHeader = { 'x-cg-demo-api-key': apiKey };
-      } else {
-        // Alternative format - try both common headers
-        apiKeyHeader = {
-          'x-cg-api-key': apiKey,
-          Authorization: `Bearer ${apiKey}`,
-        };
-      }
+      headers['x-cg-demo-api-key'] = process.env.COINGECKO_API_KEY;
+      console.log('🔧 Added x-cg-demo-api-key header to requests');
     }
 
     this.api = axios.create({
       baseURL: this.baseURL,
       timeout: 10000, // 10 seconds
-      headers: {
-        'Content-Type': 'application/json',
-        ...apiKeyHeader,
-      },
+      headers,
     });
 
     // Request interceptor for logging
@@ -63,13 +65,13 @@ export class CoinGeckoService {
         );
         console.log(`🔍 Request headers:`, Object.keys(config.headers));
         if (config.headers['x-cg-demo-api-key']) {
-          console.log(`✅ Using x-cg-demo-api-key header`);
-        }
-        if (config.headers['x-cg-api-key']) {
-          console.log(`✅ Using x-cg-api-key header`);
-        }
-        if (config.headers['authorization']) {
-          console.log(`✅ Using Authorization header`);
+          console.log(
+            `✅ Using x-cg-demo-api-key header (length: ${(config.headers['x-cg-demo-api-key'] as string)?.length})`
+          );
+        } else {
+          console.log(
+            `❌ No API key header found - request may fail for premium endpoints`
+          );
         }
         return config;
       },
