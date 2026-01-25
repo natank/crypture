@@ -12,27 +12,27 @@ describe('CoinGeckoService', () => {
   beforeEach(() => {
     // Clear all mocks
     jest.clearAllMocks();
-    
+
     // Mock environment variable
     delete process.env.COINGECKO_API_KEY;
-    
+
     // Create a mock axios instance
     mockAxiosInstance = {
       get: jest.fn(),
       interceptors: {
         request: { use: jest.fn() },
-        response: { use: jest.fn() }
-      }
+        response: { use: jest.fn() },
+      },
     };
 
     // Mock axios.create to return our mock instance
     MockedAxios.create = jest.fn().mockReturnValue(mockAxiosInstance);
-    
+
     // Mock console methods to avoid noise in tests
     jest.spyOn(console, 'warn').mockImplementation(() => {});
     jest.spyOn(console, 'error').mockImplementation(() => {});
     jest.spyOn(console, 'log').mockImplementation(() => {});
-    
+
     // Create service instance
     service = new CoinGeckoService();
   });
@@ -48,8 +48,8 @@ describe('CoinGeckoService', () => {
         baseURL: 'https://api.coingecko.com/api/v3',
         timeout: 10000,
         headers: {
-          'Content-Type': 'application/json'
-        }
+          'Content-Type': 'application/json',
+        },
       });
     });
 
@@ -66,8 +66,8 @@ describe('CoinGeckoService', () => {
         timeout: 10000,
         headers: {
           'Content-Type': 'application/json',
-          'x-cg-demo-api-key': 'test-api-key'
-        }
+          'x-cg-demo-api-key': 'test-api-key',
+        },
       });
 
       // Restore original environment variable
@@ -75,8 +75,12 @@ describe('CoinGeckoService', () => {
     });
 
     it('should set up request and response interceptors', () => {
-      expect(mockAxiosInstance.interceptors.request.use).toHaveBeenCalledTimes(1);
-      expect(mockAxiosInstance.interceptors.response.use).toHaveBeenCalledTimes(1);
+      expect(mockAxiosInstance.interceptors.request.use).toHaveBeenCalledTimes(
+        1
+      );
+      expect(mockAxiosInstance.interceptors.response.use).toHaveBeenCalledTimes(
+        1
+      );
     });
   });
 
@@ -102,7 +106,7 @@ describe('CoinGeckoService', () => {
   describe('getSimplePrice', () => {
     it('should make correct API call', async () => {
       const mockResponse = {
-        data: { bitcoin: { usd: 43250.50 } }
+        data: { bitcoin: { usd: 43250.5 } },
       };
       mockAxiosInstance.get.mockResolvedValue(mockResponse);
 
@@ -115,8 +119,8 @@ describe('CoinGeckoService', () => {
           include_market_cap: 'true',
           include_24hr_vol: 'true',
           include_24hr_change: 'true',
-          include_last_updated_at: 'true'
-        }
+          include_last_updated_at: 'true',
+        },
       });
       expect(result).toEqual(mockResponse.data);
     });
@@ -126,22 +130,22 @@ describe('CoinGeckoService', () => {
       const networkError = new Error('Connection reset') as any;
       networkError.code = 'ECONNRESET';
       networkError.isAxiosError = true;
-      
+
       mockAxiosInstance.get
         .mockRejectedValueOnce(networkError)
-        .mockResolvedValueOnce({ data: { bitcoin: { usd: 43250.50 } } });
+        .mockResolvedValueOnce({ data: { bitcoin: { usd: 43250.5 } } });
 
       const result = await service.getSimplePrice('bitcoin', 'usd');
 
       expect(mockAxiosInstance.get).toHaveBeenCalledTimes(2);
-      expect(result).toEqual({ bitcoin: { usd: 43250.50 } });
+      expect(result).toEqual({ bitcoin: { usd: 43250.5 } });
     });
 
     it('should not retry on client errors', async () => {
       const clientError = new Error('Client error') as any;
       clientError.response = { status: 400 };
       clientError.isAxiosError = true;
-      
+
       mockAxiosInstance.get.mockRejectedValue(clientError);
 
       await expect(service.getSimplePrice('bitcoin', 'usd')).rejects.toThrow();
@@ -157,9 +161,9 @@ describe('CoinGeckoService', () => {
             id: 'bitcoin',
             symbol: 'btc',
             name: 'Bitcoin',
-            current_price: 43250.50
-          }
-        ]
+            current_price: 43250.5,
+          },
+        ],
       };
       mockAxiosInstance.get.mockResolvedValue(mockResponse);
 
@@ -172,8 +176,8 @@ describe('CoinGeckoService', () => {
           per_page: 100,
           page: 1,
           sparkline: false,
-          price_change_percentage: '1h,24h,7d,14d,30d,200d,1y'
-        }
+          price_change_percentage: '1h,24h,7d,14d,30d,200d,1y',
+        },
       });
       expect(result).toEqual(mockResponse.data);
     });
@@ -191,8 +195,8 @@ describe('CoinGeckoService', () => {
           per_page: 50,
           page: 2,
           sparkline: true,
-          price_change_percentage: '1h,24h,7d,14d,30d,200d,1y'
-        }
+          price_change_percentage: '1h,24h,7d,14d,30d,200d,1y',
+        },
       });
     });
   });
@@ -203,8 +207,8 @@ describe('CoinGeckoService', () => {
         data: {
           id: 'bitcoin',
           symbol: 'btc',
-          name: 'Bitcoin'
-        }
+          name: 'Bitcoin',
+        },
       };
       mockAxiosInstance.get.mockResolvedValue(mockResponse);
 
@@ -217,8 +221,8 @@ describe('CoinGeckoService', () => {
           market_data: true,
           community_data: false,
           developer_data: false,
-          sparkline: false
-        }
+          sparkline: false,
+        },
       });
       expect(result).toEqual(mockResponse.data);
     });
@@ -232,17 +236,17 @@ describe('CoinGeckoService', () => {
             {
               id: 'bitcoin',
               name: 'Bitcoin',
-              symbol: 'btc'
-            }
-          ]
-        }
+              symbol: 'btc',
+            },
+          ],
+        },
       };
       mockAxiosInstance.get.mockResolvedValue(mockResponse);
 
       const result = await service.search('bitcoin');
 
       expect(mockAxiosInstance.get).toHaveBeenCalledWith('/search', {
-        params: { query: 'bitcoin' }
+        params: { query: 'bitcoin' },
       });
       expect(result).toEqual(mockResponse.data);
     });
@@ -257,11 +261,11 @@ describe('CoinGeckoService', () => {
               item: {
                 id: 'bitcoin',
                 name: 'Bitcoin',
-                symbol: 'btc'
-              }
-            }
-          ]
-        }
+                symbol: 'btc',
+              },
+            },
+          ],
+        },
       };
       mockAxiosInstance.get.mockResolvedValue(mockResponse);
 
@@ -289,8 +293,8 @@ describe('CoinGeckoService', () => {
       const mockResponse = {
         data: {
           active_cryptocurrencies: 23456,
-          markets: 789
-        }
+          markets: 789,
+        },
       };
       mockAxiosInstance.get.mockResolvedValue(mockResponse);
 
@@ -305,38 +309,42 @@ describe('CoinGeckoService', () => {
     it('should make correct API call with default parameters', async () => {
       const mockResponse = {
         data: {
-          prices: [[1642694400000, 43250.50]],
+          prices: [[1642694400000, 43250.5]],
           market_caps: [[1642694400000, 845000000000]],
-          total_volumes: [[1642694400000, 12345678900]]
-        }
+          total_volumes: [[1642694400000, 12345678900]],
+        },
       };
       mockAxiosInstance.get.mockResolvedValue(mockResponse);
 
       const result = await service.getMarketChart('bitcoin');
 
-      expect(mockAxiosInstance.get).toHaveBeenCalledWith('/coins/bitcoin/market_chart', {
-        params: {
-          vs_currency: 'usd',
-          days: 7,
-          interval: 'daily'
+      expect(mockAxiosInstance.get).toHaveBeenCalledWith(
+        '/coins/bitcoin/market_chart',
+        {
+          params: {
+            vs_currency: 'usd',
+            days: 7,
+          },
         }
-      });
+      );
       expect(result).toEqual(mockResponse.data);
     });
 
-    it('should use hourly interval for 1 day chart', async () => {
+    it('should handle 1 day chart parameters', async () => {
       const mockResponse = { data: { prices: [] } };
       mockAxiosInstance.get.mockResolvedValue(mockResponse);
 
       await service.getMarketChart('bitcoin', 'usd', 1);
 
-      expect(mockAxiosInstance.get).toHaveBeenCalledWith('/coins/bitcoin/market_chart', {
-        params: {
-          vs_currency: 'usd',
-          days: 1,
-          interval: 'hourly'
+      expect(mockAxiosInstance.get).toHaveBeenCalledWith(
+        '/coins/bitcoin/market_chart',
+        {
+          params: {
+            vs_currency: 'usd',
+            days: 1,
+          },
         }
-      });
+      );
     });
 
     it('should use custom parameters', async () => {
@@ -345,13 +353,15 @@ describe('CoinGeckoService', () => {
 
       await service.getMarketChart('ethereum', 'eur', 30);
 
-      expect(mockAxiosInstance.get).toHaveBeenCalledWith('/coins/ethereum/market_chart', {
-        params: {
-          vs_currency: 'eur',
-          days: 30,
-          interval: 'daily'
+      expect(mockAxiosInstance.get).toHaveBeenCalledWith(
+        '/coins/ethereum/market_chart',
+        {
+          params: {
+            vs_currency: 'eur',
+            days: 30,
+          },
         }
-      });
+      );
     });
   });
 
@@ -360,23 +370,25 @@ describe('CoinGeckoService', () => {
       const mockResponse = {
         headers: {
           'x-ratelimit-requests-limit': '100',
-          'x-ratelimit-requests-remaining': '85'
-        }
+          'x-ratelimit-requests-remaining': '85',
+        },
       };
       mockAxiosInstance.get.mockResolvedValue(mockResponse);
 
       const result = await service.getRateLimitInfo();
 
-      expect(mockAxiosInstance.get).toHaveBeenCalledWith('/simple/price?ids=bitcoin&vs_currencies=usd');
+      expect(mockAxiosInstance.get).toHaveBeenCalledWith(
+        '/simple/price?ids=bitcoin&vs_currencies=usd'
+      );
       expect(result).toEqual({
         limit: 100,
-        remaining: 85
+        remaining: 85,
       });
     });
 
     it('should return null when headers are missing', async () => {
       const mockResponse = {
-        headers: {}
+        headers: {},
       };
       mockAxiosInstance.get.mockResolvedValue(mockResponse);
 
@@ -400,17 +412,17 @@ describe('CoinGeckoService', () => {
       const networkError = new Error('Connection reset') as any;
       networkError.code = 'ECONNRESET';
       networkError.isAxiosError = true;
-      
+
       mockAxiosInstance.get
         .mockRejectedValueOnce(networkError)
         .mockRejectedValueOnce(networkError)
         .mockRejectedValueOnce(networkError)
-        .mockResolvedValueOnce({ data: { bitcoin: { usd: 43250.50 } } });
+        .mockResolvedValueOnce({ data: { bitcoin: { usd: 43250.5 } } });
 
       const result = await service.getSimplePrice('bitcoin', 'usd');
 
       expect(mockAxiosInstance.get).toHaveBeenCalledTimes(4);
-      expect(result).toEqual({ bitcoin: { usd: 43250.50 } });
+      expect(result).toEqual({ bitcoin: { usd: 43250.5 } });
     }, 10000);
 
     it('should fail after max retries exhausted', async () => {
@@ -418,11 +430,11 @@ describe('CoinGeckoService', () => {
       const networkError = new Error('Network error') as any;
       networkError.code = 'ECONNRESET';
       networkError.isAxiosError = true;
-      
+
       mockAxiosInstance.get.mockRejectedValue(networkError);
 
       await expect(service.getSimplePrice('bitcoin', 'usd')).rejects.toThrow();
-      
+
       expect(mockAxiosInstance.get).toHaveBeenCalledTimes(4); // 1 initial + 3 retries
     }, 10000);
 
@@ -430,7 +442,7 @@ describe('CoinGeckoService', () => {
       const notRetryableError = new Error('Not found') as any;
       notRetryableError.response = { status: 404 };
       notRetryableError.isAxiosError = true;
-      
+
       mockAxiosInstance.get.mockRejectedValue(notRetryableError);
 
       await expect(service.getSimplePrice('bitcoin', 'usd')).rejects.toThrow();
