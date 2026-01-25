@@ -1,152 +1,142 @@
 import { Page } from '@playwright/test';
 
 export async function mockCoinGeckoList(page: Page) {
-  await page.route(
-    '**/api.coingecko.com/api/v3/coins/list**',
-    async (route) => {
-      const body = [
-        {
-          id: 'bitcoin',
-          symbol: 'btc',
-          name: 'Bitcoin',
-        },
-        {
-          id: 'ethereum',
-          symbol: 'eth',
-          name: 'Ethereum',
-        },
-        {
-          id: 'cardano',
-          symbol: 'ada',
-          name: 'Cardano',
-        },
-        {
-          id: 'ripple',
-          symbol: 'xrp',
-          name: 'XRP',
-        },
-        {
-          id: 'solana',
-          symbol: 'sol',
-          name: 'Solana',
-        },
-      ];
+  await page.route('**/api/coingecko/coins/list**', async (route) => {
+    const body = [
+      {
+        id: 'bitcoin',
+        symbol: 'btc',
+        name: 'Bitcoin',
+      },
+      {
+        id: 'ethereum',
+        symbol: 'eth',
+        name: 'Ethereum',
+      },
+      {
+        id: 'cardano',
+        symbol: 'ada',
+        name: 'Cardano',
+      },
+      {
+        id: 'ripple',
+        symbol: 'xrp',
+        name: 'XRP',
+      },
+      {
+        id: 'solana',
+        symbol: 'sol',
+        name: 'Solana',
+      },
+    ];
 
-      route.fulfill({
-        status: 200,
-        contentType: 'application/json',
-        body: JSON.stringify(body),
-      });
-    }
-  );
+    route.fulfill({
+      status: 200,
+      contentType: 'application/json',
+      body: JSON.stringify(body),
+    });
+  });
 }
 
 export async function mockCoinGeckoMarkets(
   page: Page,
   overrides: Partial<Record<string, number>> = {}
 ) {
-  await page.route(
-    '**/api.coingecko.com/api/v3/coins/markets**',
-    async (route) => {
-      const body = [
-        {
-          id: 'bitcoin',
-          symbol: 'btc',
-          name: 'Bitcoin',
-          current_price: overrides.BTC ?? 30000,
-          image:
-            'https://assets.coingecko.com/coins/images/1/large/bitcoin.png',
-        },
-        {
-          id: 'ethereum',
-          symbol: 'eth',
-          name: 'Ethereum',
-          current_price: overrides.ETH ?? 2000,
-          image:
-            'https://assets.coingecko.com/coins/images/279/large/ethereum.png',
-        },
-      ];
+  await page.route('**/api/coingecko/coins/markets**', async (route) => {
+    const body = [
+      {
+        id: 'bitcoin',
+        symbol: 'btc',
+        name: 'Bitcoin',
+        current_price: overrides.BTC ?? 30000,
+        image: 'https://assets.coingecko.com/coins/images/1/large/bitcoin.png',
+      },
+      {
+        id: 'ethereum',
+        symbol: 'eth',
+        name: 'Ethereum',
+        current_price: overrides.ETH ?? 2000,
+        image:
+          'https://assets.coingecko.com/coins/images/279/large/ethereum.png',
+      },
+    ];
 
-      route.fulfill({
-        status: 200,
-        contentType: 'application/json',
-        body: JSON.stringify(body),
-      });
-    }
-  );
+    route.fulfill({
+      status: 200,
+      contentType: 'application/json',
+      body: JSON.stringify(body),
+    });
+  });
 }
 
 export async function mockCoinGeckoChartData(page: Page) {
-  await page.route(
-    '**/api.coingecko.com/api/v3/coins/*/market_chart**',
-    async (route) => {
-      // Mock chart data with 30 days of price history
-      const prices = Array.from({ length: 30 }, (_, i) => [
-        Date.now() - (29 - i) * 24 * 60 * 60 * 1000,
-        30000 + Math.random() * 5000,
-      ]);
+  await page.route('**/api/coingecko/coins/*/market_chart**', async (route) => {
+    // Mock chart data with 30 days of price history
+    const prices = Array.from({ length: 30 }, (_, i) => [
+      Date.now() - (29 - i) * 24 * 60 * 60 * 1000,
+      30000 + Math.random() * 5000,
+    ]);
 
-      route.fulfill({
-        status: 200,
-        contentType: 'application/json',
-        body: JSON.stringify({ prices }),
-      });
-    }
-  );
+    route.fulfill({
+      status: 200,
+      contentType: 'application/json',
+      body: JSON.stringify({
+        data: { prices },
+        timestamp: new Date().toISOString(),
+      }),
+    });
+  });
 }
 
 export async function mockCoinGeckoTrending(page: Page) {
-  await page.route(
-    '**/api.coingecko.com/api/v3/search/trending**',
-    async (route) => {
-      const body = {
-        coins: [
-          {
-            item: {
-              id: 'bitcoin',
-              coin_id: 1,
-              name: 'Bitcoin',
-              symbol: 'BTC',
-              market_cap_rank: 1,
-              thumb:
-                'https://assets.coingecko.com/coins/images/1/thumb/bitcoin.png',
-              small:
-                'https://assets.coingecko.com/coins/images/1/small/bitcoin.png',
-              large:
-                'https://assets.coingecko.com/coins/images/1/large/bitcoin.png',
-              slug: 'bitcoin',
-              price_btc: 1,
-              score: 0,
-            },
+  await page.route('**/api/coingecko/search/trending**', async (route) => {
+    const body = {
+      coins: [
+        {
+          item: {
+            id: 'bitcoin',
+            coin_id: 1,
+            name: 'Bitcoin',
+            symbol: 'BTC',
+            market_cap_rank: 1,
+            thumb:
+              'https://assets.coingecko.com/coins/images/1/thumb/bitcoin.png',
+            small:
+              'https://assets.coingecko.com/coins/images/1/small/bitcoin.png',
+            large:
+              'https://assets.coingecko.com/coins/images/1/large/bitcoin.png',
+            slug: 'bitcoin',
+            price_btc: 1,
+            score: 0,
           },
-          {
-            item: {
-              id: 'ethereum',
-              coin_id: 1027,
-              name: 'Ethereum',
-              symbol: 'ETH',
-              market_cap_rank: 2,
-              thumb:
-                'https://assets.coingecko.com/coins/images/279/thumb/ethereum.png',
-              small:
-                'https://assets.coingecko.com/coins/images/279/small/ethereum.png',
-              large:
-                'https://assets.coingecko.com/coins/images/279/large/ethereum.png',
-              slug: 'ethereum',
-              price_btc: 0.066,
-              score: 1,
-            },
+        },
+        {
+          item: {
+            id: 'ethereum',
+            coin_id: 1027,
+            name: 'Ethereum',
+            symbol: 'ETH',
+            market_cap_rank: 2,
+            thumb:
+              'https://assets.coingecko.com/coins/images/279/thumb/ethereum.png',
+            small:
+              'https://assets.coingecko.com/coins/images/279/small/ethereum.png',
+            large:
+              'https://assets.coingecko.com/coins/images/279/large/ethereum.png',
+            slug: 'ethereum',
+            price_btc: 0.066,
+            score: 1,
           },
-        ],
-      };
+        },
+      ],
+    };
 
-      route.fulfill({
-        status: 200,
-        contentType: 'application/json',
-        body: JSON.stringify(body),
-      });
-    }
-  );
+    route.fulfill({
+      status: 200,
+      contentType: 'application/json',
+      body: JSON.stringify(body),
+    });
+  });
 }
 
 export async function mockCoinGeckoGlobal(page: Page) {
