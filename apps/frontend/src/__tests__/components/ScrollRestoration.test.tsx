@@ -31,6 +31,34 @@ Object.defineProperty(window, 'scrollTo', {
   writable: true,
 });
 
+// Mock JSDOM navigation to prevent "Not implemented" errors
+Object.defineProperty(window, 'location', {
+  value: {
+    pathname: '/portfolio',
+    href: 'http://localhost/portfolio',
+  },
+  writable: true,
+});
+
+// Mock window.navigation to prevent JSDOM errors
+Object.defineProperty(window, 'navigation', {
+  value: {
+    navigate: vi.fn(),
+  },
+  writable: true,
+});
+
+// Mock HTMLAnchorElement.prototype.click to prevent navigation
+const originalClick = HTMLAnchorElement.prototype.click;
+HTMLAnchorElement.prototype.click = function () {
+  // Prevent actual navigation but still trigger click events
+  this.dispatchEvent(new MouseEvent('click', { bubbles: true }));
+};
+
+// Mock navigateFetch to prevent JSDOM navigation errors
+const originalNavigateFetch = globalThis.navigateFetch;
+globalThis.navigateFetch = vi.fn(() => Promise.resolve());
+
 // Mock window.scrollY
 let mockScrollY = 0;
 Object.defineProperty(window, 'scrollY', {
@@ -50,6 +78,9 @@ describe('ScrollRestoration', () => {
   afterEach(() => {
     cleanup();
     vi.useRealTimers();
+    // Restore original mocks
+    HTMLAnchorElement.prototype.click = originalClick;
+    globalThis.navigateFetch = originalNavigateFetch;
   });
 
   const renderWithRouter = (initialPath: string = '/portfolio') => {
@@ -64,9 +95,12 @@ describe('ScrollRestoration', () => {
     it('restores saved scroll position on popstate (back/forward navigation)', () => {
       mockSessionStorage.setItem('scroll_/portfolio', '500');
 
-      // Mock window.location.pathname before rendering
+      // Update mocked pathname for this test
       Object.defineProperty(window, 'location', {
-        value: { pathname: '/portfolio' },
+        value: {
+          pathname: '/portfolio',
+          href: 'http://localhost/portfolio',
+        },
         writable: true,
       });
 
@@ -85,9 +119,12 @@ describe('ScrollRestoration', () => {
     });
 
     it('scrolls to top when no saved position exists on popstate', () => {
-      // Mock window.location.pathname before rendering
+      // Update mocked pathname for this test
       Object.defineProperty(window, 'location', {
-        value: { pathname: '/portfolio' },
+        value: {
+          pathname: '/portfolio',
+          href: 'http://localhost/portfolio',
+        },
         writable: true,
       });
 
@@ -110,9 +147,12 @@ describe('ScrollRestoration', () => {
 
       renderWithRouter('/coin/bitcoin');
 
-      // Mock window.location.pathname
+      // Update mocked pathname for this test
       Object.defineProperty(window, 'location', {
-        value: { pathname: '/coin/bitcoin' },
+        value: {
+          pathname: '/coin/bitcoin',
+          href: 'http://localhost/coin/bitcoin',
+        },
         writable: true,
       });
 
@@ -185,6 +225,17 @@ describe('ScrollRestoration', () => {
     });
 
     it('does not save scroll position when navigating', () => {
+      // Suppress JSDOM navigation error for this test
+      const originalError = console.error;
+      console.error = vi.fn((...args) => {
+        if (
+          args[0] === 'Error: Not implemented: navigation (except hash changes)'
+        ) {
+          return; // Suppress this specific error
+        }
+        return originalError(...args);
+      });
+
       const { unmount } = renderWithRouter('/portfolio');
 
       // Simulate navigation start (click on link)
@@ -192,7 +243,7 @@ describe('ScrollRestoration', () => {
       link.href = '/coin/bitcoin';
       document.body.appendChild(link);
 
-      // Simulate click event
+      // Simulate click event - this will trigger the navigation detection
       link.dispatchEvent(new MouseEvent('click', { bubbles: true }));
 
       // Now scroll - should not save because navigating
@@ -206,6 +257,9 @@ describe('ScrollRestoration', () => {
       );
 
       document.body.removeChild(link);
+
+      // Restore console.error
+      console.error = originalError;
     });
 
     it('does not save when restoring scroll', () => {
