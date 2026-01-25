@@ -51,7 +51,11 @@ export function usePersistedExpansionState(
         }
       }
     } catch (error) {
-      console.error('Failed to load expansion state:', error);
+      // Silently handle JSON parsing errors during initialization
+      // Don't log to console during tests to avoid noise
+      if (process.env.NODE_ENV !== 'test') {
+        console.error('Failed to load expansion state:', error);
+      }
     }
 
     return [];
