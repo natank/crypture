@@ -219,4 +219,39 @@ router.get('/headers-test', async (_req, res) => {
   }
 });
 
+/**
+ * @swagger
+ * /api/health/api-key-test:
+ *   get:
+ *     summary: Test API key headers being sent to CoinGecko
+ *     description: Shows exactly what headers are being sent in requests to CoinGecko
+ *     tags: [Health]
+ *     responses:
+ *       200:
+ *         description: API key test results
+ */
+router.get('/api-key-test', async (_req, res) => {
+  try {
+    const { CoinGeckoService } = await import('../services/coingecko');
+    const service = new CoinGeckoService();
+
+    const testResult = await service.testApiKey();
+
+    res.status(200).json({
+      success: true,
+      message: 'API key headers test',
+      headers: testResult.headers,
+      url: testResult.url,
+      timestamp: new Date().toISOString(),
+    });
+  } catch (error: any) {
+    res.status(500).json({
+      success: false,
+      message: 'API key test failed',
+      error: error.message,
+      timestamp: new Date().toISOString(),
+    });
+  }
+});
+
 export { router as healthRouter };
