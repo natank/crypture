@@ -4,6 +4,8 @@ import type {
   CoinGeckoSimplePrice,
   CoinGeckoSearchResponse,
   CoinGeckoTrendingResponse,
+  CoinGeckoGlobalResponse,
+  CoinGeckoCategoriesResponse,
 } from '@crypture/shared-types';
 
 // Initialize the CoinGecko client with the backend proxy URL
@@ -62,7 +64,7 @@ export const coinGeckoApiService = {
       return response.data || [];
     } catch (error) {
       console.error('Failed to fetch coins markets:', error);
-      return [];
+      throw error;
     }
   },
 
@@ -75,7 +77,7 @@ export const coinGeckoApiService = {
       return response.data || null;
     } catch (error) {
       console.error(`Failed to fetch coin ${coinId}:`, error);
-      return null;
+      throw error;
     }
   },
 
@@ -101,7 +103,7 @@ export const coinGeckoApiService = {
       return response.data || null;
     } catch (error) {
       console.error('Failed to fetch trending coins:', error);
-      return null;
+      throw error;
     }
   },
 
@@ -121,7 +123,33 @@ export const coinGeckoApiService = {
       return response.data || null;
     } catch (error) {
       console.error(`Failed to fetch market chart for ${coinId}:`, error);
-      return null;
+      throw error;
+    }
+  },
+
+  /**
+   * Get global market data
+   */
+  async getGlobal(): Promise<CoinGeckoGlobalResponse> {
+    try {
+      const response = await client.getGlobal();
+      return response.data;
+    } catch (error) {
+      console.error('Failed to fetch global market data:', error);
+      throw error;
+    }
+  },
+
+  /**
+   * Get coin categories
+   */
+  async getCategories(): Promise<CoinGeckoCategoriesResponse> {
+    try {
+      const response = await client.getCategories();
+      return response.data || [];
+    } catch (error) {
+      console.error('Failed to fetch categories:', error);
+      throw error;
     }
   },
 

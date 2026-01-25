@@ -10,6 +10,40 @@ test.describe('Daily Summary Card', () => {
   let portfolioPage: PortfolioPage;
 
   test.beforeEach(async ({ page }) => {
+    // Mock the coins/markets API
+    await page.route('**/api/coingecko/coins/markets*', async (route) => {
+      await route.fulfill({
+        status: 200,
+        contentType: 'application/json',
+        body: JSON.stringify({
+          data: [
+            {
+              id: 'bitcoin',
+              symbol: 'btc',
+              name: 'Bitcoin',
+              current_price: 50000,
+              price_change_percentage_24h: 2.5,
+              market_cap: 1000000000000,
+              market_cap_rank: 1,
+              image: 'https://example.com/btc.png',
+            },
+            {
+              id: 'ethereum',
+              symbol: 'eth',
+              name: 'Ethereum',
+              current_price: 3000,
+              price_change_percentage_24h: -1.2,
+              market_cap: 350000000000,
+              market_cap_rank: 2,
+              image: 'https://example.com/eth.png',
+            },
+          ],
+          timestamp: new Date().toISOString(),
+          requestId: 'mock-request-id',
+        }),
+      });
+    });
+
     portfolioPage = new PortfolioPage(page);
     // Clear localStorage to ensure clean state
     await page.goto('/portfolio?e2e=1');

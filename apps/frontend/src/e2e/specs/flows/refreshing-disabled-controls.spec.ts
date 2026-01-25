@@ -3,43 +3,43 @@ import { test as base, expect, Page } from '@playwright/test';
 async function mockMarketsWithDelayedRefresh(page: Page, delayMs = 800) {
   let callCount = 0;
   try {
-    await page.unroute('**/api.coingecko.com/api/v3/coins/markets**');
+    await page.unroute('**/api/coingecko/coins/markets**');
   } catch {
     // Ignore unroute failures
   }
 
-  await page.route(
-    '**/api.coingecko.com/api/v3/coins/markets**',
-    async (route) => {
-      callCount++;
-      const body = [
-        {
-          id: 'bitcoin',
-          symbol: 'btc',
-          name: 'Bitcoin',
-          current_price: 30000,
-          image:
-            'https://assets.coingecko.com/coins/images/1/large/bitcoin.png',
-        },
-        {
-          id: 'ethereum',
-          symbol: 'eth',
-          name: 'Ethereum',
-          current_price: 2000,
-          image:
-            'https://assets.coingecko.com/coins/images/279/large/ethereum.png',
-        },
-      ];
+  await page.route('**/api/coingecko/coins/markets**', async (route) => {
+    callCount++;
+    const body = [
+      {
+        id: 'bitcoin',
+        symbol: 'btc',
+        name: 'Bitcoin',
+        current_price: 30000,
+        image: 'https://assets.coingecko.com/coins/images/1/large/bitcoin.png',
+      },
+      {
+        id: 'ethereum',
+        symbol: 'eth',
+        name: 'Ethereum',
+        current_price: 2000,
+        image:
+          'https://assets.coingecko.com/coins/images/279/large/ethereum.png',
+      },
+    ];
 
-      if (callCount > 1) await new Promise((r) => setTimeout(r, delayMs));
+    if (callCount > 1) await new Promise((r) => setTimeout(r, delayMs));
 
-      await route.fulfill({
-        status: 200,
-        contentType: 'application/json',
-        body: JSON.stringify(body),
-      });
-    }
-  );
+    await route.fulfill({
+      status: 200,
+      contentType: 'application/json',
+      body: JSON.stringify({
+        data: body,
+        timestamp: new Date().toISOString(),
+        requestId: 'mock-request-id',
+      }),
+    });
+  });
 }
 
 // Traceability: UI States — refreshing disables controls, sets aria-busy, shows lightweight updating indicator

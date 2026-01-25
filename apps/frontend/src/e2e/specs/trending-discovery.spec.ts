@@ -6,70 +6,95 @@ test.describe('Trending & Discovery Feed', () => {
 
   test.beforeEach(async ({ page }) => {
     // Mock Trending API
-    await page.route('**/search/trending*', async (route) => {
+    await page.route('**/api/coingecko/search/trending*', async (route) => {
       await route.fulfill({
         status: 200,
         contentType: 'application/json',
         body: JSON.stringify({
-          coins: [
-            {
-              item: {
-                id: 'bitcoin',
-                coin_id: 1,
-                name: 'Bitcoin',
-                symbol: 'BTC',
-                market_cap_rank: 1,
-                thumb: 'https://example.com/btc.png',
-                small: 'https://example.com/btc_small.png',
-                large: 'https://example.com/btc_large.png',
-                slug: 'bitcoin',
-                price_btc: 1,
-                score: 0,
+          data: {
+            coins: [
+              {
+                item: {
+                  id: 'bitcoin',
+                  coin_id: 1,
+                  name: 'Bitcoin',
+                  symbol: 'BTC',
+                  market_cap_rank: 1,
+                  thumb: 'https://example.com/btc.png',
+                  small: 'https://example.com/btc_small.png',
+                  large: 'https://example.com/btc_large.png',
+                  slug: 'bitcoin',
+                  price_btc: 1,
+                  score: 0,
+                },
               },
-            },
-          ],
+            ],
+          },
+          timestamp: new Date().toISOString(),
+          requestId: 'mock-request-id',
         }),
       });
     });
 
     // Mock Top Movers API (Gainers & Losers)
-    await page.route('**/coins/markets*', async (route) => {
+    await page.route('**/api/coingecko/coins/markets*', async (route) => {
       const url = route.request().url();
       const isGainers = url.includes('order=price_change_percentage_24h_desc');
 
       await route.fulfill({
         status: 200,
         contentType: 'application/json',
-        body: JSON.stringify([
-          {
-            id: isGainers ? 'pepe' : 'terra',
-            symbol: isGainers ? 'pepe' : 'luna',
-            name: isGainers ? 'Pepe' : 'Terra',
-            image: 'https://example.com/icon.png',
-            current_price: 100,
-            market_cap: 1000000,
-            market_cap_rank: 1,
-            price_change_percentage_24h: isGainers ? 15.5 : -20.5,
-          },
-        ]),
+        body: JSON.stringify({
+          data: [
+            {
+              id: isGainers ? 'pepe' : 'terra',
+              symbol: isGainers ? 'pepe' : 'luna',
+              name: isGainers ? 'Pepe' : 'Terra',
+              image: 'https://example.com/icon.png',
+              current_price: 100,
+              market_cap: 1000000,
+              market_cap_rank: 1,
+              price_change_percentage_24h: isGainers ? 15.5 : -20.5,
+            },
+          ],
+          timestamp: new Date().toISOString(),
+          requestId: 'mock-request-id',
+        }),
       });
     });
 
     // Mock Global Market Data (to prevent errors in MarketOverview)
-    await page.route('**/global*', async (route) => {
+    await page.route('**/api/coingecko/global*', async (route) => {
       await route.fulfill({
         status: 200,
         contentType: 'application/json',
         body: JSON.stringify({
           data: {
-            total_market_cap: { usd: 1000000000 },
-            total_volume: { usd: 50000000 },
-            market_cap_percentage: { btc: 50, eth: 20 },
-            market_cap_change_percentage_24h_usd: 5,
-            active_cryptocurrencies: 1000,
-            markets: 100,
-            updated_at: 1234567890,
+            data: {
+              total_market_cap: { usd: 1000000000 },
+              total_volume: { usd: 50000000 },
+              market_cap_percentage: { btc: 50, eth: 20 },
+              market_cap_change_percentage_24h_usd: 5,
+              active_cryptocurrencies: 1000,
+              markets: 100,
+              updated_at: 1234567890,
+            },
           },
+          timestamp: new Date().toISOString(),
+          requestId: 'mock-request-id',
+        }),
+      });
+    });
+
+    // Mock Categories
+    await page.route('**/api/coingecko/coins/categories*', async (route) => {
+      await route.fulfill({
+        status: 200,
+        contentType: 'application/json',
+        body: JSON.stringify({
+          data: [{ category_id: 'cryptocurrency', name: 'Cryptocurrency' }],
+          timestamp: new Date().toISOString(),
+          requestId: 'mock-request-id',
         }),
       });
     });

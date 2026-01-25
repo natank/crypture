@@ -67,51 +67,70 @@ test.describe('Coin Comparison Feature', () => {
     comparisonPage = new ComparisonPage(page);
 
     // Mock top coins API
-    await page.route('**/api/v3/coins/markets*', async (route) => {
+    await page.route('**/api/coingecko/coins/markets*', async (route) => {
       await route.fulfill({
         status: 200,
         contentType: 'application/json',
-        body: JSON.stringify(mockTopCoins),
+        body: JSON.stringify({
+          data: mockTopCoins,
+          timestamp: new Date().toISOString(),
+          requestId: 'mock-request-id',
+        }),
       });
     });
 
     // Mock coin details API
-    await page.route('**/api/v3/coins/bitcoin?*', async (route) => {
+    await page.route('**/api/coingecko/coins/bitcoin', async (route) => {
       await route.fulfill({
         status: 200,
         contentType: 'application/json',
-        body: JSON.stringify(
-          mockCoinDetails('bitcoin', 'Bitcoin', 'btc', 50000)
-        ),
+        body: JSON.stringify({
+          data: mockCoinDetails('bitcoin', 'Bitcoin', 'btc', 50000),
+          timestamp: new Date().toISOString(),
+          requestId: 'mock-request-id',
+        }),
       });
     });
 
-    await page.route('**/api/v3/coins/ethereum?*', async (route) => {
+    await page.route('**/api/coingecko/coins/ethereum', async (route) => {
       await route.fulfill({
         status: 200,
         contentType: 'application/json',
-        body: JSON.stringify(
-          mockCoinDetails('ethereum', 'Ethereum', 'eth', 3000)
-        ),
+        body: JSON.stringify({
+          data: mockCoinDetails('ethereum', 'Ethereum', 'eth', 3000),
+          timestamp: new Date().toISOString(),
+          requestId: 'mock-request-id',
+        }),
       });
     });
 
-    await page.route('**/api/v3/coins/solana?*', async (route) => {
+    await page.route('**/api/coingecko/coins/solana', async (route) => {
       await route.fulfill({
         status: 200,
         contentType: 'application/json',
-        body: JSON.stringify(mockCoinDetails('solana', 'Solana', 'sol', 100)),
+        body: JSON.stringify({
+          data: mockCoinDetails('solana', 'Solana', 'sol', 100),
+          timestamp: new Date().toISOString(),
+          requestId: 'mock-request-id',
+        }),
       });
     });
 
     // Mock price history API
-    await page.route('**/api/v3/coins/*/market_chart*', async (route) => {
-      await route.fulfill({
-        status: 200,
-        contentType: 'application/json',
-        body: JSON.stringify({ prices: mockPriceHistory }),
-      });
-    });
+    await page.route(
+      '**/api/coingecko/coins/*/market_chart*',
+      async (route) => {
+        await route.fulfill({
+          status: 200,
+          contentType: 'application/json',
+          body: JSON.stringify({
+            data: { prices: mockPriceHistory },
+            timestamp: new Date().toISOString(),
+            requestId: 'mock-request-id',
+          }),
+        });
+      }
+    );
   });
 
   test('displays empty state when no coins selected', async () => {
