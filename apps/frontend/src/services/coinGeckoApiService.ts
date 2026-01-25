@@ -27,7 +27,7 @@ export const coinGeckoApiService = {
       const response = await client.ping();
       return response.data?.status === 'healthy';
     } catch (error) {
-      console.error('CoinGecko ping failed:', error);
+      console.error('CoinGecko API error:', error);
       return false;
     }
   },
@@ -43,7 +43,7 @@ export const coinGeckoApiService = {
       const response = await client.getSimplePrice(coinIds, vsCurrencies);
       return response.data || null;
     } catch (error) {
-      console.error('Failed to fetch simple price:', error);
+      console.error('CoinGecko API error:', error);
       return null;
     }
   },
@@ -63,7 +63,7 @@ export const coinGeckoApiService = {
       const response = await client.getCoinsMarkets(params);
       return response.data || [];
     } catch (error) {
-      console.error('Failed to fetch coins markets:', error);
+      console.error('CoinGecko API error:', error);
       throw error;
     }
   },
@@ -76,7 +76,7 @@ export const coinGeckoApiService = {
       const response = await client.getCoinById(coinId);
       return response.data || null;
     } catch (error) {
-      console.error(`Failed to fetch coin ${coinId}:`, error);
+      console.error(`CoinGecko API error: ${coinId}`, error);
       throw error;
     }
   },

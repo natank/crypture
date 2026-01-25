@@ -5,13 +5,7 @@ import morgan from 'morgan';
 import dotenv from 'dotenv';
 import { healthRouter } from './routes/health';
 import { coingeckoRouter } from './routes/coingecko';
-import {
-  requestLogger,
-  responseLogger,
-  errorLogger,
-  morganLogger,
-  apiLogger,
-} from './middleware/logger';
+import { requestLogger, errorLogger, morganLogger } from './middleware/logger';
 import { corsMiddleware, corsLogger, apiCors } from './middleware/cors';
 import { apiRateLimiter, proxyRateLimiter } from './middleware/rateLimiter';
 import { specs, swaggerUi } from './config/swagger';
@@ -39,11 +33,6 @@ if (NODE_ENV === 'development') {
 app.use(morganLogger()); // Enhanced request logging
 app.use(express.json({ limit: '10mb' })); // Parse JSON bodies with size limit
 app.use(express.urlencoded({ extended: true, limit: '10mb' })); // Parse URL-encoded bodies
-
-// API-specific middleware for development
-if (NODE_ENV === 'development') {
-  app.use('/api', apiLogger); // Detailed API logging in development
-}
 
 // Apply rate limiting to API routes
 app.use('/api', apiRateLimiter); // General API rate limiting (50 req/min)
@@ -111,9 +100,7 @@ if (require.main === module) {
     console.log(
       `🚀 Crypture Backend Proxy Service running on http://${HOST}:${PORT}`
     );
-    console.log(`📊 Environment: ${NODE_ENV}`);
     console.log(`🔗 Health check: http://${HOST}:${PORT}/api/health`);
-    console.log(`📅 Started at: ${new Date().toISOString()}`);
   });
 
   process.on('SIGTERM', () => {
