@@ -121,8 +121,19 @@ export const coinGeckoApiService = {
     try {
       const response = await client.getMarketChart(coinId, params);
       return response.data || null;
-    } catch (error) {
+    } catch (error: unknown) {
       console.error(`Failed to fetch market chart for ${coinId}:`, error);
+
+      // Handle 401 Authentication Error specifically
+      if (error && typeof error === 'object' && 'response' in error) {
+        const axiosError = error as { response?: { status?: number } };
+        if (axiosError.response?.status === 401) {
+          throw new Error(
+            'Market chart data requires a CoinGecko Pro API key. Basic market data is still available.'
+          );
+        }
+      }
+
       throw error;
     }
   },
