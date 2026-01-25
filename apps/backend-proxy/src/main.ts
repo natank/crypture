@@ -5,22 +5,15 @@ import morgan from 'morgan';
 import dotenv from 'dotenv';
 import { healthRouter } from './routes/health';
 import { coingeckoRouter } from './routes/coingecko';
-import { 
-  requestLogger, 
-  responseLogger, 
-  errorLogger, 
-  morganLogger, 
-  apiLogger 
+import {
+  requestLogger,
+  responseLogger,
+  errorLogger,
+  morganLogger,
+  apiLogger,
 } from './middleware/logger';
-import { 
-  corsMiddleware, 
-  corsLogger, 
-  apiCors 
-} from './middleware/cors';
-import { 
-  apiRateLimiter, 
-  proxyRateLimiter 
-} from './middleware/rateLimiter';
+import { corsMiddleware, corsLogger, apiCors } from './middleware/cors';
+import { apiRateLimiter, proxyRateLimiter } from './middleware/rateLimiter';
 import { specs, swaggerUi } from './config/swagger';
 
 // Load environment variables
@@ -57,14 +50,19 @@ app.use('/api', apiRateLimiter); // General API rate limiting (50 req/min)
 
 // Routes with enhanced CORS and specific rate limiting
 app.use('/api/health', apiCors.health, healthRouter);
-app.use('/api/coingecko', apiCors.health, proxyRateLimiter, coingeckoRouter); // Proxy-specific rate limiting (100 req/min)
+app.use('/api/coingecko', apiCors.api, proxyRateLimiter, coingeckoRouter); // Use strict API CORS for coingecko
 
 // API Documentation
-app.use('/api-docs', apiCors.dev, swaggerUi.serve, swaggerUi.setup(specs, {
-  explorer: true,
-  customCss: '.swagger-ui .topbar { display: none }',
-  customSiteTitle: 'Crypture Backend API Documentation'
-}));
+app.use(
+  '/api-docs',
+  apiCors.dev,
+  swaggerUi.serve,
+  swaggerUi.setup(specs, {
+    explorer: true,
+    customCss: '.swagger-ui .topbar { display: none }',
+    customSiteTitle: 'Crypture Backend API Documentation',
+  })
+);
 
 // Root endpoint
 app.get('/', (_req, res) => {
@@ -74,7 +72,7 @@ app.get('/', (_req, res) => {
     environment: NODE_ENV,
     timestamp: new Date().toISOString(),
     documentation: '/api-docs',
-    health: '/api/health'
+    health: '/api/health',
   });
 });
 
@@ -83,27 +81,36 @@ app.use('*', (req, res) => {
   res.status(404).json({
     error: 'Not Found',
     message: `Route ${req.originalUrl} not found`,
-    timestamp: new Date().toISOString()
+    timestamp: new Date().toISOString(),
   });
 });
 
 // Enhanced error handler
 app.use(errorLogger);
-app.use((err: any, _req: express.Request, res: express.Response, _next: express.NextFunction) => {
-  const requestId = (_req as any).requestId || 'unknown';
-  
-  res.status(err.status || 500).json({
-    error: NODE_ENV === 'production' ? 'Internal Server Error' : err.message,
-    message: NODE_ENV === 'production' ? 'Something went wrong' : err.stack,
-    timestamp: new Date().toISOString(),
-    requestId: requestId
-  });
-});
+app.use(
+  (
+    err: any,
+    _req: express.Request,
+    res: express.Response,
+    _next: express.NextFunction
+  ) => {
+    const requestId = (_req as any).requestId || 'unknown';
+
+    res.status(err.status || 500).json({
+      error: NODE_ENV === 'production' ? 'Internal Server Error' : err.message,
+      message: NODE_ENV === 'production' ? 'Something went wrong' : err.stack,
+      timestamp: new Date().toISOString(),
+      requestId: requestId,
+    });
+  }
+);
 
 // Start server only if this file is run directly
 if (require.main === module) {
   const server = app.listen(PORT, () => {
-    console.log(`🚀 Crypture Backend Proxy Service running on http://${HOST}:${PORT}`);
+    console.log(
+      `🚀 Crypture Backend Proxy Service running on http://${HOST}:${PORT}`
+    );
     console.log(`📊 Environment: ${NODE_ENV}`);
     console.log(`🔗 Health check: http://${HOST}:${PORT}/api/health`);
     console.log(`📅 Started at: ${new Date().toISOString()}`);
