@@ -5,7 +5,12 @@ import {
   clearGlobalMarketCache,
 } from '@services/coinService';
 import { coinGeckoApiService } from '@services/coinGeckoApiService';
-import { describe, it, expect, vi, beforeEach } from 'vitest';
+import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
+import type {
+  CoinGeckoPriceData,
+  CoinGeckoMarketChartResponse,
+  CoinGeckoGlobalResponse,
+} from '@crypture/shared-types';
 
 // Mock the coinGeckoApiService
 vi.mock('@services/coinGeckoApiService', () => ({
@@ -19,9 +24,61 @@ vi.mock('@services/coinGeckoApiService', () => ({
   },
 }));
 
-const mockCoins = [
-  { id: 'bitcoin', symbol: 'btc', name: 'Bitcoin', current_price: 50000 },
-  { id: 'ethereum', symbol: 'eth', name: 'Ethereum', current_price: 3000 },
+const mockCoins: CoinGeckoPriceData[] = [
+  {
+    id: 'bitcoin',
+    symbol: 'btc',
+    name: 'Bitcoin',
+    current_price: 50000,
+    market_cap: 1000000000000,
+    market_cap_rank: 1,
+    fully_diluted_valuation: null,
+    total_volume: 20000000000,
+    high_24h: 51000,
+    low_24h: 49000,
+    price_change_24h: 1000,
+    price_change_percentage_24h: 2.0,
+    market_cap_change_24h: 20000000000,
+    market_cap_change_percentage_24h: 2.0,
+    circulating_supply: 19000000,
+    total_supply: 21000000,
+    max_supply: 21000000,
+    ath: 69000,
+    ath_change_percentage: -27.5,
+    ath_date: '2021-11-10T14:24:11.849Z',
+    atl: 67.81,
+    atl_change_percentage: 73676.2,
+    atl_date: '2013-07-06T00:00:00.000Z',
+    roi: null,
+    last_updated: '2024-01-01T00:00:00.000Z',
+  },
+  {
+    id: 'ethereum',
+    symbol: 'eth',
+    name: 'Ethereum',
+    current_price: 3000,
+    market_cap: 360000000000,
+    market_cap_rank: 2,
+    fully_diluted_valuation: null,
+    total_volume: 10000000000,
+    high_24h: 3100,
+    low_24h: 2900,
+    price_change_24h: 100,
+    price_change_percentage_24h: 3.45,
+    market_cap_change_24h: 12000000000,
+    market_cap_change_percentage_24h: 3.45,
+    circulating_supply: 120000000,
+    total_supply: 120000000,
+    max_supply: null,
+    ath: 4878,
+    ath_change_percentage: -38.5,
+    ath_date: '2021-11-10T14:24:11.849Z',
+    atl: 0.432,
+    atl_change_percentage: 694444.4,
+    atl_date: '2015-10-20T00:00:00.000Z',
+    roi: null,
+    last_updated: '2024-01-01T00:00:00.000Z',
+  },
 ];
 
 describe('fetchTopCoins', () => {
@@ -69,10 +126,18 @@ describe('fetchAssetHistory', () => {
   });
 
   it('returns price history on success', async () => {
-    const mockHistory = {
+    const mockHistory: CoinGeckoMarketChartResponse = {
       prices: [
         [1672531200000, 16500],
         [1672617600000, 16600],
+      ],
+      market_caps: [
+        [1672531200000, 320000000000],
+        [1672617600000, 321000000000],
+      ],
+      total_volumes: [
+        [1672531200000, 20000000000],
+        [1672617600000, 21000000000],
       ],
     };
     vi.mocked(coinGeckoApiService.getMarketChart).mockResolvedValueOnce(
@@ -119,14 +184,28 @@ describe('fetchGlobalMarketData', () => {
     vi.useRealTimers();
   });
 
-  const mockGlobalResponse = {
+  const mockGlobalResponse: CoinGeckoGlobalResponse = {
     data: {
-      total_market_cap: { usd: 2500000000000 },
-      total_volume: { usd: 120000000000 },
-      market_cap_percentage: { btc: 45.234, eth: 18.756 },
-      market_cap_change_percentage_24h_usd: 2.34,
       active_cryptocurrencies: 12345,
+      upcoming_icos: 0,
+      ongoing_icos: 0,
+      ended_icos: 0,
       markets: 45678,
+      total_market_cap: {
+        btc: 1000000000000,
+        eth: 500000000000,
+        usd: 2500000000000,
+      },
+      total_volume: {
+        btc: 50000000000,
+        eth: 30000000000,
+        usd: 120000000000,
+      },
+      market_cap_percentage: {
+        btc: 45.234,
+        eth: 18.756,
+      },
+      market_cap_change_percentage_24h_usd: 2.34,
       updated_at: 1625097600,
     },
   };
