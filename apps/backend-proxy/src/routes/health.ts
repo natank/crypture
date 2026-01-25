@@ -119,11 +119,45 @@ router.get('/detailed', (_req, res) => {
  * /api/health/env-debug:
  *   get:
  *     summary: Debug environment variables (for troubleshooting)
- *     description: Returns environment variable status for debugging (WARNING: exposes sensitive data)
+ *     description: Returns environment variable status for debugging purposes
  *     tags: [Health]
  *     responses:
  *       200:
  *         description: Environment debug information
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 timestamp:
+ *                   type: string
+ *                 environment:
+ *                   type: string
+ *                 coinGeckoApiKey:
+ *                   type: object
+ *                   properties:
+ *                     exists:
+ *                       type: boolean
+ *                     length:
+ *                       type: number
+ *                     prefix:
+ *                       type: string
+ *                     startsWith:
+ *                       type: boolean
+ *                 corsOrigins:
+ *                   type: object
+ *                   properties:
+ *                     corsOrigin:
+ *                       type: string
+ *                     corsOrigins:
+ *                       type: string
+ *                 otherVars:
+ *                   type: object
+ *                   properties:
+ *                     port:
+ *                       type: string
+ *                     host:
+ *                       type: string
  */
 router.get('/env-debug', (_req, res) => {
   const envDebug = {
