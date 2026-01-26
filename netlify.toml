@@ -1,17 +1,17 @@
-# Default configuration for frontend app
+# Default configuration now deploys investor-presentation
 [build]
   base = "/"
-  publish = "dist/apps/frontend"
-  command = "npm ci && npx nx build frontend --configuration=ci"
+  publish = "dist/apps/investor-presentation"
+  command = "npm ci && npx nx build investor-presentation --configuration=ci"
 
 [build.environment]
   NODE_VERSION = "20"
   NPM_VERSION = "10"
 
-# Configuration for investor-presentation app (context-based)
-[context.investor-presentation]
-  publish = "dist/apps/investor-presentation"
-  command = "npm ci && npx nx build investor-presentation --configuration=ci"
+# Optional: keep a context for frontend if you ever need branch deploys of frontend
+[context.frontend]
+  publish = "dist/apps/frontend"
+  command = "npm ci && npx nx build frontend --configuration=ci"
 
 # Branch-specific configurations
 [context.deploy-preview]
