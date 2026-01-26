@@ -8,6 +8,7 @@ export function CompetitionSection() {
       id="competition"
       eyebrow={competitionContent.eyebrow}
       title={competitionContent.title}
+      tone="light"
     >
       <div className="two-column">
         <div className="card">

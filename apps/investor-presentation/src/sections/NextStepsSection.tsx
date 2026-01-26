@@ -7,7 +7,6 @@ export function NextStepsSection() {
       id="next-steps"
       eyebrow={nextStepsContent.eyebrow}
       title={nextStepsContent.title}
-      tone="light"
     >
       <p className="section__lead">{nextStepsContent.lead}</p>
       <div className="cta-row">

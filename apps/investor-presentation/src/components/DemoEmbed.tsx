@@ -6,20 +6,12 @@ interface DemoEmbedProps {
 }
 
 export function DemoEmbed({ src, origin }: DemoEmbedProps) {
-  const { iframeRef, status, onLoad, onError, postMessage } = useDemoCommunication({ origin });
+  const { iframeRef, onLoad, onError } = useDemoCommunication({ origin });
 
   return (
     <div className="demo-embed">
       <div className="demo-embed__header">
         <span className="label">Live product demo</span>
-        <div className="demo-embed__status">{status}</div>
-        <button
-          className="cta-secondary"
-          type="button"
-          onClick={() => postMessage({ type: 'START_TOUR' })}
-        >
-          Start Tour
-        </button>
       </div>
       <div className="demo-embed__frame">
         <iframe

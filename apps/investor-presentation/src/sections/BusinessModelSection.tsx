@@ -8,7 +8,6 @@ export function BusinessModelSection() {
       id="business-model"
       eyebrow={businessModelContent.eyebrow}
       title={businessModelContent.title}
-      tone="light"
     >
       <PricingCards tiers={businessModelContent.tiers} />
       <div className="two-column">

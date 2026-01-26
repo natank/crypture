@@ -185,7 +185,6 @@ export const aiAdvantageContent = {
   title: '3-5x delivery speed with quality gates',
   velocity: 'Automated code generation + rapid iteration.',
   quality: '90%+ test coverage, CI gates, E2E validation.',
-  note: 'Interactive AI showcase panel will render here.',
   metrics: [
     { label: 'Delivery speed', value: '3-5x' },
     { label: 'Cost reduction', value: '78%' },

@@ -7,7 +7,6 @@ export function SolutionSection() {
       id="solution"
       eyebrow={solutionContent.eyebrow}
       title={solutionContent.title}
-      tone="light"
     >
       <div className="two-column">
         <div>

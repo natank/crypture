@@ -25,7 +25,6 @@ export function AIAdvantageSection() {
           comparisons={aiAdvantageContent.comparisons}
         />
       </div>
-      <p className="section__note">{aiAdvantageContent.note}</p>
     </SectionWrapper>
   );
 }

@@ -8,6 +8,7 @@ export function MarketSection() {
       id="market"
       eyebrow={marketContent.eyebrow}
       title={marketContent.title}
+      tone="light"
     >
       <div className="metric-row">
         {marketContent.metrics.map((metric) => (

@@ -7,6 +7,7 @@ export function ProblemSection() {
       id="problem"
       eyebrow={problemContent.eyebrow}
       title={problemContent.title}
+      tone="light"
     >
       <p className="section__lead">{problemContent.lead}</p>
       <div className="card-grid">

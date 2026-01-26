@@ -19,14 +19,14 @@ export interface PresentationSection {
 
 export const presentationSections: PresentationSection[] = [
   { id: 'landing', label: 'Start', Component: LandingSection },
-  { id: 'team', label: 'Team', Component: TeamSection },
   { id: 'problem', label: 'Problem', Component: ProblemSection },
   { id: 'solution', label: 'Solution', Component: SolutionSection },
   { id: 'market', label: 'Market', Component: MarketSection },
   { id: 'business-model', label: 'Business', Component: BusinessModelSection },
   { id: 'competition', label: 'Competition', Component: CompetitionSection },
   { id: 'live-demo', label: 'Demo', Component: LiveDemoSection },
-  { id: 'ask', label: 'The Ask', Component: AskSection },
+  { id: 'team', label: 'Team', Component: TeamSection },
   { id: 'ai-advantage', label: 'AI Advantage', Component: AIAdvantageSection },
-  { id: 'next-steps', label: 'Next Steps', Component: NextStepsSection }
+  { id: 'ask', label: 'The Ask', Component: AskSection },
+  { id: 'next-steps', label: 'Next Steps', Component: NextStepsSection },
 ];
