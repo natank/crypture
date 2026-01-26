@@ -1,3 +1,4 @@
+# Default configuration for frontend app
 [build]
   base = "/"
   publish = "dist/apps/frontend"
@@ -6,6 +7,30 @@
 [build.environment]
   NODE_VERSION = "20"
   NPM_VERSION = "10"
+
+# Configuration for investor-presentation app (context-based)
+[context.investor-presentation]
+  publish = "dist/apps/investor-presentation"
+  command = "npm ci && npx nx build investor-presentation --configuration=ci"
+
+# Branch-specific configurations
+[context.deploy-preview]
+  # For pull requests, detect which app to build based on changed files
+  command = """
+    npm ci &&
+    if git diff --name-only HEAD~1 HEAD | grep -q "apps/investor-presentation/"; then
+      npx nx build investor-presentation --configuration=ci
+    else
+      npx nx build frontend --configuration=ci
+    fi
+    """
+  publish = """
+    if [ -d "dist/apps/investor-presentation" ]; then
+      echo "dist/apps/investor-presentation"
+    else
+      echo "dist/apps/frontend"
+    fi
+    """
 
 [[redirects]]
   from = "/*"

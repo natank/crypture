@@ -14,32 +14,42 @@ jobs:
   unit-tests:
     name: Unit Tests (Vitest)
     runs-on: ubuntu-latest
-    
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-      
+
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '20'
           cache: 'npm'
-      
+
       - name: Install dependencies
         run: npm ci
-      
+
       - name: Build shared libraries
         run: |
           npx nx build shared-types --verbose
           npx nx build api-client --verbose --skip-nx-cache
           npx nx build utils --verbose
-      
-      - name: Run type checking
+
+      - name: Run type checking (frontend)
         working-directory: ./apps/frontend
         run: npm run typecheck:ci
-      
-      - name: Run unit tests
+
+      - name: Run type checking (investor-presentation)
+        working-directory: ./apps/investor-presentation
+        run: npm run typecheck:ci
+
+      - name: Run unit tests (frontend)
         working-directory: ./apps/frontend
+        run: npm run test:unit
+        env:
+          CI: true
+
+      - name: Run unit tests (investor-presentation)
+        working-directory: ./apps/investor-presentation
         run: npm run test:unit
         env:
           CI: true
@@ -49,24 +59,24 @@ jobs:
     name: E2E Tests (Playwright)
     runs-on: ubuntu-latest
     timeout-minutes: 10
-    
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-      
+
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '20'
           cache: 'npm'
-      
+
       - name: Install dependencies
         run: npm ci
-      
+
       - name: Install Playwright browsers
         working-directory: ./apps/frontend
         run: npx playwright install --with-deps
-      
+
       - name: Build shared libraries
         run: |
           npx nx build shared-types --verbose
@@ -82,13 +92,21 @@ jobs:
           ls -la dist/apps/frontend || true
           echo "apps/frontend/dist contents:"
           ls -la apps/frontend/dist || true
-      
-      - name: Run E2E tests
+
+      - name: Run E2E tests (frontend)
         working-directory: ./apps/frontend
         run: npm run test:e2e:ci
         env:
           CI: true
-      
+
+      - name: Build investor-presentation
+        run: npx nx build investor-presentation --configuration=ci
+
+      - name: Debug investor-presentation build output
+        run: |
+          echo "dist/apps/investor-presentation contents:"
+          ls -la dist/apps/investor-presentation || true
+
       - name: Upload Playwright report
         if: failure()
         uses: actions/upload-artifact@v4
@@ -96,7 +114,7 @@ jobs:
           name: playwright-report
           path: playwright-report/
           retention-days: 30
-      
+
       - name: Upload test results
         if: always()
         uses: actions/upload-artifact@v4
@@ -109,20 +127,24 @@ jobs:
   lint:
     name: Lint Code
     runs-on: ubuntu-latest
-    
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-      
+
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '20'
           cache: 'npm'
-      
+
       - name: Install dependencies
         run: npm ci
-      
-      - name: Run ESLint
+
+      - name: Run ESLint (frontend)
         working-directory: ./apps/frontend
+        run: npm run lint
+
+      - name: Run ESLint (investor-presentation)
+        working-directory: ./apps/investor-presentation
         run: npm run lint
