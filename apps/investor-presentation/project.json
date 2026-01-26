@@ -68,7 +68,7 @@
       },
       "configurations": {
         "ci": {
-          "command": "npm run typecheck:ci"
+          "command": "tsc --noEmit -p tsconfig.app.json"
         }
       }
     },
