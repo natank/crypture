@@ -1,7 +1,5 @@
 // vitest.config.ts
-import { defineConfig } from 'vitest/config';
-
-export default defineConfig({
+export default {
   test: {
     globals: true,
     environment: 'jsdom',
@@ -46,4 +44,4 @@ export default defineConfig({
         '/Users/nati-home/Projects/crypture/libs/shared-types/src/index.ts',
     },
   },
-});
+};
