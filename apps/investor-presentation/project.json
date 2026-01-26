@@ -51,12 +51,12 @@
       "executor": "nx:run-commands",
       "outputs": ["{workspaceRoot}/coverage/apps/investor-presentation"],
       "options": {
-        "command": "npm run test:unit",
+        "command": "npx vitest run",
         "cwd": "apps/investor-presentation"
       },
       "configurations": {
         "ci": {
-          "command": "npm run test:unit:ci"
+          "command": "npx vitest run --coverage --reporter=junit"
         }
       }
     },

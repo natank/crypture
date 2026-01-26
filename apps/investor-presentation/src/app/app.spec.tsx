@@ -13,14 +13,26 @@ describe('App', () => {
     expect(baseElement).toBeTruthy();
   });
 
-  it('should have a greeting as the title', () => {
+  it('should have the correct title', () => {
     const { getAllByText } = render(
       <BrowserRouter>
         <App />
       </BrowserRouter>
     );
     expect(
-      getAllByText(new RegExp('Welcome investor-presentation', 'gi')).length > 0
+      getAllByText(new RegExp('Privacy-first crypto portfolio tracking', 'gi'))
+        .length > 0
+    ).toBeTruthy();
+  });
+
+  it('should have the investor presentation branding', () => {
+    const { getAllByText } = render(
+      <BrowserRouter>
+        <App />
+      </BrowserRouter>
+    );
+    expect(
+      getAllByText(new RegExp('Investor Presentation', 'gi')).length > 0
     ).toBeTruthy();
   });
 });
