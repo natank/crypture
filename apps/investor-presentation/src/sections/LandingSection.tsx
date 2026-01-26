@@ -16,7 +16,7 @@ export function LandingSection() {
         ))}
       </div>
       <div className="cta-row">
-        <a className="cta-primary" href="#team">
+        <a className="cta-primary" href="#problem">
           Start Presentation
         </a>
         <a className="cta-secondary" href="#market">
