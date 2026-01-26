@@ -2,6 +2,7 @@ import React from 'react';
 import { useTopMovers } from '@hooks/useTopMovers';
 import { formatCurrency, formatPercentage } from '@utils/formatters';
 import { MarketMover } from 'types/market';
+import CoinGeckoAttribution from '@components/CoinGeckoAttribution';
 
 export const TopMoversSection: React.FC = () => {
   const { gainers, losers, isLoading, error } = useTopMovers();
@@ -67,9 +68,20 @@ export const TopMoversSection: React.FC = () => {
   );
 
   return (
-    <div className="mt-8 grid grid-cols-1 lg:grid-cols-2 gap-8">
-      {renderList('🚀 Top Gainers', gainers, true)}
-      {renderList('📉 Top Losers', losers, false)}
-    </div>
+    <>
+      <div className="mt-8 grid grid-cols-1 lg:grid-cols-2 gap-8">
+        {renderList('🚀 Top Gainers', gainers, true)}
+        {renderList('📉 Top Losers', losers, false)}
+      </div>
+
+      {/* CoinGecko Attribution */}
+      <div className="flex justify-center mt-4 pt-2 border-t border-gray-200 dark:border-gray-700">
+        <CoinGeckoAttribution
+          variant="compact"
+          text="Price data by CoinGecko"
+          utmSource="crypture"
+        />
+      </div>
+    </>
   );
 };

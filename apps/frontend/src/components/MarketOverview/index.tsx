@@ -8,6 +8,7 @@ import { TrendingSection } from './TrendingSection';
 import { TopMoversSection } from './TopMoversSection';
 import { CategoryFilter } from './CategoryFilter';
 import { MarketCoinList } from './MarketCoinList';
+import CoinGeckoAttribution from '@components/CoinGeckoAttribution';
 import { formatDateTime } from '@utils/formatters';
 import toast from 'react-hot-toast';
 
@@ -124,6 +125,15 @@ export const MarketOverview: React.FC = () => {
           isLoading={isCategoriesLoading}
         />
         <MarketCoinList coins={coins} isLoading={isCoinsLoading} />
+      </div>
+
+      {/* CoinGecko Attribution */}
+      <div className="flex justify-center pt-4 border-t border-gray-200 dark:border-gray-700">
+        <CoinGeckoAttribution
+          variant="standard"
+          text="Data provided by CoinGecko"
+          utmSource="crypture"
+        />
       </div>
     </div>
   );

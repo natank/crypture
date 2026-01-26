@@ -2,10 +2,26 @@ import { render, screen, fireEvent } from '@testing-library/react';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { MarketOverview } from '../../../components/MarketOverview';
 import * as useGlobalMarketDataHook from '../../../hooks/useGlobalMarketData';
+import * as useCategoriesHook from '../../../hooks/useCategories';
+import * as useMarketCoinsHook from '../../../hooks/useMarketCoins';
+import * as useTopMoversHook from '../../../hooks/useTopMovers';
+import * as useTrendingCoinsHook from '../../../hooks/useTrendingCoins';
 
 // Mock the hook
 vi.mock('../../../hooks/useGlobalMarketData', () => ({
   useGlobalMarketData: vi.fn(),
+}));
+vi.mock('../../../hooks/useCategories', () => ({
+  useCategories: vi.fn(),
+}));
+vi.mock('../../../hooks/useMarketCoins', () => ({
+  useMarketCoins: vi.fn(),
+}));
+vi.mock('../../../hooks/useTopMovers', () => ({
+  useTopMovers: vi.fn(),
+}));
+vi.mock('../../../hooks/useTrendingCoins', () => ({
+  useTrendingCoins: vi.fn(),
 }));
 
 describe('MarketOverview', () => {
@@ -22,6 +38,27 @@ describe('MarketOverview', () => {
 
   beforeEach(() => {
     vi.resetAllMocks();
+    vi.mocked(useCategoriesHook.useCategories).mockReturnValue({
+      categories: [],
+      isLoading: false,
+      error: null,
+    });
+    vi.mocked(useMarketCoinsHook.useMarketCoins).mockReturnValue({
+      coins: [],
+      isLoading: false,
+      error: null,
+    });
+    vi.mocked(useTopMoversHook.useTopMovers).mockReturnValue({
+      gainers: [],
+      losers: [],
+      isLoading: false,
+      error: null,
+    });
+    vi.mocked(useTrendingCoinsHook.useTrendingCoins).mockReturnValue({
+      data: [],
+      isLoading: false,
+      error: null,
+    });
   });
 
   it('renders metrics when data is loaded', () => {
