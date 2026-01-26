@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="200" height="200" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="negativeSpaceGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#5a31f4" />
+      <stop offset="100%" stop-color="#00bfa5" />
+    </linearGradient>
+    
+    <!-- Blockchain pattern for negative space -->
+    <pattern id="blockchainNegative" x="0" y="0" width="20" height="20" patternUnits="userSpaceOnUse">
+      <rect width="20" height="20" fill="none" />
+      <path d="M10 0 L20 5 L20 15 L10 20 L0 15 L0 5 Z" fill="none" stroke="#ffffff" stroke-width="0.8" />
+    </pattern>
+  </defs>
+  
+  <!-- Main logo container -->
+  <g>
+    <!-- Outer circle with cutout for C shape -->
+    <mask id="circleMask">
+      <circle cx="100" cy="100" r="90" fill="white" />
+      <circle cx="100" cy="100" r="50" fill="black" />
+      <rect x="100" y="10" width="90" height="180" fill="black" />
+    </mask>
+    
+    <!-- Main shape with gradient and pattern -->
+    <g mask="url(#circleMask)">
+      <circle cx="100" cy="100" r="90" fill="url(#negativeSpaceGradient)" />
+      
+      <!-- Subtle blockchain pattern in the negative space -->
+      <g transform="translate(30, 30)" opacity="0.3">
+        <rect width="140" height="140" fill="url(#blockchainNegative)" />
+      </g>
+      
+      <!-- Decorative elements in the C space -->
+      <g fill="#ffffff" opacity="0.8">
+        <circle cx="140" cy="100" r="5" />
+        <circle cx="120" cy="120" r="3" />
+        <circle cx="120" cy="80" r="3" />
+      </g>
+    </g>
+    
+    <!-- Clean outline -->
+    <circle cx="100" cy="100" r="90" fill="none" stroke="#ffffff" stroke-width="2" />
+  </g>
+</svg>
