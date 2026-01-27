@@ -31,17 +31,6 @@ export function MarketSizingChart({
           </div>
         ))}
       </div>
-      <div className="chart__legend">
-        {data.map((entry) => (
-          <div key={entry.label} className="chart__legend-item">
-            <span className="chart__dot" />
-            <span>
-              {entry.label}: {entry.value.toFixed(2)}
-              {unit}
-            </span>
-          </div>
-        ))}
-      </div>
     </div>
   );
 }
