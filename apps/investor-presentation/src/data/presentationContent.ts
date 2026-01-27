@@ -83,14 +83,14 @@ export const businessModelContent = {
     },
   ],
   unitEconomics: [
-    { label: 'Target CAC', value: '$18' },
-    { label: '12-mo LTV', value: '$180' },
+    { label: 'Target CAC', value: '$15' },
+    { label: '12-mo LTV', value: '$150' },
     { label: 'Gross margin', value: '82%' },
   ],
   assumptions: [
     '3.5% free → paid conversion',
     '12% annual churn',
-    'AI-first dev keeps burn below $25K/mo',
+    'Founder-led + AI keeps burn below $18K/mo for 24 months',
   ],
   note: 'Capital efficiency driven by AI-first development and lean GTM.',
 };
@@ -159,25 +159,26 @@ export const liveDemoContent = {
 
 export const askContent = {
   eyebrow: 'The Ask',
-  title: '$300K to reach profitability',
+  title: '$280K to reach break-even',
   metrics: [
-    { value: '$300K', label: 'Seed round' },
-    { value: '12 months', label: 'To profitability' },
-    { value: '78%', label: 'Lower build cost (AI-first)' },
+    { value: '$280K', label: 'Seed round' },
+    { value: '14 months', label: 'To break-even' },
+    { value: '84.9%', label: 'Year 3 margin' },
   ],
   allocation: [
-    { label: 'Product & Engineering', value: 45 },
-    { label: 'Go-to-Market', value: 30 },
-    { label: 'Security & Compliance', value: 10 },
-    { label: 'Operations', value: 10 },
-    { label: 'Contingency', value: 5 },
+    { label: 'Go-to-Market', value: 42 },
+    { label: 'Security & Compliance', value: 21 },
+    { label: 'Product & Engineering', value: 17 },
+    { label: 'Operations', value: 8 },
+    { label: 'Contingency', value: 6 },
+    { label: 'Buffer', value: 6 },
   ],
   milestones: [
-    'MVP launch + 5K users',
+    'MVP launch + 10K users',
     'Premium tier rollout',
-    'Break-even by month 12',
+    'Break-even by month 14',
   ],
-  note: 'Use of funds is optimized for speed-to-revenue and privacy assurance.',
+  note: 'Founder-led execution with AI leverage eliminates personnel costs for 24 months, maximizing capital efficiency and accelerating profitability.',
 };
 
 export const aiAdvantageContent = {
@@ -187,8 +188,8 @@ export const aiAdvantageContent = {
   quality: '90%+ test coverage, CI gates, E2E validation.',
   metrics: [
     { label: 'Delivery speed', value: '3-5x' },
-    { label: 'Cost reduction', value: '78%' },
-    { label: 'Test coverage', value: '90%+' },
+    { label: 'Infrastructure reduction', value: '84%' },
+    { label: 'Personnel savings', value: '$360K' },
     { label: 'Release cadence', value: 'Weekly' },
   ],
   comparisons: [
@@ -200,7 +201,7 @@ export const aiAdvantageContent = {
 export const nextStepsContent = {
   eyebrow: 'Next Steps',
   title: 'Let’s talk',
-  lead: 'We’re opening a $300K seed round to ship the product and capture the post-breach market.',
+  lead: 'We’re opening a $280K seed round to ship the product and capture the post-breach market.',
   ctaPrimary: 'Email Founder',
   ctaSecondary: 'Back to Top',
 };
