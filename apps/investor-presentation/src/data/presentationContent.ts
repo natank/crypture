@@ -59,7 +59,7 @@ export const marketContent = {
     'Regulatory pressure on data privacy',
     'Growing demand for non-custodial tools',
   ],
-  note: 'Sizing assumes 2.7x market growth and 10% paid conversion among target segments.',
+  note: 'Current market sizing: TAM $3.5B, SAM $1.8B. Market projected to grow 2.7x by 2028, expanding our opportunity.',
 };
 
 export const businessModelContent = {
