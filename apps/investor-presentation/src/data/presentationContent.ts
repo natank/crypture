@@ -83,7 +83,7 @@ export const businessModelContent = {
     },
   ],
   unitEconomics: [
-    { label: 'Target CAC', value: '$15' },
+    { label: 'Target CAC', value: '$40' },
     { label: '12-mo LTV', value: '$150' },
     { label: 'Gross margin', value: '82%' },
   ],
