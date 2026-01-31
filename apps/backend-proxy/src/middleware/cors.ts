@@ -102,8 +102,11 @@ export const apiCors = {
     maxAge: 86400,
   }),
 
-  // API endpoints - strict CORS
-  api: cors(corsOptions),
+  // API endpoints - environment-aware CORS (permissive in dev, strict in prod)
+  api:
+    process.env.NODE_ENV === 'development'
+      ? developmentCors
+      : cors(corsOptions),
 
   // Development endpoints - permissive CORS
   dev: cors({
