@@ -7,6 +7,7 @@ export default async () => {
   ]);
 
   return {
+    root: __dirname,
     plugins: [react(), tailwindcss()],
     publicDir: 'public',
     resolve: {
@@ -38,6 +39,9 @@ export default async () => {
     },
     server: {
       host: true,
+      fs: {
+        allow: [__dirname, '../../'],
+      },
     },
   };
 };
