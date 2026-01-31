@@ -1,5 +1,6 @@
 import type {
   CoinGeckoPriceData,
+  CoinGeckoDetailResponse,
   CoinGeckoSimplePrice,
   CoinGeckoSearchResponse,
   CoinGeckoTrendingResponse,
@@ -24,7 +25,10 @@ export class CoinGeckoClient {
     this.timeout = config.timeout || 30000;
   }
 
-  private async request<T>(endpoint: string, options?: RequestInit): Promise<ApiResponse<T>> {
+  private async request<T>(
+    endpoint: string,
+    options?: RequestInit
+  ): Promise<ApiResponse<T>> {
     const url = `${this.baseUrl}${endpoint}`;
     const controller = new AbortController();
     const timeoutId = setTimeout(() => controller.abort(), this.timeout);
@@ -42,8 +46,10 @@ export class CoinGeckoClient {
       clearTimeout(timeoutId);
 
       if (!response.ok) {
-        const error = await response.json() as { message?: string };
-        throw new Error(error.message || `HTTP ${response.status}: ${response.statusText}`);
+        const error = (await response.json()) as { message?: string };
+        throw new Error(
+          error.message || `HTTP ${response.status}: ${response.statusText}`
+        );
       }
 
       const data = await response.json();
@@ -105,7 +111,7 @@ export class CoinGeckoClient {
     return this.request(`/api/coingecko/coins/markets?${searchParams}`);
   }
 
-  async getCoinById(id: string): Promise<ApiResponse<CoinGeckoPriceData>> {
+  async getCoinById(id: string): Promise<ApiResponse<CoinGeckoDetailResponse>> {
     return this.request(`/api/coingecko/coins/${id}`);
   }
 
@@ -143,11 +149,13 @@ export class CoinGeckoClient {
       searchParams.set('interval', params.interval);
     }
 
-    return this.request(`/api/coingecko/coins/${id}/market_chart?${searchParams}`);
+    return this.request(
+      `/api/coingecko/coins/${id}/market_chart?${searchParams}`
+    );
   }
 
   async getHealth(): Promise<HealthResponse> {
     const response = await this.request<HealthResponse>('/api/health');
-    return response.data || response as unknown as HealthResponse;
+    return response.data || (response as unknown as HealthResponse);
   }
 }

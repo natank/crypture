@@ -224,7 +224,68 @@ export async function fetchMarketCoins(
   }
 }
 
-// Cache for asset metrics data
+// Cache for coin categories (coinId -> categories mapping)
+const coinCategoriesCache: Map<
+  string,
+  { categories: string[]; timestamp: number }
+> = new Map();
+const CATEGORIES_CACHE_DURATION = 60 * 60 * 1000; // 1 hour
+
+/**
+ * Fetch categories for multiple coins in parallel
+ * Uses caching to avoid repeated API calls
+ */
+export async function fetchCoinCategories(
+  coinIds: string[]
+): Promise<Record<string, string[]>> {
+  const result: Record<string, string[]> = {};
+  const idsToFetch: string[] = [];
+
+  // Check cache first
+  const now = Date.now();
+  for (const coinId of coinIds) {
+    const cached = coinCategoriesCache.get(coinId);
+    if (cached && now - cached.timestamp < CATEGORIES_CACHE_DURATION) {
+      result[coinId] = cached.categories;
+    } else {
+      idsToFetch.push(coinId);
+    }
+  }
+
+  // Fetch missing categories in parallel
+  if (idsToFetch.length > 0) {
+    const fetchPromises = idsToFetch.map(async (coinId) => {
+      try {
+        const data = await coinGeckoApiService.getCoinById(coinId);
+        if (data?.categories && data.categories.length > 0) {
+          // Update cache
+          coinCategoriesCache.set(coinId, {
+            categories: data.categories,
+            timestamp: now,
+          });
+          return { coinId, categories: data.categories };
+        }
+        return { coinId, categories: ['Other'] };
+      } catch (error) {
+        console.warn(`Failed to fetch categories for ${coinId}:`, error);
+        return { coinId, categories: ['Other'] };
+      }
+    });
+
+    const fetchedResults = await Promise.all(fetchPromises);
+    for (const { coinId, categories } of fetchedResults) {
+      result[coinId] = categories;
+    }
+  }
+
+  return result;
+}
+
+// Export for testing
+export function clearCategoriesCache(): void {
+  coinCategoriesCache.clear();
+}
+
 const assetMetricsCache: Map<string, { data: MarketCoin; timestamp: number }> =
   new Map();
 const ASSET_METRICS_CACHE_DURATION = 5 * 60 * 1000; // 5 minutes
@@ -286,20 +347,20 @@ export async function fetchCoinDetails(coinId: string): Promise<CoinDetails> {
       throw new Error('Coin not found');
     }
 
-    // Map CoinGeckoPriceData to CoinDetails with default values
+    // Map CoinGeckoDetailResponse to CoinDetails
     const coinDetails: CoinDetails = {
       id: data.id,
       symbol: data.symbol,
       name: data.name,
-      image: {
+      image: data.image || {
         large: '',
         small: '',
         thumb: '',
       },
-      description: {
-        en: '',
-      },
-      links: {
+      description: (data.description?.en
+        ? { en: data.description.en }
+        : { en: '' }) as { en: string },
+      links: data.links || {
         homepage: [],
         whitepaper: '',
         blockchain_site: [],
@@ -309,26 +370,33 @@ export async function fetchCoinDetails(coinId: string): Promise<CoinDetails> {
           github: [],
         },
       },
-      categories: [],
+      categories: data.categories || [],
       market_cap_rank: data.market_cap_rank,
       market_data: {
-        current_price: { usd: data.current_price },
-        market_cap: { usd: data.market_cap },
-        total_volume: { usd: data.total_volume },
-        high_24h: { usd: data.high_24h },
-        low_24h: { usd: data.low_24h },
-        price_change_percentage_24h: data.price_change_percentage_24h,
-        price_change_percentage_7d: 0,
-        price_change_percentage_30d: 0,
-        ath: { usd: data.ath },
-        ath_date: { usd: data.ath_date },
-        ath_change_percentage: { usd: data.ath_change_percentage },
-        atl: { usd: data.atl },
-        atl_date: { usd: data.atl_date },
-        atl_change_percentage: { usd: data.atl_change_percentage },
-        circulating_supply: data.circulating_supply,
-        total_supply: data.total_supply,
-        max_supply: data.max_supply,
+        current_price: { usd: data.market_data?.current_price?.usd ?? 0 },
+        market_cap: { usd: data.market_data?.market_cap?.usd ?? 0 },
+        total_volume: { usd: data.market_data?.total_volume?.usd ?? 0 },
+        high_24h: { usd: data.market_data?.high_24h?.usd ?? 0 },
+        low_24h: { usd: data.market_data?.low_24h?.usd ?? 0 },
+        price_change_percentage_24h:
+          data.market_data?.price_change_percentage_24h,
+        price_change_percentage_7d:
+          data.market_data?.price_change_percentage_7d,
+        price_change_percentage_30d:
+          data.market_data?.price_change_percentage_30d,
+        ath: { usd: data.market_data?.ath?.usd ?? 0 },
+        ath_date: { usd: data.market_data?.ath_date?.usd ?? '' },
+        ath_change_percentage: {
+          usd: data.market_data?.ath_change_percentage?.usd ?? 0,
+        },
+        atl: { usd: data.market_data?.atl?.usd ?? 0 },
+        atl_date: { usd: data.market_data?.atl_date?.usd ?? '' },
+        atl_change_percentage: {
+          usd: data.market_data?.atl_change_percentage?.usd ?? 0,
+        },
+        circulating_supply: data.market_data?.circulating_supply,
+        total_supply: data.market_data?.total_supply,
+        max_supply: data.market_data?.max_supply,
       },
     };
 

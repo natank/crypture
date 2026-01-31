@@ -3,6 +3,8 @@ import {
   fetchAssetHistory,
   fetchGlobalMarketData,
   clearGlobalMarketCache,
+  fetchCoinCategories,
+  clearCategoriesCache,
 } from '@services/coinService';
 import { coinGeckoApiService } from '@services/coinGeckoApiService';
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
@@ -10,6 +12,7 @@ import type {
   CoinGeckoPriceData,
   CoinGeckoMarketChartResponse,
   CoinGeckoGlobalResponse,
+  CoinGeckoDetailResponse,
 } from '@crypture/shared-types';
 
 // Mock the coinGeckoApiService
@@ -286,5 +289,178 @@ describe('fetchGlobalMarketData', () => {
     );
 
     await expect(fetchGlobalMarketData()).rejects.toThrow('API error: 500');
+  });
+});
+
+describe('fetchCoinCategories', () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+    clearCategoriesCache();
+  });
+
+  const mockBitcoinDetail: CoinGeckoDetailResponse = {
+    id: 'bitcoin',
+    symbol: 'btc',
+    name: 'Bitcoin',
+    categories: ['Store of Value', 'Layer 1'],
+    asset_platform_id: null,
+    platforms: {},
+    detail_platforms: {},
+    block_time_in_minutes: 10,
+    hashing_algorithm: 'SHA-256',
+    public_notice: null,
+    additional_notices: [],
+    localization: {},
+    description: {},
+    links: {
+      homepage: [],
+      whitepaper: '',
+      blockchain_site: [],
+      official_forum_url: [],
+      chat_url: [],
+      announcement_url: [],
+      twitter_screen_name: '',
+      facebook_username: '',
+      bitcointalk_thread_identifier: null,
+      telegram_channel_identifier: '',
+      subreddit_url: '',
+      repos_url: { github: [], bitbucket: [] },
+    },
+    image: { thumb: '', small: '', large: '' },
+    country_origin: '',
+    genesis_date: null,
+    sentiment_votes_up_percentage: 0,
+    sentiment_votes_down_percentage: 0,
+    watchlist_portfolio_users: 0,
+    market_cap_rank: 1,
+    market_data: {
+      current_price: {},
+      total_value_locked: null,
+      mcap_to_tvl_ratio: null,
+      fdv_to_tvl_ratio: null,
+      roi: null,
+      ath: {},
+      ath_change_percentage: {},
+      ath_date: {},
+      atl: {},
+      atl_change_percentage: {},
+      atl_date: {},
+      market_cap: {},
+      market_cap_rank: 1,
+      fully_diluted_valuation: {},
+      total_volume: {},
+      high_24h: {},
+      low_24h: {},
+      price_change_24h: 0,
+      price_change_percentage_24h: 0,
+      price_change_percentage_7d: 0,
+      price_change_percentage_14d: 0,
+      price_change_percentage_30d: 0,
+      price_change_percentage_60d: 0,
+      price_change_percentage_200d: 0,
+      price_change_percentage_1y: 0,
+      market_cap_change_24h: 0,
+      market_cap_change_percentage_24h: 0,
+      price_change_24h_in_currency: {},
+      price_change_percentage_1h_in_currency: {},
+      price_change_percentage_24h_in_currency: {},
+      price_change_percentage_7d_in_currency: {},
+      price_change_percentage_14d_in_currency: {},
+      price_change_percentage_30d_in_currency: {},
+      price_change_percentage_60d_in_currency: {},
+      price_change_percentage_200d_in_currency: {},
+      price_change_percentage_1y_in_currency: {},
+      market_cap_change_24h_in_currency: {},
+      market_cap_change_percentage_24h_in_currency: {},
+      total_supply: null,
+      max_supply: null,
+      circulating_supply: 0,
+      last_updated: '',
+    },
+    community_data: {
+      facebook_likes: null,
+      twitter_followers: null,
+      reddit_average_posts_48h: 0,
+      reddit_average_comments_48h: 0,
+      reddit_subscribers: 0,
+      reddit_accounts_active_48h: 0,
+    },
+    developer_data: {
+      forks: 0,
+      stars: 0,
+      subscribers: 0,
+      total_issues: 0,
+      closed_issues: 0,
+      pull_requests_merged: 0,
+      pull_request_contributors: 0,
+      code_additions_deletions_4_weeks: { additions: 0, deletions: 0 },
+      commit_count_4_weeks: 0,
+      last_4_weeks_commit_activity_series: [],
+    },
+    public_interest_stats: { alexa_rank: 0, bing_matches: null },
+    status_updates: [],
+    last_updated: '',
+  };
+
+  const mockEthereumDetail: CoinGeckoDetailResponse = {
+    ...mockBitcoinDetail,
+    id: 'ethereum',
+    symbol: 'eth',
+    name: 'Ethereum',
+    categories: ['Smart Contract Platform', 'Layer 1'],
+    market_cap_rank: 2,
+  };
+
+  it('should fetch categories for multiple coins', async () => {
+    vi.mocked(coinGeckoApiService.getCoinById)
+      .mockResolvedValueOnce(mockBitcoinDetail)
+      .mockResolvedValueOnce(mockEthereumDetail);
+
+    const result = await fetchCoinCategories(['bitcoin', 'ethereum']);
+
+    expect(result).toEqual({
+      bitcoin: ['Store of Value', 'Layer 1'],
+      ethereum: ['Smart Contract Platform', 'Layer 1'],
+    });
+    expect(coinGeckoApiService.getCoinById).toHaveBeenCalledTimes(2);
+  });
+
+  it('should use cache for subsequent calls', async () => {
+    vi.mocked(coinGeckoApiService.getCoinById).mockResolvedValue(
+      mockBitcoinDetail
+    );
+
+    // First call
+    await fetchCoinCategories(['bitcoin']);
+    expect(coinGeckoApiService.getCoinById).toHaveBeenCalledTimes(1);
+
+    // Second call - should use cache
+    await fetchCoinCategories(['bitcoin']);
+    expect(coinGeckoApiService.getCoinById).toHaveBeenCalledTimes(1);
+  });
+
+  it('should fallback to Other when API fails', async () => {
+    vi.mocked(coinGeckoApiService.getCoinById).mockRejectedValueOnce(
+      new Error('API Error')
+    );
+
+    const result = await fetchCoinCategories(['bitcoin']);
+
+    expect(result).toEqual({
+      bitcoin: ['Other'],
+    });
+  });
+
+  it('should handle coins without categories', async () => {
+    const mockNoCategories = { ...mockBitcoinDetail, categories: [] };
+    vi.mocked(coinGeckoApiService.getCoinById).mockResolvedValueOnce(
+      mockNoCategories
+    );
+
+    const result = await fetchCoinCategories(['bitcoin']);
+
+    expect(result).toEqual({
+      bitcoin: ['Other'],
+    });
   });
 });

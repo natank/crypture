@@ -303,6 +303,40 @@ test.describe('Portfolio Composition Visualizations', () => {
         }
       }
     });
+
+    test('should show real categories, not just Other 100%', async () => {
+      // Add Cardano which has different categories in mocks
+      await portfolioPage.addAsset('ADA', 1000);
+
+      const viewSelector = portfolioPage.page.getByTestId(
+        'allocation-view-selector'
+      );
+      const categoryTab = viewSelector.getByRole('tab', { name: /category/i });
+      await categoryTab.click();
+
+      const legend = portfolioPage.page.getByTestId('allocation-legend');
+
+      // Wait for the chart to render
+      await portfolioPage.page.waitForTimeout(500);
+
+      // Should show multiple categories, not just Other 100%
+      const categoryItems = await legend
+        .locator('[data-testid="allocation-legend-item"]')
+        .count();
+
+      // With BTC (Cryptocurrency), ETH (Smart Contract Platform), ADA (Layer 1, Smart Contract Platform)
+      // we expect multiple distinct categories
+      expect(categoryItems).toBeGreaterThan(1);
+
+      // Check that categories are NOT all "Other"
+      const otherItem = legend
+        .locator('[data-testid="allocation-legend-item"]')
+        .filter({ hasText: /Other/ });
+      const hasOtherOnly = await otherItem
+        .count()
+        .then((c) => c === categoryItems);
+      expect(hasOtherOnly).toBe(false);
+    });
   });
 
   test.describe('Responsive Behavior', () => {
