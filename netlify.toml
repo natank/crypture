@@ -5,8 +5,8 @@
 
 [build]
   base = "/"
-  publish = "dist/apps/${DEPLOY_TARGET}"
-  command = "npm ci && npx nx build ${DEPLOY_TARGET} --configuration=ci"
+  publish = "dist/netlify-publish"
+  command = "npm ci && npx nx build ${DEPLOY_TARGET} --configuration=ci && rm -rf dist/netlify-publish && mkdir -p dist/netlify-publish && cp -R dist/apps/${DEPLOY_TARGET}/* dist/netlify-publish/"
 
 [build.environment]
   NODE_VERSION = "20"
@@ -25,9 +25,12 @@
       TARGET_APP=${DEPLOY_TARGET:-frontend}
     fi &&
     echo "Building $TARGET_APP" &&
-    npx nx build "$TARGET_APP" --configuration=ci
+    npx nx build "$TARGET_APP" --configuration=ci &&
+    rm -rf dist/netlify-publish &&
+    mkdir -p dist/netlify-publish &&
+    cp -R "dist/apps/$TARGET_APP"/* dist/netlify-publish/
     """
-  publish = "dist/apps/${DEPLOY_TARGET}"
+  publish = "dist/netlify-publish"
 
 [[redirects]]
   from = "/*"
