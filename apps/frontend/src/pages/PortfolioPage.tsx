@@ -106,10 +106,10 @@ export default function PortfolioPage() {
         id: coin.id,
         symbol: coin.symbol,
         name: coin.name,
-        market_cap_rank: 1, // Default - would need enhanced API call
-        price_change_percentage_24h: 0, // Default - would need enhanced API call
-        price_change_percentage_7d: 0, // Default - would need enhanced API call
-        categories: ['Other'], // Default - would need enhanced API call
+        market_cap_rank: coin.market_cap_rank,
+        price_change_percentage_24h: coin.price_change_percentage_24h,
+        price_change_percentage_7d: coin.price_change_percentage_7d,
+        categories: coin.categories ?? ['Other'],
       };
     }
     return metadata;

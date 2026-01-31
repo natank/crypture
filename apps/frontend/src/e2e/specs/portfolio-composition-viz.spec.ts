@@ -257,6 +257,52 @@ test.describe('Portfolio Composition Visualizations', () => {
 
       expect(hasConservative || hasModerate || hasAggressive).toBeTruthy();
     });
+
+    test('should show diversified risk allocation, not 100% Conservative', async () => {
+      // Add Cardano (small cap with volatility) to create mixed risk profile
+      await portfolioPage.addAsset('ADA', 1000);
+
+      const viewSelector = portfolioPage.page.getByTestId(
+        'allocation-view-selector'
+      );
+      const riskTab = viewSelector.getByRole('tab', { name: /risk/i });
+      await riskTab.click();
+
+      const legend = portfolioPage.page.getByTestId('allocation-legend');
+
+      // Wait for the chart to render
+      await portfolioPage.page.waitForTimeout(500);
+
+      // Should show multiple risk categories, not just Conservative 100%
+      const riskItems = await legend
+        .locator('[data-testid="allocation-legend-item"]')
+        .count();
+
+      // With mixed portfolio (BTC + ETH + ADA), we expect multiple risk levels
+      // BTC: Conservative (Large Cap, low volatility from mocks)
+      // ETH: Moderate (Large Cap, moderate volatility)
+      // ADA: Aggressive (Large Cap in mocks but with volatility - or if we fix mocks, it would vary)
+      expect(riskItems).toBeGreaterThan(1);
+
+      // Conservative should NOT be 100%
+      const conservativeItem = legend
+        .locator('[data-testid="allocation-legend-item"]')
+        .filter({ hasText: /Conservative/ });
+      const hasConservative = await conservativeItem
+        .isVisible()
+        .catch(() => false);
+
+      if (hasConservative) {
+        const conservativeText = await conservativeItem.textContent();
+        // Extract percentage from text like "Conservative 62.5%"
+        const percentMatch = conservativeText?.match(/(\d+(?:\.\d+)?)%/);
+        if (percentMatch) {
+          const percent = parseFloat(percentMatch[1]);
+          // Conservative should be less than 100% with mixed portfolio
+          expect(percent).toBeLessThan(100);
+        }
+      }
+    });
   });
 
   test.describe('Responsive Behavior', () => {
