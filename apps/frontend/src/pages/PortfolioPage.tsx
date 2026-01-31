@@ -27,6 +27,7 @@ import { useDailySummary } from '@hooks/useDailySummary';
 import AppFooter from '@components/AppFooter';
 import { CoinInfo } from '@services/coinService';
 import { usePortfolioImportExport } from '@hooks/usePortfolioImportExport';
+import { useCoinCategories } from '@hooks/useCoinCategories';
 import { CoinMetadata } from '@services/portfolioAnalyticsService';
 import { useAlerts } from '@hooks/useAlerts';
 import { useAlertPolling } from '@hooks/useAlertPolling';
@@ -98,23 +99,6 @@ export default function PortfolioPage() {
     }));
   }, [allCoins]);
 
-  // Create coin metadata map for composition analysis
-  const coinMetadata = useMemo(() => {
-    const metadata: Record<string, CoinMetadata> = {};
-    for (const coin of allCoins) {
-      metadata[coin.id] = {
-        id: coin.id,
-        symbol: coin.symbol,
-        name: coin.name,
-        market_cap_rank: coin.market_cap_rank,
-        price_change_percentage_24h: coin.price_change_percentage_24h,
-        price_change_percentage_7d: coin.price_change_percentage_7d,
-        categories: coin.categories ?? ['Other'],
-      };
-    }
-    return metadata;
-  }, [allCoins]);
-
   // Create price map by coin ID for composition dashboard
   const priceMapById = useMemo(() => {
     const map: Record<string, number> = {};
@@ -139,6 +123,30 @@ export default function PortfolioPage() {
     totalValue,
     resetPortfolio,
   } = usePortfolioState(priceMap, coinMap, loading);
+
+  // Fetch categories for portfolio coins
+  const portfolioCoinIds = useMemo(
+    () => portfolio.map((asset) => asset.coinInfo.id),
+    [portfolio]
+  );
+  const { categories: coinCategories } = useCoinCategories(portfolioCoinIds);
+
+  // Create coin metadata map for composition analysis (with dynamic categories)
+  const coinMetadata = useMemo(() => {
+    const metadata: Record<string, CoinMetadata> = {};
+    for (const coin of allCoins) {
+      metadata[coin.id] = {
+        id: coin.id,
+        symbol: coin.symbol,
+        name: coin.name,
+        market_cap_rank: coin.market_cap_rank,
+        price_change_percentage_24h: coin.price_change_percentage_24h,
+        price_change_percentage_7d: coin.price_change_percentage_7d,
+        categories: coinCategories[coin.id] ?? coin.categories ?? ['Other'],
+      };
+    }
+    return metadata;
+  }, [allCoins, coinCategories]);
 
   // Portfolio coins for alert suggestions
   const portfolioMarketCoins = useMemo(() => {

@@ -5,6 +5,7 @@ import { PortfolioPage } from '@e2e/pom-pages/portfolio.pom';
 import {
   mockCoinGeckoMarkets,
   mockCoinGeckoChartData,
+  mockCoinGeckoCoinDetails,
 } from './mocks/mockCoinGecko';
 
 type Fixtures = {
@@ -17,6 +18,7 @@ export const test = base.extend<Fixtures>({
   portfolioPage: async ({ page }, run) => {
     await mockCoinGeckoMarkets(page);
     await mockCoinGeckoChartData(page);
+    await mockCoinGeckoCoinDetails(page);
     const portfolioPage = new PortfolioPage(page);
     await portfolioPage.goto();
     await run(portfolioPage);

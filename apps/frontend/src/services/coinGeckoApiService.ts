@@ -1,6 +1,7 @@
 import { CoinGeckoClient } from '@crypture/api-client';
 import type {
   CoinGeckoPriceData,
+  CoinGeckoDetailResponse,
   CoinGeckoSimplePrice,
   CoinGeckoSearchResponse,
   CoinGeckoTrendingResponse,
@@ -69,9 +70,9 @@ export const coinGeckoApiService = {
   },
 
   /**
-   * Get detailed data for a specific coin
+   * Get detailed data for a specific coin including categories
    */
-  async getCoinById(coinId: string): Promise<CoinGeckoPriceData | null> {
+  async getCoinById(coinId: string): Promise<CoinGeckoDetailResponse | null> {
     try {
       const response = await client.getCoinById(coinId);
       return response.data || null;
