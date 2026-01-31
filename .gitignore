@@ -13,6 +13,7 @@ test-results
 .nx/workspace-data/
 static/
 dependency-graph.html
+output.json
 
 *.temp/*
 # Logs
