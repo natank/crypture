@@ -201,5 +201,136 @@ describe('portfolioAnalyticsService', () => {
       const moderate = result.find((item) => item.name === 'Moderate');
       expect(moderate?.value).toBe(30000); // ETH
     });
+
+    it('should NOT classify everything as Conservative when using real market data', () => {
+      // Simulate realistic market data for a diversified portfolio
+      // BTC: Large cap, stable
+      // DOGE: Large cap but high volatility
+      // ARB: Small cap, high volatility
+      const diversifiedPortfolio: PortfolioAsset[] = [
+        {
+          coinInfo: { id: 'bitcoin', symbol: 'btc', name: 'Bitcoin' },
+          quantity: 0.5,
+        },
+        {
+          coinInfo: { id: 'dogecoin', symbol: 'doge', name: 'Dogecoin' },
+          quantity: 100,
+        },
+        {
+          coinInfo: { id: 'arbitrum', symbol: 'arb', name: 'Arbitrum' },
+          quantity: 134500,
+        },
+      ];
+
+      const priceMap: Record<string, number> = {
+        bitcoin: 83410,
+        dogecoin: 0.113,
+        arbitrum: 0.152,
+      };
+
+      const realisticMetadata: Record<string, CoinMetadata> = {
+        bitcoin: {
+          id: 'bitcoin',
+          symbol: 'btc',
+          name: 'Bitcoin',
+          market_cap_rank: 1,
+          price_change_percentage_24h: 1.2,
+          price_change_percentage_7d: 3.5,
+          categories: ['Store of Value'],
+        },
+        dogecoin: {
+          id: 'dogecoin',
+          symbol: 'doge',
+          name: 'Dogecoin',
+          market_cap_rank: 8,
+          price_change_percentage_24h: 8.5, // High volatility
+          price_change_percentage_7d: 25.0,
+          categories: ['Meme'],
+        },
+        arbitrum: {
+          id: 'arbitrum',
+          symbol: 'arb',
+          name: 'Arbitrum',
+          market_cap_rank: 65, // Small cap
+          price_change_percentage_24h: -3.2,
+          price_change_percentage_7d: -8.5,
+          categories: ['Layer 2'],
+        },
+      };
+
+      const result = calculateRiskAllocation(
+        diversifiedPortfolio,
+        priceMap,
+        realisticMetadata
+      );
+
+      // Should have multiple risk categories, not just Conservative 100%
+      expect(result.length).toBeGreaterThan(1);
+
+      const conservative = result.find((item) => item.name === 'Conservative');
+      const moderate = result.find((item) => item.name === 'Moderate');
+      const aggressive = result.find((item) => item.name === 'Aggressive');
+
+      // Conservative should NOT be 100%
+      const conservativePercent = conservative?.percentage ?? 0;
+      expect(conservativePercent).toBeLessThan(100);
+
+      // Should have Aggressive assets (ARB small cap + DOGE high volatility)
+      expect(aggressive?.value ?? 0).toBeGreaterThan(0);
+    });
+
+    it('should classify based on real market cap and volatility, not all as Conservative', () => {
+      // This test documents the bug: when metadata has default values
+      // (market_cap_rank=1, price_change=0), everything becomes Conservative
+      const buggyMetadata: Record<string, CoinMetadata> = {
+        bitcoin: {
+          id: 'bitcoin',
+          symbol: 'btc',
+          name: 'Bitcoin',
+          market_cap_rank: 1, // Default from PortfolioPage
+          price_change_percentage_24h: 0, // Default from PortfolioPage
+          price_change_percentage_7d: 0, // Default from PortfolioPage
+          categories: ['Other'],
+        },
+        dogecoin: {
+          id: 'dogecoin',
+          symbol: 'doge',
+          name: 'Dogecoin',
+          market_cap_rank: 1, // Wrong - should be ~8
+          price_change_percentage_24h: 0, // Wrong - should have real volatility
+          price_change_percentage_7d: 0,
+          categories: ['Other'],
+        },
+      };
+
+      const testPortfolio: PortfolioAsset[] = [
+        {
+          coinInfo: { id: 'bitcoin', symbol: 'btc', name: 'Bitcoin' },
+          quantity: 1,
+        },
+        {
+          coinInfo: { id: 'dogecoin', symbol: 'doge', name: 'Dogecoin' },
+          quantity: 1000,
+        },
+      ];
+
+      const testPriceMap: Record<string, number> = {
+        bitcoin: 50000,
+        dogecoin: 0.5,
+      };
+
+      const result = calculateRiskAllocation(
+        testPortfolio,
+        testPriceMap,
+        buggyMetadata
+      );
+
+      // With buggy defaults, everything is Large Cap + 0% volatility = Conservative
+      // This demonstrates the bug - in reality DOGE should be Aggressive/Moderate
+      const conservative = result.find((item) => item.name === 'Conservative');
+      expect(conservative?.percentage).toBe(100);
+
+      // After the fix, this test should be updated to expect multiple categories
+    });
   });
 });

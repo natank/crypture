@@ -18,6 +18,7 @@ export default function AllocationLegend({ data }: AllocationLegendProps) {
         {data.map((item) => (
           <div
             key={item.id}
+            data-testid="allocation-legend-item"
             className="flex items-center justify-between p-2 rounded hover:bg-surface-soft transition-colors"
           >
             <div className="flex items-center gap-2 flex-1">

@@ -94,8 +94,24 @@ describe('fetchTopCoins', () => {
     const coins = await fetchTopCoins();
 
     expect(coins).toEqual([
-      { id: 'bitcoin', name: 'Bitcoin', symbol: 'BTC', current_price: 50000 },
-      { id: 'ethereum', name: 'Ethereum', symbol: 'ETH', current_price: 3000 },
+      {
+        id: 'bitcoin',
+        name: 'Bitcoin',
+        symbol: 'BTC',
+        current_price: 50000,
+        market_cap_rank: 1,
+        price_change_percentage_24h: 2.0,
+        price_change_percentage_7d: 2.0,
+      },
+      {
+        id: 'ethereum',
+        name: 'Ethereum',
+        symbol: 'ETH',
+        current_price: 3000,
+        market_cap_rank: 2,
+        price_change_percentage_24h: 3.45,
+        price_change_percentage_7d: 3.45,
+      },
     ]);
     expect(coinGeckoApiService.getCoinsMarkets).toHaveBeenCalledWith({
       perPage: 100,
