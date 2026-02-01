@@ -76,12 +76,11 @@ app.use('*', (req, res) => {
 // Enhanced error handler
 app.use(
   (
-    err: any,
-    _req: express.Request,
-    res: express.Response,
-    _next: express.NextFunction
+    err: Error & { status?: number },
+    req: express.Request,
+    res: express.Response
   ) => {
-    const requestId = (_req as any).requestId || 'unknown';
+    const requestId = (req as ExtendedRequest).requestId || 'unknown';
 
     res.status(err.status || 500).json({
       error: NODE_ENV === 'production' ? 'Internal Server Error' : err.message,

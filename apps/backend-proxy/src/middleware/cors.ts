@@ -83,7 +83,7 @@ export const corsMiddleware = () => {
 // Custom CORS logging middleware
 export const corsLogger = (req: Request, res: Response, next: NextFunction) => {
   const origin = req.headers.origin;
-  const requestId = (req as any).requestId || '-';
+  const requestId = (req as ExtendedRequest).requestId || '-';
 
   if (origin && process.env.NODE_ENV === 'development') {
     console.log(`🌐 [${requestId}] CORS Request from origin: ${origin}`);

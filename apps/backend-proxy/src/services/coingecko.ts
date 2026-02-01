@@ -1,12 +1,13 @@
 import axios, { AxiosInstance, AxiosError } from 'axios';
 import {
   CoinGeckoPriceData,
-  CoinGeckoMarketData,
   CoinGeckoSimplePrice,
   CoinGeckoSearchResponse,
   CoinGeckoTrendingResponse,
   CoinGeckoCategoriesResponse,
   CoinGeckoGlobalResponse,
+  CoinGeckoCoinDetail,
+  CoinGeckoMarketChart,
 } from '../types/coingecko';
 
 export class CoinGeckoService {
@@ -132,19 +133,25 @@ export class CoinGeckoService {
       }
 
       const axiosError = error as AxiosError;
+      const isRateLimit = axiosError.response?.status === 429;
       const isRetryable =
         axiosError.code === 'ECONNRESET' ||
         axiosError.code === 'ETIMEDOUT' ||
+        isRateLimit ||
         (axiosError.response?.status && axiosError.response.status >= 500);
 
       if (!isRetryable) {
         throw error;
       }
 
+      // Use exponential backoff, with longer delays for rate limiting
+      const baseDelay = this.retryDelay * (this.maxRetries - retries + 1);
+      const delay = isRateLimit ? baseDelay * 3 : baseDelay; // 3x longer for rate limits
+
       console.log(
-        `🔄 Retrying request... (${this.maxRetries - retries + 1}/${this.maxRetries})`
+        `🔄 Retrying request... (${this.maxRetries - retries + 1}/${this.maxRetries})${isRateLimit ? ' (rate limit)' : ''}`
       );
-      await this.sleep(this.retryDelay * (this.maxRetries - retries + 1));
+      await this.sleep(delay);
 
       return this.retryRequest(requestFn, retries - 1);
     }
@@ -191,7 +198,7 @@ export class CoinGeckoService {
     });
   }
 
-  async getCoinById(id: string): Promise<any> {
+  async getCoinById(id: string): Promise<CoinGeckoCoinDetail> {
     return this.retryRequest(async () => {
       const response = await this.api.get(`/coins/${id}`, {
         params: {
@@ -241,7 +248,7 @@ export class CoinGeckoService {
     id: string,
     vsCurrency: string = 'usd',
     days: number = 7
-  ): Promise<any> {
+  ): Promise<CoinGeckoMarketChart> {
     return this.retryRequest(async () => {
       const response = await this.api.get(`/coins/${id}/market_chart`, {
         params: {
@@ -293,7 +300,7 @@ export class CoinGeckoService {
   /**
    * Test method to verify API key is being sent correctly
    */
-  async testApiKey(): Promise<{ headers: any; url: string }> {
+  async testApiKey(): Promise<{ headers: unknown; url: string }> {
     try {
       const response = await this.api.get('/ping');
       return {
@@ -302,7 +309,9 @@ export class CoinGeckoService {
       };
     } catch (error) {
       if (error && typeof error === 'object' && 'config' in error) {
-        const axiosError = error as { config: { headers: any; url?: string } };
+        const axiosError = error as {
+          config: { headers: unknown; url?: string };
+        };
         return {
           headers: axiosError.config.headers,
           url: axiosError.config.url || 'unknown',

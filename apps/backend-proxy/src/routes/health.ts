@@ -1,4 +1,8 @@
-import { Router } from 'express';
+import { Router, Request, Response } from 'express';
+
+interface ExtendedRequest extends Request {
+  requestId?: string;
+}
 
 const router = Router();
 
@@ -194,7 +198,7 @@ router.get('/env-debug', (_req, res) => {
  *       200:
  *         description: Headers test result
  */
-router.get('/headers-test', async (_req, res) => {
+router.get('/headers-test', async (req: ExtendedRequest, res: Response) => {
   try {
     // Import CoinGeckoService to test
     const { CoinGeckoService } = await import('../services/coingecko');
@@ -209,11 +213,11 @@ router.get('/headers-test', async (_req, res) => {
       pingResult: response,
       timestamp: new Date().toISOString(),
     });
-  } catch (error: any) {
+  } catch (error: unknown) {
     res.status(500).json({
       success: false,
       message: 'CoinGecko API test failed',
-      error: error.message,
+      error: error instanceof Error ? error.message : 'Unknown error',
       timestamp: new Date().toISOString(),
     });
   }
@@ -244,11 +248,11 @@ router.get('/api-key-test', async (_req, res) => {
       url: testResult.url,
       timestamp: new Date().toISOString(),
     });
-  } catch (error: any) {
+  } catch (error: unknown) {
     res.status(500).json({
       success: false,
       message: 'API key test failed',
-      error: error.message,
+      error: error instanceof Error ? error.message : 'Unknown error',
       timestamp: new Date().toISOString(),
     });
   }
