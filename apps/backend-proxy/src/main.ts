@@ -7,6 +7,9 @@ dotenv.config({
   path: process.env.NODE_ENV === 'development' ? '.env.development' : '.env',
 });
 
+// Reference global types
+/// <reference path="./types/global.d.ts" />
+
 import { healthRouter } from './routes/health';
 import { coingeckoRouter } from './routes/coingecko';
 import { requestLogger, morganLogger, apiLogger } from './middleware/logger';
