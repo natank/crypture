@@ -1,5 +1,5 @@
 import { CoinGeckoService } from '../../src/services/coingecko';
-import axios from 'axios';
+import axios, { AxiosInstance } from 'axios';
 
 // Mock axios
 jest.mock('axios');
@@ -7,7 +7,7 @@ const MockedAxios = axios as jest.Mocked<typeof axios>;
 
 describe('CoinGeckoService', () => {
   let service: CoinGeckoService;
-  let mockAxiosInstance: jest.Mocked<any>;
+  let mockAxiosInstance: jest.Mocked<AxiosInstance>;
 
   beforeEach(() => {
     // Clear all mocks
@@ -20,10 +20,10 @@ describe('CoinGeckoService', () => {
     mockAxiosInstance = {
       get: jest.fn(),
       interceptors: {
-        request: { use: jest.fn() },
-        response: { use: jest.fn() },
+        request: { use: jest.fn(), eject: jest.fn(), clear: jest.fn() },
+        response: { use: jest.fn(), eject: jest.fn(), clear: jest.fn() },
       },
-    };
+    } as unknown as jest.Mocked<AxiosInstance>;
 
     // Mock axios.create to return our mock instance
     MockedAxios.create = jest.fn().mockReturnValue(mockAxiosInstance);
@@ -59,7 +59,7 @@ describe('CoinGeckoService', () => {
       process.env.COINGECKO_API_KEY = 'test-api-key';
 
       // Create new service instance
-      const serviceWithApiKey = new CoinGeckoService();
+      const _serviceWithApiKey = new CoinGeckoService();
 
       expect(MockedAxios.create).toHaveBeenCalledWith({
         baseURL: 'https://api.coingecko.com/api/v3',
@@ -127,7 +127,10 @@ describe('CoinGeckoService', () => {
 
     it('should retry on network errors', async () => {
       // First call fails, second succeeds
-      const networkError = new Error('Connection reset') as any;
+      const networkError = new Error('Connection reset') as Error & {
+        code?: string;
+        isAxiosError?: boolean;
+      };
       networkError.code = 'ECONNRESET';
       networkError.isAxiosError = true;
 
@@ -142,7 +145,10 @@ describe('CoinGeckoService', () => {
     });
 
     it('should not retry on client errors', async () => {
-      const clientError = new Error('Client error') as any;
+      const clientError = new Error('Client error') as Error & {
+        response?: { status: number };
+        isAxiosError?: boolean;
+      };
       clientError.response = { status: 400 };
       clientError.isAxiosError = true;
 
@@ -409,7 +415,10 @@ describe('CoinGeckoService', () => {
   describe('Retry Logic', () => {
     it('should retry up to maxRetries times', async () => {
       // Fail 3 times, then succeed
-      const networkError = new Error('Connection reset') as any;
+      const networkError = new Error('Connection reset') as Error & {
+        code?: string;
+        isAxiosError?: boolean;
+      };
       networkError.code = 'ECONNRESET';
       networkError.isAxiosError = true;
 
@@ -427,7 +436,10 @@ describe('CoinGeckoService', () => {
 
     it('should fail after max retries exhausted', async () => {
       // Always fail
-      const networkError = new Error('Network error') as any;
+      const networkError = new Error('Network error') as Error & {
+        code?: string;
+        isAxiosError?: boolean;
+      };
       networkError.code = 'ECONNRESET';
       networkError.isAxiosError = true;
 
@@ -439,7 +451,10 @@ describe('CoinGeckoService', () => {
     }, 10000);
 
     it('should not retry on non-retryable errors', async () => {
-      const notRetryableError = new Error('Not found') as any;
+      const notRetryableError = new Error('Not found') as Error & {
+        response?: { status: number };
+        isAxiosError?: boolean;
+      };
       notRetryableError.response = { status: 404 };
       notRetryableError.isAxiosError = true;
 

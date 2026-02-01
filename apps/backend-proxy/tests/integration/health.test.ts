@@ -3,7 +3,7 @@ import request from 'supertest';
 import app from '../../src/main';
 
 describe('Health Endpoint Integration Tests', () => {
-  let server: any;
+  let server: ReturnType<typeof app.listen>;
 
   beforeAll(async () => {
     // Start the server for integration tests on a different port
@@ -13,17 +13,18 @@ describe('Health Endpoint Integration Tests', () => {
   afterAll(async () => {
     // Close the server after tests
     if (server) {
-      await new Promise<void>((resolve) => {
-        server.close(resolve);
+      await new Promise<void>((resolve, reject) => {
+        server.close((err) => {
+          if (err) reject(err);
+          else resolve();
+        });
       });
     }
   });
 
   describe('GET /api/health', () => {
     it('should return 200 status code', async () => {
-      const response = await request(app)
-        .get('/api/health')
-        .expect(200);
+      const response = await request(app).get('/api/health').expect(200);
 
       expect(response.body).toHaveProperty('status', 'healthy');
       expect(response.body).toHaveProperty('timestamp');
@@ -42,9 +43,7 @@ describe('Health Endpoint Integration Tests', () => {
     });
 
     it('should have memory usage information', async () => {
-      const response = await request(app)
-        .get('/api/health')
-        .expect(200);
+      const response = await request(app).get('/api/health').expect(200);
 
       expect(response.body.memory).toHaveProperty('used');
       expect(response.body.memory).toHaveProperty('total');
@@ -53,13 +52,17 @@ describe('Health Endpoint Integration Tests', () => {
     });
 
     it('should have services status information', async () => {
-      const response = await request(app)
-        .get('/api/health')
-        .expect(200);
+      const response = await request(app).get('/api/health').expect(200);
 
-      expect(response.body.services).toHaveProperty('database', 'not_implemented');
+      expect(response.body.services).toHaveProperty(
+        'database',
+        'not_implemented'
+      );
       expect(response.body.services).toHaveProperty('cache', 'not_implemented');
-      expect(response.body.services).toHaveProperty('external_apis', 'not_implemented');
+      expect(response.body.services).toHaveProperty(
+        'external_apis',
+        'not_implemented'
+      );
     });
   });
 
@@ -92,18 +95,22 @@ describe('Health Endpoint Integration Tests', () => {
 
       expect(response.body.configuration).toHaveProperty('port', '3001');
       expect(response.body.configuration).toHaveProperty('host', 'localhost');
-      expect(response.body.configuration).toHaveProperty('corsOrigin', 'http://localhost:5173');
+      expect(response.body.configuration).toHaveProperty(
+        'corsOrigin',
+        'http://localhost:5173'
+      );
       expect(response.body.configuration).toHaveProperty('logLevel', 'info');
     });
   });
 
   describe('GET /', () => {
     it('should return root endpoint information', async () => {
-      const response = await request(app)
-        .get('/')
-        .expect(200);
+      const response = await request(app).get('/').expect(200);
 
-      expect(response.body).toHaveProperty('message', 'Crypture Backend Proxy Service');
+      expect(response.body).toHaveProperty(
+        'message',
+        'Crypture Backend Proxy Service'
+      );
       expect(response.body).toHaveProperty('version', '1.0.0');
       expect(response.body).toHaveProperty('environment', 'test');
       expect(response.body).toHaveProperty('timestamp');
@@ -123,9 +130,7 @@ describe('Health Endpoint Integration Tests', () => {
     });
 
     it('should handle invalid HTTP methods', async () => {
-      await request(app)
-        .patch('/api/health')
-        .expect(404);
+      await request(app).patch('/api/health').expect(404);
     });
   });
 });

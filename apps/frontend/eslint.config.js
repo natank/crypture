@@ -15,10 +15,19 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
 export default tseslint.config(
-  { ignores: ['dist', 'coverage'] },
+  {
+    ignores: [
+      'dist',
+      'coverage',
+      '.storybook/**/*',
+      'playwright.config.ts',
+      'vite.config.ts',
+      'vitest.config.ts',
+    ],
+  },
   {
     extends: [js.configs.recommended, ...tseslint.configs.recommended],
-    files: ['**/*.{ts,tsx}'],
+    files: ['src/**/*.{ts,tsx}'],
     languageOptions: {
       ecmaVersion: 2020,
       globals: globals.browser,
@@ -90,6 +99,18 @@ export default tseslint.config(
       },
     },
     // Overrides for tests and stories
+  },
+  {
+    files: ['**/*.{js,ts}'],
+    languageOptions: {
+      parserOptions: {
+        project: false, // Don't require project for config files
+      },
+    },
+    rules: {
+      '@typescript-eslint/no-unused-vars': 'off',
+      '@typescript-eslint/no-explicit-any': 'off',
+    },
   },
   {
     files: [

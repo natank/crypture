@@ -5,14 +5,16 @@ import request from 'supertest';
 import app from '../../src/main';
 import { CoinGeckoService } from '../../src/services/coingecko';
 
-const MockedCoinGeckoService = CoinGeckoService as jest.MockedClass<typeof CoinGeckoService>;
+const MockedCoinGeckoService = CoinGeckoService as jest.MockedClass<
+  typeof CoinGeckoService
+>;
 
 describe('CoinGecko Routes - Basic Tests', () => {
   let mockService: jest.Mocked<CoinGeckoService>;
 
   beforeEach(() => {
     jest.clearAllMocks();
-    
+
     mockService = {
       ping: jest.fn().mockResolvedValue(true),
       getRateLimitInfo: jest.fn(),
@@ -23,8 +25,9 @@ describe('CoinGecko Routes - Basic Tests', () => {
       getTrending: jest.fn(),
       getCategories: jest.fn(),
       getGlobal: jest.fn(),
-      getMarketChart: jest.fn()
-    } as any;
+      getMarketChart: jest.fn(),
+      testApiKey: jest.fn(),
+    } as unknown as jest.Mocked<CoinGeckoService>;
 
     MockedCoinGeckoService.mockImplementation(() => mockService);
   });
@@ -47,7 +50,7 @@ describe('CoinGecko Routes - Basic Tests', () => {
       error: 'Bad Request',
       message: 'Missing required parameter: ids',
       timestamp: expect.any(String),
-      requestId: expect.any(String)
+      requestId: expect.any(String),
     });
   });
 
@@ -60,7 +63,7 @@ describe('CoinGecko Routes - Basic Tests', () => {
       error: 'Bad Request',
       message: 'Missing required parameter: query',
       timestamp: expect.any(String),
-      requestId: expect.any(String)
+      requestId: expect.any(String),
     });
   });
 
@@ -81,7 +84,9 @@ describe('CoinGecko Routes - Basic Tests', () => {
       .expect(200);
 
     expect(response.headers).toHaveProperty('access-control-allow-origin');
-    expect(response.headers['access-control-allow-origin']).toBe('http://localhost:5173');
+    expect(response.headers['access-control-allow-origin']).toBe(
+      'http://localhost:5173'
+    );
   });
 
   it('should have proper request ID in error responses', async () => {
