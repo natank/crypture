@@ -1,14 +1,7 @@
 import { Router, Response } from 'express';
 import { CoinGeckoService } from '../services/coingecko';
 
-// Reference the global ExtendedRequest interface
-declare global {
-  interface ExtendedRequest extends Express.Request {
-    requestId?: string;
-    _startTime?: number;
-    query: { [key: string]: string | string[] | undefined };
-  }
-}
+// ExtendedRequest is already declared globally in types/global.d.ts
 
 interface ProxyError extends Error {
   response?: {

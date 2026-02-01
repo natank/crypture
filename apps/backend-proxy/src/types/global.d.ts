@@ -8,6 +8,7 @@ declare global {
   interface ExtendedRequest extends Request {
     requestId?: string;
     _startTime?: number;
+    query: { [key: string]: string | string[] | undefined };
   }
 
   // Jest global functions

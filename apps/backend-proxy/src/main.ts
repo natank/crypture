@@ -28,6 +28,27 @@ app.use(morganLogger()); // Enhanced request logging
 app.use(express.json({ limit: '10mb' })); // Parse JSON bodies with size limit
 app.use(express.urlencoded({ extended: true, limit: '10mb' })); // Parse URL-encoded bodies
 
+// Handle JSON parsing errors specifically
+app.use(
+  (
+    err: Error,
+    req: express.Request,
+    res: express.Response,
+    next: express.NextFunction
+  ) => {
+    if (err instanceof SyntaxError && 'body' in err) {
+      const requestId = (req as ExtendedRequest).requestId || 'unknown';
+      return res.status(400).json({
+        error: 'Invalid JSON',
+        message: 'Malformed JSON in request body',
+        timestamp: new Date().toISOString(),
+        requestId: requestId,
+      });
+    }
+    return next(err);
+  }
+);
+
 // API-specific middleware for development
 if (NODE_ENV === 'development') {
   app.use('/api', apiLogger); // Detailed API logging in development
