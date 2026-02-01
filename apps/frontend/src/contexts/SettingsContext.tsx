@@ -34,6 +34,7 @@ interface SettingsProviderProps {
 export function SettingsProvider({ children }: SettingsProviderProps) {
   const [settings, setSettings] = useState<UserSettings>(DEFAULT_SETTINGS);
   const isResettingRef = useRef(false);
+  const isInitializedRef = useRef(false);
 
   // Load settings from localStorage on mount
   useEffect(() => {
@@ -46,11 +47,13 @@ export function SettingsProvider({ children }: SettingsProviderProps) {
     } catch (error) {
       console.warn('Failed to load settings from localStorage:', error);
     }
+    // Mark as initialized
+    isInitializedRef.current = true;
   }, []);
 
-  // Save settings to localStorage whenever they change (but not during reset)
+  // Save settings to localStorage whenever they change (but not during reset or before initialization)
   useEffect(() => {
-    if (!isResettingRef.current) {
+    if (!isResettingRef.current && isInitializedRef.current) {
       try {
         localStorage.setItem(SETTINGS_STORAGE_KEY, JSON.stringify(settings));
       } catch (error) {
@@ -58,9 +61,11 @@ export function SettingsProvider({ children }: SettingsProviderProps) {
       }
     } else {
       // Reset the flag after the state update is processed
-      isResettingRef.current = false;
+      if (isResettingRef.current) {
+        isResettingRef.current = false;
+      }
     }
-  }, [settings]);
+  }, [settings, isInitializedRef.current]);
 
   const updateSettings = (updates: Partial<UserSettings>) => {
     setSettings((prev) => ({ ...prev, ...updates }));

@@ -35,6 +35,13 @@ export default defineConfig({
   retries: process.env.CI ? 0 : 0, // No retries in CI to fail fast
   workers: process.env.CI ? 1 : undefined, // Single worker in CI
   fullyParallel: false, // Run tests serially
+  // Capture console logs
+  reporter: [
+    ['html'],
+    ['line'],
+    // Add console log handler
+    ['json', { outputFile: 'test-results/results.json' }],
+  ],
   webServer: process.env.CI
     ? {
         command:
