@@ -5,7 +5,7 @@
  */
 
 import { fetchAssetHistory, PriceHistoryPoint } from './coinService';
-import { filterCoreCategories } from '../utils/categoryUtils';
+import { filterCoreCategories } from '@utils/categoryUtils';
 
 export interface PortfolioHistoryPoint {
   timestamp: number;

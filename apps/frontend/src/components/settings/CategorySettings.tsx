@@ -1,5 +1,4 @@
-import React from 'react';
-import { useSettings } from '../../contexts/SettingsContext';
+import { useSettings } from '@contexts/useSettings';
 
 interface CategorySettingsProps {
   className?: string;

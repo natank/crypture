@@ -1,31 +1,15 @@
-import React, {
-  createContext,
-  useContext,
-  useState,
-  useEffect,
-  useRef,
-  ReactNode,
-} from 'react';
-
-export interface UserSettings {
-  showAllCategories: boolean;
-}
+import { useState, useEffect, useRef, ReactNode } from 'react';
+import {
+  UserSettings,
+  SettingsContext,
+  SettingsContextType,
+} from './SettingsContext.types';
 
 const DEFAULT_SETTINGS: UserSettings = {
   showAllCategories: false, // Default to filtered categories (better UX)
 };
 
 const SETTINGS_STORAGE_KEY = 'crypture_user_settings';
-
-interface SettingsContextType {
-  settings: UserSettings;
-  updateSettings: (updates: Partial<UserSettings>) => void;
-  resetSettings: () => void;
-}
-
-const SettingsContext = createContext<SettingsContextType | undefined>(
-  undefined
-);
 
 interface SettingsProviderProps {
   children: ReactNode;
@@ -85,12 +69,4 @@ export function SettingsProvider({ children }: SettingsProviderProps) {
       {children}
     </SettingsContext.Provider>
   );
-}
-
-export function useSettings(): SettingsContextType {
-  const context = useContext(SettingsContext);
-  if (context === undefined) {
-    throw new Error('useSettings must be used within a SettingsProvider');
-  }
-  return context;
 }

@@ -1,33 +1,31 @@
 import { render, screen, act } from '@testing-library/react';
 import { userEvent } from '@testing-library/user-event';
 import { describe, it, expect, beforeEach, afterEach } from 'vitest';
-import { SettingsProvider, useSettings } from '../SettingsContext';
+import { SettingsProvider } from '../SettingsContext';
+import { useSettings } from '../useSettings';
 
 // Test component that uses the settings context
 function TestComponent() {
   const { settings, updateSettings, resetSettings } = useSettings();
-  
+
   return (
     <div>
       <div data-testid="show-all-categories">
         {settings.showAllCategories.toString()}
       </div>
-      <button 
+      <button
         onClick={() => updateSettings({ showAllCategories: true })}
         data-testid="enable-all-categories"
       >
         Enable All Categories
       </button>
-      <button 
+      <button
         onClick={() => updateSettings({ showAllCategories: false })}
         data-testid="disable-all-categories"
       >
         Disable All Categories
       </button>
-      <button 
-        onClick={resetSettings}
-        data-testid="reset-settings"
-      >
+      <button onClick={resetSettings} data-testid="reset-settings">
         Reset Settings
       </button>
     </div>
@@ -52,12 +50,14 @@ describe('SettingsContext', () => {
       </SettingsProvider>
     );
 
-    expect(screen.getByTestId('show-all-categories')).toHaveTextContent('false');
+    expect(screen.getByTestId('show-all-categories')).toHaveTextContent(
+      'false'
+    );
   });
 
   it('should update settings when updateSettings is called', async () => {
     const user = userEvent.setup();
-    
+
     render(
       <SettingsProvider>
         <TestComponent />
@@ -65,7 +65,9 @@ describe('SettingsContext', () => {
     );
 
     // Initially should be false
-    expect(screen.getByTestId('show-all-categories')).toHaveTextContent('false');
+    expect(screen.getByTestId('show-all-categories')).toHaveTextContent(
+      'false'
+    );
 
     // Enable all categories
     await user.click(screen.getByTestId('enable-all-categories'));
@@ -73,12 +75,14 @@ describe('SettingsContext', () => {
 
     // Disable all categories
     await user.click(screen.getByTestId('disable-all-categories'));
-    expect(screen.getByTestId('show-all-categories')).toHaveTextContent('false');
+    expect(screen.getByTestId('show-all-categories')).toHaveTextContent(
+      'false'
+    );
   });
 
   it('should reset settings to defaults when resetSettings is called', async () => {
     const user = userEvent.setup();
-    
+
     render(
       <SettingsProvider>
         <TestComponent />
@@ -91,14 +95,19 @@ describe('SettingsContext', () => {
 
     // Reset settings
     await user.click(screen.getByTestId('reset-settings'));
-    expect(screen.getByTestId('show-all-categories')).toHaveTextContent('false');
+    expect(screen.getByTestId('show-all-categories')).toHaveTextContent(
+      'false'
+    );
   });
 
   it('should load settings from localStorage on mount', () => {
     // Set up localStorage with existing settings
-    localStorage.setItem('crypture_user_settings', JSON.stringify({
-      showAllCategories: true
-    }));
+    localStorage.setItem(
+      'crypture_user_settings',
+      JSON.stringify({
+        showAllCategories: true,
+      })
+    );
 
     render(
       <SettingsProvider>
@@ -112,7 +121,7 @@ describe('SettingsContext', () => {
 
   it('should save settings to localStorage when updated', async () => {
     const user = userEvent.setup();
-    
+
     render(
       <SettingsProvider>
         <TestComponent />
@@ -125,7 +134,7 @@ describe('SettingsContext', () => {
     // Check localStorage
     const savedSettings = localStorage.getItem('crypture_user_settings');
     expect(savedSettings).toBeTruthy();
-    
+
     const parsed = JSON.parse(savedSettings!);
     expect(parsed.showAllCategories).toBe(true);
   });
@@ -141,12 +150,14 @@ describe('SettingsContext', () => {
     );
 
     // Should fall back to defaults
-    expect(screen.getByTestId('show-all-categories')).toHaveTextContent('false');
+    expect(screen.getByTestId('show-all-categories')).toHaveTextContent(
+      'false'
+    );
   });
 
   it('should merge partial updates with existing settings', async () => {
     const user = userEvent.setup();
-    
+
     render(
       <SettingsProvider>
         <TestComponent />
@@ -165,7 +176,7 @@ describe('SettingsContext', () => {
 
   it('should remove localStorage item when reset', async () => {
     const user = userEvent.setup();
-    
+
     render(
       <SettingsProvider>
         <TestComponent />
@@ -178,7 +189,7 @@ describe('SettingsContext', () => {
 
     // Reset settings
     await user.click(screen.getByTestId('reset-settings'));
-    
+
     // Should remove from localStorage
     expect(localStorage.getItem('crypture_user_settings')).toBeNull();
   });

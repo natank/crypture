@@ -43,7 +43,8 @@ export const test = base.extend({
       page.on('pageerror', () => {});
     }
 
-    // Provide the page to the test
+    // Provide the page to the test (using Playwright's extend API, not React)
+    // eslint-disable-next-line react-hooks/rules-of-hooks
     await use(page);
   },
 });

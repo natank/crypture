@@ -8,7 +8,7 @@ import {
   PortfolioAsset,
   CoinMetadata,
 } from '@services/portfolioAnalyticsService';
-import { useSettings } from '@contexts/SettingsContext';
+import { useSettings } from '@contexts/useSettings';
 import AllocationPieChart from './AllocationPieChart';
 import AllocationViewSelector from './AllocationViewSelector';
 import AllocationLegend from './AllocationLegend';
