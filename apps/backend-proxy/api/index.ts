@@ -1,3 +1,4 @@
+import { Request, Response } from 'express';
 import app from '../src/main';
 
 export const config = {
@@ -6,6 +7,6 @@ export const config = {
   },
 };
 
-export default function handler(req: any, res: any) {
-  return (app as any)(req, res);
+export default function handler(req: Request, res: Response) {
+  return app(req, res);
 }

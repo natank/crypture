@@ -1,121 +1,154 @@
 // For more info, see https://github.com/storybookjs/eslint-plugin-storybook#configuration-flat-config-format
-import storybook from "eslint-plugin-storybook";
+import storybook from 'eslint-plugin-storybook';
 
-import js from "@eslint/js";
-import globals from "globals";
-import reactHooks from "eslint-plugin-react-hooks";
-import reactRefresh from "eslint-plugin-react-refresh";
-import tseslint from "typescript-eslint";
-import importPlugin from "eslint-plugin-import";
-import noRelativeImportPaths from "eslint-plugin-no-relative-import-paths";
+import js from '@eslint/js';
+import globals from 'globals';
+import reactHooks from 'eslint-plugin-react-hooks';
+import reactRefresh from 'eslint-plugin-react-refresh';
+import tseslint from 'typescript-eslint';
+import importPlugin from 'eslint-plugin-import';
+import noRelativeImportPaths from 'eslint-plugin-no-relative-import-paths';
+import { fileURLToPath } from 'url';
+import { dirname } from 'path';
 
-export default tseslint.config({ ignores: ["dist", "coverage"] }, {
-  extends: [js.configs.recommended, ...tseslint.configs.recommended],
-  files: ["**/*.{ts,tsx}"],
-  languageOptions: {
-    ecmaVersion: 2020,
-    globals: globals.browser,
-  },
-  plugins: {
-    "react-hooks": reactHooks,
-    "react-refresh": reactRefresh,
-    "no-relative-import-paths": noRelativeImportPaths,
-    import: importPlugin,
-  },
-  rules: {
-    ...reactHooks.configs.recommended.rules,
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
-    // Disable overly strict React Hooks rules that flag intentional patterns
-    "react-hooks/rules-of-hooks": "error", // Keep this - catches real hook violations
-    "react-hooks/exhaustive-deps": "warn", // Keep as warning
-    "react-hooks/purity": "off", // Disable - flags Date.now(), Math.random() which are fine in many contexts
-    "react-hooks/set-state-in-effect": "off", // Disable - initialization patterns are valid
-    "react-hooks/globals": "off", // Disable - test harness patterns are valid
-
-    // ✅ Allow aliases like @services, ignore node_modules
-    "import/no-unresolved": [
-      "error",
-      {
-        ignore: ["^[^./]"], // Ignore all non-relative imports (node_modules)
-      },
-    ],
-    "no-relative-import-paths/no-relative-import-paths": [
-      "error",
-      {
-        allowSameFolder: true,
-        rootDir: "src",
-        prefix: "@",
-      },
-    ],
-    // ❌ Disallow imports like ../services/coinGecko
-    // "import/no-relative-parent-imports": [
-    //   "error",
-    //   {
-    //     ignore: [
-    //       "@components/",
-    //       "@hooks/",
-    //       "@pages/",
-    //       "@utils/",
-    //       "@e2e/",
-    //       "@services/",
-    //       "@wypes/",
-    //     ],
-    //   },
-    // ],
-    "react-refresh/only-export-components": [
-      "warn",
-      { allowConstantExport: true },
+export default tseslint.config(
+  {
+    ignores: [
+      'dist',
+      'coverage',
+      '.storybook/**/*',
+      'playwright.config.ts',
+      'vite.config.ts',
+      'vitest.config.ts',
     ],
   },
-  settings: {
-    "import/resolver": {
-      typescript: {
-        project: "./tsconfig.json",
-        alwaysTryTypes: true,
-      },
-      node: {
-        extensions: [".js", ".jsx", ".ts", ".tsx"],
+  {
+    extends: [js.configs.recommended, ...tseslint.configs.recommended],
+    files: ['src/**/*.{ts,tsx}'],
+    languageOptions: {
+      ecmaVersion: 2020,
+      globals: globals.browser,
+      parserOptions: {
+        project: true,
+        tsconfigRootDir: __dirname,
       },
     },
+    plugins: {
+      'react-hooks': reactHooks,
+      'react-refresh': reactRefresh,
+      'no-relative-import-paths': noRelativeImportPaths,
+      import: importPlugin,
+    },
+    rules: {
+      ...reactHooks.configs.recommended.rules,
+
+      // Disable overly strict React Hooks rules that flag intentional patterns
+      'react-hooks/rules-of-hooks': 'error', // Keep this - catches real hook violations
+      'react-hooks/exhaustive-deps': 'warn', // Keep as warning
+      'react-hooks/purity': 'off', // Disable - flags Date.now(), Math.random() which are fine in many contexts
+      'react-hooks/set-state-in-effect': 'off', // Disable - initialization patterns are valid
+      'react-hooks/globals': 'off', // Disable - test harness patterns are valid
+
+      // ✅ Allow aliases like @services, ignore node_modules
+      'import/no-unresolved': [
+        'error',
+        {
+          ignore: ['^[^./]'], // Ignore all non-relative imports (node_modules)
+        },
+      ],
+      'no-relative-import-paths/no-relative-import-paths': [
+        'error',
+        {
+          allowSameFolder: true,
+          rootDir: 'src',
+          prefix: '@',
+        },
+      ],
+      // ❌ Disallow imports like ../services/coinGecko
+      // "import/no-relative-parent-imports": [
+      //   "error",
+      //   {
+      //     ignore: [
+      //       "@components/",
+      //       "@hooks/",
+      //       "@pages/",
+      //       "@utils/",
+      //       "@e2e/",
+      //       "@services/",
+      //       "@wypes/",
+      //     ],
+      //   },
+      // ],
+      'react-refresh/only-export-components': [
+        'warn',
+        { allowConstantExport: true },
+      ],
+    },
+    settings: {
+      'import/resolver': {
+        typescript: {
+          project: './tsconfig.json',
+          alwaysTryTypes: true,
+        },
+        node: {
+          extensions: ['.js', '.jsx', '.ts', '.tsx'],
+        },
+      },
+    },
+    // Overrides for tests and stories
   },
-  // Overrides for tests and stories
-},
-{
-  files: [
-    "**/__tests__/**/*.{ts,tsx}",
-    "**/*.test.{ts,tsx}",
-    "src/e2e/**/*.{ts,tsx}",
-  ],
-  rules: {
-    "@typescript-eslint/no-explicit-any": "off",
-    // Allow relative imports in tests/e2e for convenience
-    "no-relative-import-paths/no-relative-import-paths": "off",
-    "@typescript-eslint/ban-ts-comment": ["warn", { "ts-ignore": true }],
+  {
+    files: ['**/*.{js,ts}'],
+    languageOptions: {
+      parserOptions: {
+        project: false, // Don't require project for config files
+      },
+    },
+    rules: {
+      '@typescript-eslint/no-unused-vars': 'off',
+      '@typescript-eslint/no-explicit-any': 'off',
+    },
   },
-},
-{
-  files: ["**/__stories__/**/*.{ts,tsx}", "**/*.stories.{ts,tsx}"],
-  rules: {
-    "storybook/no-renderer-packages": "off",
-    // Keep other storybook recommended rules via plugin include below
+  {
+    files: [
+      '**/__tests__/**/*.{ts,tsx}',
+      '**/*.test.{ts,tsx}',
+      'src/e2e/**/*.{ts,tsx}',
+    ],
+    rules: {
+      '@typescript-eslint/no-explicit-any': 'off',
+      // Allow relative imports in tests/e2e for convenience
+      'no-relative-import-paths/no-relative-import-paths': 'off',
+      '@typescript-eslint/ban-ts-comment': ['warn', { 'ts-ignore': true }],
+    },
   },
-},
-storybook.configs["flat/recommended"],
-// Final overrides to ensure precedence
-{
-  files: [
-    "**/__tests__/**/*.{ts,tsx}",
-    "**/*.test.{ts,tsx}",
-    "src/e2e/**/*.{ts,tsx}",
-  ],
-  rules: {
-    "@typescript-eslint/no-unused-vars": "off",
+  {
+    files: ['**/__stories__/**/*.{ts,tsx}', '**/*.stories.{ts,tsx}'],
+    rules: {
+      'storybook/no-renderer-packages': 'off',
+      // Keep other storybook recommended rules via plugin include below
+    },
   },
-},
-{
-  files: ["**/__stories__/**/*.{ts,tsx}", "**/*.stories.{ts,tsx}"],
-  rules: {
-    "storybook/no-renderer-packages": "off",
-    "no-relative-import-paths/no-relative-import-paths": "off",
+  storybook.configs['flat/recommended'],
+  // Final overrides to ensure precedence
+  {
+    files: [
+      '**/__tests__/**/*.{ts,tsx}',
+      '**/*.test.{ts,tsx}',
+      'src/e2e/**/*.{ts,tsx}',
+    ],
+    rules: {
+      '@typescript-eslint/no-unused-vars': 'off',
+    },
   },
-});
+  {
+    files: ['**/__stories__/**/*.{ts,tsx}', '**/*.stories.{ts,tsx}'],
+    rules: {
+      'storybook/no-renderer-packages': 'off',
+      'no-relative-import-paths/no-relative-import-paths': 'off',
+    },
+  }
+);

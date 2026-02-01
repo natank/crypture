@@ -20,17 +20,22 @@ describe('Health Router Unit Tests', () => {
     app.use('/api/health', healthRouter);
 
     // Add error handler
-    app.use((err: any, _req: express.Request, res: express.Response, _next: express.NextFunction) => {
-      console.error('Test error:', err);
-      res.status(500).json({ error: err.message });
-    });
+    app.use(
+      (
+        err: Error,
+        _req: express.Request,
+        res: express.Response,
+        _next: express.NextFunction
+      ) => {
+        console.error('Test error:', err);
+        res.status(500).json({ error: err.message });
+      }
+    );
   });
 
   describe('GET /api/health', () => {
     it('should return healthy status with correct structure', async () => {
-      const response = await request(app)
-        .get('/api/health')
-        .expect(200);
+      const response = await request(app).get('/api/health').expect(200);
 
       expect(response.body).toHaveProperty('status', 'healthy');
       expect(response.body).toHaveProperty('timestamp');
@@ -49,9 +54,7 @@ describe('Health Router Unit Tests', () => {
     });
 
     it('should have memory usage information', async () => {
-      const response = await request(app)
-        .get('/api/health')
-        .expect(200);
+      const response = await request(app).get('/api/health').expect(200);
 
       expect(response.body.memory).toHaveProperty('used');
       expect(response.body.memory).toHaveProperty('total');
@@ -60,13 +63,17 @@ describe('Health Router Unit Tests', () => {
     });
 
     it('should have services status information', async () => {
-      const response = await request(app)
-        .get('/api/health')
-        .expect(200);
+      const response = await request(app).get('/api/health').expect(200);
 
-      expect(response.body.services).toHaveProperty('database', 'not_implemented');
+      expect(response.body.services).toHaveProperty(
+        'database',
+        'not_implemented'
+      );
       expect(response.body.services).toHaveProperty('cache', 'not_implemented');
-      expect(response.body.services).toHaveProperty('external_apis', 'not_implemented');
+      expect(response.body.services).toHaveProperty(
+        'external_apis',
+        'not_implemented'
+      );
     });
   });
 
@@ -106,15 +113,11 @@ describe('Health Router Unit Tests', () => {
 
   describe('Error Handling', () => {
     it('should return 404 for non-existent routes', async () => {
-      await request(app)
-        .get('/non-existent-route')
-        .expect(404);
+      await request(app).get('/non-existent-route').expect(404);
     });
 
     it('should handle invalid HTTP methods', async () => {
-      await request(app)
-        .patch('/api/health')
-        .expect(404);
+      await request(app).patch('/api/health').expect(404);
     });
   });
 });

@@ -9,12 +9,12 @@ describe('Health Endpoints Testcontainers Integration', () => {
 
   beforeAll(async () => {
     // Start PostgreSQL container
-    const postgresContainer = await testContainersManager.startPostgres();
-    postgresConnection = testContainersManager.getPostgresConnection()!;
-    
+    await testContainersManager.startPostgres();
+    postgresConnection = testContainersManager.getPostgresConnection() ?? '';
+
     // Start Redis container
-    const redisContainer = await testContainersManager.startRedis();
-    redisConnection = testContainersManager.getRedisConnection()!;
+    await testContainersManager.startRedis();
+    redisConnection = testContainersManager.getRedisConnection() ?? '';
 
     console.log('🐳 Testcontainers started:');
     console.log(`  PostgreSQL: ${postgresConnection}`);
@@ -23,9 +23,7 @@ describe('Health Endpoints Testcontainers Integration', () => {
 
   describe('GET /api/health', () => {
     it('should return healthy status with Testcontainers running', async () => {
-      const response = await request(app)
-        .get('/api/health')
-        .expect(200);
+      const response = await request(app).get('/api/health').expect(200);
 
       expect(response.body).toHaveProperty('status', 'healthy');
       expect(response.body).toHaveProperty('timestamp');
@@ -37,15 +35,11 @@ describe('Health Endpoints Testcontainers Integration', () => {
     });
 
     it('should return correct content-type', async () => {
-      await request(app)
-        .get('/api/health')
-        .expect('Content-Type', /json/);
+      await request(app).get('/api/health').expect('Content-Type', /json/);
     });
 
     it('should have memory usage information', async () => {
-      const response = await request(app)
-        .get('/api/health')
-        .expect(200);
+      const response = await request(app).get('/api/health').expect(200);
 
       expect(response.body.memory).toHaveProperty('used');
       expect(response.body.memory).toHaveProperty('total');
@@ -54,9 +48,7 @@ describe('Health Endpoints Testcontainers Integration', () => {
     });
 
     it('should have services status information', async () => {
-      const response = await request(app)
-        .get('/api/health')
-        .expect(200);
+      const response = await request(app).get('/api/health').expect(200);
 
       expect(response.body.services).toHaveProperty('database');
       expect(response.body.services).toHaveProperty('cache');
@@ -122,15 +114,11 @@ describe('Health Endpoints Testcontainers Integration', () => {
 
   describe('Error Handling with Testcontainers', () => {
     it('should return 404 for non-existent routes', async () => {
-      await request(app)
-        .get('/api/non-existent-route')
-        .expect(404);
+      await request(app).get('/api/non-existent-route').expect(404);
     });
 
     it('should handle invalid HTTP methods', async () => {
-      await request(app)
-        .patch('/api/health')
-        .expect(404);
+      await request(app).patch('/api/health').expect(404);
     });
   });
 });
@@ -139,7 +127,7 @@ describe('Testcontainers Management', () => {
   it('should start and stop PostgreSQL container', async () => {
     const container = await testContainersManager.startPostgres();
     expect(container).toBeDefined();
-    
+
     const connection = testContainersManager.getPostgresConnection();
     expect(connection).toBeDefined();
     expect(connection).toMatch(/postgres(ql)?:\/\//);
@@ -148,19 +136,22 @@ describe('Testcontainers Management', () => {
   it('should start and stop Redis container', async () => {
     const container = await testContainersManager.startRedis();
     expect(container).toBeDefined();
-    
+
     const connection = testContainersManager.getRedisConnection();
     expect(connection).toBeDefined();
     expect(connection).toMatch(/redis:\/\//);
   });
 
   it('should start generic container', async () => {
-    const container = await testContainersManager.startGeneric('nginx:alpine', 80);
+    const container = await testContainersManager.startGeneric(
+      'nginx:alpine',
+      80
+    );
     expect(container).toBeDefined();
-    
+
     const host = testContainersManager.getContainerHost();
     const port = testContainersManager.getContainerPort(80);
-    
+
     expect(host).toBeDefined();
     expect(port).toBeDefined();
     expect(typeof port).toBe('number');
