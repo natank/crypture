@@ -1,13 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
 import { validationResult, ValidationChain } from 'express-validator';
 
-// Reference the global ExtendedRequest interface
-declare global {
-  interface ExtendedRequest extends Express.Request {
-    requestId?: string;
-    _startTime?: number;
-  }
-}
+// ExtendedRequest is declared globally in types/global.d.ts
 
 /**
  * Middleware to handle validation errors from express-validator

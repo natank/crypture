@@ -9,6 +9,17 @@ declare global {
     requestId?: string;
     _startTime?: number;
     query: { [key: string]: string | string[] | undefined };
+    params: { [key: string]: string | undefined };
+    body: unknown;
+    headers: { [key: string]: string | undefined | string[] };
+    method: string;
+    url: string;
+    path: string;
+    ip?: string;
+    originalUrl: string;
+    protocol: string;
+    secure: boolean;
+    xhr: boolean;
   }
 
   // Jest global functions

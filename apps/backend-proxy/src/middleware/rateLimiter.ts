@@ -1,13 +1,7 @@
 import rateLimit from 'express-rate-limit';
 import { Request, Response } from 'express';
 
-// Reference the global ExtendedRequest interface
-declare global {
-  interface ExtendedRequest extends Express.Request {
-    requestId?: string;
-    _startTime?: number;
-  }
-}
+// ExtendedRequest is declared globally in types/global.d.ts
 
 // Rate limiter for general API endpoints (50 requests per minute)
 export const apiRateLimiter = rateLimit({
