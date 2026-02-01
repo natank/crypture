@@ -5,6 +5,7 @@
  */
 
 import { fetchAssetHistory, PriceHistoryPoint } from './coinService';
+import { filterCoreCategories } from '../utils/categoryUtils';
 
 export interface PortfolioHistoryPoint {
   timestamp: number;
@@ -86,9 +87,12 @@ export function calculateCategoryAllocation(
     totalValue += value;
 
     const metadata = coinMetadata[asset.coinInfo.id];
-    const categories = metadata?.categories || ['Other'];
+    const rawCategories = metadata?.categories || ['Other'];
 
-    // Distribute value across all categories for this coin
+    // Filter out index/fund categories to show only coin characteristics
+    const categories = filterCoreCategories(rawCategories);
+
+    // Distribute value across all filtered categories for this coin
     const valuePerCategory = value / categories.length;
     categories.forEach((category) => {
       const current = categoryMap.get(category) || 0;

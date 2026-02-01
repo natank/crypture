@@ -196,6 +196,67 @@ describe('portfolioAnalyticsService', () => {
       expect(result[0].percentage).toBe(100);
       expect(result[0].value).toBe(50000);
     });
+
+    it('should filter out index fund categories', () => {
+      const singleCoinPortfolio: PortfolioAsset[] = [
+        {
+          coinInfo: { id: 'bitcoin', symbol: 'btc', name: 'Bitcoin' },
+          quantity: 1,
+        },
+      ];
+
+      const singlePriceMap: Record<string, number> = {
+        bitcoin: 50000,
+      };
+
+      // Metadata includes index fund categories that should be filtered out
+      const metadataWithIndexFunds: Record<string, CoinMetadata> = {
+        bitcoin: {
+          id: 'bitcoin',
+          symbol: 'btc',
+          name: 'Bitcoin',
+          market_cap_rank: 1,
+          price_change_percentage_24h: 2.5,
+          price_change_percentage_7d: 5.0,
+          categories: [
+            'Smart Contract Platform',
+            'Layer 1 (L1)',
+            'FTX Holdings', // Should be filtered out
+            'Proof of Work (PoW)',
+            'Bitcoin Ecosystem',
+            'GMCI 30 Index', // Should be filtered out
+            'GMCI Index', // Should be filtered out
+            'Coinbase 50 Index', // Should be filtered out
+          ],
+        },
+      };
+
+      const result = calculateCategoryAllocation(
+        singleCoinPortfolio,
+        singlePriceMap,
+        metadataWithIndexFunds
+      );
+
+      // Should only show core categories, not index funds
+      expect(result).toHaveLength(4);
+
+      const categoryNames = result.map((item) => item.name);
+      expect(categoryNames).toContain('Smart Contract Platform');
+      expect(categoryNames).toContain('Layer 1 (L1)');
+      expect(categoryNames).toContain('Proof of Work (PoW)');
+      expect(categoryNames).toContain('Bitcoin Ecosystem');
+
+      // Should NOT contain index fund categories
+      expect(categoryNames).not.toContain('FTX Holdings');
+      expect(categoryNames).not.toContain('GMCI 30 Index');
+      expect(categoryNames).not.toContain('GMCI Index');
+      expect(categoryNames).not.toContain('Coinbase 50 Index');
+
+      // Verify percentages are recalculated correctly (4 categories = 25% each)
+      result.forEach((item) => {
+        expect(item.percentage).toBeCloseTo(25, 0);
+      });
+    });
   });
 
   describe('calculateMarketCapAllocation', () => {
