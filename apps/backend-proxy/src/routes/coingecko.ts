@@ -6,6 +6,7 @@ declare global {
   interface ExtendedRequest extends Express.Request {
     requestId?: string;
     _startTime?: number;
+    query: { [key: string]: string | string[] | undefined };
   }
 }
 
@@ -18,7 +19,7 @@ interface ProxyError extends Error {
   code?: string;
 }
 
-// Type guard function to safely check if error is ProxyError
+// Type guard function to check if error is a ProxyError
 function isProxyError(error: unknown): error is ProxyError {
   return (
     error instanceof Error &&
