@@ -30,18 +30,35 @@ export default defineConfig({
     actionTimeout: 5000, // 5 second timeout for actions
     navigationTimeout: 10000, // 10 second timeout for navigation
     trace: 'on-first-retry', // Capture trace on first retry
+    // Disable browser console capture when E2E_VERBOSE_LOGS is false
+    ...(process.env.E2E_VERBOSE_LOGS === 'false' && {
+      // Disable browser console capture
+      ignoreHTTPSErrors: true,
+      launchOptions: {
+        args: [
+          '--disable-web-security',
+          '--disable-features=VizDisplayCompositor',
+          '--disable-extensions',
+          '--disable-dev-shm-usage',
+          '--disable-gpu',
+          '--no-sandbox',
+        ],
+      },
+    }),
   },
   timeout: 30 * 1000, // 30 second timeout per test
   retries: process.env.CI ? 0 : 0, // No retries in CI to fail fast
   workers: process.env.CI ? 1 : undefined, // Single worker in CI
   fullyParallel: false, // Run tests serially
-  // Capture console logs
-  reporter: [
-    ['html'],
-    ['line'],
-    // Add console log handler
-    ['json', { outputFile: 'test-results/results.json' }],
-  ],
+  // Capture console logs - use minimal reporter when verbose logging is disabled
+  reporter:
+    process.env.E2E_VERBOSE_LOGS === 'false'
+      ? [['html'], ['json', { outputFile: 'test-results/results.json' }]]
+      : [
+          ['html'],
+          ['line'],
+          ['json', { outputFile: 'test-results/results.json' }],
+        ],
   webServer: process.env.CI
     ? {
         command:
