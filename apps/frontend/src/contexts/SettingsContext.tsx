@@ -1,4 +1,11 @@
-import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import React, {
+  createContext,
+  useContext,
+  useState,
+  useEffect,
+  useRef,
+  ReactNode,
+} from 'react';
 
 export interface UserSettings {
   showAllCategories: boolean;
@@ -16,7 +23,9 @@ interface SettingsContextType {
   resetSettings: () => void;
 }
 
-const SettingsContext = createContext<SettingsContextType | undefined>(undefined);
+const SettingsContext = createContext<SettingsContextType | undefined>(
+  undefined
+);
 
 interface SettingsProviderProps {
   children: ReactNode;
@@ -24,6 +33,7 @@ interface SettingsProviderProps {
 
 export function SettingsProvider({ children }: SettingsProviderProps) {
   const [settings, setSettings] = useState<UserSettings>(DEFAULT_SETTINGS);
+  const isResettingRef = useRef(false);
 
   // Load settings from localStorage on mount
   useEffect(() => {
@@ -38,20 +48,26 @@ export function SettingsProvider({ children }: SettingsProviderProps) {
     }
   }, []);
 
-  // Save settings to localStorage whenever they change
+  // Save settings to localStorage whenever they change (but not during reset)
   useEffect(() => {
-    try {
-      localStorage.setItem(SETTINGS_STORAGE_KEY, JSON.stringify(settings));
-    } catch (error) {
-      console.warn('Failed to save settings to localStorage:', error);
+    if (!isResettingRef.current) {
+      try {
+        localStorage.setItem(SETTINGS_STORAGE_KEY, JSON.stringify(settings));
+      } catch (error) {
+        console.warn('Failed to save settings to localStorage:', error);
+      }
+    } else {
+      // Reset the flag after the state update is processed
+      isResettingRef.current = false;
     }
   }, [settings]);
 
   const updateSettings = (updates: Partial<UserSettings>) => {
-    setSettings(prev => ({ ...prev, ...updates }));
+    setSettings((prev) => ({ ...prev, ...updates }));
   };
 
   const resetSettings = () => {
+    isResettingRef.current = true;
     setSettings(DEFAULT_SETTINGS);
     localStorage.removeItem(SETTINGS_STORAGE_KEY);
   };
