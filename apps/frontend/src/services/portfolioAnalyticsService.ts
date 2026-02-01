@@ -76,7 +76,8 @@ export function calculateAssetAllocation(
 export function calculateCategoryAllocation(
   portfolio: PortfolioAsset[],
   priceMap: Record<string, number>,
-  coinMetadata: Record<string, CoinMetadata>
+  coinMetadata: Record<string, CoinMetadata>,
+  showAllCategories: boolean = false
 ): AllocationItem[] {
   const categoryMap = new Map<string, number>();
   let totalValue = 0;
@@ -89,10 +90,12 @@ export function calculateCategoryAllocation(
     const metadata = coinMetadata[asset.coinInfo.id];
     const rawCategories = metadata?.categories || ['Other'];
 
-    // Filter out index/fund categories to show only coin characteristics
-    const categories = filterCoreCategories(rawCategories);
+    // Apply filtering based on user preference
+    const categories = showAllCategories
+      ? rawCategories
+      : filterCoreCategories(rawCategories);
 
-    // Distribute value across all filtered categories for this coin
+    // Distribute value across all categories for this coin
     const valuePerCategory = value / categories.length;
     categories.forEach((category) => {
       const current = categoryMap.get(category) || 0;

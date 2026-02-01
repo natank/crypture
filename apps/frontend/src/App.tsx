@@ -5,27 +5,32 @@ import {
   Navigate,
 } from 'react-router-dom';
 import { ScrollRestoration } from '@components/ScrollRestoration';
+import { SettingsProvider } from '@contexts/SettingsContext';
 import LandingPage from '@pages/LandingPage';
 import PortfolioPage from '@pages/PortfolioPage';
 import { AboutPage } from '@pages/AboutPage';
 import { MarketPage } from '@pages/MarketPage';
 import CoinDetailPage from '@pages/CoinDetailPage';
 import CoinComparisonPage from '@pages/CoinComparisonPage';
+import SettingsPage from '@pages/SettingsPage';
 
 function App() {
   return (
-    <Router>
-      <ScrollRestoration />
-      <Routes>
-        <Route path="/" element={<LandingPage />} />
-        <Route path="/portfolio" element={<PortfolioPage />} />
-        <Route path="/market" element={<MarketPage />} />
-        <Route path="/about" element={<AboutPage />} />
-        <Route path="/coin/:coinId" element={<CoinDetailPage />} />
-        <Route path="/compare" element={<CoinComparisonPage />} />
-        <Route path="*" element={<Navigate to="/" replace />} />
-      </Routes>
-    </Router>
+    <SettingsProvider>
+      <Router>
+        <ScrollRestoration />
+        <Routes>
+          <Route path="/" element={<LandingPage />} />
+          <Route path="/portfolio" element={<PortfolioPage />} />
+          <Route path="/market" element={<MarketPage />} />
+          <Route path="/about" element={<AboutPage />} />
+          <Route path="/settings" element={<SettingsPage />} />
+          <Route path="/coin/:coinId" element={<CoinDetailPage />} />
+          <Route path="/compare" element={<CoinComparisonPage />} />
+          <Route path="*" element={<Navigate to="/" replace />} />
+        </Routes>
+      </Router>
+    </SettingsProvider>
   );
 }
 

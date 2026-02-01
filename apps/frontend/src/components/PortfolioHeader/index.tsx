@@ -84,6 +84,18 @@ export default function PortfolioHeader({
             >
               Market
             </NavLink>
+            <NavLink
+              to="/settings"
+              className={({ isActive }) =>
+                `px-3 py-2 rounded-md text-sm font-medium transition-colors ${
+                  isActive
+                    ? 'bg-white/20 text-white'
+                    : 'text-white/80 hover:bg-white/10 hover:text-white'
+                }`
+              }
+            >
+              Settings
+            </NavLink>
           </nav>
         </div>
 

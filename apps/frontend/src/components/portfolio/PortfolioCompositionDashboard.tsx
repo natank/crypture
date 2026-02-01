@@ -8,6 +8,7 @@ import {
   PortfolioAsset,
   CoinMetadata,
 } from '@services/portfolioAnalyticsService';
+import { useSettings } from '@contexts/SettingsContext';
 import AllocationPieChart from './AllocationPieChart';
 import AllocationViewSelector from './AllocationViewSelector';
 import AllocationLegend from './AllocationLegend';
@@ -26,6 +27,7 @@ export default function PortfolioCompositionDashboard({
   coinMetadata,
 }: PortfolioCompositionDashboardProps) {
   const [selectedView, setSelectedView] = useState<AllocationView>('asset');
+  const { settings } = useSettings();
 
   // Calculate allocation data based on selected view
   const allocationData = useMemo<AllocationItem[]>(() => {
@@ -35,7 +37,12 @@ export default function PortfolioCompositionDashboard({
       case 'asset':
         return calculateAssetAllocation(portfolio, priceMap);
       case 'category':
-        return calculateCategoryAllocation(portfolio, priceMap, coinMetadata);
+        return calculateCategoryAllocation(
+          portfolio,
+          priceMap,
+          coinMetadata,
+          settings.showAllCategories
+        );
       case 'marketCap':
         return calculateMarketCapAllocation(portfolio, priceMap, coinMetadata);
       case 'risk':
@@ -43,7 +50,13 @@ export default function PortfolioCompositionDashboard({
       default:
         return [];
     }
-  }, [selectedView, portfolio, priceMap, coinMetadata]);
+  }, [
+    selectedView,
+    portfolio,
+    priceMap,
+    coinMetadata,
+    settings.showAllCategories,
+  ]);
 
   const isEmpty = portfolio.length === 0;
 
