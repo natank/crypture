@@ -1,4 +1,4 @@
-import { test, expect } from '@playwright/test';
+import { test, expect } from '../console-setup';
 import { PortfolioPage } from '../pom-pages/portfolio.pom';
 
 test.describe('Category Preference Toggle', () => {
@@ -163,7 +163,11 @@ test.describe('Category Preference Toggle', () => {
     const categoryNames = await Promise.all(
       categoryItems.map(async (item) => {
         const text = await item.textContent();
-        return text?.replace(/\d+(?:\.\d+)?%/, '').trim();
+        // Remove percentage and dollar amount, keep just the category name
+        return text
+          ?.replace(/\d+(?:\.\d+)?%/, '')
+          .replace(/\$[\d,]+(?:\.\d+)?/, '')
+          .trim();
       })
     );
 
@@ -191,7 +195,9 @@ test.describe('Category Preference Toggle', () => {
     await expect(portfolioPage.page).toHaveURL('/settings');
 
     // Should show settings page content
-    await expect(portfolioPage.page.getByText('Settings')).toBeVisible();
+    await expect(
+      portfolioPage.page.getByRole('heading', { name: 'Settings', level: 1 })
+    ).toBeVisible();
     await expect(
       portfolioPage.page.getByText('Customize your portfolio experience')
     ).toBeVisible();
@@ -203,7 +209,10 @@ test.describe('Category Preference Toggle', () => {
 
     // Should show category settings
     await expect(
-      portfolioPage.page.getByText('Category Display')
+      portfolioPage.page.getByRole('heading', {
+        name: 'Category Display',
+        exact: true,
+      })
     ).toBeVisible();
     await expect(
       portfolioPage.page.getByText(
@@ -256,28 +265,130 @@ test.describe('Category Preference Toggle', () => {
     ).not.toBeChecked();
   });
 
-  test('should save preference and apply it in portfolio', async () => {
-    // Navigate to settings and enable all categories
-    await portfolioPage.page.goto('/settings');
-    await portfolioPage.page.locator('#all-categories').check();
+  test('should save preference and apply it in portfolio', async ({ page }) => {
+    // Set up mocks for this test
+    await page.route('**/api/coingecko/coins/list*', async (route) => {
+      await route.fulfill({
+        status: 200,
+        contentType: 'application/json',
+        body: JSON.stringify({
+          data: [{ id: 'bitcoin', symbol: 'btc', name: 'Bitcoin' }],
+          timestamp: new Date().toISOString(),
+          requestId: 'mock-request-id',
+        }),
+      });
+    });
 
-    // Go back to portfolio
-    await portfolioPage.page.goto('/portfolio');
+    await page.route('**/api/coingecko/simple/price*', async (route) => {
+      await route.fulfill({
+        status: 200,
+        contentType: 'application/json',
+        body: JSON.stringify({
+          data: {
+            bitcoin: { usd: 50000 },
+          },
+          timestamp: new Date().toISOString(),
+          requestId: 'mock-request-id',
+        }),
+      });
+    });
 
-    // Add Bitcoin to portfolio
-    await portfolioPage.addAsset('BTC', 1);
+    await page.route('**/api/coingecko/coins/markets*', async (route) => {
+      await route.fulfill({
+        status: 200,
+        contentType: 'application/json',
+        body: JSON.stringify({
+          data: [
+            {
+              id: 'bitcoin',
+              symbol: 'btc',
+              name: 'Bitcoin',
+              image: 'https://example.com/btc.png',
+              current_price: 50000,
+              market_cap: 1000000000000,
+              market_cap_rank: 1,
+              price_change_percentage_24h: 2.5,
+              price_change_percentage_7d: 5.0,
+            },
+          ],
+          timestamp: new Date().toISOString(),
+          requestId: 'mock-request-id',
+        }),
+      });
+    });
+
+    await page.route('**/api/coingecko/coins/bitcoin', async (route) => {
+      await route.fulfill({
+        status: 200,
+        contentType: 'application/json',
+        body: JSON.stringify({
+          data: {
+            id: 'bitcoin',
+            symbol: 'btc',
+            name: 'Bitcoin',
+            categories: [
+              'Smart Contract Platform',
+              'Layer 1 (L1)',
+              'FTX Holdings',
+              'Proof of Work (PoW)',
+              'Bitcoin Ecosystem',
+              'GMCI 30 Index',
+              'GMCI Index',
+              'Coinbase 50 Index',
+            ],
+            market_cap_rank: 1,
+            market_data: { current_price: { usd: 50000 } },
+          },
+          timestamp: new Date().toISOString(),
+          requestId: 'mock-request-id',
+        }),
+      });
+    });
+
+    // Start on settings page and set preference first
+    await page.goto('/settings');
+    await page.locator('#all-categories').check();
+    await page.waitForTimeout(500);
+
+    // Verify the setting is saved
+    const savedSettings = await page.evaluate(() => {
+      return localStorage.getItem('crypture_user_settings');
+    });
+    expect(savedSettings).toBe('{"showAllCategories":true}');
+
+    // Now go to portfolio and add Bitcoin
+    await page.goto('/portfolio');
+    await page.waitForTimeout(500);
+
+    // Add Bitcoin to portfolio (direct implementation to avoid fixture localStorage clearing)
+    const addAssetButton = page.getByTestId('add-asset-button');
+    await addAssetButton.click();
+
+    // Wait for dialog to appear
+    await page
+      .getByRole('dialog', { name: /add crypto asset/i })
+      .waitFor({ state: 'visible' });
+
+    // Select Bitcoin
+    const assetSelect = page.getByTestId('asset-select');
+    await assetSelect.selectOption('Bitcoin (BTC)');
+
+    // Fill quantity
+    await page.getByLabel(/quantity/i).fill('1');
+
+    // Confirm
+    await page.getByTestId('confirm-add-asset').click();
+
+    // Wait for asset to be added
+    await page.waitForTimeout(1000);
 
     // Switch to category view
-    const viewSelector = portfolioPage.page.getByTestId(
-      'allocation-view-selector'
-    );
+    const viewSelector = page.getByTestId('allocation-view-selector');
     const categoryTab = viewSelector.getByRole('tab', { name: /category/i });
     await categoryTab.click();
+    await page.waitForTimeout(1000);
 
-    // Wait for the chart to render
-    await portfolioPage.page.waitForTimeout(500);
-
-    const legend = portfolioPage.page.getByTestId('allocation-legend');
+    const legend = page.getByTestId('allocation-legend');
     const categoryItems = await legend
       .locator('[data-testid="allocation-legend-item"]')
       .all();
@@ -288,7 +399,11 @@ test.describe('Category Preference Toggle', () => {
     const categoryNames = await Promise.all(
       categoryItems.map(async (item) => {
         const text = await item.textContent();
-        return text?.replace(/\d+(?:\.\d+)?%/, '').trim();
+        // Remove percentage and dollar amount, keep just the category name
+        return text
+          ?.replace(/\d+(?:\.\d+)?%/, '')
+          .replace(/\$[\d,]+(?:\.\d+)?/, '')
+          .trim();
       })
     );
 
@@ -386,7 +501,11 @@ test.describe('Category Preference Toggle', () => {
     const categoryNames = await Promise.all(
       categoryItems.map(async (item) => {
         const text = await item.textContent();
-        return text?.replace(/\d+(?:\.\d+)?%/, '').trim();
+        // Remove percentage and dollar amount, keep just the category name
+        return text
+          ?.replace(/\d+(?:\.\d+)?%/, '')
+          .replace(/\$[\d,]+(?:\.\d+)?/, '')
+          .trim();
       })
     );
 
