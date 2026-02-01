@@ -57,7 +57,7 @@ export async function mockCoinGeckoMarkets(
         market_cap_rank: 1,
         price_change_percentage_24h: 1.5,
         price_change_percentage_7d: 3.5,
-        categories: ['Store of Value'],
+        // Note: Real API does NOT include categories in /coins/markets endpoint
       },
       {
         id: 'ethereum',
@@ -69,7 +69,7 @@ export async function mockCoinGeckoMarkets(
         market_cap_rank: 2,
         price_change_percentage_24h: 6.5,
         price_change_percentage_7d: 8.5,
-        categories: ['Smart Contract Platform'],
+        // Note: Real API does NOT include categories in /coins/markets endpoint
       },
       {
         id: 'cardano',
@@ -81,7 +81,7 @@ export async function mockCoinGeckoMarkets(
         market_cap_rank: 8,
         price_change_percentage_24h: -2.0,
         price_change_percentage_7d: 1.5,
-        categories: ['Layer 1'],
+        // Note: Real API does NOT include categories in /coins/markets endpoint
       },
     ];
 

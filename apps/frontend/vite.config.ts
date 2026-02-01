@@ -7,7 +7,6 @@ export default async () => {
   ]);
 
   return {
-    root: __dirname,
     plugins: [react(), tailwindcss()],
     publicDir: 'public',
     resolve: {
@@ -40,7 +39,11 @@ export default async () => {
     server: {
       host: true,
       fs: {
-        allow: [__dirname, '../../'],
+        allow: [
+          '/Users/nati-home/Projects/crypture/apps/frontend',
+          '/Users/nati-home/Projects/crypture/libs',
+          '/Users/nati-home/Projects/crypture/node_modules',
+        ],
       },
     },
   };

@@ -38,7 +38,9 @@ export function useCoinCategories(coinIds: string[]): CoinCategoriesState {
       } catch (err) {
         if (!cancelled) {
           setError(
-            err instanceof Error ? err.message : 'Failed to load coin categories'
+            err instanceof Error
+              ? err.message
+              : 'Failed to load coin categories'
           );
         }
       } finally {
