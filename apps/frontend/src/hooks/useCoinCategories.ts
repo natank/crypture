@@ -55,7 +55,7 @@ export function useCoinCategories(coinIds: string[]): CoinCategoriesState {
     return () => {
       cancelled = true;
     };
-  }, [coinIds.join(',')]);
+  }, [coinIds]);
 
   return { categories, isLoading, error };
 }

@@ -13,6 +13,7 @@ export default async () => {
       alias: {
         '@components': '/src/components',
         '@context': '/src/context',
+        '@contexts': '/src/contexts',
         '@services': '/src/services',
         '@hooks': '/src/hooks',
         '@pages': '/src/pages',

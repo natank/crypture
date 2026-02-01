@@ -88,6 +88,7 @@ test.describe('Portfolio Composition Visualizations', () => {
     });
 
     // Mock coin details endpoint for category fetching
+    // Bitcoin categories include both core characteristics and index funds
     await page.route('**/api/coingecko/coins/bitcoin', async (route) => {
       await route.fulfill({
         status: 200,
@@ -97,7 +98,16 @@ test.describe('Portfolio Composition Visualizations', () => {
             id: 'bitcoin',
             symbol: 'btc',
             name: 'Bitcoin',
-            categories: ['Cryptocurrency'],
+            categories: [
+              'Smart Contract Platform', // Will be filtered out
+              'Layer 1 (L1)', // Will remain
+              'FTX Holdings', // Will be filtered out
+              'Proof of Work (PoW)', // Will remain
+              'Bitcoin Ecosystem', // Will remain
+              'GMCI 30 Index', // Will be filtered out
+              'GMCI Index', // Will be filtered out
+              'Coinbase 50 Index', // Will be filtered out
+            ],
             market_cap_rank: 1,
             market_data: { current_price: { usd: 50000 } },
           },
@@ -116,7 +126,23 @@ test.describe('Portfolio Composition Visualizations', () => {
             id: 'ethereum',
             symbol: 'eth',
             name: 'Ethereum',
-            categories: ['Smart Contract Platform'],
+            categories: [
+              'Smart Contract Platform', // Will remain
+              'Layer 1 (L1)', // Will remain
+              'Ethereum Ecosystem', // Will remain
+              'FTX Holdings', // Will be filtered out
+              'Multicoin Capital Portfolio', // Will be filtered out
+              'Proof of Stake (PoS)', // Will remain
+              'Alameda Research Portfolio', // Will be filtered out
+              'Andreessen Horowitz (a16z) Portfolio', // Will be filtered out
+              'GMCI Layer 1 Index', // Will be filtered out
+              'GMCI 30 Index', // Will be filtered out
+              'Delphi Ventures Portfolio', // Will be filtered out
+              'Galaxy Digital Portfolio', // Will be filtered out
+              'GMCI Index', // Will be filtered out
+              'World Liberty Financial Portfolio', // Will be filtered out
+              'Coinbase 50 Index', // Will be filtered out
+            ],
             market_cap_rank: 2,
             market_data: { current_price: { usd: 3000 } },
           },
@@ -135,7 +161,13 @@ test.describe('Portfolio Composition Visualizations', () => {
             id: 'cardano',
             symbol: 'ada',
             name: 'Cardano',
-            categories: ['Layer 1'],
+            categories: [
+              'Layer 1 (L1)', // Will remain
+              'Smart Contract Platform', // Will remain
+              'Proof of Stake (PoS)', // Will remain
+              'FTX Holdings', // Will be filtered out
+              'GMCI Index', // Will be filtered out
+            ],
             market_cap_rank: 8,
             market_data: { current_price: { usd: 0.5 } },
           },
@@ -268,9 +300,10 @@ test.describe('Portfolio Composition Visualizations', () => {
       await expect(categoryTab).toHaveClass(/bg-brand-primary/);
 
       // Legend should show categories from mocked coin details
-      // BTC: Cryptocurrency, ETH: Smart Contract Platform
+      // BTC: Smart Contract Platform, Layer 1 (L1), Proof of Work (PoW), Bitcoin Ecosystem
+      // ETH: Smart Contract Platform, Layer 1 (L1), Ethereum Ecosystem, Proof of Stake (PoS)
       const legend = portfolioPage.page.getByTestId('allocation-legend');
-      await expect(legend.getByText(/cryptocurrency/i)).toBeVisible();
+      await expect(legend.getByText(/smart contract platform/i)).toBeVisible();
     });
 
     test('should switch to market cap tier view', async () => {
@@ -391,21 +424,46 @@ test.describe('Portfolio Composition Visualizations', () => {
         })
       );
 
-      // Should only show Bitcoin's category (Cryptocurrency), not ETH or ADA categories
-      // If the bug exists, it would show "Smart Contract Platform" or "Layer 1" from other coins
-      const hasEthCategories = categoryNames.some((name) =>
-        name?.toLowerCase().includes('smart contract')
-      );
-      const hasAdaCategories = categoryNames.some((name) =>
-        name?.toLowerCase().includes('layer 1')
-      );
+      // Should show Bitcoin's filtered categories, not index fund categories
+      // Bitcoin should show: Smart Contract Platform, Layer 1 (L1), Proof of Work (PoW), Bitcoin Ecosystem
+      // Should NOT show: FTX Holdings, GMCI Index, Coinbase 50 Index, etc.
+      const expectedCategories = [
+        'Smart Contract Platform',
+        'Layer 1 (L1)',
+        'Proof of Work (PoW)',
+        'Bitcoin Ecosystem',
+      ];
+      const unexpectedCategories = [
+        'FTX Holdings',
+        'GMCI 30 Index',
+        'GMCI Index',
+        'Coinbase 50 Index',
+      ];
 
-      // These should NOT appear since only BTC is in portfolio
-      expect(hasEthCategories).toBe(false);
-      expect(hasAdaCategories).toBe(false);
+      // Verify expected categories are present
+      expectedCategories.forEach((expectedCategory) => {
+        const hasCategory = categoryNames.some((name) =>
+          name?.toLowerCase().includes(expectedCategory.toLowerCase())
+        );
+        expect(
+          hasCategory,
+          `Expected category "${expectedCategory}" not found. Found: ${categoryNames.join(', ')}`
+        ).toBe(true);
+      });
 
-      // Should only have 1 category (Bitcoin's)
-      expect(categoryItems.length).toBe(1);
+      // Verify index fund categories are filtered out
+      unexpectedCategories.forEach((unexpectedCategory) => {
+        const hasCategory = categoryNames.some((name) =>
+          name?.toLowerCase().includes(unexpectedCategory.toLowerCase())
+        );
+        expect(
+          hasCategory,
+          `Unexpected category "${unexpectedCategory}" found. Found: ${categoryNames.join(', ')}`
+        ).toBe(false);
+      });
+
+      // Should have exactly 4 filtered categories for Bitcoin
+      expect(categoryItems.length).toBe(4);
     });
 
     test('should adapt layout for mobile', async ({ page }) => {

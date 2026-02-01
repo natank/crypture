@@ -5,6 +5,7 @@
  */
 
 import { fetchAssetHistory, PriceHistoryPoint } from './coinService';
+import { filterCoreCategories } from '@utils/categoryUtils';
 
 export interface PortfolioHistoryPoint {
   timestamp: number;
@@ -75,7 +76,8 @@ export function calculateAssetAllocation(
 export function calculateCategoryAllocation(
   portfolio: PortfolioAsset[],
   priceMap: Record<string, number>,
-  coinMetadata: Record<string, CoinMetadata>
+  coinMetadata: Record<string, CoinMetadata>,
+  showAllCategories: boolean = false
 ): AllocationItem[] {
   const categoryMap = new Map<string, number>();
   let totalValue = 0;
@@ -86,7 +88,12 @@ export function calculateCategoryAllocation(
     totalValue += value;
 
     const metadata = coinMetadata[asset.coinInfo.id];
-    const categories = metadata?.categories || ['Other'];
+    const rawCategories = metadata?.categories || ['Other'];
+
+    // Apply filtering based on user preference
+    const categories = showAllCategories
+      ? rawCategories
+      : filterCoreCategories(rawCategories);
 
     // Distribute value across all categories for this coin
     const valuePerCategory = value / categories.length;
