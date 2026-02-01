@@ -26,6 +26,7 @@
       "@utils/*": ["src/utils/*"],
       "@pages/*": ["src/pages/*"],
       "@context/*": ["src/context/*"],
+      "@contexts/*": ["src/contexts/*"],
       "@e2e/*": ["src/e2e/*"],
       "@test-setup": ["src/e2e/test-setup.ts"],
       "@assets/*": ["public/assets/*"],
