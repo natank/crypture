@@ -134,19 +134,21 @@ export default function PortfolioPage() {
   // Create coin metadata map for composition analysis (with dynamic categories)
   const coinMetadata = useMemo(() => {
     const metadata: Record<string, CoinMetadata> = {};
-    for (const coin of allCoins) {
-      metadata[coin.id] = {
-        id: coin.id,
-        symbol: coin.symbol,
-        name: coin.name,
-        market_cap_rank: coin.market_cap_rank,
-        price_change_percentage_24h: coin.price_change_percentage_24h,
-        price_change_percentage_7d: coin.price_change_percentage_7d,
-        categories: coinCategories[coin.id] ?? coin.categories ?? ['Other'],
+    for (const asset of portfolio) {
+      const coinId = asset.coinInfo.id;
+      metadata[coinId] = {
+        id: coinId,
+        symbol: asset.coinInfo.symbol,
+        name: asset.coinInfo.name,
+        market_cap_rank: asset.coinInfo.market_cap_rank,
+        price_change_percentage_24h: asset.coinInfo.price_change_percentage_24h,
+        price_change_percentage_7d: asset.coinInfo.price_change_percentage_7d,
+        categories: coinCategories[coinId] ??
+          asset.coinInfo.categories ?? ['Other'],
       };
     }
     return metadata;
-  }, [allCoins, coinCategories]);
+  }, [portfolio, coinCategories]);
 
   // Portfolio coins for alert suggestions
   const portfolioMarketCoins = useMemo(() => {

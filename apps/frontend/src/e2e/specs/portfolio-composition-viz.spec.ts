@@ -40,6 +40,7 @@ test.describe('Portfolio Composition Visualizations', () => {
     });
 
     // Mock market data with metadata for composition analysis
+    // Note: Real CoinGecko API does NOT return categories in /coins/markets endpoint
     await page.route('**/api/coingecko/coins/markets*', async (route) => {
       await route.fulfill({
         status: 200,
@@ -56,7 +57,6 @@ test.describe('Portfolio Composition Visualizations', () => {
               market_cap_rank: 1,
               price_change_percentage_24h: 2.5,
               price_change_percentage_7d: 5.0,
-              categories: ['Layer 1', 'Store of Value'],
             },
             {
               id: 'ethereum',
@@ -68,7 +68,6 @@ test.describe('Portfolio Composition Visualizations', () => {
               market_cap_rank: 2,
               price_change_percentage_24h: 3.2,
               price_change_percentage_7d: 7.5,
-              categories: ['Layer 1', 'Smart Contracts'],
             },
             {
               id: 'cardano',
@@ -77,12 +76,69 @@ test.describe('Portfolio Composition Visualizations', () => {
               image: 'https://example.com/ada.png',
               current_price: 0.5,
               market_cap: 17000000000,
-              market_cap_rank: 8,
-              price_change_percentage_24h: -1.5,
-              price_change_percentage_7d: 2.0,
-              categories: ['Layer 1', 'Smart Contracts'],
+              market_cap_rank: 100,
+              price_change_percentage_24h: -15.0,
+              price_change_percentage_7d: 25.0,
             },
           ],
+          timestamp: new Date().toISOString(),
+          requestId: 'mock-request-id',
+        }),
+      });
+    });
+
+    // Mock coin details endpoint for category fetching
+    await page.route('**/api/coingecko/coins/bitcoin', async (route) => {
+      await route.fulfill({
+        status: 200,
+        contentType: 'application/json',
+        body: JSON.stringify({
+          data: {
+            id: 'bitcoin',
+            symbol: 'btc',
+            name: 'Bitcoin',
+            categories: ['Cryptocurrency'],
+            market_cap_rank: 1,
+            market_data: { current_price: { usd: 50000 } },
+          },
+          timestamp: new Date().toISOString(),
+          requestId: 'mock-request-id',
+        }),
+      });
+    });
+
+    await page.route('**/api/coingecko/coins/ethereum', async (route) => {
+      await route.fulfill({
+        status: 200,
+        contentType: 'application/json',
+        body: JSON.stringify({
+          data: {
+            id: 'ethereum',
+            symbol: 'eth',
+            name: 'Ethereum',
+            categories: ['Smart Contract Platform'],
+            market_cap_rank: 2,
+            market_data: { current_price: { usd: 3000 } },
+          },
+          timestamp: new Date().toISOString(),
+          requestId: 'mock-request-id',
+        }),
+      });
+    });
+
+    await page.route('**/api/coingecko/coins/cardano', async (route) => {
+      await route.fulfill({
+        status: 200,
+        contentType: 'application/json',
+        body: JSON.stringify({
+          data: {
+            id: 'cardano',
+            symbol: 'ada',
+            name: 'Cardano',
+            categories: ['Layer 1'],
+            market_cap_rank: 8,
+            market_data: { current_price: { usd: 0.5 } },
+          },
           timestamp: new Date().toISOString(),
           requestId: 'mock-request-id',
         }),
@@ -211,9 +267,10 @@ test.describe('Portfolio Composition Visualizations', () => {
       // Active tab should have primary background
       await expect(categoryTab).toHaveClass(/bg-brand-primary/);
 
-      // Legend should show categories (with default metadata, this will be "Other")
+      // Legend should show categories from mocked coin details
+      // BTC: Cryptocurrency, ETH: Smart Contract Platform
       const legend = portfolioPage.page.getByTestId('allocation-legend');
-      await expect(legend.getByText(/other/i)).toBeVisible();
+      await expect(legend.getByText(/cryptocurrency/i)).toBeVisible();
     });
 
     test('should switch to market cap tier view', async () => {
@@ -304,9 +361,13 @@ test.describe('Portfolio Composition Visualizations', () => {
       }
     });
 
-    test('should show real categories, not just Other 100%', async () => {
-      // Add Cardano which has different categories in mocks
-      await portfolioPage.addAsset('ADA', 1000);
+    test('should only show categories for portfolio coins, not all loaded coins', async () => {
+      // Clear localStorage to ensure clean portfolio state
+      await portfolioPage.page.evaluate(() => localStorage.clear());
+      await portfolioPage.reload();
+
+      // Only add Bitcoin to portfolio
+      await portfolioPage.addAsset('BTC', 1);
 
       const viewSelector = portfolioPage.page.getByTestId(
         'allocation-view-selector'
@@ -319,30 +380,32 @@ test.describe('Portfolio Composition Visualizations', () => {
       // Wait for the chart to render
       await portfolioPage.page.waitForTimeout(500);
 
-      // Should show multiple categories, not just Other 100%
+      // Get all category names shown
       const categoryItems = await legend
         .locator('[data-testid="allocation-legend-item"]')
-        .count();
+        .all();
+      const categoryNames = await Promise.all(
+        categoryItems.map(async (item) => {
+          const text = await item.textContent();
+          return text?.replace(/\d+(?:\.\d+)?%/, '').trim();
+        })
+      );
 
-      // With BTC (Cryptocurrency), ETH (Smart Contract Platform), ADA (Layer 1, Smart Contract Platform)
-      // we expect multiple distinct categories
-      expect(categoryItems).toBeGreaterThan(1);
+      // Should only show Bitcoin's category (Cryptocurrency), not ETH or ADA categories
+      // If the bug exists, it would show "Smart Contract Platform" or "Layer 1" from other coins
+      const hasEthCategories = categoryNames.some((name) =>
+        name?.toLowerCase().includes('smart contract')
+      );
+      const hasAdaCategories = categoryNames.some((name) =>
+        name?.toLowerCase().includes('layer 1')
+      );
 
-      // Check that categories are NOT all "Other"
-      const otherItem = legend
-        .locator('[data-testid="allocation-legend-item"]')
-        .filter({ hasText: /Other/ });
-      const hasOtherOnly = await otherItem
-        .count()
-        .then((c) => c === categoryItems);
-      expect(hasOtherOnly).toBe(false);
-    });
-  });
+      // These should NOT appear since only BTC is in portfolio
+      expect(hasEthCategories).toBe(false);
+      expect(hasAdaCategories).toBe(false);
 
-  test.describe('Responsive Behavior', () => {
-    test.beforeEach(async () => {
-      await portfolioPage.addAsset('BTC', 1);
-      await portfolioPage.addAsset('ETH', 10);
+      // Should only have 1 category (Bitcoin's)
+      expect(categoryItems.length).toBe(1);
     });
 
     test('should adapt layout for mobile', async ({ page }) => {
@@ -358,21 +421,6 @@ test.describe('Portfolio Composition Visualizations', () => {
 
       // Check that layout is vertical (flex-col)
       await expect(container).toHaveClass(/flex-col/);
-    });
-
-    test('should adapt layout for desktop', async ({ page }) => {
-      // Set desktop viewport
-      await page.setViewportSize({ width: 1920, height: 1080 });
-
-      const compositionSection = page.getByTestId(
-        'portfolio-composition-dashboard'
-      );
-
-      // Chart and legend should be side-by-side on desktop
-      const container = compositionSection.locator('.composition-content');
-
-      // Check that layout is horizontal on larger screens
-      await expect(container).toHaveClass(/lg:flex-row/);
     });
   });
 

@@ -26,18 +26,18 @@
       }
     },
     "serve": {
-      "executor": "@nx/vite:dev-server",
+      "executor": "nx:run-commands",
       "defaultConfiguration": "development",
       "options": {
-        "buildTarget": "frontend:build",
-        "port": 4200
+        "command": "vite",
+        "cwd": "apps/frontend"
       },
       "configurations": {
         "development": {
-          "buildTarget": "frontend:build:development"
+          "command": "vite"
         },
         "production": {
-          "buildTarget": "frontend:build:production"
+          "command": "vite --mode production"
         }
       }
     },

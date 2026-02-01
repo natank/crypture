@@ -15,12 +15,28 @@ type Fixtures = {
 };
 
 export const test = base.extend<Fixtures>({
-  portfolioPage: async ({ page }, run) => {
+  // Start fresh with no storage state for each test
+  storageState: undefined,
+
+  portfolioPage: async ({ page, context }, run) => {
+    // Clear all storage before setting up mocks
+    await context.clearCookies();
+
+    // Set up mocks first
     await mockCoinGeckoMarkets(page);
     await mockCoinGeckoChartData(page);
     await mockCoinGeckoCoinDetails(page);
+
+    // Navigate to portfolio page first, then clear storage
     const portfolioPage = new PortfolioPage(page);
     await portfolioPage.goto();
+
+    // Clear storage after navigating to the actual page
+    await page.evaluate(() => {
+      localStorage.clear();
+      sessionStorage.clear();
+    });
+
     await run(portfolioPage);
   },
 

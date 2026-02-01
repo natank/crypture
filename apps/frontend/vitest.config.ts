@@ -1,14 +1,14 @@
-// vitest.config.ts
-export default {
+import { defineConfig } from 'vitest/config';
+
+export default defineConfig({
   test: {
     globals: true,
     environment: 'jsdom',
     setupFiles: ['./src/setupTests.ts'],
     include: ['**/*.{test,test.*}.?(c|m)[jt]s?(x)'],
     coverage: {
-      provider: 'v8', // or 'c8'
+      provider: 'v8',
       reporter: ['text', 'html', 'json-summary'],
-      all: true,
       exclude: [
         '**/node_modules/**',
         '**/dist/**',
@@ -44,4 +44,4 @@ export default {
         '/Users/nati-home/Projects/crypture/libs/shared-types/src/index.ts',
     },
   },
-};
+});

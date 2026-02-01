@@ -138,6 +138,64 @@ describe('portfolioAnalyticsService', () => {
       expect(result[0].name).toBe('Other');
       expect(result[0].percentage).toBe(100);
     });
+
+    it('should only include coins from portfolio, not extra metadata', () => {
+      // Simulate bug where metadata contains extra coins not in portfolio
+      const singleCoinPortfolio: PortfolioAsset[] = [
+        {
+          coinInfo: { id: 'bitcoin', symbol: 'btc', name: 'Bitcoin' },
+          quantity: 1,
+        },
+      ];
+
+      const singlePriceMap: Record<string, number> = {
+        bitcoin: 50000,
+      };
+
+      // Metadata includes extra coins not in portfolio
+      const metadataWithExtraCoins: Record<string, CoinMetadata> = {
+        bitcoin: {
+          id: 'bitcoin',
+          symbol: 'btc',
+          name: 'Bitcoin',
+          market_cap_rank: 1,
+          price_change_percentage_24h: 2.5,
+          price_change_percentage_7d: 5.0,
+          categories: ['Store of Value'],
+        },
+        // These extra coins should NOT appear in allocation
+        ethereum: {
+          id: 'ethereum',
+          symbol: 'eth',
+          name: 'Ethereum',
+          market_cap_rank: 2,
+          price_change_percentage_24h: 6.0,
+          price_change_percentage_7d: 7.5,
+          categories: ['Smart Contract Platform'],
+        },
+        cardano: {
+          id: 'cardano',
+          symbol: 'ada',
+          name: 'Cardano',
+          market_cap_rank: 8,
+          price_change_percentage_24h: -1.5,
+          price_change_percentage_7d: 2.0,
+          categories: ['Layer 1'],
+        },
+      };
+
+      const result = calculateCategoryAllocation(
+        singleCoinPortfolio,
+        singlePriceMap,
+        metadataWithExtraCoins
+      );
+
+      // Should only show Bitcoin's categories, not ETH or ADA
+      expect(result).toHaveLength(1);
+      expect(result[0].name).toBe('Store of Value');
+      expect(result[0].percentage).toBe(100);
+      expect(result[0].value).toBe(50000);
+    });
   });
 
   describe('calculateMarketCapAllocation', () => {

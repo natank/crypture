@@ -1,23 +1,18 @@
 import express from 'express';
-import cors from 'cors';
 import helmet from 'helmet';
-import morgan from 'morgan';
 import dotenv from 'dotenv';
-import { healthRouter } from './routes/health';
-import { coingeckoRouter } from './routes/coingecko';
-import {
-  requestLogger,
-  responseLogger,
-  errorLogger,
-  morganLogger,
-  apiLogger,
-} from './middleware/logger';
-import { corsMiddleware, corsLogger, apiCors } from './middleware/cors';
-import { apiRateLimiter, proxyRateLimiter } from './middleware/rateLimiter';
-import { specs, swaggerUi } from './config/swagger';
 
 // Load environment variables
-dotenv.config();
+dotenv.config({
+  path: process.env.NODE_ENV === 'development' ? '.env.development' : '.env',
+});
+
+import { healthRouter } from './routes/health';
+import { coingeckoRouter } from './routes/coingecko';
+import { requestLogger, morganLogger, apiLogger } from './middleware/logger';
+import { corsLogger, apiCors } from './middleware/cors';
+import { apiRateLimiter, proxyRateLimiter } from './middleware/rateLimiter';
+import { specs, swaggerUi } from './config/swagger';
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -28,13 +23,6 @@ const NODE_ENV = process.env.NODE_ENV || 'development';
 app.use(requestLogger); // Add request ID and start time
 app.use(corsLogger); // Log CORS requests
 app.use(helmet()); // Security headers
-
-// Environment-aware CORS
-if (NODE_ENV === 'development') {
-  app.use(corsMiddleware()); // Development CORS (permissive)
-} else {
-  app.use(corsMiddleware()); // Production CORS (strict)
-}
 
 app.use(morganLogger()); // Enhanced request logging
 app.use(express.json({ limit: '10mb' })); // Parse JSON bodies with size limit
@@ -86,7 +74,6 @@ app.use('*', (req, res) => {
 });
 
 // Enhanced error handler
-app.use(errorLogger);
 app.use(
   (
     err: any,
