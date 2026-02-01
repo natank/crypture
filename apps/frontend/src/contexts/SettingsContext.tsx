@@ -31,29 +31,28 @@ interface SettingsProviderProps {
   children: ReactNode;
 }
 
-export function SettingsProvider({ children }: SettingsProviderProps) {
-  const [settings, setSettings] = useState<UserSettings>(DEFAULT_SETTINGS);
-  const isResettingRef = useRef(false);
-  const isInitializedRef = useRef(false);
-
-  // Load settings from localStorage on mount
-  useEffect(() => {
-    try {
-      const stored = localStorage.getItem(SETTINGS_STORAGE_KEY);
-      if (stored) {
-        const parsedSettings = JSON.parse(stored);
-        setSettings({ ...DEFAULT_SETTINGS, ...parsedSettings });
-      }
-    } catch (error) {
-      console.warn('Failed to load settings from localStorage:', error);
+function loadSettingsFromStorage(): UserSettings {
+  try {
+    const stored = localStorage.getItem(SETTINGS_STORAGE_KEY);
+    if (stored) {
+      const parsedSettings = JSON.parse(stored);
+      return { ...DEFAULT_SETTINGS, ...parsedSettings };
     }
-    // Mark as initialized
-    isInitializedRef.current = true;
-  }, []);
+  } catch (error) {
+    console.warn('Failed to load settings from localStorage:', error);
+  }
+  return DEFAULT_SETTINGS;
+}
 
-  // Save settings to localStorage whenever they change (but not during reset or before initialization)
+export function SettingsProvider({ children }: SettingsProviderProps) {
+  const [settings, setSettings] = useState<UserSettings>(
+    loadSettingsFromStorage
+  );
+  const isResettingRef = useRef(false);
+
+  // Save settings to localStorage whenever they change (but not during reset)
   useEffect(() => {
-    if (!isResettingRef.current && isInitializedRef.current) {
+    if (!isResettingRef.current) {
       try {
         localStorage.setItem(SETTINGS_STORAGE_KEY, JSON.stringify(settings));
       } catch (error) {
@@ -61,11 +60,9 @@ export function SettingsProvider({ children }: SettingsProviderProps) {
       }
     } else {
       // Reset the flag after the state update is processed
-      if (isResettingRef.current) {
-        isResettingRef.current = false;
-      }
+      isResettingRef.current = false;
     }
-  }, [settings, isInitializedRef.current]);
+  }, [settings]);
 
   const updateSettings = (updates: Partial<UserSettings>) => {
     setSettings((prev) => ({ ...prev, ...updates }));

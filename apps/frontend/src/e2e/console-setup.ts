@@ -37,6 +37,10 @@ export const test = base.extend({
         const errorMessage = `[PAGE ERROR] ${error.message}${error.stack ? `\n${error.stack}` : ''}`;
         console.log(`💥 Page Error: ${errorMessage}`);
       });
+    } else {
+      // When logging is disabled, completely silence browser console
+      page.on('console', () => {});
+      page.on('pageerror', () => {});
     }
 
     // Provide the page to the test

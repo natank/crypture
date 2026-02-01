@@ -42,6 +42,7 @@ export default defineConfig({
           '--disable-dev-shm-usage',
           '--disable-gpu',
           '--no-sandbox',
+          '--disable-logging',
         ],
       },
     }),

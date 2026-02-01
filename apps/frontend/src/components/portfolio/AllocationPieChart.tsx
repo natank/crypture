@@ -1,11 +1,4 @@
-import {
-  PieChart,
-  Pie,
-  Cell,
-  ResponsiveContainer,
-  Tooltip,
-  Legend,
-} from 'recharts';
+import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip } from 'recharts';
 import { AllocationItem } from '@services/portfolioAnalyticsService';
 import { AllocationView } from './PortfolioCompositionDashboard';
 
@@ -76,20 +69,14 @@ export default function AllocationPieChart({
       className="h-64 md:h-80 lg:h-96 min-h-[256px]"
     >
       <ResponsiveContainer width="100%" height="100%" minHeight={256}>
-        <PieChart>
+        <PieChart margin={{ top: 0, right: 0, bottom: 0, left: 0 }}>
           <Pie
             data={data}
             cx="50%"
             cy="50%"
             labelLine={false}
-            label={(props) => {
-              // Recharts passes the actual data entry under `payload`
-              const entry = props.payload as AllocationItem | undefined;
-              const pct = entry?.percentage ?? 0;
-              // Only show label if percentage is > 5% to avoid clutter
-              if (pct < 5) return '';
-              return `${entry?.name ?? props.name} (${pct.toFixed(1)}%)`;
-            }}
+            label={false}
+            isAnimationActive={false}
             outerRadius={80}
             innerRadius={40}
             fill="#8884d8"
@@ -105,14 +92,6 @@ export default function AllocationPieChart({
             ))}
           </Pie>
           <Tooltip content={<CustomTooltip />} />
-          <Legend
-            verticalAlign="bottom"
-            height={36}
-            iconType="circle"
-            formatter={(value) => (
-              <span className="text-sm text-text">{value}</span>
-            )}
-          />
         </PieChart>
       </ResponsiveContainer>
     </div>
