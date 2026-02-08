@@ -1,4 +1,5 @@
 import React from 'react';
+import CoinGeckoAttribution from '@components/CoinGeckoAttribution';
 
 export function Footer() {
   const currentYear = new Date().getFullYear();
@@ -54,7 +55,7 @@ export function Footer() {
                 src="/logo/svg/crypture-logo-negative-space-monochrome.svg"
                 alt="Crypture"
               />
-              <span className="text-xl font-bold bg-gradient-to-r from-indigo-600 to-teal-500 bg-clip-text text-transparent">
+              <span className="text-xl font-bold bg-linear-to-r from-indigo-600 to-teal-500 bg-clip-text text-transparent">
                 Crypture
               </span>
             </a>
@@ -104,9 +105,19 @@ export function Footer() {
           </div>
         </div>
         <div className="mt-12 border-t border-gray-200 pt-8">
-          <p className="text-base text-gray-400 text-center">
-            &copy; {currentYear} Crypture. All rights reserved.
-          </p>
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 text-center">
+            <p className="text-base text-gray-400">
+              &copy; {currentYear} Crypture. All rights reserved.
+            </p>
+            <div className="bg-gray-900 dark:bg-gray-800 rounded-full px-5 py-2">
+              <CoinGeckoAttribution
+                variant="compact"
+                text="Data provided by CoinGecko"
+                utmSource="crypture"
+                className="text-white"
+              />
+            </div>
+          </div>
         </div>
       </div>
     </footer>

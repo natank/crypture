@@ -199,13 +199,22 @@ test.describe('Category Exploration', () => {
     });
 
     await test.step('Verify default coin list (All)', async () => {
-      // Use specific selector to avoid strict mode violation (Bitcoin appears in trending/movers too)
-      await expect(page.getByRole('table').getByText('Bitcoin')).toBeVisible();
-      await expect(page.getByRole('table').getByText('Ethereum')).toBeVisible();
+      // Use specific test ID to target only the market coin list table
+      const marketTable = page.getByTestId('market-coin-list-table');
+      await expect(marketTable.getByText('Bitcoin')).toBeVisible();
+      await expect(marketTable.getByText('Ethereum')).toBeVisible();
     });
 
     await test.step('Select DeFi category', async () => {
+      const defiResponse = page.waitForResponse((response) => {
+        const url = new URL(response.url());
+        return (
+          url.pathname.includes('/api/coingecko/coins/markets') &&
+          url.searchParams.get('category') === 'decentralized-finance-defi'
+        );
+      });
       await page.getByRole('button', { name: 'DeFi' }).click();
+      await defiResponse;
       // Wait for Uniswap to appear (indicates data has loaded)
       await expect(page.getByRole('table').getByText('Uniswap')).toBeVisible({
         timeout: 10000,
@@ -213,15 +222,25 @@ test.describe('Category Exploration', () => {
     });
 
     await test.step('Verify filtered coin list (DeFi)', async () => {
+      // Use specific test ID to target only the market coin list table
+      const marketTable = page.getByTestId('market-coin-list-table');
       // Bitcoin should disappear, Uniswap should appear
-      await expect(
-        page.getByRole('table').getByText('Bitcoin')
-      ).not.toBeVisible();
-      await expect(page.getByRole('table').getByText('Uniswap')).toBeVisible();
+      await expect(marketTable.getByText('Bitcoin')).toHaveCount(0);
+      await expect(marketTable.getByText('Uniswap')).toBeVisible();
     });
 
     await test.step('Return to All categories', async () => {
+      const allResponse = page.waitForResponse((response) => {
+        const url = new URL(response.url());
+        return (
+          url.pathname.includes('/api/coingecko/coins/markets') &&
+          !url.searchParams.get('category')
+        );
+      });
       await page.getByRole('button', { name: 'All' }).click();
+      await allResponse;
+      const marketTable = page.getByTestId('market-coin-list-table');
+      await expect(marketTable.getByText('Bitcoin')).toBeVisible();
       // Wait for Bitcoin to reappear (indicates data has loaded)
       await expect(page.getByRole('table').getByText('Bitcoin')).toBeVisible({
         timeout: 10000,

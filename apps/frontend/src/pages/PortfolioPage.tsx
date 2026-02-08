@@ -576,7 +576,7 @@ export default function PortfolioPage() {
         />
       )}
 
-      <AppFooter />
+      <AppFooter hasAssets={portfolio.length > 0} />
     </>
   );
 }

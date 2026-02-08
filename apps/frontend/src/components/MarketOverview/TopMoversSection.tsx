@@ -77,12 +77,14 @@ export const TopMoversSection: React.FC = () => {
   );
 
   return (
-    <div
-      data-testid="top-movers-section"
-      className="mt-8 grid grid-cols-1 lg:grid-cols-2 gap-8"
-    >
-      {renderList('🚀 Top Gainers', gainers, true)}
-      {renderList('📉 Top Losers', losers, false)}
-    </div>
+    <>
+      <div
+        data-testid="top-movers-section"
+        className="mt-8 grid grid-cols-1 lg:grid-cols-2 gap-8"
+      >
+        {renderList('🚀 Top Gainers', gainers, true)}
+        {renderList('📉 Top Losers', losers, false)}
+      </div>
+    </>
   );
 };
