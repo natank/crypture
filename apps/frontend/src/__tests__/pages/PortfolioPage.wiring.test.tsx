@@ -88,6 +88,13 @@ vi.mock('@hooks/useNotifications', () => ({
     info: vi.fn(),
   }),
 }));
+vi.mock('@contexts/useSettings', () => ({
+  useSettings: () => ({
+    settings: { showAllCategories: false },
+    updateSettings: vi.fn(),
+    resetSettings: vi.fn(),
+  }),
+}));
 
 vi.mock('@components/ExportImportControls', () => ({
   __esModule: true,

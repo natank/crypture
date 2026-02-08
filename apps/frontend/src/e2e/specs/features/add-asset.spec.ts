@@ -9,9 +9,10 @@ test.describe('Add Asset Modal Flow', () => {
     // 2. Click “➕ Add Asset” button
     await page.getByRole('button', { name: /add asset/i }).click();
 
-    // 3. Wait for modal and fill in asset dropdown
-    await page.getByLabel('Asset');
-    await page.selectOption('select', { label: 'Bitcoin (BTC)' });
+    // 3. Wait for modal and select asset from custom dropdown
+    await page.getByTestId('asset-select').click();
+    await page.getByPlaceholder('Search assets...').fill('Bitcoin');
+    await page.getByRole('option', { name: /Bitcoin \(BTC\)/i }).click();
 
     // 4. Fill in quantity
     await page.getByPlaceholder('0.5').fill('1.2');

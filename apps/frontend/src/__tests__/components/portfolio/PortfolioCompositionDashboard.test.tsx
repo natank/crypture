@@ -3,6 +3,14 @@ import { render, screen, fireEvent } from '@testing-library/react';
 import PortfolioCompositionDashboard from '../../../components/portfolio/PortfolioCompositionDashboard';
 import { PortfolioAsset } from '../../../services/portfolioAnalyticsService';
 
+vi.mock('../../../contexts/useSettings', () => ({
+  useSettings: () => ({
+    settings: { showAllCategories: false },
+    updateSettings: vi.fn(),
+    resetSettings: vi.fn(),
+  }),
+}));
+
 // Mock Recharts to avoid rendering issues in test environment
 vi.mock('recharts', () => ({
   ResponsiveContainer: ({ children }: any) => (
