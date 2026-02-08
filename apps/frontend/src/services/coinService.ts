@@ -151,18 +151,35 @@ export async function fetchTopMovers(): Promise<{
   losers: MarketMover[];
 }> {
   try {
-    const [gainers, losers] = await Promise.all([
+    // Fetch more coins initially to ensure we have enough distinct options
+    const [topGainers, topLosers] = await Promise.all([
       coinGeckoApiService.getCoinsMarkets({
-        perPage: 5,
+        perPage: 20, // Fetch more to have enough distinct coins
         page: 1,
         order: 'price_change_percentage_24h_desc',
       }),
       coinGeckoApiService.getCoinsMarkets({
-        perPage: 5,
+        perPage: 20, // Fetch more to have enough distinct coins
         page: 1,
         order: 'price_change_percentage_24h_asc',
       }),
     ]);
+
+    // Filter for actual gainers (positive change) and losers (negative change)
+    const actualGainers = topGainers.filter(
+      (coin) => (coin.price_change_percentage_24h || 0) > 0
+    );
+    const actualLosers = topLosers.filter(
+      (coin) => (coin.price_change_percentage_24h || 0) < 0
+    );
+
+    // Get IDs of gainers to exclude from losers list
+    const gainerIds = new Set(actualGainers.map((coin) => coin.id));
+
+    // Filter out any coins that appear in both lists
+    const distinctLosers = actualLosers.filter(
+      (coin) => !gainerIds.has(coin.id)
+    );
 
     const mapToMarketMover = (coins: CoinGeckoPriceData[]): MarketMover[] =>
       coins.map((coin) => ({
@@ -177,8 +194,8 @@ export async function fetchTopMovers(): Promise<{
       }));
 
     return {
-      gainers: mapToMarketMover(gainers),
-      losers: mapToMarketMover(losers),
+      gainers: mapToMarketMover(actualGainers.slice(0, 5)), // Limit to top 5
+      losers: mapToMarketMover(distinctLosers.slice(0, 5)), // Limit to top 5
     };
   } catch (error: unknown) {
     if (error instanceof Error) {
