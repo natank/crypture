@@ -1,7 +1,7 @@
 import { test, expect } from '../../fixtures';
 
 test.describe('PortfolioPage CoinGecko Attribution', () => {
-  test('should display CoinGecko attribution when portfolio has assets', async ({
+  test('should display CoinGecko attribution in footer when portfolio has assets', async ({
     portfolioPage,
   }) => {
     const page = portfolioPage.page;
@@ -9,14 +9,16 @@ test.describe('PortfolioPage CoinGecko Attribution', () => {
     // Add an asset so attribution becomes visible
     await portfolioPage.addAsset('BTC', 1);
 
-    // Check for attribution in PortfolioPage (standard variant)
-    const portfolioAttribution = page.locator(
-      'text=Data provided by CoinGecko'
-    );
-    await expect(portfolioAttribution.first()).toBeVisible();
+    // Check for attribution in footer (compact variant)
+    const footerAttribution = page
+      .locator('footer')
+      .locator('text=Data provided by CoinGecko');
+    await expect(footerAttribution).toBeVisible();
 
     // Check that attribution links to CoinGecko
-    const attributionLink = page.locator('a[href*="coingecko.com"]').first();
+    const attributionLink = page
+      .locator('footer')
+      .locator('a[href*="coingecko.com"]');
     await expect(attributionLink).toBeVisible();
     await expect(attributionLink).toHaveAttribute('target', '_blank');
     await expect(attributionLink).toHaveAttribute('rel', 'noopener noreferrer');
@@ -26,26 +28,33 @@ test.describe('PortfolioPage CoinGecko Attribution', () => {
     expect(href).toMatch(/utm_source=crypture/);
   });
 
-  test('should display compact attribution in AssetList when assets are present', async ({
+  test('should display attribution in footer with proper styling', async ({
     portfolioPage,
   }) => {
     const page = portfolioPage.page;
 
-    // Add an asset so AssetList attribution becomes visible
+    // Add an asset so attribution becomes visible
     await portfolioPage.addAsset('BTC', 1);
 
-    // Check for compact attribution in AssetList
-    const assetListAttribution = page.locator('text=Source: CoinGecko');
-    await expect(assetListAttribution).toBeVisible();
+    // Check for attribution in footer with compact variant styling
+    const footerAttribution = page
+      .locator('footer')
+      .locator('text=Data provided by CoinGecko');
+    await expect(footerAttribution).toBeVisible();
 
-    // Verify it's the compact variant (smaller text)
-    const attributionContainer = assetListAttribution
-      .locator('..')
-      .locator('..');
+    // Verify it's the compact variant (smaller text, gray color)
+    const attributionContainer = footerAttribution.locator('..').locator('..');
     await expect(attributionContainer).toHaveClass(/text-xs/);
+    await expect(attributionContainer).toHaveClass(/text-gray-500/);
+
+    // Ensure no duplicate attributions in main content area
+    const mainContentAttributions = page
+      .locator('main')
+      .locator('text=Data provided by CoinGecko');
+    await expect(mainContentAttributions).not.toBeVisible();
   });
 
-  test('should not display attribution in AssetList when portfolio is empty', async ({
+  test('should not display attribution when portfolio is empty', async ({
     portfolioPage,
   }) => {
     const page = portfolioPage.page;
@@ -55,9 +64,11 @@ test.describe('PortfolioPage CoinGecko Attribution', () => {
       timeout: 10000,
     });
 
-    // Check that compact attribution is NOT present in AssetList
-    const assetListAttribution = page.locator('text=Source: CoinGecko');
-    await expect(assetListAttribution).not.toBeVisible();
+    // Check that attribution is NOT present when portfolio is empty
+    const portfolioAttribution = page.locator(
+      'text=Data provided by CoinGecko'
+    );
+    await expect(portfolioAttribution).not.toBeVisible();
   });
 
   test('attribution should be accessible', async ({ portfolioPage }) => {
@@ -66,12 +77,16 @@ test.describe('PortfolioPage CoinGecko Attribution', () => {
     // Add an asset so attribution becomes visible
     await portfolioPage.addAsset('BTC', 1);
 
-    // Wait for attribution to be visible
-    const attribution = page.locator('text=Data provided by CoinGecko');
-    await expect(attribution.first()).toBeVisible();
+    // Wait for attribution to be visible in footer
+    const attribution = page
+      .locator('footer')
+      .locator('text=Data provided by CoinGecko');
+    await expect(attribution).toBeVisible();
 
     // Test ARIA labels on attribution links
-    const attributionLink = page.locator('a[href*="coingecko.com"]').first();
+    const attributionLink = page
+      .locator('footer')
+      .locator('a[href*="coingecko.com"]');
     await expect(attributionLink).toHaveAttribute(
       'aria-label',
       /Visit CoinGecko website/
@@ -90,11 +105,13 @@ test.describe('PortfolioPage CoinGecko Attribution', () => {
 
     // Test mobile viewport
     await page.setViewportSize({ width: 375, height: 667 });
-    const attribution = page.locator('text=Data provided by CoinGecko');
-    await expect(attribution.first()).toBeVisible();
+    const attribution = page
+      .locator('footer')
+      .locator('text=Data provided by CoinGecko');
+    await expect(attribution).toBeVisible();
 
     // Test desktop viewport
     await page.setViewportSize({ width: 1200, height: 800 });
-    await expect(attribution.first()).toBeVisible();
+    await expect(attribution).toBeVisible();
   });
 });

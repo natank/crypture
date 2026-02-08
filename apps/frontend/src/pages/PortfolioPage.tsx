@@ -14,7 +14,6 @@ import { HelpBanner } from '@components/HelpBanner';
 import PortfolioCompositionDashboard from '@components/portfolio/PortfolioCompositionDashboard';
 import { PortfolioPerformanceChart } from '@components/PortfolioPerformanceChart';
 import DailySummaryCard from '@components/DailySummaryCard';
-import CoinGeckoAttribution from '@components/CoinGeckoAttribution';
 
 import { usePortfolioState } from '@hooks/usePortfolioState';
 import { useCoinList } from '@hooks/useCoinList';
@@ -523,15 +522,6 @@ export default function PortfolioPage() {
             onImport={handleImport}
             portfolioCount={portfolio.length}
           />
-
-          {/* CoinGecko Attribution */}
-          <div className="flex justify-center pt-4 border-t border-gray-200 dark:border-gray-700">
-            <CoinGeckoAttribution
-              variant="standard"
-              text="Data provided by CoinGecko"
-              utmSource="crypture"
-            />
-          </div>
         </section>
 
         {/* Add Asset Modal */}
@@ -586,7 +576,7 @@ export default function PortfolioPage() {
         />
       )}
 
-      <AppFooter />
+      <AppFooter hasAssets={portfolio.length > 0} />
     </>
   );
 }

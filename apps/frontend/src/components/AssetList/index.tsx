@@ -1,6 +1,5 @@
 import React, { useMemo } from 'react';
 import AssetRow from '@components/AssetRow';
-import CoinGeckoAttribution from '@components/CoinGeckoAttribution';
 import { PortfolioState } from '@hooks/usePortfolioState';
 import { PlusIcon } from 'lucide-react';
 type AssetListProps = {
@@ -93,17 +92,6 @@ export default function AssetList({
               expansionState={expansionState}
             />
           ))}
-        </div>
-      )}
-
-      {/* CoinGecko Attribution - only show when there are assets with price data */}
-      {assets.length > 0 && (
-        <div className="flex justify-center pt-2 mt-4 border-t border-gray-200 dark:border-gray-700">
-          <CoinGeckoAttribution
-            variant="compact"
-            text="Source: CoinGecko"
-            utmSource="crypture"
-          />
         </div>
       )}
     </section>

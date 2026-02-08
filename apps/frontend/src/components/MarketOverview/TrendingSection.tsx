@@ -1,6 +1,5 @@
 import React from 'react';
 import { useTrendingCoins } from '@hooks/useTrendingCoins';
-import CoinGeckoAttribution from '@components/CoinGeckoAttribution';
 import { useImageErrorHandler } from './useImageErrorHandler';
 
 export const TrendingSection: React.FC = () => {
@@ -68,15 +67,6 @@ export const TrendingSection: React.FC = () => {
             </div>
           ))}
         </div>
-      </div>
-
-      {/* CoinGecko Attribution */}
-      <div className="flex justify-center mt-4 pt-2 border-t border-gray-200 dark:border-gray-700">
-        <CoinGeckoAttribution
-          variant="compact"
-          text="Price data by CoinGecko"
-          utmSource="crypture"
-        />
       </div>
     </>
   );

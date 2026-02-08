@@ -122,28 +122,20 @@ describe('Market Overview Attribution', () => {
     expect(attributionLink).toHaveAttribute('target', '_blank');
   });
 
-  it('should display compact attribution in TopMoversSection', () => {
+  it('should not display duplicate attributions in sub-components', () => {
     render(<TopMoversSection />);
 
-    // Check for compact attribution
-    const attribution = screen.getByText('Price data by CoinGecko');
-    expect(attribution).toBeVisible();
-
-    // Check that it's the compact variant
-    const attributionContainer = attribution.closest('.text-xs');
-    expect(attributionContainer).toBeInTheDocument();
+    // Check that TopMoversSection no longer has attribution
+    const attribution = screen.queryByText('Price data by CoinGecko');
+    expect(attribution).not.toBeInTheDocument();
   });
 
-  it('should display compact attribution in TrendingSection', () => {
+  it('should not display duplicate attributions in TrendingSection', () => {
     render(<TrendingSection />);
 
-    // Check for compact attribution
-    const attribution = screen.getByText('Price data by CoinGecko');
-    expect(attribution).toBeVisible();
-
-    // Check that it's the compact variant
-    const attributionContainer = attribution.closest('.text-xs');
-    expect(attributionContainer).toBeInTheDocument();
+    // Check that TrendingSection no longer has attribution
+    const attribution = screen.queryByText('Price data by CoinGecko');
+    expect(attribution).not.toBeInTheDocument();
   });
 
   it('should include UTM tracking parameters', () => {

@@ -36,7 +36,7 @@ describe('CoinGeckoAttribution', () => {
     expect(container).toHaveClass('text-xs');
 
     const logo = screen.getByAltText('CoinGecko logo');
-    expect(logo).toHaveClass('h-4');
+    expect(logo).toHaveClass('h-10');
   });
 
   it('renders standard variant', () => {
@@ -46,7 +46,7 @@ describe('CoinGeckoAttribution', () => {
     expect(container).toHaveClass('text-sm');
 
     const logo = screen.getByAltText('CoinGecko logo');
-    expect(logo).toHaveClass('h-5');
+    expect(logo).toHaveClass('h-7');
   });
 
   it('renders prominent variant', () => {
@@ -56,7 +56,7 @@ describe('CoinGeckoAttribution', () => {
     expect(container).toHaveClass('text-base', 'flex-col');
 
     const logo = screen.getByAltText('CoinGecko logo');
-    expect(logo).toHaveClass('h-6');
+    expect(logo).toHaveClass('h-9');
   });
 
   it('hides logo when showLogo is false', () => {
