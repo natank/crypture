@@ -32,6 +32,7 @@ export default defineConfig({
       '@hooks': '/src/hooks',
       '@components': '/src/components',
       '@context': '/src/context',
+      '@contexts': '/src/contexts',
       '@services': '/src/services',
       '@pages': '/src/pages',
       '@utils': '/src/utils',

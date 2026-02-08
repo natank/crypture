@@ -38,7 +38,7 @@ export function AddAssetModal({
     handleCancelLargeQuantity,
   } = useAddAssetForm(addAsset, onClose, portfolio);
 
-  const initialFocusRef = useRef<HTMLInputElement | null>(null);
+  const assetSelectorRef = useRef<HTMLButtonElement | null>(null);
 
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
@@ -55,10 +55,6 @@ export function AddAssetModal({
     };
   }, [handleSubmit, onClose]);
 
-  useEffect(() => {
-    initialFocusRef.current?.focus();
-  }, []);
-
   return (
     <>
       <div
@@ -72,8 +68,7 @@ export function AddAssetModal({
             typeof document !== 'undefined' && process.env.NODE_ENV !== 'test'
           }
           focusTrapOptions={{
-            initialFocus: () =>
-              document.getElementById('asset-quantity') || document.body,
+            initialFocus: () => assetSelectorRef.current || document.body,
           }}
         >
           <div className="modal-content w-full max-w-md space-y-6">
@@ -108,6 +103,7 @@ export function AddAssetModal({
                 error={error}
                 describedById="asset-select-help"
                 portfolio={portfolio}
+                triggerRef={assetSelectorRef}
               />
             </div>
 
@@ -124,7 +120,6 @@ export function AddAssetModal({
                 value={quantity}
                 onChange={(e) => setQuantity(e.target.value)}
                 disabled={loading}
-                ref={initialFocusRef}
                 aria-describedby={
                   formError
                     ? 'asset-form-error asset-quantity-help'
@@ -188,7 +183,7 @@ export function AddAssetModal({
       {/* Large Quantity Confirmation Dialog (Phase 6) */}
       {showLargeQuantityWarning && (
         <div
-          className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-[60]"
+          className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-60"
           role="dialog"
           aria-modal="true"
           aria-labelledby="large-quantity-warning-title"
