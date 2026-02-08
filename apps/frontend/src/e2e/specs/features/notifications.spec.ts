@@ -432,10 +432,9 @@ test.describe('Unusual Input Warnings (Phase 6)', () => {
     mockCoinGeckoChartData(page);
   });
 
-  test.skip('shows confirmation dialog for large quantity (> 1M) and requires approval', async ({
+  test('shows confirmation dialog for large quantity (> 1M) and requires approval', async ({
     page,
   }) => {
-    // TODO: Fix timing issue with confirmation dialog and asset submission
     await page.goto('/portfolio');
 
     // Add asset with large quantity
