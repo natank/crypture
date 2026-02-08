@@ -1,8 +1,10 @@
 import React from 'react';
 import { useTrendingCoins } from '@hooks/useTrendingCoins';
+import { useImageErrorHandler } from './useImageErrorHandler';
 
 export const TrendingSection: React.FC = () => {
   const { data, isLoading, error } = useTrendingCoins();
+  const handleImageError = useImageErrorHandler();
 
   if (isLoading) {
     return (
@@ -45,13 +47,15 @@ export const TrendingSection: React.FC = () => {
               {coin.market_cap_rank || '-'}
             </span>
             <img
-              src={coin.thumb || coin.large || coin.small}
+              src={
+                coin.thumb ||
+                coin.large ||
+                coin.small ||
+                '/default-coin-icon.png'
+              }
               alt={coin.name}
               className="w-8 h-8 rounded-full"
-              onError={(e) => {
-                const target = e.target as HTMLImageElement;
-                target.style.display = 'none';
-              }}
+              onError={handleImageError}
             />
             <div className="flex flex-col overflow-hidden">
               <span className="font-bold text-gray-900 truncate">
