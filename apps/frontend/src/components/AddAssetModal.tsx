@@ -43,7 +43,9 @@ export function AddAssetModal({
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
       if (event.key === 'Enter') {
-        handleSubmit();
+        if (!showLargeQuantityWarning) {
+          handleSubmit();
+        }
       } else if (event.key === 'Escape') {
         onClose();
       }
@@ -53,7 +55,7 @@ export function AddAssetModal({
     return () => {
       document.removeEventListener('keydown', handleKeyDown);
     };
-  }, [handleSubmit, onClose]);
+  }, [handleSubmit, onClose, showLargeQuantityWarning]);
 
   return (
     <>
@@ -65,7 +67,9 @@ export function AddAssetModal({
       >
         <FocusTrap
           active={
-            typeof document !== 'undefined' && process.env.NODE_ENV !== 'test'
+            typeof document !== 'undefined' &&
+            process.env.NODE_ENV !== 'test' &&
+            !showLargeQuantityWarning
           }
           focusTrapOptions={{
             initialFocus: () => assetSelectorRef.current || document.body,

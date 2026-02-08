@@ -204,35 +204,32 @@ export async function mockCoinGeckoGlobal(page: Page) {
 }
 
 export async function mockCoinGeckoCategories(page: Page) {
-  await page.route(
-    '**/api/coingecko/coins/categories/list**',
-    async (route) => {
-      const body = [
-        {
-          category_id: 'cryptocurrency',
-          name: 'Cryptocurrency',
-        },
-        {
-          category_id: 'smart-contract-platform',
-          name: 'Smart Contract Platform',
-        },
-        {
-          category_id: 'decentralized-finance-defi',
-          name: 'Decentralized Finance (DeFi)',
-        },
-      ];
+  await page.route('**/api/coingecko/coins/categories**', async (route) => {
+    const body = [
+      {
+        category_id: 'cryptocurrency',
+        name: 'Cryptocurrency',
+      },
+      {
+        category_id: 'smart-contract-platform',
+        name: 'Smart Contract Platform',
+      },
+      {
+        category_id: 'decentralized-finance-defi',
+        name: 'Decentralized Finance (DeFi)',
+      },
+    ];
 
-      route.fulfill({
-        status: 200,
-        contentType: 'application/json',
-        body: JSON.stringify({
-          data: body,
-          timestamp: new Date().toISOString(),
-          requestId: 'mock-request-id',
-        }),
-      });
-    }
-  );
+    route.fulfill({
+      status: 200,
+      contentType: 'application/json',
+      body: JSON.stringify({
+        data: body,
+        timestamp: new Date().toISOString(),
+        requestId: 'mock-request-id',
+      }),
+    });
+  });
 }
 
 export async function mockCoinGeckoCoinDetails(page: Page) {

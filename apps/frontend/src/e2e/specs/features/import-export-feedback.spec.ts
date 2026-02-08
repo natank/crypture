@@ -2,6 +2,7 @@ import { test, expect } from '@e2e/test-setup';
 import {
   mockCoinGeckoMarkets,
   mockCoinGeckoChartData,
+  mockCoinGeckoCoinDetails,
 } from '@e2e/mocks/mockCoinGecko';
 
 /**
@@ -18,6 +19,7 @@ test.describe('Export Portfolio Feedback', () => {
   test.beforeEach(async ({ page }) => {
     mockCoinGeckoMarkets(page);
     mockCoinGeckoChartData(page);
+    mockCoinGeckoCoinDetails(page);
   });
 
   test('exports portfolio successfully with download', async ({ page }) => {
@@ -26,9 +28,13 @@ test.describe('Export Portfolio Feedback', () => {
     // Add some assets first
     await page.getByRole('button', { name: /add asset/i }).click();
     let modal = page.getByRole('dialog');
-    await modal
-      .locator('select#asset-select')
-      .selectOption({ label: 'Bitcoin (BTC)' });
+    await page.getByTestId('asset-select').click();
+    const btcOption = page
+      .locator('[role="option"]')
+      .filter({ hasText: /Bitcoin \(BTC\)/i })
+      .first();
+    await btcOption.waitFor({ state: 'visible', timeout: 5000 });
+    await btcOption.click();
     await modal.getByLabel(/quantity/i).fill('1.5');
     await modal.getByRole('button', { name: /add asset/i }).click();
     await expect(modal).not.toBeVisible({ timeout: 3000 });
@@ -36,9 +42,13 @@ test.describe('Export Portfolio Feedback', () => {
     // Add another asset
     await page.getByRole('button', { name: /add asset/i }).click();
     modal = page.getByRole('dialog');
-    await modal
-      .locator('select#asset-select')
-      .selectOption({ label: 'Ethereum (ETH)' });
+    await page.getByTestId('asset-select').click();
+    const ethOption = page
+      .locator('[role="option"]')
+      .filter({ hasText: /Ethereum \(ETH\)/i })
+      .first();
+    await ethOption.waitFor({ state: 'visible', timeout: 5000 });
+    await ethOption.click();
     await modal.getByLabel(/quantity/i).fill('5.0');
     await modal.getByRole('button', { name: /add asset/i }).click();
     await expect(modal).not.toBeVisible({ timeout: 3000 });
@@ -76,9 +86,13 @@ test.describe('Export Portfolio Feedback', () => {
 
     // Add an asset
     await page.getByRole('button', { name: /add asset/i }).click();
-    await page
-      .locator('select#asset-select')
-      .selectOption({ label: 'Bitcoin (BTC)' });
+    await page.getByTestId('asset-select').click();
+    const btcOpt3 = page
+      .locator('[role="option"]')
+      .filter({ hasText: /Bitcoin \(BTC\)/i })
+      .first();
+    await btcOpt3.waitFor({ state: 'visible', timeout: 5000 });
+    await btcOpt3.click();
     await page.getByLabel(/quantity/i).fill('1.0');
     await page
       .getByRole('dialog')
@@ -102,6 +116,7 @@ test.describe('Import Portfolio Feedback', () => {
   test.beforeEach(async ({ page }) => {
     mockCoinGeckoMarkets(page);
     mockCoinGeckoChartData(page);
+    mockCoinGeckoCoinDetails(page);
   });
 
   test('shows preview modal with summary counts before import', async ({
@@ -210,9 +225,13 @@ test.describe('Import Portfolio Feedback', () => {
 
     // Add initial asset
     await page.getByRole('button', { name: /add asset/i }).click();
-    await page
-      .locator('select#asset-select')
-      .selectOption({ label: 'Bitcoin (BTC)' });
+    await page.getByTestId('asset-select').click();
+    const btcOpt = page
+      .locator('[role="option"]')
+      .filter({ hasText: /Bitcoin \(BTC\)/i })
+      .first();
+    await btcOpt.waitFor({ state: 'visible', timeout: 5000 });
+    await btcOpt.click();
     await page.getByLabel(/quantity/i).fill('10.0');
     await page
       .getByRole('dialog')
@@ -278,6 +297,7 @@ test.describe('Import/Export Edge Cases', () => {
   test.beforeEach(async ({ page }) => {
     mockCoinGeckoMarkets(page);
     mockCoinGeckoChartData(page);
+    mockCoinGeckoCoinDetails(page);
   });
 
   test('merge operation updates existing assets correctly', async ({
@@ -287,9 +307,13 @@ test.describe('Import/Export Edge Cases', () => {
 
     // Add initial BTC
     await page.getByRole('button', { name: /add asset/i }).click();
-    await page
-      .locator('select#asset-select')
-      .selectOption({ label: 'Bitcoin (BTC)' });
+    await page.getByTestId('asset-select').click();
+    const btcOpt2 = page
+      .locator('[role="option"]')
+      .filter({ hasText: /Bitcoin \(BTC\)/i })
+      .first();
+    await btcOpt2.waitFor({ state: 'visible', timeout: 5000 });
+    await btcOpt2.click();
     await page.getByLabel(/quantity/i).fill('1.0');
     await page
       .getByRole('dialog')

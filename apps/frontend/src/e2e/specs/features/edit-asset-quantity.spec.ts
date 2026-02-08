@@ -327,19 +327,35 @@ test.describe('Edit Asset Quantity - Mobile', () => {
 
     await expect(page.getByText(/Qty: 1/)).toBeVisible();
 
-    const editButton = page
-      .getByRole('button', { name: /Edit Bitcoin quantity/i })
-      .last();
-    const box = await editButton.boundingBox();
-    expect(box).not.toBeNull();
-    expect(box!.width).toBeGreaterThanOrEqual(44);
-    expect(box!.height).toBeGreaterThanOrEqual(44);
+    // On mobile, the inline edit button is hidden and actions are in the kebab menu.
+    // The kebab menu button is nested inside the clickable asset row.
+    // We need to scroll the row into view first to avoid scroll-triggered menu close.
+    const assetRow = page.getByTestId('asset-row-BTC');
+    await assetRow.scrollIntoViewIfNeeded();
+    await page.waitForTimeout(300);
 
-    await editButton.click({ force: true });
+    // Click the kebab menu button (aria-label "Actions for Bitcoin")
+    const kebabButton = page.getByLabel(/Actions for Bitcoin/i);
+    await expect(kebabButton).toBeVisible();
+    const kebabBox = await kebabButton.boundingBox();
+    expect(kebabBox).not.toBeNull();
+    expect(kebabBox!.width).toBeGreaterThanOrEqual(44);
+    expect(kebabBox!.height).toBeGreaterThanOrEqual(44);
 
+    // Click kebab button - Playwright's click handles stopPropagation correctly
+    await kebabButton.click();
+    const dropdown = page.getByTestId('kebab-menu-dropdown');
+    await expect(dropdown).toBeVisible({ timeout: 3000 });
+
+    // Click Edit Quantity menu item (use force since it detaches on edit mode)
+    const editMenuItem = dropdown.getByText('Edit Quantity');
+    await editMenuItem.click({ force: true });
+
+    // Wait for edit mode to activate
     const saveButton = page
       .getByRole('button', { name: /Save changes/i })
       .last();
+    await expect(saveButton).toBeVisible({ timeout: 3000 });
     const saveBox = await saveButton.boundingBox();
     expect(saveBox).not.toBeNull();
     expect(saveBox!.width).toBeGreaterThanOrEqual(44);
