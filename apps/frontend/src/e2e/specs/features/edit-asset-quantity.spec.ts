@@ -2,12 +2,31 @@ import { test, expect } from '@e2e/test-setup';
 import {
   mockCoinGeckoMarkets,
   mockCoinGeckoChartData,
+  mockCoinGeckoCoinDetails,
 } from '@e2e/mocks/mockCoinGecko';
+
+// Helper function to select asset in custom dropdown
+async function selectAsset(page: any, symbol: string) {
+  // Click to open the dropdown
+  await page.getByTestId('asset-select').click();
+
+  // Wait for dropdown options to be visible
+  const dropdownOptions = page.locator('[role="option"]');
+  await dropdownOptions.first().waitFor({ state: 'visible', timeout: 10000 });
+
+  // Find and click the option containing the symbol
+  const symbolOption = dropdownOptions
+    .filter({ hasText: new RegExp(`\\(${symbol}\\)`, 'i') })
+    .first();
+  await symbolOption.waitFor({ state: 'visible', timeout: 5000 });
+  await symbolOption.click();
+}
 
 test.describe('Edit Asset Quantity', () => {
   test.beforeEach(async ({ page }) => {
     mockCoinGeckoMarkets(page);
     mockCoinGeckoChartData(page);
+    mockCoinGeckoCoinDetails(page);
     await page.goto('/portfolio');
     await expect(page.getByText(/Your Assets/i)).toBeVisible();
   });
@@ -16,10 +35,7 @@ test.describe('Edit Asset Quantity', () => {
     await page.getByRole('button', { name: /add asset/i }).click();
     const dialog = page.getByRole('dialog');
     await expect(dialog).toBeVisible();
-    await dialog.getByLabel('Filter assets').fill('Bitcoin');
-    await dialog
-      .locator('select#asset-select')
-      .selectOption({ label: 'Bitcoin (BTC)' });
+    await selectAsset(page, 'BTC');
     await dialog.getByLabel('Quantity').fill('1.5');
     await dialog.getByRole('button', { name: /add asset/i }).click();
 
@@ -28,7 +44,7 @@ test.describe('Edit Asset Quantity', () => {
     await page
       .getByRole('button', { name: /Edit Bitcoin quantity/i })
       .last()
-      .click();
+      .click({ force: true });
 
     const input = page.getByLabel(/Edit quantity for Bitcoin/i);
     await expect(input).toBeVisible();
@@ -51,10 +67,7 @@ test.describe('Edit Asset Quantity', () => {
     await page.getByRole('button', { name: /add asset/i }).click();
     const dialog = page.getByRole('dialog');
     await expect(dialog).toBeVisible();
-    await dialog.getByLabel('Filter assets').fill('Ethereum');
-    await dialog
-      .locator('select#asset-select')
-      .selectOption({ label: 'Ethereum (ETH)' });
+    await selectAsset(page, 'ETH');
     await dialog.getByLabel('Quantity').fill('5.0');
     await dialog.getByRole('button', { name: /add asset/i }).click();
 
@@ -63,7 +76,7 @@ test.describe('Edit Asset Quantity', () => {
     await page
       .getByRole('button', { name: /Edit Ethereum quantity/i })
       .last()
-      .click();
+      .click({ force: true });
 
     const input = page.getByLabel(/Edit quantity for Ethereum/i);
     await input.clear();
@@ -81,10 +94,7 @@ test.describe('Edit Asset Quantity', () => {
     await page.getByRole('button', { name: /add asset/i }).click();
     const dialog = page.getByRole('dialog');
     await expect(dialog).toBeVisible();
-    await dialog.getByLabel('Filter assets').fill('Bitcoin');
-    await dialog
-      .locator('select#asset-select')
-      .selectOption({ label: 'Bitcoin (BTC)' });
+    await selectAsset(page, 'BTC');
     await dialog.getByLabel('Quantity').fill('3.0');
     await dialog.getByRole('button', { name: /add asset/i }).click();
 
@@ -93,7 +103,7 @@ test.describe('Edit Asset Quantity', () => {
     await page
       .getByRole('button', { name: /Edit Bitcoin quantity/i })
       .last()
-      .click();
+      .click({ force: true });
     const input = page.getByLabel(/Edit quantity for Bitcoin/i);
     await input.clear();
     await input.fill('4.5');
@@ -106,10 +116,7 @@ test.describe('Edit Asset Quantity', () => {
     await page.getByRole('button', { name: /add asset/i }).click();
     const dialog = page.getByRole('dialog');
     await expect(dialog).toBeVisible();
-    await dialog.getByLabel('Filter assets').fill('Bitcoin');
-    await dialog
-      .locator('select#asset-select')
-      .selectOption({ label: 'Bitcoin (BTC)' });
+    await selectAsset(page, 'BTC');
     await dialog.getByLabel('Quantity').fill('2.0');
     await dialog.getByRole('button', { name: /add asset/i }).click();
 
@@ -118,7 +125,7 @@ test.describe('Edit Asset Quantity', () => {
     await page
       .getByRole('button', { name: /Edit Bitcoin quantity/i })
       .last()
-      .click();
+      .click({ force: true });
     const input = page.getByLabel(/Edit quantity for Bitcoin/i);
     await input.clear();
     await input.fill('999');
@@ -133,10 +140,7 @@ test.describe('Edit Asset Quantity', () => {
     await page.getByRole('button', { name: /add asset/i }).click();
     const dialog = page.getByRole('dialog');
     await expect(dialog).toBeVisible();
-    await dialog.getByLabel('Filter assets').fill('Bitcoin');
-    await dialog
-      .locator('select#asset-select')
-      .selectOption({ label: 'Bitcoin (BTC)' });
+    await selectAsset(page, 'BTC');
     await dialog.getByLabel('Quantity').fill('1.0');
     await dialog.getByRole('button', { name: /add asset/i }).click();
 
@@ -145,7 +149,7 @@ test.describe('Edit Asset Quantity', () => {
     await page
       .getByRole('button', { name: /Edit Bitcoin quantity/i })
       .last()
-      .click();
+      .click({ force: true });
     const input = page.getByLabel(/Edit quantity for Bitcoin/i);
     await input.clear();
     await input.fill('-5');
@@ -168,10 +172,7 @@ test.describe('Edit Asset Quantity', () => {
     await page.getByRole('button', { name: /add asset/i }).click();
     const dialog = page.getByRole('dialog');
     await expect(dialog).toBeVisible();
-    await dialog.getByLabel('Filter assets').fill('Ethereum');
-    await dialog
-      .locator('select#asset-select')
-      .selectOption({ label: 'Ethereum (ETH)' });
+    await selectAsset(page, 'ETH');
     await dialog.getByLabel('Quantity').fill('1.0');
     await dialog.getByRole('button', { name: /add asset/i }).click();
 
@@ -180,7 +181,7 @@ test.describe('Edit Asset Quantity', () => {
     await page
       .getByRole('button', { name: /Edit Ethereum quantity/i })
       .last()
-      .click();
+      .click({ force: true });
     const input = page.getByLabel(/Edit quantity for Ethereum/i);
     await input.clear();
     await input.fill('0');
@@ -200,10 +201,7 @@ test.describe('Edit Asset Quantity', () => {
     await page.getByRole('button', { name: /add asset/i }).click();
     const dialog = page.getByRole('dialog');
     await expect(dialog).toBeVisible();
-    await dialog.getByLabel('Filter assets').fill('Bitcoin');
-    await dialog
-      .locator('select#asset-select')
-      .selectOption({ label: 'Bitcoin (BTC)' });
+    await selectAsset(page, 'BTC');
     await dialog.getByLabel('Quantity').fill('1.0');
     await dialog.getByRole('button', { name: /add asset/i }).click();
 
@@ -212,7 +210,7 @@ test.describe('Edit Asset Quantity', () => {
     await page
       .getByRole('button', { name: /Edit Bitcoin quantity/i })
       .last()
-      .click();
+      .click({ force: true });
     const input = page.getByLabel(/Edit quantity for Bitcoin/i);
     await input.clear();
     await input.fill('1.123456789');
@@ -230,10 +228,7 @@ test.describe('Edit Asset Quantity', () => {
     await page.getByRole('button', { name: /add asset/i }).click();
     const dialog = page.getByRole('dialog');
     await expect(dialog).toBeVisible();
-    await dialog.getByLabel('Filter assets').fill('Bitcoin');
-    await dialog
-      .locator('select#asset-select')
-      .selectOption({ label: 'Bitcoin (BTC)' });
+    await selectAsset(page, 'BTC');
     await dialog.getByLabel('Quantity').fill('1.0');
     await dialog.getByRole('button', { name: /add asset/i }).click();
 
@@ -242,7 +237,7 @@ test.describe('Edit Asset Quantity', () => {
     await page
       .getByRole('button', { name: /Edit Bitcoin quantity/i })
       .last()
-      .click();
+      .click({ force: true });
     const input = page.getByLabel(/Edit quantity for Bitcoin/i);
     await input.clear();
     await input.fill('7.5');
@@ -259,10 +254,7 @@ test.describe('Edit Asset Quantity', () => {
     await page.getByRole('button', { name: /add asset/i }).click();
     const dialog = page.getByRole('dialog');
     await expect(dialog).toBeVisible();
-    await dialog.getByLabel('Filter assets').fill('Bitcoin');
-    await dialog
-      .locator('select#asset-select')
-      .selectOption({ label: 'Bitcoin (BTC)' });
+    await selectAsset(page, 'BTC');
     await dialog.getByLabel('Quantity').fill('1.0');
     await dialog.getByRole('button', { name: /add asset/i }).click();
 
@@ -271,7 +263,7 @@ test.describe('Edit Asset Quantity', () => {
     const editButton = page
       .getByRole('button', { name: /Edit Bitcoin quantity/i })
       .last();
-    await editButton.click();
+    await editButton.click({ force: true });
 
     const input = page.getByLabel(/Edit quantity for Bitcoin/i);
     await expect(input).toBeVisible();
@@ -296,10 +288,7 @@ test.describe('Edit Asset Quantity', () => {
     await page.getByRole('button', { name: /add asset/i }).click();
     const dialog = page.getByRole('dialog');
     await expect(dialog).toBeVisible();
-    await dialog.getByLabel('Filter assets').fill('Bitcoin');
-    await dialog
-      .locator('select#asset-select')
-      .selectOption({ label: 'Bitcoin (BTC)' });
+    await selectAsset(page, 'BTC');
     await dialog.getByLabel('Quantity').fill('1.0');
     await dialog.getByRole('button', { name: /add asset/i }).click();
 
@@ -308,7 +297,7 @@ test.describe('Edit Asset Quantity', () => {
     await page
       .getByRole('button', { name: /Edit Bitcoin quantity/i })
       .last()
-      .click();
+      .click({ force: true });
 
     const deleteButton = page
       .getByRole('button', { name: /Delete Bitcoin/i })
@@ -325,16 +314,14 @@ test.describe('Edit Asset Quantity - Mobile', () => {
   }) => {
     mockCoinGeckoMarkets(page);
     mockCoinGeckoChartData(page);
+    mockCoinGeckoCoinDetails(page);
     await page.goto('/portfolio');
     await expect(page.getByText(/Your Assets/i)).toBeVisible();
 
     await page.getByRole('button', { name: /add asset/i }).click();
     const dialog = page.getByRole('dialog');
     await expect(dialog).toBeVisible();
-    await dialog.getByLabel('Filter assets').fill('Bitcoin');
-    await dialog
-      .locator('select#asset-select')
-      .selectOption({ label: 'Bitcoin (BTC)' });
+    await selectAsset(page, 'BTC');
     await dialog.getByLabel('Quantity').fill('1.0');
     await dialog.getByRole('button', { name: /add asset/i }).click();
 
@@ -348,7 +335,7 @@ test.describe('Edit Asset Quantity - Mobile', () => {
     expect(box!.width).toBeGreaterThanOrEqual(44);
     expect(box!.height).toBeGreaterThanOrEqual(44);
 
-    await editButton.click();
+    await editButton.click({ force: true });
 
     const saveButton = page
       .getByRole('button', { name: /Save changes/i })

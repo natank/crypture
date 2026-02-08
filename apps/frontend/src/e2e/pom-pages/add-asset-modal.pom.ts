@@ -25,17 +25,22 @@ export class AddAssetModal {
   async openAndAdd(symbol: string, quantity: number) {
     await this.page.getByTestId('add-asset-button').click();
 
-    // Open custom dropdown and select asset by symbol
+    // Wait for the asset selector button to be visible
+    await this.assetTrigger.waitFor({ state: 'visible', timeout: 10000 });
+
+    // Click to open the dropdown
     await this.assetTrigger.click();
-    await this.filterInput.fill(symbol);
-    const labelMap: Record<string, string> = {
-      BTC: 'Bitcoin (BTC)',
-      ETH: 'Ethereum (ETH)',
-    };
-    const optionLabel = labelMap[symbol] ?? symbol;
-    await this.modal
-      .getByRole('option', { name: new RegExp(optionLabel, 'i') })
-      .click();
+
+    // Wait for dropdown options to be visible
+    const dropdownOptions = this.modal.locator('[role="option"]');
+    await dropdownOptions.first().waitFor({ state: 'visible', timeout: 10000 });
+
+    // Find and click the option containing the symbol
+    const symbolOption = dropdownOptions
+      .filter({ hasText: new RegExp(`\\(${symbol}\\)`, 'i') })
+      .first();
+    await symbolOption.waitFor({ state: 'visible', timeout: 5000 });
+    await symbolOption.click();
 
     await this.quantityInput.fill(quantity.toString());
     await this.confirmButton.click();
