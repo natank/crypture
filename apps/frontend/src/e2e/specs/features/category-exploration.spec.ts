@@ -5,9 +5,6 @@ test.describe('Category Exploration', () => {
   let marketPage: MarketPage;
 
   const mockCategories = [
-    { id: 'layer-1', name: 'Layer 1' },
-    { id: 'decentralized-finance-defi', name: 'DeFi' },
-    { id: 'gaming', name: 'Gaming' },
     {
       id: 'layer-1',
       name: 'Layer 1',

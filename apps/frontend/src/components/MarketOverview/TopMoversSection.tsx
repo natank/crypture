@@ -79,7 +79,10 @@ export const TopMoversSection: React.FC = () => {
 
   return (
     <>
-      <div className="mt-8 grid grid-cols-1 lg:grid-cols-2 gap-8">
+      <div
+        data-testid="top-movers-section"
+        className="mt-8 grid grid-cols-1 lg:grid-cols-2 gap-8"
+      >
         {renderList('🚀 Top Gainers', gainers, true)}
         {renderList('📉 Top Losers', losers, false)}
       </div>
@@ -91,14 +94,6 @@ export const TopMoversSection: React.FC = () => {
           text="Price data by CoinGecko"
           utmSource="crypture"
         />
-      </div>
-
-      <div
-        data-testid="top-movers-section"
-        className="mt-8 grid grid-cols-1 lg:grid-cols-2 gap-8"
-      >
-        {renderList('🚀 Top Gainers', gainers, true)}
-        {renderList('📉 Top Losers', losers, false)}
       </div>
     </>
   );

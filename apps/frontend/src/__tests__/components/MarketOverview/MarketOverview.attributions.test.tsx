@@ -118,7 +118,7 @@ describe('Market Overview Attribution', () => {
       .getByText('Data provided by CoinGecko')
       .closest('a');
     expect(attributionLink).not.toBeNull();
-    expect(attributionLink).toHaveAttribute('href', /coingecko.com/);
+    expect(attributionLink?.getAttribute('href')).toMatch(/coingecko\.com/);
     expect(attributionLink).toHaveAttribute('target', '_blank');
   });
 
@@ -157,7 +157,11 @@ describe('Market Overview Attribution', () => {
       .getByText('Data provided by CoinGecko')
       .closest('a');
     expect(attributionLink).not.toBeNull();
-    expect(attributionLink).toHaveAttribute('href', /utm_source=crypture/);
-    expect(attributionLink).toHaveAttribute('href', /utm_medium=referral/);
+    expect(attributionLink?.getAttribute('href')).toMatch(
+      /utm_source=crypture/
+    );
+    expect(attributionLink?.getAttribute('href')).toMatch(
+      /utm_medium=referral/
+    );
   });
 });

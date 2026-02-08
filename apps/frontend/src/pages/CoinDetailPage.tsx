@@ -9,6 +9,7 @@ import {
   CoinMetrics,
 } from '@components/CoinDetail';
 import AssetChart from '@components/AssetChart';
+import CoinGeckoAttribution from '@components/CoinGeckoAttribution';
 
 function CoinDetailPage() {
   const { coinId } = useParams<{ coinId: string }>();
@@ -212,6 +213,15 @@ function CoinDetailPage() {
 
           {/* External Links */}
           <CoinLinks links={coin.links} />
+
+          {/* CoinGecko Attribution */}
+          <div className="flex justify-center pt-4 border-t border-border">
+            <CoinGeckoAttribution
+              variant="standard"
+              text="Data provided by CoinGecko"
+              utmSource="crypture"
+            />
+          </div>
         </div>
       </div>
     </div>

@@ -7,6 +7,7 @@ import {
 } from '@utils/formatters';
 import { HelpIcon } from '@components/EducationalTooltip';
 import type { TooltipKey } from '@components/EducationalTooltip';
+import CoinGeckoAttribution from '@components/CoinGeckoAttribution';
 
 interface ComparisonTableProps {
   coins: CoinDetails[];
@@ -263,6 +264,15 @@ export const ComparisonTable = memo(function ComparisonTable({
             })}
           </tbody>
         </table>
+      </div>
+
+      {/* CoinGecko Attribution */}
+      <div className="flex justify-center px-6 py-3 border-t border-border">
+        <CoinGeckoAttribution
+          variant="compact"
+          text="Source: CoinGecko"
+          utmSource="crypture"
+        />
       </div>
     </section>
   );

@@ -13,6 +13,7 @@ import {
   fetchAssetHistory,
   type PriceHistoryPoint,
 } from '@services/coinService';
+import CoinGeckoAttribution from '@components/CoinGeckoAttribution';
 
 interface ComparisonChartProps {
   coins: CoinDetails[];
@@ -271,6 +272,15 @@ export const ComparisonChart = memo(function ComparisonChart({
       <p className="mt-4 text-xs text-text-secondary text-center">
         Chart shows percentage change from start of period
       </p>
+
+      {/* CoinGecko Attribution */}
+      <div className="flex justify-center pt-3 mt-2 border-t border-border">
+        <CoinGeckoAttribution
+          variant="compact"
+          text="Source: CoinGecko"
+          utmSource="crypture"
+        />
+      </div>
     </section>
   );
 });

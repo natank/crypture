@@ -12,6 +12,7 @@ import { useSettings } from '@contexts/useSettings';
 import AllocationPieChart from './AllocationPieChart';
 import AllocationViewSelector from './AllocationViewSelector';
 import AllocationLegend from './AllocationLegend';
+import CoinGeckoAttribution from '@components/CoinGeckoAttribution';
 
 export type AllocationView = 'asset' | 'category' | 'marketCap' | 'risk';
 
@@ -155,6 +156,17 @@ export default function PortfolioCompositionDashboard({
               ))}
             </tbody>
           </table>
+        )}
+
+        {/* CoinGecko Attribution */}
+        {!isEmpty && (
+          <div className="flex justify-center pt-3 mt-2 border-t border-gray-200 dark:border-gray-700">
+            <CoinGeckoAttribution
+              variant="compact"
+              text="Price data by CoinGecko"
+              utmSource="crypture"
+            />
+          </div>
         )}
       </div>
     </section>
