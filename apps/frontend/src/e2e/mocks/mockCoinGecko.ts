@@ -54,6 +54,10 @@ export async function mockCoinGeckoMarkets(
         name: 'Bitcoin',
         current_price: overrides.BTC ?? 30000,
         image: 'https://assets.coingecko.com/coins/images/1/large/bitcoin.png',
+        market_cap_rank: 1,
+        price_change_percentage_24h: 1.5,
+        price_change_percentage_7d: 3.5,
+        // Note: Real API does NOT include categories in /coins/markets endpoint
       },
       {
         id: 'ethereum',
@@ -62,6 +66,22 @@ export async function mockCoinGeckoMarkets(
         current_price: overrides.ETH ?? 2000,
         image:
           'https://assets.coingecko.com/coins/images/279/large/ethereum.png',
+        market_cap_rank: 2,
+        price_change_percentage_24h: 6.5,
+        price_change_percentage_7d: 8.5,
+        // Note: Real API does NOT include categories in /coins/markets endpoint
+      },
+      {
+        id: 'cardano',
+        symbol: 'ada',
+        name: 'Cardano',
+        current_price: overrides.ADA ?? 0.5,
+        image:
+          'https://assets.coingecko.com/coins/images/975/large/cardano.png',
+        market_cap_rank: 8,
+        price_change_percentage_24h: -2.0,
+        price_change_percentage_7d: 1.5,
+        // Note: Real API does NOT include categories in /coins/markets endpoint
       },
     ];
 
@@ -184,35 +204,32 @@ export async function mockCoinGeckoGlobal(page: Page) {
 }
 
 export async function mockCoinGeckoCategories(page: Page) {
-  await page.route(
-    '**/api/coingecko/coins/categories/list**',
-    async (route) => {
-      const body = [
-        {
-          category_id: 'cryptocurrency',
-          name: 'Cryptocurrency',
-        },
-        {
-          category_id: 'smart-contract-platform',
-          name: 'Smart Contract Platform',
-        },
-        {
-          category_id: 'decentralized-finance-defi',
-          name: 'Decentralized Finance (DeFi)',
-        },
-      ];
+  await page.route('**/api/coingecko/coins/categories**', async (route) => {
+    const body = [
+      {
+        category_id: 'cryptocurrency',
+        name: 'Cryptocurrency',
+      },
+      {
+        category_id: 'smart-contract-platform',
+        name: 'Smart Contract Platform',
+      },
+      {
+        category_id: 'decentralized-finance-defi',
+        name: 'Decentralized Finance (DeFi)',
+      },
+    ];
 
-      route.fulfill({
-        status: 200,
-        contentType: 'application/json',
-        body: JSON.stringify({
-          data: body,
-          timestamp: new Date().toISOString(),
-          requestId: 'mock-request-id',
-        }),
-      });
-    }
-  );
+    route.fulfill({
+      status: 200,
+      contentType: 'application/json',
+      body: JSON.stringify({
+        data: body,
+        timestamp: new Date().toISOString(),
+        requestId: 'mock-request-id',
+      }),
+    });
+  });
 }
 
 export async function mockCoinGeckoCoinDetails(page: Page) {

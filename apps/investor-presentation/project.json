@@ -1,0 +1,83 @@
+{
+  "name": "investor-presentation",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "apps/investor-presentation/src",
+  "projectType": "application",
+  "tags": ["nx-react", "nx-vite"],
+  "targets": {
+    "build": {
+      "executor": "@nx/vite:build",
+      "outputs": ["{options.outputPath}"],
+      "defaultConfiguration": "production",
+      "options": {
+        "outputPath": "dist/apps/investor-presentation",
+        "root": "apps/investor-presentation"
+      },
+      "configurations": {
+        "development": {
+          "mode": "development"
+        },
+        "production": {
+          "mode": "production"
+        },
+        "ci": {
+          "mode": "production"
+        }
+      }
+    },
+    "serve": {
+      "executor": "@nx/vite:dev-server",
+      "defaultConfiguration": "development",
+      "options": {
+        "buildTarget": "investor-presentation:build",
+        "port": 4201
+      },
+      "configurations": {
+        "development": {
+          "buildTarget": "investor-presentation:build:development"
+        },
+        "production": {
+          "buildTarget": "investor-presentation:build:production"
+        }
+      }
+    },
+    "preview": {
+      "executor": "@nx/vite:preview-server",
+      "options": {
+        "buildTarget": "investor-presentation:build:production"
+      }
+    },
+    "test": {
+      "executor": "nx:run-commands",
+      "outputs": ["{workspaceRoot}/coverage/apps/investor-presentation"],
+      "options": {
+        "command": "npx vitest run",
+        "cwd": "apps/investor-presentation"
+      },
+      "configurations": {
+        "ci": {
+          "command": "npx vitest run --coverage --reporter=junit"
+        }
+      }
+    },
+    "typecheck": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "tsc --noEmit -p tsconfig.app.json",
+        "cwd": "apps/investor-presentation"
+      },
+      "configurations": {
+        "ci": {
+          "command": "tsc --noEmit -p tsconfig.app.json"
+        }
+      }
+    },
+    "lint": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "eslint .",
+        "cwd": "apps/investor-presentation"
+      }
+    }
+  }
+}

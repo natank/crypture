@@ -8,6 +8,36 @@ test.describe('Category Exploration', () => {
     { id: 'layer-1', name: 'Layer 1' },
     { id: 'decentralized-finance-defi', name: 'DeFi' },
     { id: 'gaming', name: 'Gaming' },
+    {
+      id: 'layer-1',
+      name: 'Layer 1',
+      market_cap_change_24h: 0,
+      market_cap: 0,
+      volume_24h: 0,
+      updated_at: 0,
+      content: '',
+      top_3_coins: [],
+    },
+    {
+      id: 'decentralized-finance-defi',
+      name: 'DeFi',
+      market_cap_change_24h: 0,
+      market_cap: 0,
+      volume_24h: 0,
+      updated_at: 0,
+      content: '',
+      top_3_coins: [],
+    },
+    {
+      id: 'gaming',
+      name: 'Gaming',
+      market_cap_change_24h: 0,
+      market_cap: 0,
+      volume_24h: 0,
+      updated_at: 0,
+      content: '',
+      top_3_coins: [],
+    },
   ];
 
   const mockCoinsAll = [
@@ -188,6 +218,10 @@ test.describe('Category Exploration', () => {
       });
       await page.getByRole('button', { name: 'DeFi' }).click();
       await defiResponse;
+      // Wait for Uniswap to appear (indicates data has loaded)
+      await expect(page.getByRole('table').getByText('Uniswap')).toBeVisible({
+        timeout: 10000,
+      });
     });
 
     await test.step('Verify filtered coin list (DeFi)', async () => {
@@ -210,6 +244,10 @@ test.describe('Category Exploration', () => {
       await allResponse;
       const marketTable = page.getByTestId('market-coin-list-table');
       await expect(marketTable.getByText('Bitcoin')).toBeVisible();
+      // Wait for Bitcoin to reappear (indicates data has loaded)
+      await expect(page.getByRole('table').getByText('Bitcoin')).toBeVisible({
+        timeout: 10000,
+      });
     });
   });
 });

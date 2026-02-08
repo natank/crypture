@@ -126,6 +126,14 @@ vi.mock('@services/notificationService', () => ({
   sendAlertNotification: vi.fn().mockReturnValue(true),
 }));
 
+vi.mock('@contexts/useSettings', () => ({
+  useSettings: () => ({
+    settings: { showAllCategories: false },
+    updateSettings: vi.fn(),
+    resetSettings: vi.fn(),
+  }),
+}));
+
 describe('PortfolioPage', () => {
   beforeEach(() => {
     vi.mock('@hooks/useCoinList', () => ({

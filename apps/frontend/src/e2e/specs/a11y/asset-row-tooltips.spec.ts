@@ -52,9 +52,14 @@ test.describe('Asset Row Tooltips (KI-03 Extended)', () => {
         .getByRole('dialog', { name: /add crypto asset/i })
         .waitFor({ state: 'visible' });
 
-      // Use the specific asset select by test ID
-      const assetSelect = page.getByTestId('asset-select');
-      await assetSelect.selectOption('Bitcoin (BTC)');
+      // Use the custom dropdown asset selector
+      await page.getByTestId('asset-select').click();
+      const btcOption = page
+        .locator('[role="option"]')
+        .filter({ hasText: /Bitcoin \(BTC\)/i })
+        .first();
+      await btcOption.waitFor({ state: 'visible', timeout: 5000 });
+      await btcOption.click();
 
       // Fill quantity and confirm
       await page.getByLabel(/quantity/i).fill('1.5');

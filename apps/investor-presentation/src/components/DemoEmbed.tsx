@@ -1,0 +1,35 @@
+import { useDemoCommunication } from '../hooks/useDemoCommunication';
+
+interface DemoEmbedProps {
+  src: string;
+  origin: string;
+}
+
+export function DemoEmbed({ src, origin }: DemoEmbedProps) {
+  const { iframeRef, onLoad, onError } = useDemoCommunication({ origin });
+
+  return (
+    <div className="demo-embed">
+      <div className="demo-embed__header">
+        <span className="label">Live product demo</span>
+      </div>
+      <div className="demo-embed__frame">
+        <iframe
+          ref={iframeRef}
+          src={src}
+          title="Crypture Demo"
+          loading="lazy"
+          sandbox="allow-scripts allow-same-origin allow-forms"
+          referrerPolicy="no-referrer-when-downgrade"
+          onLoad={onLoad}
+          onError={onError}
+        />
+      </div>
+      {status === 'error' && (
+        <div className="demo-embed__fallback">
+          Demo unavailable. Continue to the next section.
+        </div>
+      )}
+    </div>
+  );
+}

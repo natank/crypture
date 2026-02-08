@@ -60,7 +60,7 @@ export class PortfolioPage {
 
     // Modal Elements
     this.modal = page.getByRole('dialog');
-    this.modalAssetSelect = this.modal.getByRole('combobox');
+    this.modalAssetSelect = this.modal.getByTestId('asset-select');
     this.modalQuantityInput = this.modal.getByLabel(/quantity/i);
     this.modalConfirmButton = this.modal.getByRole('button', {
       name: /add asset/i,
@@ -135,51 +135,24 @@ export class PortfolioPage {
   async addAsset(symbol: string, quantity: number) {
     await this.openAddAssetModal();
 
-    // Wait for the select to be ready and have options loaded
+    // Wait for the asset selector button to be visible
     await this.modalAssetSelect.waitFor({ state: 'visible', timeout: 10000 });
 
-    // Wait for at least one option to be present (besides the placeholder)
-    await this.page.waitForFunction(
-      () => {
-        const select = document.querySelector(
-          '[data-testid="asset-select"]'
-        ) as HTMLSelectElement;
-        return select && select.options.length > 1;
-      },
-      { timeout: 15000 }
-    );
+    // Click to open the dropdown
+    await this.modalAssetSelect.click();
 
-    // First try selecting by option value which is CoinGecko coin.id
-    const idMap: Record<string, string> = { BTC: 'bitcoin', ETH: 'ethereum' };
-    const labelMap: Record<string, string> = {
-      BTC: 'Bitcoin (BTC)',
-      ETH: 'Ethereum (ETH)',
-    };
+    // Wait for dropdown options to be visible
+    const dropdownOptions = this.modal.locator('[role="option"]');
+    await dropdownOptions.first().waitFor({ state: 'visible', timeout: 10000 });
 
-    const regex = new RegExp(`\\(${symbol}\\)`, 'i');
+    // Find and click the option containing the symbol
+    const symbolOption = dropdownOptions
+      .filter({ hasText: new RegExp(`\\(${symbol}\\)`, 'i') })
+      .first();
+    await symbolOption.waitFor({ state: 'visible', timeout: 5000 });
+    await symbolOption.click();
 
-    try {
-      const value = idMap[symbol] ?? symbol.toLowerCase();
-      await this.modalAssetSelect.selectOption({ value });
-    } catch {
-      try {
-        // Fallback to exact label
-        await this.modalAssetSelect.selectOption({
-          label: labelMap[symbol] ?? symbol,
-        });
-      } catch {
-        // Final fallback: find option containing (SYMBOL) and select by its value
-        const option = this.modalAssetSelect
-          .locator('option')
-          .filter({ hasText: regex });
-        // Increase timeout for CI - options may take time to load
-        const valueAttr = await option
-          .first()
-          .getAttribute('value', { timeout: 15000 });
-        if (!valueAttr) throw new Error(`No option found for symbol ${symbol}`);
-        await this.modalAssetSelect.selectOption(valueAttr);
-      }
-    }
+    // Fill quantity and confirm
     await this.modalQuantityInput.fill(quantity.toString());
     await this.modalConfirmButton.click();
   }

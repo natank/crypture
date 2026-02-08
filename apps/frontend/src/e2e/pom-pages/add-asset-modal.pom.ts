@@ -3,7 +3,8 @@ import { Page, Locator } from '@playwright/test';
 export class AddAssetModal {
   readonly page: Page;
   readonly modal: Locator;
-  readonly assetSelect: Locator;
+  readonly assetTrigger: Locator;
+  readonly filterInput: Locator;
   readonly quantityInput: Locator;
   readonly confirmButton: Locator;
   readonly cancelButton: Locator;
@@ -13,7 +14,8 @@ export class AddAssetModal {
     this.page = page;
     this.modal = page.getByRole('dialog', { name: /add crypto asset/i });
 
-    this.assetSelect = this.modal.getByRole('combobox');
+    this.assetTrigger = this.modal.getByTestId('asset-select');
+    this.filterInput = this.modal.getByPlaceholder('Search assets...');
     this.quantityInput = this.modal.getByLabel(/quantity/i);
     this.confirmButton = this.modal.getByRole('button', { name: /add asset/i });
     this.cancelButton = this.modal.getByRole('button', { name: /cancel/i });
@@ -23,18 +25,22 @@ export class AddAssetModal {
   async openAndAdd(symbol: string, quantity: number) {
     await this.page.getByTestId('add-asset-button').click();
 
-    // Attempt dropdown-based selection first
-    try {
-      const labelMap: Record<string, string> = {
-        BTC: 'Bitcoin (BTC)',
-        ETH: 'Ethereum (ETH)',
-      };
-      await this.assetSelect.selectOption({ label: labelMap[symbol] });
-    } catch {
-      // Re-query selector as a fallback input if dropdown failed
-      const fallbackInput = this.page.locator("input[name='asset']");
-      await fallbackInput.fill(symbol);
-    }
+    // Wait for the asset selector button to be visible
+    await this.assetTrigger.waitFor({ state: 'visible', timeout: 10000 });
+
+    // Click to open the dropdown
+    await this.assetTrigger.click();
+
+    // Wait for dropdown options to be visible
+    const dropdownOptions = this.modal.locator('[role="option"]');
+    await dropdownOptions.first().waitFor({ state: 'visible', timeout: 10000 });
+
+    // Find and click the option containing the symbol
+    const symbolOption = dropdownOptions
+      .filter({ hasText: new RegExp(`\\(${symbol}\\)`, 'i') })
+      .first();
+    await symbolOption.waitFor({ state: 'visible', timeout: 5000 });
+    await symbolOption.click();
 
     await this.quantityInput.fill(quantity.toString());
     await this.confirmButton.click();

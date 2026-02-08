@@ -3,6 +3,9 @@ import {
   fetchAssetHistory,
   fetchGlobalMarketData,
   clearGlobalMarketCache,
+  fetchCoinCategories,
+  clearCategoriesCache,
+  fetchTopMovers,
 } from '@services/coinService';
 import { coinGeckoApiService } from '@services/coinGeckoApiService';
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
@@ -10,6 +13,7 @@ import type {
   CoinGeckoPriceData,
   CoinGeckoMarketChartResponse,
   CoinGeckoGlobalResponse,
+  CoinGeckoDetailResponse,
 } from '@crypture/shared-types';
 
 // Mock the coinGeckoApiService
@@ -29,6 +33,7 @@ const mockCoins: CoinGeckoPriceData[] = [
     id: 'bitcoin',
     symbol: 'btc',
     name: 'Bitcoin',
+    image: 'https://assets.coingecko.com/coins/images/1/large/bitcoin.png',
     current_price: 50000,
     market_cap: 1000000000000,
     market_cap_rank: 1,
@@ -56,6 +61,7 @@ const mockCoins: CoinGeckoPriceData[] = [
     id: 'ethereum',
     symbol: 'eth',
     name: 'Ethereum',
+    image: 'https://assets.coingecko.com/coins/images/279/large/ethereum.png',
     current_price: 3000,
     market_cap: 360000000000,
     market_cap_rank: 2,
@@ -94,8 +100,24 @@ describe('fetchTopCoins', () => {
     const coins = await fetchTopCoins();
 
     expect(coins).toEqual([
-      { id: 'bitcoin', name: 'Bitcoin', symbol: 'BTC', current_price: 50000 },
-      { id: 'ethereum', name: 'Ethereum', symbol: 'ETH', current_price: 3000 },
+      {
+        id: 'bitcoin',
+        name: 'Bitcoin',
+        symbol: 'BTC',
+        current_price: 50000,
+        market_cap_rank: 1,
+        price_change_percentage_24h: 2.0,
+        price_change_percentage_7d: 2.0,
+      },
+      {
+        id: 'ethereum',
+        name: 'Ethereum',
+        symbol: 'ETH',
+        current_price: 3000,
+        market_cap_rank: 2,
+        price_change_percentage_24h: 3.45,
+        price_change_percentage_7d: 3.45,
+      },
     ]);
     expect(coinGeckoApiService.getCoinsMarkets).toHaveBeenCalledWith({
       perPage: 100,
@@ -270,5 +292,290 @@ describe('fetchGlobalMarketData', () => {
     );
 
     await expect(fetchGlobalMarketData()).rejects.toThrow('API error: 500');
+  });
+});
+
+describe('fetchCoinCategories', () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+    clearCategoriesCache();
+  });
+
+  const mockBitcoinDetail: CoinGeckoDetailResponse = {
+    id: 'bitcoin',
+    symbol: 'btc',
+    name: 'Bitcoin',
+    categories: ['Store of Value', 'Layer 1'],
+    asset_platform_id: null,
+    platforms: {},
+    detail_platforms: {},
+    block_time_in_minutes: 10,
+    hashing_algorithm: 'SHA-256',
+    public_notice: null,
+    additional_notices: [],
+    localization: {},
+    description: {},
+    links: {
+      homepage: [],
+      whitepaper: '',
+      blockchain_site: [],
+      official_forum_url: [],
+      chat_url: [],
+      announcement_url: [],
+      twitter_screen_name: '',
+      facebook_username: '',
+      bitcointalk_thread_identifier: null,
+      telegram_channel_identifier: '',
+      subreddit_url: '',
+      repos_url: { github: [], bitbucket: [] },
+    },
+    image: { thumb: '', small: '', large: '' },
+    country_origin: '',
+    genesis_date: null,
+    sentiment_votes_up_percentage: 0,
+    sentiment_votes_down_percentage: 0,
+    watchlist_portfolio_users: 0,
+    market_cap_rank: 1,
+    market_data: {
+      current_price: {},
+      total_value_locked: null,
+      mcap_to_tvl_ratio: null,
+      fdv_to_tvl_ratio: null,
+      roi: null,
+      ath: {},
+      ath_change_percentage: {},
+      ath_date: {},
+      atl: {},
+      atl_change_percentage: {},
+      atl_date: {},
+      market_cap: {},
+      market_cap_rank: 1,
+      fully_diluted_valuation: {},
+      total_volume: {},
+      high_24h: {},
+      low_24h: {},
+      price_change_24h: 0,
+      price_change_percentage_24h: 0,
+      price_change_percentage_7d: 0,
+      price_change_percentage_14d: 0,
+      price_change_percentage_30d: 0,
+      price_change_percentage_60d: 0,
+      price_change_percentage_200d: 0,
+      price_change_percentage_1y: 0,
+      market_cap_change_24h: 0,
+      market_cap_change_percentage_24h: 0,
+      price_change_24h_in_currency: {},
+      price_change_percentage_1h_in_currency: {},
+      price_change_percentage_24h_in_currency: {},
+      price_change_percentage_7d_in_currency: {},
+      price_change_percentage_14d_in_currency: {},
+      price_change_percentage_30d_in_currency: {},
+      price_change_percentage_60d_in_currency: {},
+      price_change_percentage_200d_in_currency: {},
+      price_change_percentage_1y_in_currency: {},
+      market_cap_change_24h_in_currency: {},
+      market_cap_change_percentage_24h_in_currency: {},
+      total_supply: null,
+      max_supply: null,
+      circulating_supply: 0,
+      last_updated: '',
+    },
+    community_data: {
+      facebook_likes: null,
+      twitter_followers: null,
+      reddit_average_posts_48h: 0,
+      reddit_average_comments_48h: 0,
+      reddit_subscribers: 0,
+      reddit_accounts_active_48h: 0,
+    },
+    developer_data: {
+      forks: 0,
+      stars: 0,
+      subscribers: 0,
+      total_issues: 0,
+      closed_issues: 0,
+      pull_requests_merged: 0,
+      pull_request_contributors: 0,
+      code_additions_deletions_4_weeks: { additions: 0, deletions: 0 },
+      commit_count_4_weeks: 0,
+      last_4_weeks_commit_activity_series: [],
+    },
+    public_interest_stats: { alexa_rank: 0, bing_matches: null },
+    status_updates: [],
+    last_updated: '',
+  };
+
+  const mockEthereumDetail: CoinGeckoDetailResponse = {
+    ...mockBitcoinDetail,
+    id: 'ethereum',
+    symbol: 'eth',
+    name: 'Ethereum',
+    categories: ['Smart Contract Platform', 'Layer 1'],
+    market_cap_rank: 2,
+  };
+
+  it('should fetch categories for multiple coins', async () => {
+    vi.mocked(coinGeckoApiService.getCoinById)
+      .mockResolvedValueOnce(mockBitcoinDetail)
+      .mockResolvedValueOnce(mockEthereumDetail);
+
+    const result = await fetchCoinCategories(['bitcoin', 'ethereum']);
+
+    expect(result).toEqual({
+      bitcoin: ['Store of Value', 'Layer 1'],
+      ethereum: ['Smart Contract Platform', 'Layer 1'],
+    });
+    expect(coinGeckoApiService.getCoinById).toHaveBeenCalledTimes(2);
+  });
+
+  it('should use cache for subsequent calls', async () => {
+    vi.mocked(coinGeckoApiService.getCoinById).mockResolvedValue(
+      mockBitcoinDetail
+    );
+
+    // First call
+    await fetchCoinCategories(['bitcoin']);
+    expect(coinGeckoApiService.getCoinById).toHaveBeenCalledTimes(1);
+
+    // Second call - should use cache
+    await fetchCoinCategories(['bitcoin']);
+    expect(coinGeckoApiService.getCoinById).toHaveBeenCalledTimes(1);
+  });
+
+  it('should fallback to Other when API fails', async () => {
+    vi.mocked(coinGeckoApiService.getCoinById).mockRejectedValueOnce(
+      new Error('API Error')
+    );
+
+    const result = await fetchCoinCategories(['bitcoin']);
+
+    expect(result).toEqual({
+      bitcoin: ['Other'],
+    });
+  });
+
+  it('should handle coins without categories', async () => {
+    const mockNoCategories = { ...mockBitcoinDetail, categories: [] };
+    vi.mocked(coinGeckoApiService.getCoinById).mockResolvedValueOnce(
+      mockNoCategories
+    );
+
+    const result = await fetchCoinCategories(['bitcoin']);
+
+    expect(result).toEqual({
+      bitcoin: ['Other'],
+    });
+  });
+});
+
+describe('fetchTopMovers', () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+  });
+
+  const mockGainers: CoinGeckoPriceData[] = [
+    {
+      id: 'coin1',
+      symbol: 'gainer1',
+      name: 'Gainer Coin 1',
+      image: 'https://assets.coingecko.com/coins/images/1/large/gainer1.png',
+      current_price: 100,
+      market_cap: 1000000,
+      market_cap_rank: 10,
+      fully_diluted_valuation: null,
+      total_volume: 50000,
+      high_24h: 110,
+      low_24h: 90,
+      price_change_24h: 10,
+      price_change_percentage_24h: 10.0,
+      market_cap_change_24h: 100000,
+      market_cap_change_percentage_24h: 10.0,
+      circulating_supply: 10000,
+      total_supply: 10000,
+      max_supply: 10000,
+      ath: 150,
+      ath_change_percentage: -33.3,
+      ath_date: '2021-01-01T00:00:00.000Z',
+      atl: 1,
+      atl_change_percentage: 9900,
+      atl_date: '2020-01-01T00:00:00.000Z',
+      roi: null,
+      last_updated: '2024-01-01T00:00:00.000Z',
+    },
+  ];
+
+  const mockLosers: CoinGeckoPriceData[] = [
+    {
+      id: 'coin2',
+      symbol: 'loser1',
+      name: 'Loser Coin 1',
+      image: 'https://assets.coingecko.com/coins/images/2/large/loser1.png',
+      current_price: 50,
+      market_cap: 500000,
+      market_cap_rank: 20,
+      fully_diluted_valuation: null,
+      total_volume: 25000,
+      high_24h: 60,
+      low_24h: 40,
+      price_change_24h: -10,
+      price_change_percentage_24h: -16.67,
+      market_cap_change_24h: -100000,
+      market_cap_change_percentage_24h: -16.67,
+      circulating_supply: 10000,
+      total_supply: 10000,
+      max_supply: 10000,
+      ath: 100,
+      ath_change_percentage: -50,
+      ath_date: '2021-01-01T00:00:00.000Z',
+      atl: 1,
+      atl_change_percentage: 4900,
+      atl_date: '2020-01-01T00:00:00.000Z',
+      roi: null,
+      last_updated: '2024-01-01T00:00:00.000Z',
+    },
+  ];
+
+  it('returns distinct gainers and losers', async () => {
+    vi.mocked(coinGeckoApiService.getCoinsMarkets)
+      .mockResolvedValueOnce(mockGainers)
+      .mockResolvedValueOnce(mockLosers);
+
+    const result = await fetchTopMovers();
+
+    expect(result.gainers).toHaveLength(1);
+    expect(result.losers).toHaveLength(1);
+    expect(result.gainers[0].id).toBe('coin1');
+    expect(result.losers[0].id).toBe('coin2');
+    expect(result.gainers[0].price_change_percentage_24h).toBeGreaterThan(0);
+    expect(result.losers[0].price_change_percentage_24h).toBeLessThan(0);
+  });
+
+  it('fails when API returns same coins for both gainers and losers', async () => {
+    // This test demonstrates the current bug - same coins appearing in both lists
+    const sameCoins = mockGainers.map((coin) => ({
+      ...coin,
+      price_change_percentage_24h: 5.0, // Same positive change for both
+    }));
+
+    vi.mocked(coinGeckoApiService.getCoinsMarkets)
+      .mockResolvedValueOnce(sameCoins)
+      .mockResolvedValueOnce(sameCoins);
+
+    const result = await fetchTopMovers();
+
+    // This should fail - gainers and losers should be distinct
+    const gainerIds = result.gainers.map((g) => g.id);
+    const loserIds = result.losers.map((l) => l.id);
+    const overlappingIds = gainerIds.filter((id) => loserIds.includes(id));
+
+    expect(overlappingIds).toHaveLength(0);
+  });
+
+  it('throws an error on API failure', async () => {
+    vi.mocked(coinGeckoApiService.getCoinsMarkets).mockRejectedValueOnce(
+      new Error('API error: 500')
+    );
+
+    await expect(fetchTopMovers()).rejects.toThrow('API error: 500');
   });
 });

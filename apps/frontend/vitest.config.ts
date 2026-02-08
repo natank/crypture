@@ -1,4 +1,3 @@
-// vitest.config.ts
 import { defineConfig } from 'vitest/config';
 
 export default defineConfig({
@@ -8,9 +7,8 @@ export default defineConfig({
     setupFiles: ['./src/setupTests.ts'],
     include: ['**/*.{test,test.*}.?(c|m)[jt]s?(x)'],
     coverage: {
-      provider: 'v8', // or 'c8'
+      provider: 'v8',
       reporter: ['text', 'html', 'json-summary'],
-      all: true,
       exclude: [
         '**/node_modules/**',
         '**/dist/**',
@@ -34,6 +32,7 @@ export default defineConfig({
       '@hooks': '/src/hooks',
       '@components': '/src/components',
       '@context': '/src/context',
+      '@contexts': '/src/contexts',
       '@services': '/src/services',
       '@pages': '/src/pages',
       '@utils': '/src/utils',

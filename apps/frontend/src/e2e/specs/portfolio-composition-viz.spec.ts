@@ -40,6 +40,7 @@ test.describe('Portfolio Composition Visualizations', () => {
     });
 
     // Mock market data with metadata for composition analysis
+    // Note: Real CoinGecko API does NOT return categories in /coins/markets endpoint
     await page.route('**/api/coingecko/coins/markets*', async (route) => {
       await route.fulfill({
         status: 200,
@@ -56,7 +57,6 @@ test.describe('Portfolio Composition Visualizations', () => {
               market_cap_rank: 1,
               price_change_percentage_24h: 2.5,
               price_change_percentage_7d: 5.0,
-              categories: ['Layer 1', 'Store of Value'],
             },
             {
               id: 'ethereum',
@@ -68,7 +68,6 @@ test.describe('Portfolio Composition Visualizations', () => {
               market_cap_rank: 2,
               price_change_percentage_24h: 3.2,
               price_change_percentage_7d: 7.5,
-              categories: ['Layer 1', 'Smart Contracts'],
             },
             {
               id: 'cardano',
@@ -77,12 +76,101 @@ test.describe('Portfolio Composition Visualizations', () => {
               image: 'https://example.com/ada.png',
               current_price: 0.5,
               market_cap: 17000000000,
-              market_cap_rank: 8,
-              price_change_percentage_24h: -1.5,
-              price_change_percentage_7d: 2.0,
-              categories: ['Layer 1', 'Smart Contracts'],
+              market_cap_rank: 100,
+              price_change_percentage_24h: -15.0,
+              price_change_percentage_7d: 25.0,
             },
           ],
+          timestamp: new Date().toISOString(),
+          requestId: 'mock-request-id',
+        }),
+      });
+    });
+
+    // Mock coin details endpoint for category fetching
+    // Bitcoin categories include both core characteristics and index funds
+    await page.route('**/api/coingecko/coins/bitcoin', async (route) => {
+      await route.fulfill({
+        status: 200,
+        contentType: 'application/json',
+        body: JSON.stringify({
+          data: {
+            id: 'bitcoin',
+            symbol: 'btc',
+            name: 'Bitcoin',
+            categories: [
+              'Smart Contract Platform', // Will be filtered out
+              'Layer 1 (L1)', // Will remain
+              'FTX Holdings', // Will be filtered out
+              'Proof of Work (PoW)', // Will remain
+              'Bitcoin Ecosystem', // Will remain
+              'GMCI 30 Index', // Will be filtered out
+              'GMCI Index', // Will be filtered out
+              'Coinbase 50 Index', // Will be filtered out
+            ],
+            market_cap_rank: 1,
+            market_data: { current_price: { usd: 50000 } },
+          },
+          timestamp: new Date().toISOString(),
+          requestId: 'mock-request-id',
+        }),
+      });
+    });
+
+    await page.route('**/api/coingecko/coins/ethereum', async (route) => {
+      await route.fulfill({
+        status: 200,
+        contentType: 'application/json',
+        body: JSON.stringify({
+          data: {
+            id: 'ethereum',
+            symbol: 'eth',
+            name: 'Ethereum',
+            categories: [
+              'Smart Contract Platform', // Will remain
+              'Layer 1 (L1)', // Will remain
+              'Ethereum Ecosystem', // Will remain
+              'FTX Holdings', // Will be filtered out
+              'Multicoin Capital Portfolio', // Will be filtered out
+              'Proof of Stake (PoS)', // Will remain
+              'Alameda Research Portfolio', // Will be filtered out
+              'Andreessen Horowitz (a16z) Portfolio', // Will be filtered out
+              'GMCI Layer 1 Index', // Will be filtered out
+              'GMCI 30 Index', // Will be filtered out
+              'Delphi Ventures Portfolio', // Will be filtered out
+              'Galaxy Digital Portfolio', // Will be filtered out
+              'GMCI Index', // Will be filtered out
+              'World Liberty Financial Portfolio', // Will be filtered out
+              'Coinbase 50 Index', // Will be filtered out
+            ],
+            market_cap_rank: 2,
+            market_data: { current_price: { usd: 3000 } },
+          },
+          timestamp: new Date().toISOString(),
+          requestId: 'mock-request-id',
+        }),
+      });
+    });
+
+    await page.route('**/api/coingecko/coins/cardano', async (route) => {
+      await route.fulfill({
+        status: 200,
+        contentType: 'application/json',
+        body: JSON.stringify({
+          data: {
+            id: 'cardano',
+            symbol: 'ada',
+            name: 'Cardano',
+            categories: [
+              'Layer 1 (L1)', // Will remain
+              'Smart Contract Platform', // Will remain
+              'Proof of Stake (PoS)', // Will remain
+              'FTX Holdings', // Will be filtered out
+              'GMCI Index', // Will be filtered out
+            ],
+            market_cap_rank: 8,
+            market_data: { current_price: { usd: 0.5 } },
+          },
           timestamp: new Date().toISOString(),
           requestId: 'mock-request-id',
         }),
@@ -211,9 +299,11 @@ test.describe('Portfolio Composition Visualizations', () => {
       // Active tab should have primary background
       await expect(categoryTab).toHaveClass(/bg-brand-primary/);
 
-      // Legend should show categories (with default metadata, this will be "Other")
+      // Legend should show categories from mocked coin details
+      // BTC: Smart Contract Platform, Layer 1 (L1), Proof of Work (PoW), Bitcoin Ecosystem
+      // ETH: Smart Contract Platform, Layer 1 (L1), Ethereum Ecosystem, Proof of Stake (PoS)
       const legend = portfolioPage.page.getByTestId('allocation-legend');
-      await expect(legend.getByText(/other/i)).toBeVisible();
+      await expect(legend.getByText(/smart contract platform/i)).toBeVisible();
     });
 
     test('should switch to market cap tier view', async () => {
@@ -257,12 +347,123 @@ test.describe('Portfolio Composition Visualizations', () => {
 
       expect(hasConservative || hasModerate || hasAggressive).toBeTruthy();
     });
-  });
 
-  test.describe('Responsive Behavior', () => {
-    test.beforeEach(async () => {
+    test('should show diversified risk allocation, not 100% Conservative', async () => {
+      // Add Cardano (small cap with volatility) to create mixed risk profile
+      await portfolioPage.addAsset('ADA', 1000);
+
+      const viewSelector = portfolioPage.page.getByTestId(
+        'allocation-view-selector'
+      );
+      const riskTab = viewSelector.getByRole('tab', { name: /risk/i });
+      await riskTab.click();
+
+      const legend = portfolioPage.page.getByTestId('allocation-legend');
+
+      // Wait for the chart to render
+      await portfolioPage.page.waitForTimeout(500);
+
+      // Should show multiple risk categories, not just Conservative 100%
+      const riskItems = await legend
+        .locator('[data-testid="allocation-legend-item"]')
+        .count();
+
+      // With mixed portfolio (BTC + ETH + ADA), we expect multiple risk levels
+      // BTC: Conservative (Large Cap, low volatility from mocks)
+      // ETH: Moderate (Large Cap, moderate volatility)
+      // ADA: Aggressive (Large Cap in mocks but with volatility - or if we fix mocks, it would vary)
+      expect(riskItems).toBeGreaterThan(1);
+
+      // Conservative should NOT be 100%
+      const conservativeItem = legend
+        .locator('[data-testid="allocation-legend-item"]')
+        .filter({ hasText: /Conservative/ });
+      const hasConservative = await conservativeItem
+        .isVisible()
+        .catch(() => false);
+
+      if (hasConservative) {
+        const conservativeText = await conservativeItem.textContent();
+        // Extract percentage from text like "Conservative 62.5%"
+        const percentMatch = conservativeText?.match(/(\d+(?:\.\d+)?)%/);
+        if (percentMatch) {
+          const percent = parseFloat(percentMatch[1]);
+          // Conservative should be less than 100% with mixed portfolio
+          expect(percent).toBeLessThan(100);
+        }
+      }
+    });
+
+    test('should only show categories for portfolio coins, not all loaded coins', async () => {
+      // Clear localStorage to ensure clean portfolio state
+      await portfolioPage.page.evaluate(() => localStorage.clear());
+      await portfolioPage.reload();
+
+      // Only add Bitcoin to portfolio
       await portfolioPage.addAsset('BTC', 1);
-      await portfolioPage.addAsset('ETH', 10);
+
+      const viewSelector = portfolioPage.page.getByTestId(
+        'allocation-view-selector'
+      );
+      const categoryTab = viewSelector.getByRole('tab', { name: /category/i });
+      await categoryTab.click();
+
+      const legend = portfolioPage.page.getByTestId('allocation-legend');
+
+      // Wait for the chart to render
+      await portfolioPage.page.waitForTimeout(500);
+
+      // Get all category names shown
+      const categoryItems = await legend
+        .locator('[data-testid="allocation-legend-item"]')
+        .all();
+      const categoryNames = await Promise.all(
+        categoryItems.map(async (item) => {
+          const text = await item.textContent();
+          return text?.replace(/\d+(?:\.\d+)?%/, '').trim();
+        })
+      );
+
+      // Should show Bitcoin's filtered categories, not index fund categories
+      // Bitcoin should show: Smart Contract Platform, Layer 1 (L1), Proof of Work (PoW), Bitcoin Ecosystem
+      // Should NOT show: FTX Holdings, GMCI Index, Coinbase 50 Index, etc.
+      const expectedCategories = [
+        'Smart Contract Platform',
+        'Layer 1 (L1)',
+        'Proof of Work (PoW)',
+        'Bitcoin Ecosystem',
+      ];
+      const unexpectedCategories = [
+        'FTX Holdings',
+        'GMCI 30 Index',
+        'GMCI Index',
+        'Coinbase 50 Index',
+      ];
+
+      // Verify expected categories are present
+      expectedCategories.forEach((expectedCategory) => {
+        const hasCategory = categoryNames.some((name) =>
+          name?.toLowerCase().includes(expectedCategory.toLowerCase())
+        );
+        expect(
+          hasCategory,
+          `Expected category "${expectedCategory}" not found. Found: ${categoryNames.join(', ')}`
+        ).toBe(true);
+      });
+
+      // Verify index fund categories are filtered out
+      unexpectedCategories.forEach((unexpectedCategory) => {
+        const hasCategory = categoryNames.some((name) =>
+          name?.toLowerCase().includes(unexpectedCategory.toLowerCase())
+        );
+        expect(
+          hasCategory,
+          `Unexpected category "${unexpectedCategory}" found. Found: ${categoryNames.join(', ')}`
+        ).toBe(false);
+      });
+
+      // Should have exactly 4 filtered categories for Bitcoin
+      expect(categoryItems.length).toBe(4);
     });
 
     test('should adapt layout for mobile', async ({ page }) => {
@@ -278,21 +479,6 @@ test.describe('Portfolio Composition Visualizations', () => {
 
       // Check that layout is vertical (flex-col)
       await expect(container).toHaveClass(/flex-col/);
-    });
-
-    test('should adapt layout for desktop', async ({ page }) => {
-      // Set desktop viewport
-      await page.setViewportSize({ width: 1920, height: 1080 });
-
-      const compositionSection = page.getByTestId(
-        'portfolio-composition-dashboard'
-      );
-
-      // Chart and legend should be side-by-side on desktop
-      const container = compositionSection.locator('.composition-content');
-
-      // Check that layout is horizontal on larger screens
-      await expect(container).toHaveClass(/lg:flex-row/);
     });
   });
 

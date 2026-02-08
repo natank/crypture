@@ -3,13 +3,18 @@ import { useTopMovers } from '@hooks/useTopMovers';
 import { formatCurrency, formatPercentage } from '@utils/formatters';
 import { MarketMover } from 'types/market';
 import CoinGeckoAttribution from '@components/CoinGeckoAttribution';
+import { useImageErrorHandler } from './useImageErrorHandler';
 
 export const TopMoversSection: React.FC = () => {
   const { gainers, losers, isLoading, error } = useTopMovers();
+  const handleImageError = useImageErrorHandler();
 
   if (isLoading) {
     return (
-      <div className="mt-8 grid grid-cols-1 lg:grid-cols-2 gap-8 animate-pulse">
+      <div
+        data-testid="top-movers-loading"
+        className="mt-8 grid grid-cols-1 lg:grid-cols-2 gap-8 animate-pulse"
+      >
         <div className="h-64 bg-gray-200 rounded-lg"></div>
         <div className="h-64 bg-gray-200 rounded-lg"></div>
       </div>
@@ -37,12 +42,16 @@ export const TopMoversSection: React.FC = () => {
           >
             <div className="flex items-center gap-3">
               <img
-                src={coin.image}
+                src={coin.image || '/default-coin-icon.png'}
                 alt={coin.name}
                 className="w-8 h-8 rounded-full"
+                onError={handleImageError}
               />
               <div>
-                <div className="font-bold text-gray-900">
+                <div
+                  data-testid="coin-symbol"
+                  className="font-bold text-gray-900"
+                >
                   {coin.symbol.toUpperCase()}
                 </div>
                 <div className="text-xs text-gray-500 hidden sm:inline">
@@ -55,6 +64,7 @@ export const TopMoversSection: React.FC = () => {
                 {formatCurrency(coin.current_price)}
               </div>
               <div
+                data-testid="price-change"
                 className={`text-sm font-bold ${isGainer ? 'text-green-600' : 'text-red-600'}`}
               >
                 {isGainer ? '+' : ''}
@@ -81,6 +91,14 @@ export const TopMoversSection: React.FC = () => {
           text="Price data by CoinGecko"
           utmSource="crypture"
         />
+      </div>
+
+      <div
+        data-testid="top-movers-section"
+        className="mt-8 grid grid-cols-1 lg:grid-cols-2 gap-8"
+      >
+        {renderList('🚀 Top Gainers', gainers, true)}
+        {renderList('📉 Top Losers', losers, false)}
       </div>
     </>
   );

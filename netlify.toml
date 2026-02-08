@@ -1,11 +1,36 @@
+# Netlify configuration for Nx monorepo with multiple apps
+# Set DEPLOY_TARGET environment variable in each Netlify site:
+# - For frontend site: DEPLOY_TARGET=frontend
+# - For investor-presentation site: DEPLOY_TARGET=investor-presentation
+
 [build]
   base = "/"
-  publish = "dist/apps/frontend"
-  command = "npm ci && npx nx build frontend --configuration=ci"
+  publish = "dist/netlify-publish"
+  command = "npm ci && npx nx build ${DEPLOY_TARGET} --configuration=ci && rm -rf dist/netlify-publish && mkdir -p dist/netlify-publish && cp -R dist/apps/${DEPLOY_TARGET}/* dist/netlify-publish/"
 
 [build.environment]
   NODE_VERSION = "20"
   NPM_VERSION = "10"
+
+# Deploy preview context (for pull requests)
+[context.deploy-preview]
+  # Build the app based on changed files, fallback to DEPLOY_TARGET or frontend
+  command = """
+    npm ci &&
+    if git diff --name-only "${CACHED_COMMIT_REF:-HEAD~1}" "${COMMIT_REF:-HEAD}" | grep -q "apps/investor-presentation/"; then
+      TARGET_APP=investor-presentation
+    elif git diff --name-only "${CACHED_COMMIT_REF:-HEAD~1}" "${COMMIT_REF:-HEAD}" | grep -q "apps/frontend/"; then
+      TARGET_APP=frontend
+    else
+      TARGET_APP=${DEPLOY_TARGET:-frontend}
+    fi &&
+    echo "Building $TARGET_APP" &&
+    npx nx build "$TARGET_APP" --configuration=ci &&
+    rm -rf dist/netlify-publish &&
+    mkdir -p dist/netlify-publish &&
+    cp -R "dist/apps/$TARGET_APP"/* dist/netlify-publish/
+    """
+  publish = "dist/netlify-publish"
 
 [[redirects]]
   from = "/*"

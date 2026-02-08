@@ -14,33 +14,56 @@ jobs:
   unit-tests:
     name: Unit Tests (Vitest)
     runs-on: ubuntu-latest
-    
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-      
+        with:
+          fetch-depth: 0
+
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '20'
           cache: 'npm'
-      
+
       - name: Install dependencies
-        run: npm ci
-      
+        run: |
+          echo "Installing dependencies..."
+          npm ci
+
       - name: Build shared libraries
         run: |
+          echo "Building shared libraries..."
           npx nx build shared-types --verbose
           npx nx build api-client --verbose --skip-nx-cache
           npx nx build utils --verbose
-      
-      - name: Run type checking
+
+      - name: Run type checking (frontend)
         working-directory: ./apps/frontend
-        run: npm run typecheck:ci
-      
-      - name: Run unit tests
+        run: |
+          echo "Running frontend typecheck..."
+          npm run typecheck:ci
+
+      - name: Run type checking (investor-presentation)
+        working-directory: ./apps/investor-presentation
+        run: |
+          echo "Running investor-presentation typecheck..."
+          npx nx run investor-presentation:typecheck --verbose
+
+      - name: Run unit tests (frontend)
         working-directory: ./apps/frontend
-        run: npm run test:unit
+        run: |
+          echo "Running frontend tests..."
+          npm run test:unit
+        env:
+          CI: true
+
+      - name: Run unit tests (investor-presentation)
+        working-directory: ./apps/investor-presentation
+        run: |
+          echo "Running investor-presentation tests..."
+          npx nx run investor-presentation:test --verbose
         env:
           CI: true
 
@@ -49,32 +72,41 @@ jobs:
     name: E2E Tests (Playwright)
     runs-on: ubuntu-latest
     timeout-minutes: 10
-    
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-      
+        with:
+          fetch-depth: 0
+
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '20'
           cache: 'npm'
-      
+
       - name: Install dependencies
-        run: npm ci
-      
+        run: |
+          echo "Installing dependencies..."
+          npm ci
+
       - name: Install Playwright browsers
         working-directory: ./apps/frontend
-        run: npx playwright install --with-deps
-      
+        run: |
+          echo "Installing Playwright browsers..."
+          npx playwright install --with-deps
+
       - name: Build shared libraries
         run: |
+          echo "Building shared libraries..."
           npx nx build shared-types --verbose
           npx nx build api-client --verbose --skip-nx-cache
           npx nx build utils --verbose
 
       - name: Build frontend
-        run: npx nx build frontend --configuration=ci
+        run: |
+          echo "Building frontend..."
+          npx nx build frontend --configuration=ci --verbose
 
       - name: Debug frontend build output
         run: |
@@ -82,21 +114,33 @@ jobs:
           ls -la dist/apps/frontend || true
           echo "apps/frontend/dist contents:"
           ls -la apps/frontend/dist || true
-      
-      - name: Run E2E tests
+
+      - name: Run E2E tests (frontend)
         working-directory: ./apps/frontend
-        run: npm run test:e2e:ci
+        run: |
+          echo "Running frontend E2E tests..."
+          npm run test:e2e:ci
         env:
           CI: true
-      
+
+      - name: Build investor-presentation
+        run: |
+          echo "Building investor-presentation..."
+          npx nx build investor-presentation --configuration=ci --verbose
+
+      - name: Debug investor-presentation build output
+        run: |
+          echo "dist/apps/investor-presentation contents:"
+          ls -la dist/apps/investor-presentation || true
+
       - name: Upload Playwright report
         if: failure()
         uses: actions/upload-artifact@v4
         with:
           name: playwright-report
-          path: playwright-report/
+          path: apps/frontend/playwright-report/
           retention-days: 30
-      
+
       - name: Upload test results
         if: always()
         uses: actions/upload-artifact@v4
@@ -105,24 +149,95 @@ jobs:
           path: test-results/
           retention-days: 30
 
+      - name: Upload investor-presentation build artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: investor-presentation-build
+          path: dist/apps/investor-presentation/
+          retention-days: 30
+
+      - name: Upload frontend build artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: frontend-build
+          path: dist/apps/frontend/
+          retention-days: 30
+
+      - name: Upload shared libraries build artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: shared-libs-build
+          path: dist/libs/
+          retention-days: 30
+
+      - name: Upload coverage reports
+        if: always()
+        uses: codecov/codecov-action@v4
+        with:
+          files: ./coverage/**/lcov.info
+          flags: unittests
+          name: codecov-umbrella
+          fail_ci_if_error: false
+          verbose: true
+          token: ${{ secrets.CODECOV_TOKEN }}
+          directory: ./coverage/
+          root_dir: ./
+          os: linux
+          override_commit: ${{ github.sha }}
+          override_branch: ${{ github.ref_name }}
+          override_pr: ${{ github.event.number }}
+          version: v0.7.0
+          ci: github
+          working-directory: ./
+          options: codecov
+          env_vars: OS,PYTHON
+          custom_files: ./coverage/lcov.info
+          move_coverage_to_trash: false
+          job_code: ${{ github.job }}
+          build_number: ${{ github.run_number }}
+          slug: ${{ github.repository }}
+          name: codecov-umbrella
+          d: ${{ github.workspace }}
+          x: ${{ github.run_id }}
+          y: ${{ github.event_name }}
+          z: ${{ github.ref }}
+          a: ${{ github.actor }}
+          b: ${{ github.base_ref }}
+          c: ${{ github.head_ref }}
+
   # Job 3: Run linting
   lint:
     name: Lint Code
     runs-on: ubuntu-latest
-    
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-      
+        with:
+          fetch-depth: 0
+
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '20'
           cache: 'npm'
-      
+
       - name: Install dependencies
-        run: npm ci
-      
-      - name: Run ESLint
+        run: |
+          echo "Installing dependencies..."
+          npm ci
+
+      - name: Run ESLint (frontend)
         working-directory: ./apps/frontend
-        run: npm run lint
+        run: |
+          echo "Running frontend lint..."
+          npm run lint
+
+      - name: Run ESLint (investor-presentation)
+        working-directory: ./apps/investor-presentation
+        run: |
+          echo "Running investor-presentation lint..."
+          npx nx run investor-presentation:lint --verbose

@@ -2,7 +2,25 @@ import { test, expect } from '@e2e/test-setup';
 import {
   mockCoinGeckoMarkets,
   mockCoinGeckoChartData,
+  mockCoinGeckoCoinDetails,
 } from '@e2e/mocks/mockCoinGecko';
+
+// Helper function to select asset in custom dropdown
+async function selectAsset(page: any, symbol: string) {
+  // Click to open the dropdown
+  await page.getByTestId('asset-select').click();
+
+  // Wait for dropdown options to be visible
+  const dropdownOptions = page.locator('[role="option"]');
+  await dropdownOptions.first().waitFor({ state: 'visible', timeout: 10000 });
+
+  // Find and click the option containing the symbol
+  const symbolOption = dropdownOptions
+    .filter({ hasText: new RegExp(`\\(${symbol}\\)`, 'i') })
+    .first();
+  await symbolOption.waitFor({ state: 'visible', timeout: 5000 });
+  await symbolOption.click();
+}
 
 /**
  * E2E Tests for User Story 17 - Phase 2: Add Asset Notifications
@@ -18,6 +36,7 @@ test.describe('Add Asset Notifications', () => {
     // Mock CoinGecko API to avoid external requests
     mockCoinGeckoMarkets(page);
     mockCoinGeckoChartData(page);
+    mockCoinGeckoCoinDetails(page);
   });
 
   test('shows success notification when adding new asset', async ({ page }) => {
@@ -27,9 +46,7 @@ test.describe('Add Asset Notifications', () => {
     await page.getByRole('button', { name: /add asset/i }).click();
 
     // Fill in asset and quantity
-    await page
-      .locator('select#asset-select')
-      .selectOption({ label: 'Bitcoin (BTC)' });
+    await selectAsset(page, 'BTC');
     await page.getByLabel(/quantity/i).fill('1.5');
 
     // Submit
@@ -58,9 +75,7 @@ test.describe('Add Asset Notifications', () => {
 
     // Add first BTC purchase
     await page.getByRole('button', { name: /add asset/i }).click();
-    await page
-      .locator('select#asset-select')
-      .selectOption({ label: 'Bitcoin (BTC)' });
+    await selectAsset(page, 'BTC');
     await page.getByLabel(/quantity/i).fill('1.0');
     await page
       .getByRole('dialog')
@@ -78,9 +93,7 @@ test.describe('Add Asset Notifications', () => {
     // Note: Label now shows "Bitcoin (BTC) - Owned: 1" due to our feature
     await page.getByRole('button', { name: /add asset/i }).click();
     const modal2 = page.getByRole('dialog');
-    await modal2
-      .locator('select#asset-select')
-      .selectOption({ value: 'bitcoin' }); // Use value instead of label
+    await selectAsset(page, 'BTC');
     await modal2.getByLabel(/quantity/i).fill('0.5');
     await modal2.getByRole('button', { name: /add asset/i }).click();
 
@@ -128,9 +141,7 @@ test.describe('Add Asset Notifications', () => {
 
     // Add BTC first
     await page.getByRole('button', { name: /add asset/i }).click();
-    await page
-      .locator('select#asset-select')
-      .selectOption({ label: 'Bitcoin (BTC)' });
+    await selectAsset(page, 'BTC');
     await page.getByLabel(/quantity/i).fill('2.5');
     await page
       .getByRole('dialog')
@@ -145,18 +156,23 @@ test.describe('Add Asset Notifications', () => {
     // Open modal again
     await page.getByRole('button', { name: /add asset/i }).click();
 
+    // Open the dropdown to see the options
+    await page.getByTestId('asset-select').click();
+
+    // Wait for dropdown options to be visible
+    const dropdownOptions = page.locator('[role="option"]');
+    await dropdownOptions.first().waitFor({ state: 'visible', timeout: 10000 });
+
     // Verify Bitcoin option now shows "- Owned: 2.5"
-    const btcOption = page.locator('select#asset-select option', {
+    const btcOption = dropdownOptions.filter({
       hasText: /Bitcoin.*Owned: 2.5/i,
     });
     await expect(btcOption).toBeAttached();
 
     // Verify assets not owned don't show "Owned" text
-    const ethOption = page.locator('select#asset-select option', {
-      hasText: /Ethereum/i,
-    });
+    const ethOption = dropdownOptions.filter({ hasText: /Ethereum/i });
     await expect(ethOption).toBeAttached();
-    await expect(ethOption).not.toHaveText(/Owned/);
+    await expect(ethOption.first()).not.toHaveText(/Owned/);
   });
 });
 
@@ -165,6 +181,7 @@ test.describe('Add Asset Notifications - Edge Cases', () => {
     // Mock CoinGecko API to avoid external requests
     mockCoinGeckoMarkets(page);
     mockCoinGeckoChartData(page);
+    mockCoinGeckoCoinDetails(page);
   });
 
   test('shows error for invalid quantity (negative number)', async ({
@@ -173,9 +190,7 @@ test.describe('Add Asset Notifications - Edge Cases', () => {
     await page.goto('/portfolio');
 
     await page.getByRole('button', { name: /add asset/i }).click();
-    await page
-      .locator('select#asset-select')
-      .selectOption({ label: 'Bitcoin (BTC)' });
+    await selectAsset(page, 'BTC');
     await page.getByLabel(/quantity/i).fill('-5');
     await page
       .getByRole('dialog')
@@ -195,9 +210,7 @@ test.describe('Add Asset Notifications - Edge Cases', () => {
     await page.goto('/portfolio');
 
     await page.getByRole('button', { name: /add asset/i }).click();
-    await page
-      .locator('select#asset-select')
-      .selectOption({ label: 'Bitcoin (BTC)' });
+    await selectAsset(page, 'BTC');
     await page.getByLabel(/quantity/i).fill('0');
     await page
       .getByRole('dialog')
@@ -230,9 +243,7 @@ test.describe('Add Asset Notifications - Edge Cases', () => {
     await expect(modal).toBeVisible();
 
     // Now submit valid data
-    await page
-      .locator('select#asset-select')
-      .selectOption({ label: 'Bitcoin (BTC)' });
+    await selectAsset(page, 'BTC');
     await page.getByLabel(/quantity/i).clear();
     await page.getByLabel(/quantity/i).fill('1.0');
     await modal.getByRole('button', { name: /add asset/i }).click();
@@ -251,6 +262,7 @@ test.describe('Delete Asset Notifications', () => {
     // Mock CoinGecko API to avoid external requests
     mockCoinGeckoMarkets(page);
     mockCoinGeckoChartData(page);
+    mockCoinGeckoCoinDetails(page);
   });
 
   test('shows success notification when deleting asset', async ({ page }) => {
@@ -258,9 +270,7 @@ test.describe('Delete Asset Notifications', () => {
 
     // First add an asset to delete
     await page.getByRole('button', { name: /add asset/i }).click();
-    await page
-      .locator('select#asset-select')
-      .selectOption({ label: 'Bitcoin (BTC)' });
+    await selectAsset(page, 'BTC');
     await page.getByLabel(/quantity/i).fill('1.5');
     await page
       .getByRole('dialog')
@@ -306,9 +316,7 @@ test.describe('Delete Asset Notifications', () => {
 
     // Add Ethereum for this test
     await page.getByRole('button', { name: /add asset/i }).click();
-    await page
-      .locator('select#asset-select')
-      .selectOption({ label: 'Ethereum (ETH)' });
+    await selectAsset(page, 'ETH');
     await page.getByLabel(/quantity/i).fill('5.0');
     await page
       .getByRole('dialog')
@@ -368,9 +376,7 @@ test.describe('Delete Asset Notifications', () => {
 
     // Add a single asset
     await page.getByRole('button', { name: /add asset/i }).click();
-    await page
-      .locator('select#asset-select')
-      .selectOption({ label: 'Bitcoin (BTC)' });
+    await selectAsset(page, 'BTC');
     await page.getByLabel(/quantity/i).fill('1.0');
     await page
       .getByRole('dialog')
@@ -403,9 +409,7 @@ test.describe('Delete Asset Notifications', () => {
     // Add an asset
     await page.getByRole('button', { name: /add asset/i }).click();
     const modal = page.getByRole('dialog');
-    await modal
-      .locator('select#asset-select')
-      .selectOption({ label: 'Bitcoin (BTC)' });
+    await selectAsset(page, 'BTC');
     await modal.getByLabel(/quantity/i).fill('1.5');
     await modal.getByRole('button', { name: /add asset/i }).click();
 
@@ -430,20 +434,18 @@ test.describe('Unusual Input Warnings (Phase 6)', () => {
   test.beforeEach(async ({ page }) => {
     mockCoinGeckoMarkets(page);
     mockCoinGeckoChartData(page);
+    mockCoinGeckoCoinDetails(page);
   });
 
-  test.skip('shows confirmation dialog for large quantity (> 1M) and requires approval', async ({
+  test('shows confirmation dialog for large quantity (> 1M) and requires approval', async ({
     page,
   }) => {
-    // TODO: Fix timing issue with confirmation dialog and asset submission
     await page.goto('/portfolio');
 
     // Add asset with large quantity
     await page.getByRole('button', { name: /add asset/i }).click();
     const addModal = page.getByRole('dialog').first();
-    await addModal
-      .locator('select#asset-select')
-      .selectOption({ label: 'Bitcoin (BTC)' });
+    await selectAsset(page, 'BTC');
     await addModal.getByLabel(/quantity/i).fill('2000000');
     await addModal.getByRole('button', { name: /add asset/i }).click();
 
@@ -456,11 +458,14 @@ test.describe('Unusual Input Warnings (Phase 6)', () => {
     await expect(confirmDialog).toContainText('unusually large');
 
     // Confirm the large quantity
-    await confirmDialog.getByRole('button', { name: /confirm/i }).click();
+    const confirmBtn = confirmDialog.getByRole('button', {
+      name: /^confirm$/i,
+    });
+    await confirmBtn.click();
 
-    // Wait for dialogs to close and asset to be added
+    // Wait for asset to be added (performSubmit runs via setTimeout after state update)
     await expect(page.getByTestId('asset-row-BTC')).toBeVisible({
-      timeout: 5000,
+      timeout: 10000,
     });
   });
 
@@ -472,9 +477,7 @@ test.describe('Unusual Input Warnings (Phase 6)', () => {
     // Add asset with tiny quantity using scientific notation
     await page.getByRole('button', { name: /add asset/i }).click();
     const modal = page.getByRole('dialog');
-    await modal
-      .locator('select#asset-select')
-      .selectOption({ label: 'Bitcoin (BTC)' });
+    await selectAsset(page, 'BTC');
     await modal.getByLabel(/quantity/i).fill('1e-9');
     await modal.getByRole('button', { name: /add asset/i }).click();
 
@@ -497,9 +500,7 @@ test.describe('Unusual Input Warnings (Phase 6)', () => {
     // Add asset with normal quantity first
     await page.getByRole('button', { name: /add asset/i }).click();
     const modal = page.getByRole('dialog');
-    await modal
-      .locator('select#asset-select')
-      .selectOption({ label: 'Bitcoin (BTC)' });
+    await selectAsset(page, 'BTC');
     await modal.getByLabel(/quantity/i).fill('1.0');
     await modal.getByRole('button', { name: /add asset/i }).click();
     await expect(modal).not.toBeVisible({ timeout: 3000 });
