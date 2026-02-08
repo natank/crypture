@@ -45,9 +45,13 @@ export const TrendingSection: React.FC = () => {
               {coin.market_cap_rank || '-'}
             </span>
             <img
-              src={coin.thumb}
+              src={coin.thumb || coin.large || coin.small}
               alt={coin.name}
               className="w-8 h-8 rounded-full"
+              onError={(e) => {
+                const target = e.target as HTMLImageElement;
+                target.style.display = 'none';
+              }}
             />
             <div className="flex flex-col overflow-hidden">
               <span className="font-bold text-gray-900 truncate">

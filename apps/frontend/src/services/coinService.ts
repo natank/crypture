@@ -188,7 +188,7 @@ export async function fetchTopMovers(): Promise<{
         symbol: coin.symbol,
         current_price: coin.current_price,
         price_change_percentage_24h: coin.price_change_percentage_24h,
-        image: '', // Default empty string since CoinGeckoPriceData doesn't have image
+        image: coin.image,
         market_cap: coin.market_cap,
         market_cap_rank: coin.market_cap_rank,
       }));
@@ -231,7 +231,7 @@ export async function fetchMarketCoins(
     });
     return data.map((coin) => ({
       ...coin,
-      image: '', // Default empty string since CoinGeckoPriceData doesn't have image
+      image: coin.image,
     }));
   } catch (error: unknown) {
     if (error instanceof Error) {
@@ -327,7 +327,7 @@ export async function fetchAssetMetrics(
 
     const coinData: MarketCoin = {
       ...data[0],
-      image: '', // Default empty string since CoinGeckoPriceData doesn't have image
+      image: data[0].image,
     };
 
     // Update cache

@@ -82,6 +82,10 @@ export const MarketCoinList: React.FC<MarketCoinListProps> = ({
                     className="h-8 w-8 rounded-full"
                     src={coin.image}
                     alt={coin.name}
+                    onError={(e) => {
+                      const target = e.target as HTMLImageElement;
+                      target.style.display = 'none';
+                    }}
                   />
                   <div className="ml-4">
                     <div className="text-sm font-medium text-gray-900 hover:text-brand-primary">

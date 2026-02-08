@@ -42,6 +42,10 @@ export const TopMoversSection: React.FC = () => {
                 src={coin.image}
                 alt={coin.name}
                 className="w-8 h-8 rounded-full"
+                onError={(e) => {
+                  const target = e.target as HTMLImageElement;
+                  target.style.display = 'none';
+                }}
               />
               <div>
                 <div
