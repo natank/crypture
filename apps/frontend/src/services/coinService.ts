@@ -188,7 +188,7 @@ export async function fetchTopMovers(): Promise<{
         symbol: coin.symbol,
         current_price: coin.current_price,
         price_change_percentage_24h: coin.price_change_percentage_24h,
-        image: coin.image,
+        image: coin.image || '/default-coin-icon.png',
         market_cap: coin.market_cap,
         market_cap_rank: coin.market_cap_rank,
       }));
@@ -231,7 +231,7 @@ export async function fetchMarketCoins(
     });
     return data.map((coin) => ({
       ...coin,
-      image: coin.image,
+      image: coin.image || '/default-coin-icon.png',
     }));
   } catch (error: unknown) {
     if (error instanceof Error) {
@@ -327,7 +327,7 @@ export async function fetchAssetMetrics(
 
     const coinData: MarketCoin = {
       ...data[0],
-      image: data[0].image,
+      image: data[0].image || '/default-coin-icon.png',
     };
 
     // Update cache

@@ -2,9 +2,11 @@ import React from 'react';
 import { useTopMovers } from '@hooks/useTopMovers';
 import { formatCurrency, formatPercentage } from '@utils/formatters';
 import { MarketMover } from 'types/market';
+import { useImageErrorHandler } from './useImageErrorHandler';
 
 export const TopMoversSection: React.FC = () => {
   const { gainers, losers, isLoading, error } = useTopMovers();
+  const handleImageError = useImageErrorHandler();
 
   if (isLoading) {
     return (
@@ -39,13 +41,10 @@ export const TopMoversSection: React.FC = () => {
           >
             <div className="flex items-center gap-3">
               <img
-                src={coin.image}
+                src={coin.image || '/default-coin-icon.png'}
                 alt={coin.name}
                 className="w-8 h-8 rounded-full"
-                onError={(e) => {
-                  const target = e.target as HTMLImageElement;
-                  target.style.display = 'none';
-                }}
+                onError={handleImageError}
               />
               <div>
                 <div

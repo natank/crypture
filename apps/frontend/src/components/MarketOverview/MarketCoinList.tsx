@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { MarketCoin } from 'types/market';
+import { useImageErrorHandler } from './useImageErrorHandler';
 import { formatCurrency, formatPercentage } from '@utils/formatters';
 
 interface MarketCoinListProps {
@@ -12,6 +13,7 @@ export const MarketCoinList: React.FC<MarketCoinListProps> = ({
   coins,
   isLoading,
 }) => {
+  const handleImageError = useImageErrorHandler();
   if (isLoading) {
     return (
       <div className="space-y-4 animate-pulse">
@@ -80,12 +82,9 @@ export const MarketCoinList: React.FC<MarketCoinListProps> = ({
                 >
                   <img
                     className="h-8 w-8 rounded-full"
-                    src={coin.image}
+                    src={coin.image || '/default-coin-icon.png'}
                     alt={coin.name}
-                    onError={(e) => {
-                      const target = e.target as HTMLImageElement;
-                      target.style.display = 'none';
-                    }}
+                    onError={handleImageError}
                   />
                   <div className="ml-4">
                     <div className="text-sm font-medium text-gray-900 hover:text-brand-primary">

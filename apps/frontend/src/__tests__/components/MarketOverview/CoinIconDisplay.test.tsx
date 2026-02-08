@@ -194,4 +194,85 @@ describe('Coin Icon Display Tests', () => {
       expect(screen.getByText(/no coins found/i)).toBeInTheDocument();
     });
   });
+
+  describe('Error Handling', () => {
+    it('should handle broken image in TrendingSection', () => {
+      mockUseTrendingCoins.mockReturnValue({
+        data: [mockTrendingCoin],
+        isLoading: false,
+        error: null,
+      });
+
+      render(
+        <TestWrapper>
+          <TrendingSection />
+        </TestWrapper>
+      );
+
+      const coinImage = screen.getByAltText('Bitcoin');
+      expect(coinImage).toBeInTheDocument();
+
+      // Simulate image error
+      const errorEvent = new Event('error');
+      Object.defineProperty(errorEvent, 'target', {
+        value: coinImage,
+        enumerable: true,
+      });
+      coinImage.dispatchEvent(errorEvent);
+
+      // Image should be hidden
+      expect(coinImage).toHaveStyle('display: none');
+    });
+
+    it('should handle broken image in TopMoversSection', () => {
+      mockUseTopMovers.mockReturnValue({
+        gainers: [mockMarketMover],
+        losers: [],
+        isLoading: false,
+        error: null,
+      });
+
+      render(
+        <TestWrapper>
+          <TopMoversSection />
+        </TestWrapper>
+      );
+
+      const coinImage = screen.getByAltText('Ethereum');
+      expect(coinImage).toBeInTheDocument();
+
+      // Simulate image error
+      const errorEvent = new Event('error');
+      Object.defineProperty(errorEvent, 'target', {
+        value: coinImage,
+        enumerable: true,
+      });
+      coinImage.dispatchEvent(errorEvent);
+
+      // Image should be hidden
+      expect(coinImage).toHaveStyle('display: none');
+    });
+
+    it('should handle broken image in MarketCoinList', () => {
+      render(
+        <TestWrapper>
+          <MarketCoinList coins={[mockMarketCoin]} isLoading={false} />
+        </TestWrapper>
+      );
+
+      const coinImage = screen.getByAltText('Cardano');
+      expect(coinImage).toBeInTheDocument();
+
+      // Simulate image error
+      const errorEvent = new Event('error');
+      Object.defineProperty(errorEvent, 'target', {
+        value: coinImage,
+        enumerable: true,
+      });
+      coinImage.dispatchEvent(errorEvent);
+
+      // Image should be hidden
+      expect(coinImage).toHaveStyle('display: none');
+    });
+  });
 });
