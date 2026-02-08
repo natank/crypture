@@ -11,6 +11,8 @@ import { useAssetHighlight } from '@hooks/useAssetHighlight';
 import { useAssetMetrics } from '@hooks/useAssetMetrics';
 import { validateQuantity } from '@utils/validateQuantity';
 import toast from 'react-hot-toast';
+import KebabMenu from './KebabMenu';
+import type { KebabMenuAction } from './KebabMenu';
 
 type AssetRowProps = {
   asset: PortfolioAsset;
@@ -317,8 +319,8 @@ const AssetRow = memo(
             {!hasPrice && <InlineErrorBadge message="Price fetch failed" />}
           </div>
 
-          {/* Action Buttons */}
-          <div className="flex items-center gap-2">
+          {/* Action Buttons - Desktop (md+) */}
+          <div className="hidden md:flex items-center gap-2">
             {!isEditing && (
               <>
                 <Tooltip
@@ -358,6 +360,43 @@ const AssetRow = memo(
                 <Icon glyph="🗑️" />
               </button>
             </Tooltip>
+          </div>
+
+          {/* Kebab Menu - Mobile (<md) */}
+          <div className="flex md:hidden items-center">
+            <KebabMenu
+              ariaLabel={`Actions for ${asset.coinInfo.name}`}
+              actions={
+                isEditing
+                  ? [
+                      {
+                        label: 'Delete',
+                        icon: '🗑️',
+                        onClick: handleDeleteClick,
+                        variant: 'danger' as const,
+                        disabled: true,
+                      },
+                    ]
+                  : ([
+                      {
+                        label: 'View Details',
+                        icon: '🔍',
+                        to: `/coin/${asset.coinInfo.id}`,
+                      },
+                      {
+                        label: 'Edit Quantity',
+                        icon: '✏️',
+                        onClick: handleEditClick,
+                      },
+                      {
+                        label: 'Delete',
+                        icon: '🗑️',
+                        onClick: handleDeleteClick,
+                        variant: 'danger' as const,
+                      },
+                    ] as KebabMenuAction[])
+              }
+            />
           </div>
         </div>
 

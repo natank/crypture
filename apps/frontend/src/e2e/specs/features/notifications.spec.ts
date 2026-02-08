@@ -458,11 +458,14 @@ test.describe('Unusual Input Warnings (Phase 6)', () => {
     await expect(confirmDialog).toContainText('unusually large');
 
     // Confirm the large quantity
-    await confirmDialog.getByRole('button', { name: /confirm/i }).click();
+    const confirmBtn = confirmDialog.getByRole('button', {
+      name: /^confirm$/i,
+    });
+    await confirmBtn.click();
 
-    // Wait for dialogs to close and asset to be added
+    // Wait for asset to be added (performSubmit runs via setTimeout after state update)
     await expect(page.getByTestId('asset-row-BTC')).toBeVisible({
-      timeout: 5000,
+      timeout: 10000,
     });
   });
 

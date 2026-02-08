@@ -369,9 +369,14 @@ test.describe('Category Preference Toggle', () => {
       .getByRole('dialog', { name: /add crypto asset/i })
       .waitFor({ state: 'visible' });
 
-    // Select Bitcoin
-    const assetSelect = page.getByTestId('asset-select');
-    await assetSelect.selectOption('Bitcoin (BTC)');
+    // Select Bitcoin using custom dropdown
+    await page.getByTestId('asset-select').click();
+    const btcOption = page
+      .locator('[role="option"]')
+      .filter({ hasText: /Bitcoin \(BTC\)/i })
+      .first();
+    await btcOption.waitFor({ state: 'visible', timeout: 5000 });
+    await btcOption.click();
 
     // Fill quantity
     await page.getByLabel(/quantity/i).fill('1');

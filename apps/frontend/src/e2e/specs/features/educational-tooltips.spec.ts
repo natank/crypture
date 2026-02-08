@@ -165,9 +165,13 @@ test.describe('Educational Tooltips', () => {
 
       // Add an asset first
       await page.getByRole('button', { name: /add asset/i }).click();
-      await page
-        .locator('select#asset-select')
-        .selectOption({ label: 'Bitcoin (BTC)' });
+      await page.getByTestId('asset-select').click();
+      const btcOption = page
+        .locator('[role="option"]')
+        .filter({ hasText: /Bitcoin \(BTC\)/i })
+        .first();
+      await btcOption.waitFor({ state: 'visible', timeout: 5000 });
+      await btcOption.click();
       await page.getByLabel(/quantity/i).fill('1');
       await page
         .getByRole('dialog')
