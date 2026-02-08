@@ -5,6 +5,7 @@ import {
   clearGlobalMarketCache,
   fetchCoinCategories,
   clearCategoriesCache,
+  fetchTopMovers,
 } from '@services/coinService';
 import { coinGeckoApiService } from '@services/coinGeckoApiService';
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
@@ -462,5 +463,115 @@ describe('fetchCoinCategories', () => {
     expect(result).toEqual({
       bitcoin: ['Other'],
     });
+  });
+});
+
+describe('fetchTopMovers', () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+  });
+
+  const mockGainers: CoinGeckoPriceData[] = [
+    {
+      id: 'coin1',
+      symbol: 'gainer1',
+      name: 'Gainer Coin 1',
+      current_price: 100,
+      market_cap: 1000000,
+      market_cap_rank: 10,
+      fully_diluted_valuation: null,
+      total_volume: 50000,
+      high_24h: 110,
+      low_24h: 90,
+      price_change_24h: 10,
+      price_change_percentage_24h: 10.0,
+      market_cap_change_24h: 100000,
+      market_cap_change_percentage_24h: 10.0,
+      circulating_supply: 10000,
+      total_supply: 10000,
+      max_supply: 10000,
+      ath: 150,
+      ath_change_percentage: -33.3,
+      ath_date: '2021-01-01T00:00:00.000Z',
+      atl: 1,
+      atl_change_percentage: 9900,
+      atl_date: '2020-01-01T00:00:00.000Z',
+      roi: null,
+      last_updated: '2024-01-01T00:00:00.000Z',
+    },
+  ];
+
+  const mockLosers: CoinGeckoPriceData[] = [
+    {
+      id: 'coin2',
+      symbol: 'loser1',
+      name: 'Loser Coin 1',
+      current_price: 50,
+      market_cap: 500000,
+      market_cap_rank: 20,
+      fully_diluted_valuation: null,
+      total_volume: 25000,
+      high_24h: 60,
+      low_24h: 40,
+      price_change_24h: -10,
+      price_change_percentage_24h: -16.67,
+      market_cap_change_24h: -100000,
+      market_cap_change_percentage_24h: -16.67,
+      circulating_supply: 10000,
+      total_supply: 10000,
+      max_supply: 10000,
+      ath: 100,
+      ath_change_percentage: -50,
+      ath_date: '2021-01-01T00:00:00.000Z',
+      atl: 1,
+      atl_change_percentage: 4900,
+      atl_date: '2020-01-01T00:00:00.000Z',
+      roi: null,
+      last_updated: '2024-01-01T00:00:00.000Z',
+    },
+  ];
+
+  it('returns distinct gainers and losers', async () => {
+    vi.mocked(coinGeckoApiService.getCoinsMarkets)
+      .mockResolvedValueOnce(mockGainers)
+      .mockResolvedValueOnce(mockLosers);
+
+    const result = await fetchTopMovers();
+
+    expect(result.gainers).toHaveLength(1);
+    expect(result.losers).toHaveLength(1);
+    expect(result.gainers[0].id).toBe('coin1');
+    expect(result.losers[0].id).toBe('coin2');
+    expect(result.gainers[0].price_change_percentage_24h).toBeGreaterThan(0);
+    expect(result.losers[0].price_change_percentage_24h).toBeLessThan(0);
+  });
+
+  it('fails when API returns same coins for both gainers and losers', async () => {
+    // This test demonstrates the current bug - same coins appearing in both lists
+    const sameCoins = mockGainers.map((coin) => ({
+      ...coin,
+      price_change_percentage_24h: 5.0, // Same positive change for both
+    }));
+
+    vi.mocked(coinGeckoApiService.getCoinsMarkets)
+      .mockResolvedValueOnce(sameCoins)
+      .mockResolvedValueOnce(sameCoins);
+
+    const result = await fetchTopMovers();
+
+    // This should fail - gainers and losers should be distinct
+    const gainerIds = result.gainers.map((g) => g.id);
+    const loserIds = result.losers.map((l) => l.id);
+    const overlappingIds = gainerIds.filter((id) => loserIds.includes(id));
+
+    expect(overlappingIds).toHaveLength(0);
+  });
+
+  it('throws an error on API failure', async () => {
+    vi.mocked(coinGeckoApiService.getCoinsMarkets).mockRejectedValueOnce(
+      new Error('API error: 500')
+    );
+
+    await expect(fetchTopMovers()).rejects.toThrow('API error: 500');
   });
 });
