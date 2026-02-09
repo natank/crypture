@@ -177,4 +177,52 @@ test.describe('Asset Metrics Feature (REQ-023)', () => {
       timeout: 10000,
     });
   });
+
+  test('should display distinct ATH values for different coins (regression: duplicate ATH data)', async ({
+    portfolioPage,
+    addAssetModal,
+  }) => {
+    // Regression test for bug where all assets showed the same ATH data
+    // (Bitcoin's ATH) because the backend did not forward the `ids` query
+    // parameter to the CoinGecko API.
+
+    // 1. Add two different assets
+    await addAssetModal.openAndAdd('BTC', 1.0);
+    await addAssetModal.openAndAdd('ETH', 2.0);
+
+    // 2. Expand BTC and wait for its metrics to load
+    await portfolioPage.toggleChart('btc');
+    const btcPanel = portfolioPage.metricsPanelBySymbol('btc');
+    await expect(btcPanel.getByText('Price Extremes')).toBeVisible({
+      timeout: 10000,
+    });
+
+    // 3. Read BTC ATH value — mock data has BTC ATH = $69,000.00
+    const btcAthText = await btcPanel
+      .locator('[class*="font-medium"]')
+      .filter({ hasText: /^\$/ })
+      .first()
+      .textContent();
+
+    // 4. Expand ETH and wait for its metrics to load
+    await portfolioPage.toggleChart('eth');
+    const ethPanel = portfolioPage.metricsPanelBySymbol('eth');
+    await expect(ethPanel.getByText('Price Extremes')).toBeVisible({
+      timeout: 10000,
+    });
+
+    // 5. Read ETH ATH value — mock data has ETH ATH = $4,878.00
+    const ethAthText = await ethPanel
+      .locator('[class*="font-medium"]')
+      .filter({ hasText: /^\$/ })
+      .first()
+      .textContent();
+
+    // 6. The ATH values MUST be different for different coins
+    expect(btcAthText).not.toEqual(ethAthText);
+
+    // 7. Verify the actual expected values from mock data
+    expect(btcAthText).toContain('69,000');
+    expect(ethAthText).toContain('4,878');
+  });
 });

@@ -309,6 +309,7 @@ router.get('/coins/markets', async (req: Request, res: Response) => {
       per_page = '100',
       page = '1',
       sparkline = 'false',
+      ids,
     } = req.query;
 
     const marketsData = await coingeckoService.getCoinsMarkets(
@@ -316,7 +317,8 @@ router.get('/coins/markets', async (req: Request, res: Response) => {
       order as string,
       parseInt(per_page as string),
       parseInt(page as string),
-      sparkline === 'true'
+      sparkline === 'true',
+      ids ? (ids as string) : undefined
     );
 
     res.json({
