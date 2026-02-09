@@ -174,19 +174,24 @@ export class CoinGeckoService {
     order: string = 'market_cap_desc',
     perPage: number = 100,
     page: number = 1,
-    sparkline: boolean = false
+    sparkline: boolean = false,
+    ids?: string
   ): Promise<CoinGeckoPriceData[]> {
     return this.retryRequest(async () => {
-      const response = await this.api.get('/coins/markets', {
-        params: {
-          vs_currency: vsCurrency,
-          order,
-          per_page: perPage,
-          page,
-          sparkline,
-          price_change_percentage: '1h,24h,7d,14d,30d,200d,1y',
-        },
-      });
+      const params: Record<string, string | number | boolean> = {
+        vs_currency: vsCurrency,
+        order,
+        per_page: perPage,
+        page,
+        sparkline,
+        price_change_percentage: '1h,24h,7d,14d,30d,200d,1y',
+      };
+
+      if (ids) {
+        params.ids = ids;
+      }
+
+      const response = await this.api.get('/coins/markets', { params });
       return response.data;
     });
   }

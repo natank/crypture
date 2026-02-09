@@ -54,10 +54,22 @@ export async function mockCoinGeckoMarkets(
         name: 'Bitcoin',
         current_price: overrides.BTC ?? 30000,
         image: 'https://assets.coingecko.com/coins/images/1/large/bitcoin.png',
+        market_cap: 580000000000,
         market_cap_rank: 1,
         price_change_percentage_24h: 1.5,
         price_change_percentage_7d: 3.5,
-        // Note: Real API does NOT include categories in /coins/markets endpoint
+        total_volume: 25000000000,
+        high_24h: 31000,
+        low_24h: 29500,
+        ath: 69000,
+        ath_date: '2021-11-10T14:24:11.849Z',
+        ath_change_percentage: -56.5,
+        atl: 67.81,
+        atl_date: '2013-07-06T00:00:00.000Z',
+        atl_change_percentage: 44150.2,
+        circulating_supply: 19500000,
+        total_supply: 19500000,
+        max_supply: 21000000,
       },
       {
         id: 'ethereum',
@@ -66,10 +78,22 @@ export async function mockCoinGeckoMarkets(
         current_price: overrides.ETH ?? 2000,
         image:
           'https://assets.coingecko.com/coins/images/279/large/ethereum.png',
+        market_cap: 240000000000,
         market_cap_rank: 2,
         price_change_percentage_24h: 6.5,
         price_change_percentage_7d: 8.5,
-        // Note: Real API does NOT include categories in /coins/markets endpoint
+        total_volume: 12000000000,
+        high_24h: 2050,
+        low_24h: 1980,
+        ath: 4878,
+        ath_date: '2021-11-10T14:24:19.604Z',
+        ath_change_percentage: -59.0,
+        atl: 0.43,
+        atl_date: '2015-10-20T00:00:00.000Z',
+        atl_change_percentage: 461800.5,
+        circulating_supply: 120000000,
+        total_supply: 120000000,
+        max_supply: null,
       },
       {
         id: 'cardano',
@@ -78,18 +102,39 @@ export async function mockCoinGeckoMarkets(
         current_price: overrides.ADA ?? 0.5,
         image:
           'https://assets.coingecko.com/coins/images/975/large/cardano.png',
+        market_cap: 17500000000,
         market_cap_rank: 8,
         price_change_percentage_24h: -2.0,
         price_change_percentage_7d: 1.5,
-        // Note: Real API does NOT include categories in /coins/markets endpoint
+        total_volume: 800000000,
+        high_24h: 0.52,
+        low_24h: 0.48,
+        ath: 3.09,
+        ath_date: '2021-09-02T06:00:10.474Z',
+        ath_change_percentage: -83.8,
+        atl: 0.0173,
+        atl_date: '2020-03-13T02:22:55.044Z',
+        atl_change_percentage: 2790.5,
+        circulating_supply: 35000000000,
+        total_supply: 45000000000,
+        max_supply: 45000000000,
       },
     ];
+
+    // Filter by ids if provided (mirrors CoinGecko API behavior)
+    const url = new URL(route.request().url(), 'http://localhost');
+    const ids = url.searchParams.get('ids');
+    let responseData = body;
+    if (ids) {
+      const idList = ids.split(',');
+      responseData = body.filter((coin) => idList.includes(coin.id));
+    }
 
     route.fulfill({
       status: 200,
       contentType: 'application/json',
       body: JSON.stringify({
-        data: body,
+        data: responseData,
         timestamp: new Date().toISOString(),
         requestId: 'mock-request-id',
       }),
