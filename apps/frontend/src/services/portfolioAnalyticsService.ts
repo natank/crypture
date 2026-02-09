@@ -360,13 +360,19 @@ export async function getPortfolioHistory(
       totalValue += asset.quantity * price;
     });
 
-    // Only add point if we have some value (or if it's genuinely 0)
-    // Also, to avoid noise at the start where some assets might not have data yet,
-    // we might want to filter, but showing 0 or partial value is technically correct "if we held this portfolio back then".
-    portfolioHistory.push({
-      timestamp,
-      value: totalValue,
-    });
+    // Only emit data points once every asset has at least one known price.
+    // Before that, the portfolio value is artificially low (partial data),
+    // which causes wildly inflated percentage-change metrics.
+    const allAssetsHavePrice = portfolio.every(
+      (asset) => lastKnownPrices[asset.coinInfo.id] !== undefined
+    );
+
+    if (allAssetsHavePrice) {
+      portfolioHistory.push({
+        timestamp,
+        value: totalValue,
+      });
+    }
   }
 
   return portfolioHistory;
