@@ -24,6 +24,12 @@ async function selectAsset(page: any, symbol: string) {
 
 test.describe('Edit Asset Quantity', () => {
   test.beforeEach(async ({ page }) => {
+    await page.addInitScript(() => {
+      localStorage.clear();
+      sessionStorage.clear();
+      localStorage.setItem('cryptoPortfolio_onboardingComplete', 'true');
+    });
+
     mockCoinGeckoMarkets(page);
     mockCoinGeckoChartData(page);
     mockCoinGeckoCoinDetails(page);
@@ -312,6 +318,12 @@ test.describe('Edit Asset Quantity - Mobile', () => {
   test('should have touch-friendly edit controls on mobile', async ({
     page,
   }) => {
+    await page.addInitScript(() => {
+      localStorage.clear();
+      sessionStorage.clear();
+      localStorage.setItem('cryptoPortfolio_onboardingComplete', 'true');
+    });
+
     mockCoinGeckoMarkets(page);
     mockCoinGeckoChartData(page);
     mockCoinGeckoCoinDetails(page);

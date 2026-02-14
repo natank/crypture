@@ -22,20 +22,22 @@ export const test = base.extend<Fixtures>({
     // Clear all storage before setting up mocks
     await context.clearCookies();
 
+    // Ensure deterministic local/session storage for each test and skip
+    // first-time demo onboarding modal unless a spec explicitly tests it.
+    await page.addInitScript(() => {
+      localStorage.clear();
+      sessionStorage.clear();
+      localStorage.setItem('cryptoPortfolio_onboardingComplete', 'true');
+    });
+
     // Set up mocks first
     await mockCoinGeckoMarkets(page);
     await mockCoinGeckoChartData(page);
     await mockCoinGeckoCoinDetails(page);
 
-    // Navigate to portfolio page first, then clear storage
+    // Navigate to portfolio page
     const portfolioPage = new PortfolioPage(page);
     await portfolioPage.goto();
-
-    // Clear storage after navigating to the actual page
-    await page.evaluate(() => {
-      localStorage.clear();
-      sessionStorage.clear();
-    });
 
     await run(portfolioPage);
   },
