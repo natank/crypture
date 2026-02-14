@@ -103,11 +103,14 @@ test.describe('Edit Asset Quantity', () => {
 
     await expect(page.getByText(/Qty: 3/)).toBeVisible();
 
-    await page
+    const bitcoinRow = page.getByTestId('asset-row-BTC');
+    await expect(bitcoinRow).toBeVisible();
+    await bitcoinRow
       .getByRole('button', { name: /Edit Bitcoin quantity/i })
-      .last()
+      .first()
       .click({ force: true });
     const input = page.getByLabel(/Edit quantity for Bitcoin/i);
+    await expect(input).toBeVisible();
     await input.clear();
     await input.fill('4.5');
     await input.press('Enter');
@@ -125,11 +128,14 @@ test.describe('Edit Asset Quantity', () => {
 
     await expect(page.getByText(/Qty: 2/)).toBeVisible();
 
-    await page
+    const bitcoinRow = page.getByTestId('asset-row-BTC');
+    await expect(bitcoinRow).toBeVisible();
+    await bitcoinRow
       .getByRole('button', { name: /Edit Bitcoin quantity/i })
-      .last()
+      .first()
       .click({ force: true });
     const input = page.getByLabel(/Edit quantity for Bitcoin/i);
+    await expect(input).toBeVisible();
     await input.clear();
     await input.fill('999');
     await input.press('Escape');
