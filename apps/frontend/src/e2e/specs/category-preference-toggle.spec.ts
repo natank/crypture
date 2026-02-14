@@ -5,6 +5,12 @@ test.describe('Category Preference Toggle', () => {
   let portfolioPage: PortfolioPage;
 
   test.beforeEach(async ({ page }) => {
+    await page.addInitScript(() => {
+      if (localStorage.getItem('cryptoPortfolio_onboardingComplete') === null) {
+        localStorage.setItem('cryptoPortfolio_onboardingComplete', 'true');
+      }
+    });
+
     // Mock CoinGecko API for coin list
     await page.route('**/api/coingecko/coins/list*', async (route) => {
       await route.fulfill({
@@ -136,7 +142,10 @@ test.describe('Category Preference Toggle', () => {
 
   test('should default to filtered categories', async () => {
     // Clear localStorage to ensure clean state
-    await portfolioPage.page.evaluate(() => localStorage.clear());
+    await portfolioPage.page.evaluate(() => {
+      localStorage.clear();
+      localStorage.setItem('cryptoPortfolio_onboardingComplete', 'true');
+    });
     await portfolioPage.reload();
 
     // Add Bitcoin to portfolio
@@ -237,7 +246,10 @@ test.describe('Category Preference Toggle', () => {
 
   test('should default to core categories in settings', async () => {
     // Clear localStorage and navigate to settings
-    await portfolioPage.page.evaluate(() => localStorage.clear());
+    await portfolioPage.page.evaluate(() => {
+      localStorage.clear();
+      localStorage.setItem('cryptoPortfolio_onboardingComplete', 'true');
+    });
     await portfolioPage.page.goto('/settings');
 
     // Should have "Core Categories Only" selected by default

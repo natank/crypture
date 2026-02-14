@@ -42,10 +42,10 @@ test.describe('PortfolioPage CoinGecko Attribution', () => {
       .locator('text=Data provided by CoinGecko');
     await expect(footerAttribution).toBeVisible();
 
-    // Verify it's the compact variant (smaller text, gray color)
+    // Verify it's the compact variant (smaller text, theme-driven color)
     const attributionContainer = footerAttribution.locator('..').locator('..');
     await expect(attributionContainer).toHaveClass(/text-xs/);
-    await expect(attributionContainer).toHaveClass(/text-gray-500/);
+    await expect(attributionContainer).toHaveClass(/text-(white|gray-500)/);
 
     // Ensure no duplicate attributions in main content area
     const mainContentAttributions = page

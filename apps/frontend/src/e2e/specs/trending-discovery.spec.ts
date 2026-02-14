@@ -1,6 +1,9 @@
 import { test, expect } from '@playwright/test';
 import { MarketPage } from '../pom-pages/market-page.pom';
 
+const inlineCoinIcon =
+  "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32'%3E%3Ccircle cx='16' cy='16' r='16' fill='%23999'/%3E%3C/svg%3E";
+
 test.describe('Trending & Discovery Feed', () => {
   let marketPage: MarketPage;
 
@@ -20,9 +23,9 @@ test.describe('Trending & Discovery Feed', () => {
                   name: 'Bitcoin',
                   symbol: 'BTC',
                   market_cap_rank: 1,
-                  thumb: 'https://example.com/btc.png',
-                  small: 'https://example.com/btc_small.png',
-                  large: 'https://example.com/btc_large.png',
+                  thumb: inlineCoinIcon,
+                  small: inlineCoinIcon,
+                  large: inlineCoinIcon,
                   slug: 'bitcoin',
                   price_btc: 1,
                   score: 0,
@@ -38,8 +41,9 @@ test.describe('Trending & Discovery Feed', () => {
 
     // Mock Top Movers API (Gainers & Losers)
     await page.route('**/api/coingecko/coins/markets*', async (route) => {
-      const url = route.request().url();
-      const isGainers = url.includes('order=price_change_percentage_24h_desc');
+      const url = new URL(route.request().url());
+      const order = url.searchParams.get('order');
+      const isGainers = order === 'price_change_percentage_24h_desc';
 
       await route.fulfill({
         status: 200,
@@ -50,7 +54,7 @@ test.describe('Trending & Discovery Feed', () => {
               id: isGainers ? 'pepe' : 'terra',
               symbol: isGainers ? 'pepe' : 'luna',
               name: isGainers ? 'Pepe' : 'Terra',
-              image: 'https://example.com/icon.png',
+              image: inlineCoinIcon,
               current_price: 100,
               market_cap: 1000000,
               market_cap_rank: 1,
@@ -136,6 +140,8 @@ test.describe('Trending & Discovery Feed', () => {
   });
 
   test('should display correct structure for a mover row', async () => {
+    await expect(marketPage.topGainersSection).toBeVisible();
+
     // Check the first gainer row
     const firstGainer = marketPage.topGainers.first();
     await expect(firstGainer).toBeVisible();

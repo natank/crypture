@@ -5,6 +5,12 @@ test.describe('Portfolio Composition Visualizations', () => {
   let portfolioPage: PortfolioPage;
 
   test.beforeEach(async ({ page }) => {
+    await page.addInitScript(() => {
+      if (localStorage.getItem('cryptoPortfolio_onboardingComplete') === null) {
+        localStorage.setItem('cryptoPortfolio_onboardingComplete', 'true');
+      }
+    });
+
     // Mock CoinGecko API for coin list
     await page.route('**/api/coingecko/coins/list*', async (route) => {
       await route.fulfill({
@@ -396,7 +402,10 @@ test.describe('Portfolio Composition Visualizations', () => {
 
     test('should only show categories for portfolio coins, not all loaded coins', async () => {
       // Clear localStorage to ensure clean portfolio state
-      await portfolioPage.page.evaluate(() => localStorage.clear());
+      await portfolioPage.page.evaluate(() => {
+        localStorage.clear();
+        localStorage.setItem('cryptoPortfolio_onboardingComplete', 'true');
+      });
       await portfolioPage.reload();
 
       // Only add Bitcoin to portfolio

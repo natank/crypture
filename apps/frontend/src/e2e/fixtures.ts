@@ -22,12 +22,11 @@ export const test = base.extend<Fixtures>({
     // Clear all storage before setting up mocks
     await context.clearCookies();
 
-    // Ensure deterministic local/session storage for each test and skip
-    // first-time demo onboarding modal unless a spec explicitly tests it.
+    // Skip first-time demo onboarding modal for fixture-based specs.
     await page.addInitScript(() => {
-      localStorage.clear();
-      sessionStorage.clear();
-      localStorage.setItem('cryptoPortfolio_onboardingComplete', 'true');
+      if (localStorage.getItem('cryptoPortfolio_onboardingComplete') === null) {
+        localStorage.setItem('cryptoPortfolio_onboardingComplete', 'true');
+      }
     });
 
     // Set up mocks first

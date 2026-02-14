@@ -4,11 +4,31 @@
 import { test as baseTest } from '@playwright/test';
 
 export const test = baseTest.extend({
-  page: async ({ page }, use) => {
+  page: async ({ page }, use, testInfo) => {
+    const isOnboardingSpec = testInfo.file.endsWith(
+      'demo-portfolio-onboarding.spec.ts'
+    );
+
+    if (!isOnboardingSpec) {
+      await page.addInitScript(() => {
+        if (
+          localStorage.getItem('cryptoPortfolio_onboardingComplete') === null
+        ) {
+          localStorage.setItem('cryptoPortfolio_onboardingComplete', 'true');
+        }
+      });
+    }
+
     // Suppress chart dimension warnings in CI (headless mode issue)
     page.on('console', (msg) => {
-      if (msg.type() === 'warning' && 
-          msg.text().includes('The width(-1) and height(-1) of chart should be greater than 0')) {
+      if (
+        msg.type() === 'warning' &&
+        msg
+          .text()
+          .includes(
+            'The width(-1) and height(-1) of chart should be greater than 0'
+          )
+      ) {
         return;
       }
     });

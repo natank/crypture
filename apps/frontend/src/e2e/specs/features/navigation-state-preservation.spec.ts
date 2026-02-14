@@ -16,6 +16,12 @@ test.describe('Navigation State Preservation (KI-04)', () => {
   let portfolioPage: PortfolioPage;
 
   test.beforeEach(async ({ page }) => {
+    await page.addInitScript(() => {
+      if (localStorage.getItem('cryptoPortfolio_onboardingComplete') === null) {
+        localStorage.setItem('cryptoPortfolio_onboardingComplete', 'true');
+      }
+    });
+
     // Mock CoinGecko API to avoid rate limiting
     await mockCoinGeckoMarkets(page);
     await mockCoinGeckoList(page);
@@ -147,9 +153,7 @@ test.describe('Navigation State Preservation (KI-04)', () => {
       await expect(coinLink).toBeVisible({ timeout: 5000 });
 
       // Check sessionStorage right before click
-      await page.evaluate(() =>
-        sessionStorage.getItem('scroll_/portfolio')
-      );
+      await page.evaluate(() => sessionStorage.getItem('scroll_/portfolio'));
 
       // Use force:true to prevent Playwright from scrolling element into view
       await coinLink.click({ force: true });
@@ -159,9 +163,7 @@ test.describe('Navigation State Preservation (KI-04)', () => {
       expect(page.url()).toContain('/coin/');
 
       // Check what's in sessionStorage after navigation
-      await page.evaluate(() =>
-        sessionStorage.getItem('scroll_/portfolio')
-      );
+      await page.evaluate(() => sessionStorage.getItem('scroll_/portfolio'));
 
       // Navigate back
       await page.goBack();
@@ -175,9 +177,7 @@ test.describe('Navigation State Preservation (KI-04)', () => {
 
       // Check final scroll position
       const scrollAfter = await page.evaluate(() => window.scrollY);
-      await page.evaluate(() =>
-        sessionStorage.getItem('scroll_/portfolio')
-      );
+      await page.evaluate(() => sessionStorage.getItem('scroll_/portfolio'));
 
       // The scroll should be restored to approximately where we were
       // Allow tolerance because page might have different content

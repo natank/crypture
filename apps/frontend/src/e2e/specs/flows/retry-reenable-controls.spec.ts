@@ -44,6 +44,14 @@ base.describe('Retry flow clears error and re-enables controls', () => {
   base(
     'error shown initially, retry succeeds, controls usable before and after',
     async ({ page }) => {
+      await page.addInitScript(() => {
+        if (
+          localStorage.getItem('cryptoPortfolio_onboardingComplete') === null
+        ) {
+          localStorage.setItem('cryptoPortfolio_onboardingComplete', 'true');
+        }
+      });
+
       await mockMarketsFailThenSucceed(page);
       await page.goto('/portfolio');
 

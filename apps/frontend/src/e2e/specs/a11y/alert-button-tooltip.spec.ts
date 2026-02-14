@@ -2,6 +2,12 @@ import { test, expect } from '@playwright/test';
 
 test.describe('AlertButton Tooltip (KI-03)', () => {
   test.beforeEach(async ({ page }) => {
+    await page.addInitScript(() => {
+      if (localStorage.getItem('cryptoPortfolio_onboardingComplete') === null) {
+        localStorage.setItem('cryptoPortfolio_onboardingComplete', 'true');
+      }
+    });
+
     // Navigate to portfolio page where AlertButton is located
     await page.goto('/portfolio');
   });

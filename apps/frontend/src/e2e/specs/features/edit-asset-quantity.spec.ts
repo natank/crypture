@@ -24,15 +24,9 @@ async function selectAsset(page: any, symbol: string) {
 
 test.describe('Edit Asset Quantity', () => {
   test.beforeEach(async ({ page }) => {
-    await page.addInitScript(() => {
-      localStorage.clear();
-      sessionStorage.clear();
-      localStorage.setItem('cryptoPortfolio_onboardingComplete', 'true');
-    });
-
-    mockCoinGeckoMarkets(page);
-    mockCoinGeckoChartData(page);
-    mockCoinGeckoCoinDetails(page);
+    await mockCoinGeckoMarkets(page);
+    await mockCoinGeckoChartData(page);
+    await mockCoinGeckoCoinDetails(page);
     await page.goto('/portfolio');
     await expect(page.getByText(/Your Assets/i)).toBeVisible();
   });
@@ -79,12 +73,15 @@ test.describe('Edit Asset Quantity', () => {
 
     await expect(page.getByText(/Qty: 5/)).toBeVisible();
 
-    await page
+    const ethereumRow = page.getByTestId('asset-row-ETH');
+    await expect(ethereumRow).toBeVisible();
+    await ethereumRow
       .getByRole('button', { name: /Edit Ethereum quantity/i })
-      .last()
+      .first()
       .click({ force: true });
 
     const input = page.getByLabel(/Edit quantity for Ethereum/i);
+    await expect(input).toBeVisible();
     await input.clear();
     await input.fill('999');
     await page
@@ -184,9 +181,11 @@ test.describe('Edit Asset Quantity', () => {
 
     await expect(page.getByText(/Qty: 1/)).toBeVisible();
 
-    await page
+    const ethereumRow = page.getByTestId('asset-row-ETH');
+    await expect(ethereumRow).toBeVisible();
+    await ethereumRow
       .getByRole('button', { name: /Edit Ethereum quantity/i })
-      .last()
+      .first()
       .click({ force: true });
     const input = page.getByLabel(/Edit quantity for Ethereum/i);
     await input.clear();
@@ -318,15 +317,9 @@ test.describe('Edit Asset Quantity - Mobile', () => {
   test('should have touch-friendly edit controls on mobile', async ({
     page,
   }) => {
-    await page.addInitScript(() => {
-      localStorage.clear();
-      sessionStorage.clear();
-      localStorage.setItem('cryptoPortfolio_onboardingComplete', 'true');
-    });
-
-    mockCoinGeckoMarkets(page);
-    mockCoinGeckoChartData(page);
-    mockCoinGeckoCoinDetails(page);
+    await mockCoinGeckoMarkets(page);
+    await mockCoinGeckoChartData(page);
+    await mockCoinGeckoCoinDetails(page);
     await page.goto('/portfolio');
     await expect(page.getByText(/Your Assets/i)).toBeVisible();
 
