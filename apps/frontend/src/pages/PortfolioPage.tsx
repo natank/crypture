@@ -14,6 +14,7 @@ import { HelpBanner } from '@components/HelpBanner';
 import PortfolioCompositionDashboard from '@components/portfolio/PortfolioCompositionDashboard';
 import { PortfolioPerformanceChart } from '@components/PortfolioPerformanceChart';
 import DailySummaryCard from '@components/DailySummaryCard';
+import DemoPortfolioModal from '@components/DemoPortfolioModal';
 
 import { usePortfolioState } from '@hooks/usePortfolioState';
 import { useCoinList } from '@hooks/useCoinList';
@@ -36,6 +37,7 @@ import NotificationBanner from '@components/NotificationBanner';
 import NotificationPermission from '@components/NotificationPermission';
 import * as notificationService from '@services/notificationService';
 import type { MarketCoin } from 'types/market';
+import { useDemoOnboarding } from '@hooks/useDemoOnboarding';
 
 export default function PortfolioPage() {
   const {
@@ -156,6 +158,11 @@ export default function PortfolioPage() {
       .map((asset) => marketCoins.find((c) => c.id === asset.coinInfo.id))
       .filter((c): c is MarketCoin => c !== undefined);
   }, [portfolio, marketCoins]);
+
+  const { showWelcomeModal, acceptDemo, dismissDemo } = useDemoOnboarding(
+    portfolio.length,
+    loading
+  );
 
   const {
     shouldShowAddAssetModal,
@@ -573,6 +580,13 @@ export default function PortfolioPage() {
           onCancel={dismissPreview}
           onMerge={handleApplyMerge}
           onReplace={handleApplyReplace}
+        />
+      )}
+
+      {showWelcomeModal && (
+        <DemoPortfolioModal
+          onAccept={() => acceptDemo(addAsset, coinMap)}
+          onDismiss={dismissDemo}
         />
       )}
 

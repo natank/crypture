@@ -22,20 +22,21 @@ export const test = base.extend<Fixtures>({
     // Clear all storage before setting up mocks
     await context.clearCookies();
 
+    // Skip first-time demo onboarding modal for fixture-based specs.
+    await page.addInitScript(() => {
+      if (localStorage.getItem('cryptoPortfolio_onboardingComplete') === null) {
+        localStorage.setItem('cryptoPortfolio_onboardingComplete', 'true');
+      }
+    });
+
     // Set up mocks first
     await mockCoinGeckoMarkets(page);
     await mockCoinGeckoChartData(page);
     await mockCoinGeckoCoinDetails(page);
 
-    // Navigate to portfolio page first, then clear storage
+    // Navigate to portfolio page
     const portfolioPage = new PortfolioPage(page);
     await portfolioPage.goto();
-
-    // Clear storage after navigating to the actual page
-    await page.evaluate(() => {
-      localStorage.clear();
-      sessionStorage.clear();
-    });
 
     await run(portfolioPage);
   },

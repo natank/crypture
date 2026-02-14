@@ -2,6 +2,12 @@ import { test, expect } from '@playwright/test';
 
 test.describe('Asset Row Tooltips (KI-03 Extended)', () => {
   test.beforeEach(async ({ page }) => {
+    await page.addInitScript(() => {
+      if (localStorage.getItem('cryptoPortfolio_onboardingComplete') === null) {
+        localStorage.setItem('cryptoPortfolio_onboardingComplete', 'true');
+      }
+    });
+
     // Mock the coins/markets API
     await page.route('**/api/coingecko/coins/markets*', async (route) => {
       await route.fulfill({

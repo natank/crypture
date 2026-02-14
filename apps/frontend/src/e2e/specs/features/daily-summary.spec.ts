@@ -10,6 +10,12 @@ test.describe('Daily Summary Card', () => {
   let portfolioPage: PortfolioPage;
 
   test.beforeEach(async ({ page }) => {
+    await page.addInitScript(() => {
+      if (localStorage.getItem('cryptoPortfolio_onboardingComplete') === null) {
+        localStorage.setItem('cryptoPortfolio_onboardingComplete', 'true');
+      }
+    });
+
     // Mock the coins/markets API
     await page.route('**/api/coingecko/coins/markets*', async (route) => {
       await route.fulfill({
@@ -49,6 +55,7 @@ test.describe('Daily Summary Card', () => {
     await page.goto('/portfolio?e2e=1');
     await page.evaluate(() => {
       localStorage.clear();
+      localStorage.setItem('cryptoPortfolio_onboardingComplete', 'true');
     });
   });
 

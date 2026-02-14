@@ -47,6 +47,14 @@ base.describe('Refreshing state disables controls and sets aria-busy', () => {
   base(
     'during background refresh, controls disabled and main has aria-busy=true',
     async ({ page }) => {
+      await page.addInitScript(() => {
+        if (
+          localStorage.getItem('cryptoPortfolio_onboardingComplete') === null
+        ) {
+          localStorage.setItem('cryptoPortfolio_onboardingComplete', 'true');
+        }
+      });
+
       await mockMarketsWithDelayedRefresh(page, 1000);
       await page.goto('/portfolio?e2e=1');
       await expect(page.getByText(/Total Portfolio Value/i)).toBeVisible();

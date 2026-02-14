@@ -1,4 +1,9 @@
-import { savePortfolio, loadPortfolio } from '@services/localStorageService';
+import {
+  savePortfolio,
+  loadPortfolio,
+  isOnboardingComplete,
+  setOnboardingComplete,
+} from '@services/localStorageService';
 
 describe('localStorageService', () => {
   beforeEach(() => {
@@ -25,5 +30,24 @@ describe('localStorageService', () => {
     const loaded = loadPortfolio();
     expect(loaded).toEqual([]);
     expect(console.error).toHaveBeenCalled();
+  });
+
+  describe('onboarding persistence', () => {
+    it('returns false when onboarding has not been completed', () => {
+      expect(isOnboardingComplete()).toBe(false);
+    });
+
+    it('returns true after setOnboardingComplete is called', () => {
+      setOnboardingComplete();
+      expect(isOnboardingComplete()).toBe(true);
+    });
+
+    it('persists onboarding state across calls', () => {
+      setOnboardingComplete();
+      // Simulate a fresh read
+      expect(localStorage.getItem('cryptoPortfolio_onboardingComplete')).toBe(
+        'true'
+      );
+    });
   });
 });
