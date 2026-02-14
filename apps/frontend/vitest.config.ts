@@ -39,6 +39,7 @@ export default defineConfig({
       '@types': '/src/types',
       '@e2e': '/src/e2e',
       '@test-setup': '/src/e2e/test-setup.ts',
+      '@data': '/src/data',
       '@crypture/api-client':
         '/Users/nati-home/Projects/crypture/libs/api-client/src/index.ts',
       '@crypture/shared-types':

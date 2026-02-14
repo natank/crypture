@@ -22,6 +22,7 @@ export default async () => {
         '@test-setup': '/src/e2e/test-setup.ts',
         '@types': '/src/types',
         '@assets': '/public/assets',
+        '@data': '/src/data',
         '@crypture/api-client': resolve(
           __dirname,
           '../../libs/api-client/src/index.ts'

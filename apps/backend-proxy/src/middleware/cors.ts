@@ -29,8 +29,13 @@ const corsOptions = {
       return callback(null, true);
     }
 
-    // Check if origin is in allowed list
-    if (allowedOrigins.includes(origin)) {
+    // Allow any localhost/127.0.0.1 origin (dev servers use dynamic ports)
+    const isLocalhost = /^https?:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/.test(
+      origin
+    );
+
+    // Check if origin is in allowed list or is a localhost origin
+    if (allowedOrigins.includes(origin) || isLocalhost) {
       callback(null, true);
     } else {
       const msg = `The CORS policy for this site does not allow access from the specified Origin: ${origin}`;
