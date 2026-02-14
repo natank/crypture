@@ -41,12 +41,15 @@ test.describe('Edit Asset Quantity', () => {
 
     await expect(page.getByText(/Qty: 1.5/)).toBeVisible();
 
-    await page
+    const bitcoinRow = page.getByTestId('asset-row-BTC');
+    await expect(bitcoinRow).toBeVisible();
+    await bitcoinRow
       .getByRole('button', { name: /Edit Bitcoin quantity/i })
-      .last()
+      .first()
       .click({ force: true });
 
-    const input = page.getByLabel(/Edit quantity for Bitcoin/i);
+    // Wait for edit mode to activate by waiting for the input to be visible
+    const input = page.locator('#qty-input-bitcoin');
     await expect(input).toBeVisible();
     await expect(input).toHaveValue('1.5');
 
@@ -80,7 +83,8 @@ test.describe('Edit Asset Quantity', () => {
       .first()
       .click({ force: true });
 
-    const input = page.getByLabel(/Edit quantity for Ethereum/i);
+    // Wait for edit mode to activate by waiting for the input to be visible
+    const input = page.locator('#qty-input-ethereum');
     await expect(input).toBeVisible();
     await input.clear();
     await input.fill('999');
@@ -109,7 +113,9 @@ test.describe('Edit Asset Quantity', () => {
       .getByRole('button', { name: /Edit Bitcoin quantity/i })
       .first()
       .click({ force: true });
-    const input = page.getByLabel(/Edit quantity for Bitcoin/i);
+
+    // Wait for edit mode to activate by waiting for the input to be visible
+    const input = page.locator('#qty-input-bitcoin');
     await expect(input).toBeVisible();
     await input.clear();
     await input.fill('4.5');
@@ -134,7 +140,9 @@ test.describe('Edit Asset Quantity', () => {
       .getByRole('button', { name: /Edit Bitcoin quantity/i })
       .first()
       .click({ force: true });
-    const input = page.getByLabel(/Edit quantity for Bitcoin/i);
+
+    // Wait for edit mode to activate by waiting for the input to be visible
+    const input = page.locator('#qty-input-bitcoin');
     await expect(input).toBeVisible();
     await input.clear();
     await input.fill('999');
@@ -155,11 +163,16 @@ test.describe('Edit Asset Quantity', () => {
 
     await expect(page.getByText(/Qty: 1/)).toBeVisible();
 
-    await page
+    const bitcoinRow = page.getByTestId('asset-row-BTC');
+    await expect(bitcoinRow).toBeVisible();
+    await bitcoinRow
       .getByRole('button', { name: /Edit Bitcoin quantity/i })
-      .last()
+      .first()
       .click({ force: true });
-    const input = page.getByLabel(/Edit quantity for Bitcoin/i);
+
+    // Wait for edit mode to activate by waiting for the input to be visible
+    const input = page.locator('#qty-input-bitcoin');
+    await expect(input).toBeVisible();
     await input.clear();
     await input.fill('-5');
     await page
@@ -218,11 +231,16 @@ test.describe('Edit Asset Quantity', () => {
 
     await expect(page.getByText(/Qty: 1/)).toBeVisible();
 
-    await page
+    const bitcoinRow = page.getByTestId('asset-row-BTC');
+    await expect(bitcoinRow).toBeVisible();
+    await bitcoinRow
       .getByRole('button', { name: /Edit Bitcoin quantity/i })
-      .last()
+      .first()
       .click({ force: true });
-    const input = page.getByLabel(/Edit quantity for Bitcoin/i);
+
+    // Wait for edit mode to activate by waiting for the input to be visible
+    const input = page.locator('#qty-input-bitcoin');
+    await expect(input).toBeVisible();
     await input.clear();
     await input.fill('1.123456789');
     await page
@@ -245,11 +263,16 @@ test.describe('Edit Asset Quantity', () => {
 
     await expect(page.getByText(/Qty: 1/)).toBeVisible();
 
-    await page
+    const bitcoinRow = page.getByTestId('asset-row-BTC');
+    await expect(bitcoinRow).toBeVisible();
+    await bitcoinRow
       .getByRole('button', { name: /Edit Bitcoin quantity/i })
-      .last()
+      .first()
       .click({ force: true });
-    const input = page.getByLabel(/Edit quantity for Bitcoin/i);
+
+    // Wait for edit mode to activate by waiting for the input to be visible
+    const input = page.locator('#qty-input-bitcoin');
+    await expect(input).toBeVisible();
     await input.clear();
     await input.fill('7.5');
     await input.press('Enter');
@@ -271,12 +294,15 @@ test.describe('Edit Asset Quantity', () => {
 
     await expect(page.getByText(/Qty: 1/)).toBeVisible();
 
-    const editButton = page
+    const bitcoinRow = page.getByTestId('asset-row-BTC');
+    await expect(bitcoinRow).toBeVisible();
+    const editButton = bitcoinRow
       .getByRole('button', { name: /Edit Bitcoin quantity/i })
-      .last();
+      .first();
     await editButton.click({ force: true });
 
-    const input = page.getByLabel(/Edit quantity for Bitcoin/i);
+    // Wait for edit mode to activate by waiting for the input to be visible
+    const input = page.locator('#qty-input-bitcoin');
     await expect(input).toBeVisible();
     await input.fill('9.9');
 
