@@ -6,7 +6,7 @@ export class AuthController {
   /**
    * Register a new user
    */
-  async register(req: Request, res: Response) {
+  async register(req: Request, res: Response): Promise<Response> {
     try {
       // Validate input
       const errors = validationResult(req);
@@ -23,7 +23,7 @@ export class AuthController {
       // Create user
       const user = await authService.createUser(email, password);
 
-      res.status(201).json({
+      return res.status(201).json({
         success: true,
         message: 'User registered successfully',
         data: {
@@ -34,7 +34,7 @@ export class AuthController {
       });
     } catch (error) {
       console.error('Registration error:', error);
-      res.status(400).json({
+      return res.status(400).json({
         success: false,
         message: error instanceof Error ? error.message : 'Registration failed',
       });
@@ -44,7 +44,7 @@ export class AuthController {
   /**
    * Sign in user
    */
-  async login(req: Request, res: Response) {
+  async login(req: Request, res: Response): Promise<Response> {
     try {
       // Validate input
       const errors = validationResult(req);
@@ -61,7 +61,7 @@ export class AuthController {
       // Authenticate user
       const authData = await authService.signInUser(email, password);
 
-      res.status(200).json({
+      return res.status(200).json({
         success: true,
         message: 'Login successful',
         data: {
@@ -78,7 +78,7 @@ export class AuthController {
       });
     } catch (error) {
       console.error('Login error:', error);
-      res.status(401).json({
+      return res.status(401).json({
         success: false,
         message: error instanceof Error ? error.message : 'Login failed',
       });
@@ -88,7 +88,7 @@ export class AuthController {
   /**
    * Sign out user
    */
-  async logout(req: Request, res: Response) {
+  async logout(req: Request, res: Response): Promise<Response> {
     try {
       const token = req.headers.authorization?.replace('Bearer ', '');
 
@@ -101,13 +101,13 @@ export class AuthController {
 
       await authService.signOutUser(token);
 
-      res.status(200).json({
+      return res.status(200).json({
         success: true,
         message: 'Logout successful',
       });
     } catch (error) {
       console.error('Logout error:', error);
-      res.status(400).json({
+      return res.status(400).json({
         success: false,
         message: error instanceof Error ? error.message : 'Logout failed',
       });
@@ -117,7 +117,7 @@ export class AuthController {
   /**
    * Reset password
    */
-  async resetPassword(req: Request, res: Response) {
+  async resetPassword(req: Request, res: Response): Promise<Response> {
     try {
       // Validate input
       const errors = validationResult(req);
@@ -133,13 +133,13 @@ export class AuthController {
 
       await authService.resetPassword(email);
 
-      res.status(200).json({
+      return res.status(200).json({
         success: true,
         message: 'Password reset email sent',
       });
     } catch (error) {
       console.error('Password reset error:', error);
-      res.status(400).json({
+      return res.status(400).json({
         success: false,
         message:
           error instanceof Error ? error.message : 'Password reset failed',
@@ -150,7 +150,7 @@ export class AuthController {
   /**
    * Update password
    */
-  async updatePassword(req: Request, res: Response) {
+  async updatePassword(req: Request, res: Response): Promise<Response> {
     try {
       // Validate input
       const errors = validationResult(req);
@@ -174,13 +174,13 @@ export class AuthController {
 
       await authService.updatePassword(userId, newPassword);
 
-      res.status(200).json({
+      return res.status(200).json({
         success: true,
         message: 'Password updated successfully',
       });
     } catch (error) {
       console.error('Password update error:', error);
-      res.status(400).json({
+      return res.status(400).json({
         success: false,
         message:
           error instanceof Error ? error.message : 'Password update failed',
@@ -191,7 +191,7 @@ export class AuthController {
   /**
    * Get current user
    */
-  async getCurrentUser(req: Request, res: Response) {
+  async getCurrentUser(req: Request, res: Response): Promise<Response> {
     try {
       const token = req.headers.authorization?.replace('Bearer ', '');
 
@@ -204,7 +204,7 @@ export class AuthController {
 
       const userData = await authService.verifyToken(token);
 
-      res.status(200).json({
+      return res.status(200).json({
         success: true,
         data: {
           id: userData.user?.id,
@@ -216,7 +216,7 @@ export class AuthController {
       });
     } catch (error) {
       console.error('Get user error:', error);
-      res.status(401).json({
+      return res.status(401).json({
         success: false,
         message: error instanceof Error ? error.message : 'Failed to get user',
       });
@@ -226,7 +226,7 @@ export class AuthController {
   /**
    * Delete user account
    */
-  async deleteAccount(req: Request, res: Response) {
+  async deleteAccount(req: Request, res: Response): Promise<Response> {
     try {
       const userId = req.user?.id; // Assuming user ID is available from auth middleware
 
@@ -239,16 +239,15 @@ export class AuthController {
 
       await authService.deleteUser(userId);
 
-      res.status(200).json({
+      return res.status(200).json({
         success: true,
         message: 'Account deleted successfully',
       });
     } catch (error) {
       console.error('Account deletion error:', error);
-      res.status(400).json({
+      return res.status(400).json({
         success: false,
-        message:
-          error instanceof Error ? error.message : 'Account deletion failed',
+        message: error instanceof Error ? error.message : 'Account deletion failed',
       });
     }
   }

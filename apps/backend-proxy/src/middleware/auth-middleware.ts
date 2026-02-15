@@ -17,7 +17,11 @@ declare global {
 /**
  * Authentication middleware to verify JWT token and attach user to request
  */
-export const authenticateToken = async (req: Request, res: Response, next: NextFunction) => {
+export const authenticateToken = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+): Promise<Response | void> => {
   try {
     const authHeader = req.headers.authorization;
     const token = authHeader && authHeader.split(' ')[1]; // Bearer TOKEN
@@ -59,14 +63,18 @@ export const authenticateToken = async (req: Request, res: Response, next: NextF
 /**
  * Optional authentication middleware - doesn't fail if no token
  */
-export const optionalAuth = async (req: Request, res: Response, next: NextFunction) => {
+export const optionalAuth = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+): Promise<void> => {
   try {
     const authHeader = req.headers.authorization;
     const token = authHeader && authHeader.split(' ')[1];
 
     if (token) {
       const userData = await authService.verifyToken(token);
-      
+
       if (userData.user) {
         req.user = {
           id: userData.user.id,
@@ -87,7 +95,11 @@ export const optionalAuth = async (req: Request, res: Response, next: NextFuncti
 /**
  * Check if user is authenticated (for route guards)
  */
-export const requireAuth = (req: Request, res: Response, next: NextFunction) => {
+export const requireAuth = (
+  req: Request,
+  res: Response,
+  next: NextFunction
+): Response | void => {
   if (!req.user) {
     return res.status(401).json({
       success: false,
@@ -100,7 +112,11 @@ export const requireAuth = (req: Request, res: Response, next: NextFunction) => 
 /**
  * Check if user has confirmed email
  */
-export const requireEmailConfirmation = (req: Request, res: Response, next: NextFunction) => {
+export const requireEmailConfirmation = (
+  req: Request,
+  res: Response,
+  next: NextFunction
+): Response | void => {
   if (!req.user) {
     return res.status(401).json({
       success: false,
