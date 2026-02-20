@@ -19,6 +19,7 @@
   },
   "private": true,
   "dependencies": {
+    "@supabase/supabase-js": "^2.95.3",
     "framer-motion": "^12.27.0",
     "lucide-react": "^0.525.0",
     "react": "^19.0.0",
