@@ -9,6 +9,7 @@ dotenv.config({
 
 import { healthRouter } from './routes/health';
 import { coingeckoRouter } from './routes/coingecko';
+import authRouter from './routes/auth-routes';
 import { requestLogger, morganLogger, apiLogger } from './middleware/logger';
 import { corsLogger, apiCors } from './middleware/cors';
 import { apiRateLimiter, proxyRateLimiter } from './middleware/rateLimiter';
@@ -38,6 +39,7 @@ app.use('/api', apiRateLimiter); // General API rate limiting (50 req/min)
 
 // Routes with enhanced CORS and specific rate limiting
 app.use('/api/health', apiCors.health, healthRouter);
+app.use('/api/auth', apiCors.api, authRouter);
 app.use('/api/coingecko', apiCors.api, proxyRateLimiter, coingeckoRouter); // Use strict API CORS for coingecko
 
 // API Documentation

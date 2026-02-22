@@ -55,6 +55,21 @@ const loginValidation = [
   body('password').notEmpty().withMessage('Password is required'),
 ];
 
+const verifyEmailValidation = [
+  body('token').notEmpty().withMessage('Verification token is required'),
+  body('email')
+    .isEmail()
+    .normalizeEmail()
+    .withMessage('Please provide a valid email address'),
+];
+
+const resendVerificationValidation = [
+  body('email')
+    .isEmail()
+    .normalizeEmail()
+    .withMessage('Please provide a valid email address'),
+];
+
 const resetPasswordValidation = [
   body('email')
     .isEmail()
@@ -78,6 +93,18 @@ router.post(
   authRateLimit,
   registerValidation,
   authController.register
+);
+router.post(
+  '/verify-email',
+  authRateLimit,
+  verifyEmailValidation,
+  authController.verifyEmail
+);
+router.post(
+  '/resend-verification',
+  authRateLimit,
+  resendVerificationValidation,
+  authController.resendVerification
 );
 router.post('/login', authRateLimit, loginValidation, authController.login);
 router.post('/logout', generalRateLimit, authController.logout);

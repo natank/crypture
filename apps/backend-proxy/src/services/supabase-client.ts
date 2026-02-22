@@ -31,7 +31,7 @@ export class SupabaseAuthService {
     const { data, error } = await supabase.auth.admin.createUser({
       email,
       password,
-      email_confirm: true, // Set to false if you want email verification
+      email_confirm: false, // Supabase sends verification email to user
     });
 
     if (error) {
@@ -119,6 +119,37 @@ export class SupabaseAuthService {
     }
 
     return data;
+  }
+
+  /**
+   * Verify user email with OTP token
+   */
+  async verifyEmail(token: string, email: string) {
+    const { data, error } = await supabase.auth.verifyOtp({
+      token,
+      email,
+      type: 'email',
+    });
+
+    if (error) {
+      throw new Error(`Email verification failed: ${error.message}`);
+    }
+
+    return data;
+  }
+
+  /**
+   * Resend email verification
+   */
+  async resendVerificationEmail(email: string) {
+    const { error } = await supabase.auth.resend({
+      type: 'signup',
+      email,
+    });
+
+    if (error) {
+      throw new Error(`Resend verification failed: ${error.message}`);
+    }
   }
 
   /**
