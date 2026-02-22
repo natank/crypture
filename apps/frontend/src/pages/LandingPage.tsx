@@ -177,7 +177,7 @@ export default function LandingPage() {
                   to="/portfolio"
                   className="px-8 py-3 border border-transparent text-base font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 md:py-4 md:text-lg md:px-10 transition-colors"
                 >
-                  Track Your Crypto
+                  Get Started Free
                 </Link>
                 <Link
                   to="#features"
@@ -398,33 +398,7 @@ export default function LandingPage() {
           </div>
 
           <div className="mt-16 text-center">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: 0.3 }}
-            >
-              <Link
-                to="/signup"
-                className="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-gradient-to-r from-indigo-600 to-teal-500 hover:from-indigo-700 hover:to-teal-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-all duration-200 transform hover:-translate-y-0.5"
-              >
-                Get Started for Free
-                <svg
-                  className="ml-3 -mr-1 h-5 w-5"
-                  fill="currentColor"
-                  viewBox="0 0 20 20"
-                >
-                  <path
-                    fillRule="evenodd"
-                    d="M10.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L12.586 11H5a1 1 0 110-2h7.586l-2.293-2.293a1 1 0 010-1.414z"
-                    clipRule="evenodd"
-                  />
-                </svg>
-              </Link>
-              <p className="mt-3 text-sm text-gray-500">
-                Start tracking instantly • No setup required
-              </p>
-            </motion.div>
+            {/* Removed secondary CTA - authentication is now in header only */}
           </div>
         </div>
       </section>

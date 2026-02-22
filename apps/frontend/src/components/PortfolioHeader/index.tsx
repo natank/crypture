@@ -1,6 +1,7 @@
 import React from 'react';
 import { useNavigate, NavLink } from 'react-router-dom';
 import AlertButton from '@components/AlertButton';
+import HeaderAuthButtons from '@components/Layout/HeaderAuthButtons';
 
 type PortfolioHeaderProps = {
   totalValue?: string | number | null;
@@ -100,6 +101,9 @@ export default function PortfolioHeader({
         </div>
 
         <div className="flex items-center gap-4">
+          {/* Authentication Buttons */}
+          <HeaderAuthButtons variant="compact" />
+
           {/* Alert Button */}
           {onAlertsClick && (
             <AlertButton
