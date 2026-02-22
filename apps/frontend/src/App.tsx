@@ -13,6 +13,7 @@ import { MarketPage } from '@pages/MarketPage';
 import CoinDetailPage from '@pages/CoinDetailPage';
 import CoinComparisonPage from '@pages/CoinComparisonPage';
 import SettingsPage from '@pages/SettingsPage';
+import RegisterPage from '@pages/RegisterPage';
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
         <ScrollRestoration />
         <Routes>
           <Route path="/" element={<LandingPage />} />
+          <Route path="/register" element={<RegisterPage />} />
           <Route path="/portfolio" element={<PortfolioPage />} />
           <Route path="/market" element={<MarketPage />} />
           <Route path="/about" element={<AboutPage />} />

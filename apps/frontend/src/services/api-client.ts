@@ -1,7 +1,7 @@
 // API client for backend-proxy architecture
 // Frontend calls backend, backend calls Supabase
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001';
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001';
 
 export interface ApiResponse<T = unknown> {
   success: boolean;
@@ -97,6 +97,20 @@ class ApiClient {
       headers: {
         Authorization: `Bearer ${token}`,
       },
+    });
+  }
+
+  async verifyEmail(token: string, email: string): Promise<ApiResponse> {
+    return this.request('/api/auth/verify-email', {
+      method: 'POST',
+      body: JSON.stringify({ token, email }),
+    });
+  }
+
+  async resendVerification(email: string): Promise<ApiResponse> {
+    return this.request('/api/auth/resend-verification', {
+      method: 'POST',
+      body: JSON.stringify({ email }),
     });
   }
 
