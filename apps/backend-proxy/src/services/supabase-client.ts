@@ -153,6 +153,21 @@ export class SupabaseAuthService {
   }
 
   /**
+   * Refresh session using a refresh token
+   */
+  async refreshSession(refreshToken: string) {
+    const { data, error } = await supabase.auth.refreshSession({
+      refresh_token: refreshToken,
+    });
+
+    if (error) {
+      throw new Error(`Token refresh failed: ${error.message}`);
+    }
+
+    return data;
+  }
+
+  /**
    * Delete user account
    */
   async deleteUser(userId: string) {

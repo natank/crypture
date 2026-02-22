@@ -7,6 +7,7 @@ import {
   requireAuth,
   requireEmailConfirmation,
 } from '../middleware/auth-middleware';
+import { getCsrfToken } from '../middleware/csrf-middleware';
 
 const router = Router();
 
@@ -87,6 +88,10 @@ const updatePasswordValidation = [
     ),
 ];
 
+const refreshTokenValidation = [
+  body('refreshToken').notEmpty().withMessage('Refresh token is required'),
+];
+
 // Routes
 router.post(
   '/register',
@@ -107,6 +112,12 @@ router.post(
   authController.resendVerification
 );
 router.post('/login', authRateLimit, loginValidation, authController.login);
+router.post(
+  '/refresh',
+  generalRateLimit,
+  refreshTokenValidation,
+  authController.refreshToken
+);
 router.post('/logout', generalRateLimit, authController.logout);
 router.post(
   '/reset-password',
@@ -129,6 +140,21 @@ router.get(
   requireAuth,
   authController.getCurrentUser
 );
+router.get(
+  '/sessions',
+  generalRateLimit,
+  authenticateToken,
+  requireAuth,
+  authController.getSessions
+);
+router.delete(
+  '/sessions/:sessionId',
+  generalRateLimit,
+  authenticateToken,
+  requireAuth,
+  authController.revokeSession
+);
+router.get('/csrf-token', generalRateLimit, getCsrfToken);
 router.delete(
   '/account',
   generalRateLimit,
