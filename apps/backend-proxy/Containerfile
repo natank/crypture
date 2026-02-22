@@ -22,6 +22,12 @@ WORKDIR /app
 
 # Ensure binding to all interfaces in container
 ENV HOST=0.0.0.0
+ENV NODE_ENV=production
+
+# Set required environment variables (these should be overridden in deployment)
+ENV SUPABASE_URL=https://placeholder.supabase.co
+ENV SUPABASE_SECRET_KEY=placeholder-key
+ENV COINGECKO_API_KEY=
 
 # Copy package files
 COPY package*.json ./

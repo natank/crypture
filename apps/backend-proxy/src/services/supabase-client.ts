@@ -4,16 +4,26 @@ import { createClient, SupabaseClient } from '@supabase/supabase-js';
 const supabaseUrl = process.env.SUPABASE_URL;
 const supabaseSecretKey = process.env.SUPABASE_SECRET_KEY;
 
+// Allow placeholder values for container health checks
+const isPlaceholder =
+  supabaseUrl?.includes('placeholder') ||
+  supabaseSecretKey?.includes('placeholder');
+
 if (!supabaseUrl || !supabaseSecretKey) {
-  throw new Error(
-    'Missing Supabase environment variables. Please set SUPABASE_URL and SUPABASE_SECRET_KEY.'
+  if (process.env.NODE_ENV === 'production' && !isPlaceholder) {
+    throw new Error(
+      'Missing Supabase environment variables. Please set SUPABASE_URL and SUPABASE_SECRET_KEY.'
+    );
+  }
+  console.warn(
+    'Supabase environment variables not set, some features will be unavailable'
   );
 }
 
 // Create Supabase client for backend operations
 export const supabase: SupabaseClient = createClient(
-  supabaseUrl,
-  supabaseSecretKey,
+  supabaseUrl || 'https://placeholder.supabase.co',
+  supabaseSecretKey || 'placeholder-key',
   {
     auth: {
       autoRefreshToken: false, // Backend handles token refresh manually
@@ -150,6 +160,21 @@ export class SupabaseAuthService {
     if (error) {
       throw new Error(`Resend verification failed: ${error.message}`);
     }
+  }
+
+  /**
+   * Refresh session using a refresh token
+   */
+  async refreshSession(refreshToken: string) {
+    const { data, error } = await supabase.auth.refreshSession({
+      refresh_token: refreshToken,
+    });
+
+    if (error) {
+      throw new Error(`Token refresh failed: ${error.message}`);
+    }
+
+    return data;
   }
 
   /**
