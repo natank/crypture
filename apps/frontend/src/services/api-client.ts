@@ -92,11 +92,15 @@ class ApiClient {
   }
 
   async logout(token: string): Promise<ApiResponse> {
-    return this.request('/api/auth/logout', {
+    return this.authenticatedRequest(token, '/api/auth/logout', {
       method: 'POST',
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
+    });
+  }
+
+  async refreshToken(refreshToken: string): Promise<ApiResponse<AuthResponse>> {
+    return this.request<AuthResponse>('/api/auth/refresh', {
+      method: 'POST',
+      body: JSON.stringify({ refreshToken }),
     });
   }
 
@@ -125,29 +129,19 @@ class ApiClient {
     token: string,
     newPassword: string
   ): Promise<ApiResponse> {
-    return this.request('/api/auth/update-password', {
+    return this.authenticatedRequest(token, '/api/auth/update-password', {
       method: 'PUT',
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
       body: JSON.stringify({ newPassword }),
     });
   }
 
   async getCurrentUser(token: string): Promise<ApiResponse<UserProfile>> {
-    return this.request<UserProfile>('/api/auth/me', {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
+    return this.authenticatedRequest<UserProfile>(token, '/api/auth/me');
   }
 
   async deleteAccount(token: string): Promise<ApiResponse> {
-    return this.request('/api/auth/account', {
+    return this.authenticatedRequest(token, '/api/auth/account', {
       method: 'DELETE',
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
     });
   }
 
