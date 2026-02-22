@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
+import HeaderAuthButtons from './HeaderAuthButtons';
 
 export function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -51,9 +52,10 @@ export function Header() {
                 {link.name}
               </a>
             ))}
+            <HeaderAuthButtons />
             <Link
               to="/portfolio"
-              className="ml-8 inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+              className="ml-4 inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
             >
               Go to App
             </Link>
@@ -126,6 +128,12 @@ export function Header() {
                   {link.name}
                 </a>
               ))}
+              <div className="pt-2 border-t border-gray-200">
+                <HeaderAuthButtons
+                  variant="compact"
+                  className="justify-center"
+                />
+              </div>
               <Link
                 to="/portfolio"
                 className="block w-full text-center px-4 py-2 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 mt-2"
