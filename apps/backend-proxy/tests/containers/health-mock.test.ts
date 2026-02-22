@@ -1,4 +1,9 @@
 /// <reference types="jest" />
+
+// Set environment variables before any imports
+process.env.SUPABASE_URL = 'https://test.supabase.co';
+process.env.SUPABASE_SECRET_KEY = 'test-secret-key';
+
 import request from 'supertest';
 import app from '../../src/main';
 
@@ -12,7 +17,11 @@ jest.mock('@testcontainers/postgresql', () => ({
     withExposedPorts: jest.fn().mockReturnThis(),
     withStartupTimeout: jest.fn().mockReturnThis(),
     start: jest.fn().mockResolvedValue({
-      getConnectionUri: jest.fn().mockReturnValue('postgresql://test_user:test_password@localhost:5432/crypture_test'),
+      getConnectionUri: jest
+        .fn()
+        .mockReturnValue(
+          'postgresql://test_user:test_password@localhost:5432/crypture_test'
+        ),
       getHost: jest.fn().mockReturnValue('localhost'),
       getMappedPort: jest.fn().mockReturnValue(5432),
     }),
@@ -49,9 +58,7 @@ jest.mock('testcontainers', () => ({
 describe('Health Endpoints Mock Testcontainers Integration', () => {
   describe('GET /api/health', () => {
     it('should return healthy status with mock containers', async () => {
-      const response = await request(app)
-        .get('/api/health')
-        .expect(200);
+      const response = await request(app).get('/api/health').expect(200);
 
       expect(response.body).toHaveProperty('status', 'healthy');
       expect(response.body).toHaveProperty('timestamp');
@@ -63,15 +70,11 @@ describe('Health Endpoints Mock Testcontainers Integration', () => {
     });
 
     it('should return correct content-type', async () => {
-      await request(app)
-        .get('/api/health')
-        .expect('Content-Type', /json/);
+      await request(app).get('/api/health').expect('Content-Type', /json/);
     });
 
     it('should have memory usage information', async () => {
-      const response = await request(app)
-        .get('/api/health')
-        .expect(200);
+      const response = await request(app).get('/api/health').expect(200);
 
       expect(response.body.memory).toHaveProperty('used');
       expect(response.body.memory).toHaveProperty('total');
@@ -80,9 +83,7 @@ describe('Health Endpoints Mock Testcontainers Integration', () => {
     });
 
     it('should have services status information', async () => {
-      const response = await request(app)
-        .get('/api/health')
-        .expect(200);
+      const response = await request(app).get('/api/health').expect(200);
 
       expect(response.body.services).toHaveProperty('database');
       expect(response.body.services).toHaveProperty('cache');
@@ -132,15 +133,11 @@ describe('Health Endpoints Mock Testcontainers Integration', () => {
 
   describe('Error Handling', () => {
     it('should return 404 for non-existent routes', async () => {
-      await request(app)
-        .get('/api/non-existent-route')
-        .expect(404);
+      await request(app).get('/api/non-existent-route').expect(404);
     });
 
     it('should handle invalid HTTP methods', async () => {
-      await request(app)
-        .patch('/api/health')
-        .expect(404);
+      await request(app).patch('/api/health').expect(404);
     });
   });
 });
@@ -155,7 +152,9 @@ describe('Testcontainers Mock Management', () => {
     // Test PostgreSQL mock
     const postgresContainer = new PostgreSqlContainer();
     const postgres = await postgresContainer.start();
-    expect(postgres.getConnectionUri()).toBe('postgresql://test_user:test_password@localhost:5432/crypture_test');
+    expect(postgres.getConnectionUri()).toBe(
+      'postgresql://test_user:test_password@localhost:5432/crypture_test'
+    );
 
     // Test Redis mock
     const redisContainer = new RedisContainer();

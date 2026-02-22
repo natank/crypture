@@ -42,6 +42,72 @@ export class AuthController {
   }
 
   /**
+   * Verify email address with OTP token
+   */
+  async verifyEmail(req: Request, res: Response): Promise<Response> {
+    try {
+      const errors = validationResult(req);
+      if (!errors.isEmpty()) {
+        return res.status(400).json({
+          success: false,
+          message: 'Validation failed',
+          errors: errors.array(),
+        });
+      }
+
+      const { token, email } = req.body;
+
+      await authService.verifyEmail(token, email);
+
+      return res.status(200).json({
+        success: true,
+        message: 'Email verified successfully',
+      });
+    } catch (error) {
+      console.error('Email verification error:', error);
+      return res.status(400).json({
+        success: false,
+        message:
+          error instanceof Error ? error.message : 'Email verification failed',
+      });
+    }
+  }
+
+  /**
+   * Resend email verification
+   */
+  async resendVerification(req: Request, res: Response): Promise<Response> {
+    try {
+      const errors = validationResult(req);
+      if (!errors.isEmpty()) {
+        return res.status(400).json({
+          success: false,
+          message: 'Validation failed',
+          errors: errors.array(),
+        });
+      }
+
+      const { email } = req.body;
+
+      await authService.resendVerificationEmail(email);
+
+      return res.status(200).json({
+        success: true,
+        message: 'Verification email resent',
+      });
+    } catch (error) {
+      console.error('Resend verification error:', error);
+      return res.status(400).json({
+        success: false,
+        message:
+          error instanceof Error
+            ? error.message
+            : 'Failed to resend verification email',
+      });
+    }
+  }
+
+  /**
    * Sign in user
    */
   async login(req: Request, res: Response): Promise<Response> {
@@ -247,7 +313,8 @@ export class AuthController {
       console.error('Account deletion error:', error);
       return res.status(400).json({
         success: false,
-        message: error instanceof Error ? error.message : 'Account deletion failed',
+        message:
+          error instanceof Error ? error.message : 'Account deletion failed',
       });
     }
   }
