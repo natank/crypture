@@ -174,10 +174,16 @@ export default function LandingPage() {
                 transition={{ duration: 0.5, delay: 0.3 }}
               >
                 <Link
-                  to="/portfolio"
+                  to="/register"
                   className="px-8 py-3 border border-transparent text-base font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 md:py-4 md:text-lg md:px-10 transition-colors"
                 >
-                  Track Your Crypto
+                  Get Started Free
+                </Link>
+                <Link
+                  to="/portfolio"
+                  className="px-8 py-3 border border-transparent text-base font-medium rounded-md text-indigo-700 bg-indigo-100 hover:bg-indigo-200 md:py-4 md:text-lg md:px-10 transition-colors"
+                >
+                  View Demo
                 </Link>
                 <Link
                   to="#features"
@@ -405,7 +411,7 @@ export default function LandingPage() {
               transition={{ delay: 0.3 }}
             >
               <Link
-                to="/signup"
+                to="/register"
                 className="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-gradient-to-r from-indigo-600 to-teal-500 hover:from-indigo-700 hover:to-teal-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-all duration-200 transform hover:-translate-y-0.5"
               >
                 Get Started for Free
