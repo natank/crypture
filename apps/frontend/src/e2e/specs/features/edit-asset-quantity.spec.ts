@@ -48,9 +48,7 @@ test.describe('Edit Asset Quantity', () => {
       .first()
       .click({ force: true });
 
-    // Wait for edit mode to activate by waiting for the input to be visible
-    const input = page.locator('#qty-input-bitcoin');
-    await expect(input).toBeVisible();
+    const input = page.getByLabel(/Edit quantity for Bitcoin/i);
     await expect(input).toHaveValue('1.5');
 
     await input.clear();
@@ -83,9 +81,7 @@ test.describe('Edit Asset Quantity', () => {
       .first()
       .click({ force: true });
 
-    // Wait for edit mode to activate by waiting for the input to be visible
-    const input = page.locator('#qty-input-ethereum');
-    await expect(input).toBeVisible();
+    const input = page.getByLabel(/Edit quantity for Ethereum/i);
     await input.clear();
     await input.fill('999');
     await page
@@ -114,9 +110,7 @@ test.describe('Edit Asset Quantity', () => {
       .first()
       .click({ force: true });
 
-    // Wait for edit mode to activate by waiting for the input to be visible
-    const input = page.locator('#qty-input-bitcoin');
-    await expect(input).toBeVisible();
+    const input = page.getByLabel(/Edit quantity for Bitcoin/i);
     await input.clear();
     await input.fill('4.5');
     await input.press('Enter');
@@ -141,9 +135,7 @@ test.describe('Edit Asset Quantity', () => {
       .first()
       .click({ force: true });
 
-    // Wait for edit mode to activate by waiting for the input to be visible
-    const input = page.locator('#qty-input-bitcoin');
-    await expect(input).toBeVisible();
+    const input = page.getByLabel(/Edit quantity for Bitcoin/i);
     await input.clear();
     await input.fill('999');
     await input.press('Escape');
@@ -170,9 +162,7 @@ test.describe('Edit Asset Quantity', () => {
       .first()
       .click({ force: true });
 
-    // Wait for edit mode to activate by waiting for the input to be visible
-    const input = page.locator('#qty-input-bitcoin');
-    await expect(input).toBeVisible();
+    const input = page.getByLabel(/Edit quantity for Bitcoin/i);
     await input.clear();
     await input.fill('-5');
     await page
@@ -238,9 +228,7 @@ test.describe('Edit Asset Quantity', () => {
       .first()
       .click({ force: true });
 
-    // Wait for edit mode to activate by waiting for the input to be visible
-    const input = page.locator('#qty-input-bitcoin');
-    await expect(input).toBeVisible();
+    const input = page.getByLabel(/Edit quantity for Bitcoin/i);
     await input.clear();
     await input.fill('1.123456789');
     await page
@@ -270,9 +258,7 @@ test.describe('Edit Asset Quantity', () => {
       .first()
       .click({ force: true });
 
-    // Wait for edit mode to activate by waiting for the input to be visible
-    const input = page.locator('#qty-input-bitcoin');
-    await expect(input).toBeVisible();
+    const input = page.getByLabel(/Edit quantity for Bitcoin/i);
     await input.clear();
     await input.fill('7.5');
     await input.press('Enter');
@@ -301,9 +287,7 @@ test.describe('Edit Asset Quantity', () => {
       .first();
     await editButton.click({ force: true });
 
-    // Wait for edit mode to activate by waiting for the input to be visible
-    const input = page.locator('#qty-input-bitcoin');
-    await expect(input).toBeVisible();
+    const input = page.getByLabel(/Edit quantity for Bitcoin/i);
     await input.fill('9.9');
 
     await page.keyboard.press('Tab');
